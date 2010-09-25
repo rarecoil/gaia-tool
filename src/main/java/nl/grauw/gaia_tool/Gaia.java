@@ -6,6 +6,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
+import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
 
 /**
@@ -88,12 +89,13 @@ public class Gaia {
 	
 	/**
 	 * Requests the device identity.
+	 * @throws InvalidMidiDataException 
 	 */
-	public void requestIdentity() {
-//		SysexMessage sem = new SysexMessage();
-//		byte[] message = {0x7E, 0x7F, 0x06, 0x01, (byte)0xF7};
-//		sem.setMessage(SysexMessage.SYSTEM_EXCLUSIVE, message, message.length);
-//		r.send(sem, -1);
+	public void requestIdentity() throws InvalidMidiDataException {
+		SysexMessage sem = new SysexMessage();
+		byte[] message = {0x7E, 0x7F, 0x06, 0x01, (byte)0xF7};
+		sem.setMessage(SysexMessage.SYSTEM_EXCLUSIVE, message, message.length);
+		receiver.send(sem, -1);
 	}
 	
 }

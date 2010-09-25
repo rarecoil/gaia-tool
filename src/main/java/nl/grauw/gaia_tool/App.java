@@ -11,9 +11,9 @@ public class App {
 		gaia.open();
 		
 		System.out.println("Well, um...");
-		
-		gaia.playTestNote();
+
 		gaia.requestIdentity();
+		gaia.playTestNote();
 		
 		System.out.println("Ya.");
 		gaia.close();
