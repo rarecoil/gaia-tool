@@ -14,11 +14,15 @@ public class GenericMessage extends MidiMessage {
 		return null;
 	}
 	
+	protected static String toHex(int number) {
+		return String.format("%1$02XH", number);
+	}
+	
 	public String toString() {
-		String s = "Generic MIDI message. Status code: " + String.format("0x%1$02X", getStatus()) + ". Body: ";
+		String s = "Generic MIDI message. Status code: " + toHex(getStatus()) + ". Body: ";
 		byte[] message_bytes = getMessage();
 		for (byte message_byte : message_bytes) {
-			s += String.format("0x%1$02X", message_byte & 0xFF) + " ";
+			s += toHex(message_byte & 0xFF) + " ";
 		}
 		return s.trim() + ".";
 	}
