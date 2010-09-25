@@ -15,8 +15,8 @@ public class GenericMessage extends MidiMessage {
 	}
 	
 	public String toString() {
-		String s = "Generic MIDI message. Status code: " + String.format("0x%1$02X", this.getStatus()) + ". Body: ";
-		byte[] message_bytes = this.getMessage();
+		String s = "Generic MIDI message. Status code: " + String.format("0x%1$02X", getStatus()) + ". Body: ";
+		byte[] message_bytes = getMessage();
 		for (byte message_byte : message_bytes) {
 			s += String.format("0x%1$02X", message_byte & 0xFF) + " ";
 		}
