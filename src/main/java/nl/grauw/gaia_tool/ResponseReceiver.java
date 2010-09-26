@@ -6,7 +6,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.SysexMessage;
 
 import nl.grauw.gaia_tool.messages.GenericMessage;
-import nl.grauw.gaia_tool.messages.IdentityReplyMessage;
+import nl.grauw.gaia_tool.messages.IdentityReply;
 
 public class ResponseReceiver implements Receiver {
 
@@ -28,7 +28,7 @@ public class ResponseReceiver implements Receiver {
 		if (message instanceof SysexMessage) {
 			SysexMessage sem = (SysexMessage) message;
 			if (sem.getData()[2] == 6 && sem.getData()[3] == 2) {
-				return new IdentityReplyMessage(sem);
+				return new IdentityReply(sem);
 			}
 		}
 		return new GenericMessage(message);

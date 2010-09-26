@@ -8,7 +8,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Transmitter;
 
-import nl.grauw.gaia_tool.messages.IdentityRequestMessage;
+import nl.grauw.gaia_tool.messages.IdentityRequest;
 
 /**
  * Represents the Roland GAIA SH-01 synthesizer
@@ -155,7 +155,7 @@ public class Gaia {
 	 * @throws InvalidMidiDataException 
 	 */
 	public void requestIdentity() throws InvalidMidiDataException {
-		receiver.send(new IdentityRequestMessage(), -1);
+		receiver.send(new IdentityRequest(), -1);
 	}
 	
 }
