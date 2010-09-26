@@ -11,10 +11,20 @@ import javax.sound.midi.Transmitter;
 import nl.grauw.gaia_tool.messages.IdentityRequestMessage;
 
 /**
- * Represents the Roland Gaia SH-01 synthesizer
+ * Represents the Roland GAIA SH-01 synthesizer
  * 
  * Before use, the object should be initialised by calling open().
  * When you are done, you must invoke close() to clean up.
+ * 
+ * The GAIA actually has three synthesizers:
+ * - The polyphonic virtual analog synthesizer (default: channel 0)
+ * - A general midi synthesizer (default: channel 1)
+ * - A second general midi synthesizer (default: channel 2 and higher (!))
+ * 
+ * The virtual analog synth channel can actually be configured with the
+ * RX/TX channel setting so this value can be changed, I’m assuming in
+ * that case the 1st GM synth will move to channel 0 and the 2nd one
+ * will also adjust accordingly.
  */
 public class Gaia {
 
@@ -24,7 +34,9 @@ public class Gaia {
 	Transmitter transmitter;
 	ResponseReceiver responseReceiver = new ResponseReceiver();
 	
-	final static int channel = 0;
+	final static int synth_channel = 0;
+	final static int gm_channel = 1;
+	final static int gm2_channel = 2;
 
 	public Gaia() {
 	}
@@ -73,9 +85,13 @@ public class Gaia {
 	 * Plays a C-4 note for one second.
 	 */
 	public void playTestNote() throws InvalidMidiDataException {
-		ShortMessage sm = new ShortMessage();
-		sm.setMessage(ShortMessage.NOTE_ON, channel, 60, 127);
-		receiver.send(sm, -1);
+		ShortMessage program_change = new ShortMessage();
+		program_change.setMessage(ShortMessage.PROGRAM_CHANGE, synth_channel, 0, 0);
+		receiver.send(program_change, -1);
+		
+		ShortMessage note_on = new ShortMessage();
+		note_on.setMessage(ShortMessage.NOTE_ON, synth_channel, 60, 127);
+		receiver.send(note_on, -1);
 		
 		try {
 			Thread.sleep(1000);
@@ -83,9 +99,55 @@ public class Gaia {
 			System.out.println(e);
 		}
 		
-		ShortMessage sm2 = new ShortMessage();
-		sm2.setMessage(ShortMessage.NOTE_OFF, channel, 60, 127);
-		receiver.send(sm2, -1);
+		ShortMessage note_off = new ShortMessage();
+		note_off.setMessage(ShortMessage.NOTE_OFF, synth_channel, 60, 127);
+		receiver.send(note_off, -1);
+	}
+	
+	/**
+	 * Plays a C-4 note for one second on the first GM channel.
+	 */
+	public void playGMTestNote() throws InvalidMidiDataException {
+		ShortMessage program_change = new ShortMessage();
+		program_change.setMessage(ShortMessage.PROGRAM_CHANGE, gm_channel, 0, 0);
+		receiver.send(program_change, -1);
+		
+		ShortMessage note_on = new ShortMessage();
+		note_on.setMessage(ShortMessage.NOTE_ON, gm_channel, 60, 127);
+		receiver.send(note_on, -1);
+		
+		try {
+			Thread.sleep(1000);
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		
+		ShortMessage note_off = new ShortMessage();
+		note_off.setMessage(ShortMessage.NOTE_OFF, gm_channel, 60, 127);
+		receiver.send(note_off, -1);
+	}
+	
+	/**
+	 * Plays a C-4 note for one second on the second GM channel.
+	 */
+	public void playGM2TestNote() throws InvalidMidiDataException {
+		ShortMessage program_change = new ShortMessage();
+		program_change.setMessage(ShortMessage.PROGRAM_CHANGE, gm2_channel, 10, 0);
+		receiver.send(program_change, -1);
+		
+		ShortMessage note_on = new ShortMessage();
+		note_on.setMessage(ShortMessage.NOTE_ON, gm2_channel, 60, 127);
+		receiver.send(note_on, -1);
+		
+		try {
+			Thread.sleep(1000);
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		
+		ShortMessage note_off = new ShortMessage();
+		note_off.setMessage(ShortMessage.NOTE_OFF, gm2_channel, 60, 127);
+		receiver.send(note_off, -1);
 	}
 	
 	/**

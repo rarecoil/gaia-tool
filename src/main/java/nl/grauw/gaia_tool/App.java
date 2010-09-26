@@ -14,6 +14,8 @@ public class App {
 
 		gaia.requestIdentity();
 		gaia.playTestNote();
+		gaia.playGMTestNote();
+		gaia.playGM2TestNote();
 		
 		System.out.println("Ya.");
 		gaia.close();
