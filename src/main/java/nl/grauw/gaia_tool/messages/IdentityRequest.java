@@ -1,19 +1,17 @@
 package nl.grauw.gaia_tool.messages;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.SysexMessage;
 
-public class IdentityRequest extends SysexMessage {
+public class IdentityRequest extends UniversalSysex {
 	
-	final static int BROADCAST_DEVICE = 0x7F;
+	final static int GENERAL_INFORMATION = 0x06;
+	final static int IDENTITY_REQUEST = 0x01;
 	
 	/**
 	 * Construct a broadcast identity request message.
 	 */
 	public IdentityRequest() throws InvalidMidiDataException {
-		super();
-		byte[] message = {0x7E, BROADCAST_DEVICE, 0x06, 0x01, (byte)0xF7};
-		setMessage(SYSTEM_EXCLUSIVE, message, message.length);
+		super(GENERAL_INFORMATION, IDENTITY_REQUEST);
 	}
 	
 	/**
@@ -21,12 +19,7 @@ public class IdentityRequest extends SysexMessage {
 	 * @param device_id The device ID. Must be between 0x10-0x1F (inclusive).
 	 */
 	public IdentityRequest(int device_id) throws InvalidMidiDataException {
-		super();
-		if (device_id < 0x10 || device_id > 0x1F)
-			throw new InvalidMidiDataException("Device ID out of range.");
-		
-		byte[] message = {0x7E, (byte)device_id, 0x06, 0x01, (byte)0xF7};
-		setMessage(SYSTEM_EXCLUSIVE, message, message.length);
+		super(device_id, GENERAL_INFORMATION, IDENTITY_REQUEST);
 	}
 	
 }
