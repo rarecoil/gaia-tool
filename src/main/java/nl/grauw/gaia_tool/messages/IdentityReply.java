@@ -37,20 +37,17 @@ public class IdentityReply extends SysexMessage {
 		return rv;
 	}
 	
-	protected static String toHex(int number) {
-		return String.format("%1$02XH", number);
-	}
-	
 	public String toString() {
-		String s = "Identity reply message. Device ID: " + toHex(getDeviceId());
-		s += ". ID number: " + toHex(getIdNumber());
 		int[] dfc = getDeviceFamilyCode();
-		s += ". Device family code: " + toHex(dfc[0]) + " " + toHex(dfc[1]);
 		int[] dfnc = getDeviceFamilyNumberCode();
-		s += ". Device family number code: " + toHex(dfnc[0]) + " " + toHex(dfnc[1]);
 		int[] srl = getSoftwareRevisionLevel();
-		s += ". Software revision level: " + srl[0] + "." + srl[1] + "." + srl[2] + "." + srl[3] + ".";
-		return s;
+		
+		return "Identity reply message. " +
+				String.format("Device ID: %02XH. ", getDeviceId()) +
+				String.format("ID number: %02XH. ",getIdNumber()) +
+				String.format("Device family code: %02XH %02XH. ", dfc[0], dfc[1]) +
+				String.format("Device family number code: %02XH %02XH. ", dfnc[0], dfnc[1]) +
+				String.format("Software revision level: %d.%d.%d.%d.", srl[0], srl[1], srl[2], srl[3]);
 	}
 	
 }
