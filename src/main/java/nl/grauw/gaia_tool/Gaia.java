@@ -15,6 +15,7 @@ import nl.grauw.gaia_tool.messages.GM1SystemOn;
 import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
+import nl.grauw.gaia_tool.parameters.PatchCommonParameters;
 import nl.grauw.gaia_tool.parameters.SystemParameters;
 
 /**
@@ -115,6 +116,12 @@ public class Gaia {
 		if ("01 00 00 00".equals(mm.getAddress().toHexString())) {
 			systemParameters = new SystemParameters(mm.getDataSet());
 			log.log(systemParameters.toString());
+		}
+		if (mm.getAddress().getByte1() == 0x10 || mm.getAddress().getByte1() == 0x20) {
+			if (mm.getAddress().getByte3() == 0x00) {
+				PatchCommonParameters pp = new PatchCommonParameters(mm.getDataSet());
+				log.log(pp.toString());
+			}
 		}
 	}
 	
@@ -232,6 +239,14 @@ public class Gaia {
 	 */
 	public void sendSystemDataRequest() throws InvalidMidiDataException {
 		receiver.send(new DataRequest1(new Address(0x01, 0x00, 0x00, 0x00), 0x6E), -1);
+	}
+	
+	/**
+	 * Sends a system data request directive.
+	 * @throws InvalidMidiDataException 
+	 */
+	public void sendPatchDataRequest() throws InvalidMidiDataException {
+		receiver.send(new DataRequest1(new Address(0x10, 0x00, 0x00, 0x00), 0x3D), -1);
 	}
 	
 }

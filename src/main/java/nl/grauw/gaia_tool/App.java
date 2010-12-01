@@ -26,6 +26,7 @@ public class App extends Frame implements WindowListener, ActionListener, Observ
 	private MenuItem gm2SystemOn;
 	private MenuItem gmSystemOff;
 	private MenuItem systemDataRequest;
+	private MenuItem patchDataRequest;
 	private TextArea log;
 	
 	public App() throws MidiUnavailableException, InvalidMidiDataException {
@@ -56,6 +57,9 @@ public class App extends Frame implements WindowListener, ActionListener, Observ
 		systemDataRequest = new MenuItem("System data request");
 		systemDataRequest.addActionListener(this);
 		testMenu.add(systemDataRequest);
+		patchDataRequest = new MenuItem("Patch data request");
+		patchDataRequest.addActionListener(this);
+		testMenu.add(patchDataRequest);
 		mb.add(testMenu);
 		setMenuBar(mb);
 		log = new TextArea("", 24, 80, TextArea.SCROLLBARS_VERTICAL_ONLY);
@@ -101,6 +105,8 @@ public class App extends Frame implements WindowListener, ActionListener, Observ
 				gaia.sendGMSystemOff();
 			} else if (e.getSource() == systemDataRequest) {
 				gaia.sendSystemDataRequest();
+			} else if (e.getSource() == patchDataRequest) {
+				gaia.sendPatchDataRequest();
 			}
 		} catch (InvalidMidiDataException e1) {
 			e1.printStackTrace();
