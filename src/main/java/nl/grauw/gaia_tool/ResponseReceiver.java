@@ -27,7 +27,6 @@ public class ResponseReceiver implements Receiver {
 	
 	@Override
 	public void send(MidiMessage message, long timeStamp) {
-		gaia.getLog().log("MIDI message received at " + timeStamp + ":");
 		try {
 			gaia.receive(processMidiMessage(message));
 		} catch(Exception e) {

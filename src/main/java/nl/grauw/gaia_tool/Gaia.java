@@ -104,7 +104,7 @@ public class Gaia {
 	 * @param mm
 	 */
 	void receive(MidiMessage mm) {
-		log.log("* " + mm + "\n");
+		log.log("Received: " + mm + "\n");
 		
 		if (mm instanceof DataSet1) {
 			receive((DataSet1) mm);
