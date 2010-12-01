@@ -36,13 +36,22 @@ public class Gaia {
 	MidiDevice midi_out;
 	Receiver receiver;
 	Transmitter transmitter;
-	ResponseReceiver responseReceiver = new ResponseReceiver();
+	ResponseReceiver responseReceiver;
 	
 	final static int synth_channel = 0;
 	final static int gm_channel = 1;
 	final static int gm2_channel = 2;
+	
+	private Log log;
 
 	public Gaia() {
+		log = new Log();
+		log.log("This is the log. Use the menu to trigger stuff.\n");
+		responseReceiver = new ResponseReceiver(this);
+	}
+
+	public Log getLog() {
+		return log;
 	}
 	
 	/**
@@ -76,10 +85,10 @@ public class Gaia {
 				MidiDevice md = MidiSystem.getMidiDevice(mdi);
 				if (md.getMaxTransmitters() == 0) {
 					midi_in = md;
-					System.out.println("Found (IN): " + mdi);
+					log.log("Found (IN): " + mdi);
 				} else {
 					midi_out = md;
-					System.out.println("Found (OUT): " + mdi);
+					log.log("Found (OUT): " + mdi);
 				}
 			}
 		}

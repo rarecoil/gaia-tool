@@ -19,11 +19,17 @@ public class ResponseReceiver implements Receiver {
 	final static int MODEL_SH01 = 0x41;
 	final static int COMMAND_DT1 = 0x12;
 	
+	Gaia gaia;
+	
+	public ResponseReceiver(Gaia gaia) {
+		this.gaia = gaia;
+	}
+	
 	@Override
 	public void send(MidiMessage message, long timeStamp) {
-		System.out.println("MIDI message received at " + timeStamp + ":");
+		gaia.getLog().log("MIDI message received at " + timeStamp + ":");
 		try {
-			System.out.println("* " + processMidiMessage(message));
+			gaia.getLog().log("* " + processMidiMessage(message));
 		} catch(Exception e) {
 			System.out.println("*** Error: " + e);
 		}

@@ -9,15 +9,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
-public class App extends Frame implements WindowListener, ActionListener {
+public class App extends Frame implements WindowListener, ActionListener, Observer {
 	
 	private static final long serialVersionUID = 4950285236879118899L;
 	
 	Gaia gaia;
+	
 	MenuItem playItem;
 	MenuItem gm1SystemOn;
 	MenuItem gm2SystemOn;
@@ -55,10 +58,11 @@ public class App extends Frame implements WindowListener, ActionListener {
 		testMenu.add(systemDataRequest);
 		mb.add(testMenu);
 		setMenuBar(mb);
-		log = new TextArea();
+		log = new TextArea("", 24, 80, TextArea.SCROLLBARS_VERTICAL_ONLY);
 		add(log);
-
-		log.append("This is the log. Use the menu to trigger stuff.\n");
+		
+		// observe models
+		gaia.getLog().addObserver(this);
 	}
 
 	public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException {
@@ -101,6 +105,17 @@ public class App extends Frame implements WindowListener, ActionListener {
 		} catch (InvalidMidiDataException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o instanceof Log) {
+			update((Log) o, arg);
+		}
+	}
+	
+	public void update(Log l, Object arg) {
+		log.append(l.getLog().substring(log.getText().length()));
 	}
 	
 }
