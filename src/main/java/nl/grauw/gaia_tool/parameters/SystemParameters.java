@@ -70,17 +70,12 @@ public class SystemParameters {
 		return addressMap[0x02];
 	}
 	
-	// 24-2024 (-100.0 - 100.0 cent)
+	// -1000 - 1000 (-100.0 - 100.0 cent)
 	public int getMasterTune() {
 		return ((int) addressMap[0x04] << 12) +
 				((int) addressMap[0x05] << 8) +
 				((int) addressMap[0x06] << 4) +
-				(int) addressMap[0x07];
-	}
-	
-	// 24-2024 (-100.0 - 100.0 cent)
-	public double getMasterTuneCent() {
-		return (getMasterTune() - 1024) / 10;
+				(int) addressMap[0x07] - 1024;
 	}
 	
 	public boolean getPatchRemain() {
@@ -93,8 +88,8 @@ public class SystemParameters {
 	
 	// 5-300 bpm
 	public int getSystemTempo() {
-		return (int) addressMap[0x0A] * 256 +
-				(int) addressMap[0x0B] * 16 +
+		return ((int) addressMap[0x0A] << 8) +
+				((int) addressMap[0x0B] << 4) +
 				(int) addressMap[0x0C];
 	}
 	
@@ -115,7 +110,7 @@ public class SystemParameters {
 	}
 	
 	public int getRxTxChannel() {
-		return addressMap[0x11];
+		return addressMap[0x11] + 1;
 	}
 	
 	public boolean getMidiUSBThru() {
@@ -178,7 +173,7 @@ public class SystemParameters {
 				String.format("Bank select LSB: %s\n", getBankSelectLSB()) +
 				String.format("Program number: %s\n", getProgramNumber()) +
 				String.format("Master level: %s\n", getMasterLevel()) +
-				String.format("Master tune: %.1f cent\n", getMasterTuneCent()) +
+				String.format("Master tune: %.1f cent\n", getMasterTune() / 10.0) +
 				String.format("Patch remain: %s\n", getPatchRemain() ? "On" : "Off") +
 				String.format("Clock source: %s\n", getClockSource()) +
 				String.format("System tempo: %s bpm\n", getSystemTempo()) +
@@ -186,7 +181,7 @@ public class SystemParameters {
 				String.format("Pedal polarity: %s\n", getPedalPolarity()) +
 				String.format("Pedal assign: %s\n", getPedalAssign()) +
 				String.format("D-Beam sens: %s\n", getDBeamSens()) +
-				String.format("Rx/Tx channel: %s\n", getRxTxChannel() + 1) +
+				String.format("Rx/Tx channel: %s\n", getRxTxChannel()) +
 				String.format("MIDI-USB thru: %s\n", getMidiUSBThru() ? "On" : "Off") +
 				String.format("Soft thru: %s\n", getSoftThru() ? "On" : "Off") +
 				String.format("Rx program change: %s\n", getRxProgramChange() ? "On" : "Off") +
