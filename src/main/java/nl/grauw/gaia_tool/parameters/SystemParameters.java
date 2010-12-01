@@ -157,6 +157,62 @@ public class SystemParameters {
 		return addressMap[0x1C];
 	}
 	
+	public int getReserved1() {
+		return addressMap[0x1D];
+	}
+	
+	public int getReserved2() {
+		return addressMap[0x1E];
+	}
+	
+	public int getReserved3() {
+		return addressMap[0x1F];
+	}
+	
+	public int getReserved4() {
+		return addressMap[0x20];
+	}
+	
+	public int getReserved5() {
+		return addressMap[0x21];
+	}
+	
+	public int getReserved6() {
+		return addressMap[0x22];
+	}
+	
+	public int getReserved7() {
+		return addressMap[0x23];
+	}
+	
+	public int getReserved8() {
+		return addressMap[0x24];
+	}
+	
+	public int getReserved9() {
+		return addressMap[0x25];
+	}
+	
+	public int getReserved10() {
+		return addressMap[0x26];
+	}
+	
+	public int getReserved11() {
+		return addressMap[0x27];
+	}
+	
+	public int getReserved12() {
+		return addressMap[0x28];
+	}
+	
+	public int getReserved13() {
+		return addressMap[0x29];
+	}
+	
+	public int getReserved14() {
+		return addressMap[0x2A];
+	}
+	
 	public int getWriteProtect(int bank, int patch) {
 		if (bank < 0 || bank > 8 || patch < 0 || patch > 8)
 			throw new RuntimeException("Invalid bank or patch number.");
@@ -165,6 +221,14 @@ public class SystemParameters {
 	
 	public PowerSaveMode getPowerSaveMode() {
 		return PowerSaveMode.values()[addressMap[0x6B]];
+	}
+	
+	public int getReserved15() {
+		return addressMap[0x6C];
+	}
+	
+	public int getReserved16() {
+		return addressMap[0x6D];
 	}
 	
 	public String toString() {
