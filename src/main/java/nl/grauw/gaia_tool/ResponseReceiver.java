@@ -29,7 +29,7 @@ public class ResponseReceiver implements Receiver {
 	public void send(MidiMessage message, long timeStamp) {
 		gaia.getLog().log("MIDI message received at " + timeStamp + ":");
 		try {
-			gaia.getLog().log("* " + processMidiMessage(message));
+			gaia.receive(processMidiMessage(message));
 		} catch(Exception e) {
 			System.out.println("*** Error: " + e);
 		}

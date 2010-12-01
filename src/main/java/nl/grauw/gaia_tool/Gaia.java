@@ -2,6 +2,7 @@ package nl.grauw.gaia_tool;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
@@ -9,10 +10,12 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Transmitter;
 
 import nl.grauw.gaia_tool.messages.DataRequest1;
+import nl.grauw.gaia_tool.messages.DataSet1;
 import nl.grauw.gaia_tool.messages.GM1SystemOn;
 import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
+import nl.grauw.gaia_tool.parameters.SystemParameters;
 
 /**
  * Represents the Roland GAIA SH-01 synthesizer
@@ -43,6 +46,7 @@ public class Gaia {
 	final static int gm2_channel = 2;
 	
 	private Log log;
+	private SystemParameters systemParameters;
 
 	public Gaia() {
 		log = new Log();
@@ -91,6 +95,25 @@ public class Gaia {
 					log.log("Found (OUT): " + mdi);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Receives an incoming MidiMessage object from the ResponseReceiver.
+	 * @param mm
+	 */
+	void receive(MidiMessage mm) {
+		log.log("* " + mm + "\n");
+		
+		if (mm instanceof DataSet1) {
+			receive((DataSet1) mm);
+		}
+	}
+	
+	private void receive(DataSet1 mm) {
+		if ("01 00 00 00".equals(mm.getAddress().toHexString())) {
+			systemParameters = new SystemParameters(mm.getDataSet());
+			log.log(systemParameters.toString());
 		}
 	}
 	
