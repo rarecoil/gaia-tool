@@ -34,6 +34,10 @@ public class AddressTest {
 		assertEquals(0x67, a.getByte4());
 	}
 	
+	/**
+	 * Test method for {@link nl.grauw.gaia_tool.Address#toHexString()}.
+	 */
+	@Test
 	public void testToHexString() {
 		Address a = new Address(0x0028E2E7);
 		assertEquals("01 23 45 67", a.toHexString());
