@@ -174,11 +174,11 @@ public class SystemParameters {
 	}
 	
 	public int getReserved5() {
-		return addressMap[0x21];
+		return (int) addressMap[0x21] - 64;
 	}
 	
 	public int getReserved6() {
-		return addressMap[0x22];
+		return (int) addressMap[0x22] - 64;
 	}
 	
 	public int getReserved7() {
@@ -210,7 +210,7 @@ public class SystemParameters {
 	}
 	
 	public int getReserved14() {
-		return addressMap[0x2A];
+		return (int) addressMap[0x2A] - 64;
 	}
 	
 	public int getWriteProtect(int bank, int patch) {

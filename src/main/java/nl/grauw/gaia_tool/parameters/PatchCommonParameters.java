@@ -212,15 +212,15 @@ public class PatchCommonParameters {
 	}
 	
 	public int getReserved20() {
-		return addressMap[0x3A];
+		return (int) addressMap[0x3A] - 64;
 	}
 	
 	public int getReserved21() {
-		return addressMap[0x3B];
+		return (int) addressMap[0x3B] - 64;
 	}
 	
 	public int getReserved22() {
-		return addressMap[0x3C];
+		return (int) addressMap[0x3C] - 64;
 	}
 	
 	public String toString() {
