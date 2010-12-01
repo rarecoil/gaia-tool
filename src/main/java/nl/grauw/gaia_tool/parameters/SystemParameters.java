@@ -51,7 +51,6 @@ public class SystemParameters {
 		this.addressMap = addressMap;
 	}
 	
-	// 0-16383
 	public int getBankSelectMSB() {
 		return addressMap[0x00];
 	}
@@ -60,17 +59,15 @@ public class SystemParameters {
 		return addressMap[0x01];
 	}
 	
-	// 0-127
 	public int getProgramNumber() {
 		return addressMap[0x02];
 	}
 	
-	// 0-127
 	public int getMasterLevel() {
 		return addressMap[0x02];
 	}
 	
-	// -1000 - 1000 (-100.0 - 100.0 cent)
+	// -1000 ... 1000 (-100.0 ... 100.0 cent)
 	public int getMasterTune() {
 		return (addressMap[0x04] << 12) +
 				(addressMap[0x05] << 8) +
@@ -86,7 +83,7 @@ public class SystemParameters {
 		return ClockSource.values()[addressMap[0x09]];
 	}
 	
-	// 5-300 bpm
+	// 5 ... 300 bpm
 	public int getSystemTempo() {
 		return (addressMap[0x0A] << 8) +
 				(addressMap[0x0B] << 4) +
