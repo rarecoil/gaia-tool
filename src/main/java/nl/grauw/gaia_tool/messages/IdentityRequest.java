@@ -20,6 +20,10 @@ public class IdentityRequest extends UniversalSysex {
 	 */
 	public IdentityRequest(int device_id) throws InvalidMidiDataException {
 		super(device_id, GENERAL_INFORMATION, IDENTITY_REQUEST);
+		
+		// stupid super call restriction prevents me from making this assertion earlier
+		if (device_id < 0x10 || device_id > 0x1F)
+			throw new RuntimeException("Invalid device ID.");
 	}
 	
 }

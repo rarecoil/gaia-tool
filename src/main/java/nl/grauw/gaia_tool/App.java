@@ -19,6 +19,9 @@ public class App extends Frame implements WindowListener, ActionListener {
 	
 	Gaia gaia;
 	MenuItem playItem;
+	MenuItem gm1SystemOn;
+	MenuItem gm2SystemOn;
+	MenuItem gmSystemOff;
 	TextArea log;
 	
 	public App() throws MidiUnavailableException, InvalidMidiDataException {
@@ -37,6 +40,15 @@ public class App extends Frame implements WindowListener, ActionListener {
 		playItem = new MenuItem("Play test notes");
 		playItem.addActionListener(this);
 		testMenu.add(playItem);
+		gm1SystemOn = new MenuItem("GM system on");
+		gm1SystemOn.addActionListener(this);
+		testMenu.add(gm1SystemOn);
+		gm2SystemOn = new MenuItem("GM2 system on");
+		gm2SystemOn.addActionListener(this);
+		testMenu.add(gm2SystemOn);
+		gmSystemOff = new MenuItem("GM system off");
+		gmSystemOff.addActionListener(this);
+		testMenu.add(gmSystemOff);
 		mb.add(testMenu);
 		setMenuBar(mb);
 		log = new TextArea();
@@ -70,17 +82,34 @@ public class App extends Frame implements WindowListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == playItem) {
 			try {
-				playTestNotes();
+				gaia.playTestNote();
+				gaia.playGMTestNote();
+				gaia.playGM2TestNote();
 			} catch (InvalidMidiDataException e1) {
 				e1.printStackTrace();
 			}
 		}
-	}
-	
-	public void playTestNotes() throws InvalidMidiDataException {
-		gaia.playTestNote();
-		gaia.playGMTestNote();
-		gaia.playGM2TestNote();
+		if (e.getSource() == gm1SystemOn) {
+			try {
+				gaia.sendGM1SystemOn();
+			} catch (InvalidMidiDataException e1) {
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource() == gm2SystemOn) {
+			try {
+				gaia.sendGM2SystemOn();
+			} catch (InvalidMidiDataException e1) {
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource() == gmSystemOff) {
+			try {
+				gaia.sendGMSystemOff();
+			} catch (InvalidMidiDataException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 	
 }

@@ -8,6 +8,8 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Transmitter;
 
+import nl.grauw.gaia_tool.messages.GM1SystemOn;
+import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
 
@@ -164,6 +166,30 @@ public class Gaia {
 	 */
 	public void requestIdentity() throws InvalidMidiDataException {
 		receiver.send(new IdentityRequest(), -1);
+	}
+	
+	/**
+	 * Sends a GM system on directive.
+	 * @throws InvalidMidiDataException 
+	 */
+	public void sendGM1SystemOn() throws InvalidMidiDataException {
+		receiver.send(new GM1SystemOn(), -1);
+	}
+	
+	/**
+	 * Sends a GM2 system off directive.
+	 * @throws InvalidMidiDataException 
+	 */
+	public void sendGM2SystemOn() throws InvalidMidiDataException {
+		receiver.send(new GM2SystemOn(), -1);
+	}
+	
+	/**
+	 * Sends a GM system off directive.
+	 * @throws InvalidMidiDataException 
+	 */
+	public void sendGMSystemOff() throws InvalidMidiDataException {
+		receiver.send(new GMSystemOff(), -1);
 	}
 	
 }
