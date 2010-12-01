@@ -22,6 +22,9 @@ public class UniversalSysex extends SysexMessage {
 	
 	public UniversalSysex(int device_id, int sub_id1, int sub_id2, byte[] data) throws InvalidMidiDataException {
 		super();
+		if (device_id != 0x7F && (device_id < 0x10 || device_id > 0x1F))
+			throw new RuntimeException("Invalid device ID.");
+		
 		byte[] message = new byte[data.length + 5];
 		message[0] = UNIVERSAL_NONREALTIME_SYSEX;
 		message[1] = (byte)device_id;
