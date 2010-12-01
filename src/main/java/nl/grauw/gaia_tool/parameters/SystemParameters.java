@@ -72,10 +72,10 @@ public class SystemParameters {
 	
 	// -1000 - 1000 (-100.0 - 100.0 cent)
 	public int getMasterTune() {
-		return ((int) addressMap[0x04] << 12) +
-				((int) addressMap[0x05] << 8) +
-				((int) addressMap[0x06] << 4) +
-				(int) addressMap[0x07] - 1024;
+		return (addressMap[0x04] << 12) +
+				(addressMap[0x05] << 8) +
+				(addressMap[0x06] << 4) +
+				addressMap[0x07] - 1024;
 	}
 	
 	public boolean getPatchRemain() {
@@ -88,9 +88,9 @@ public class SystemParameters {
 	
 	// 5-300 bpm
 	public int getSystemTempo() {
-		return ((int) addressMap[0x0A] << 8) +
-				((int) addressMap[0x0B] << 4) +
-				(int) addressMap[0x0C];
+		return (addressMap[0x0A] << 8) +
+				(addressMap[0x0B] << 4) +
+				addressMap[0x0C];
 	}
 	
 	public KeyboardVelocity getKeyboardVelocity() {
@@ -174,11 +174,11 @@ public class SystemParameters {
 	}
 	
 	public int getReserved5() {
-		return (int) addressMap[0x21] - 64;
+		return addressMap[0x21] - 64;
 	}
 	
 	public int getReserved6() {
-		return (int) addressMap[0x22] - 64;
+		return addressMap[0x22] - 64;
 	}
 	
 	public int getReserved7() {
@@ -210,7 +210,7 @@ public class SystemParameters {
 	}
 	
 	public int getReserved14() {
-		return (int) addressMap[0x2A] - 64;
+		return addressMap[0x2A] - 64;
 	}
 	
 	public int getWriteProtect(int bank, int patch) {

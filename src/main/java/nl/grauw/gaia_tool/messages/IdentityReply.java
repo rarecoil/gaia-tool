@@ -15,35 +15,35 @@ public class IdentityReply extends SysexMessage {
 	}
 	
 	public int getDeviceId() {
-		return (int)(getData()[1] & 0xFF);
+		return getData()[1] & 0xFF;
 	}
 	
 	public int getIdNumber() {
-		return (int)(getData()[4] & 0xFF);
+		return getData()[4] & 0xFF;
 	}
 	
 	public int[] getDeviceFamilyCode() {
 		int[] rv = {
-				(int)(getData()[5] & 0xFF),
-				(int)(getData()[6] & 0xFF)
+				getData()[5] & 0xFF,
+				getData()[6] & 0xFF
 			};
 		return rv;
 	}
 	
 	public int[] getDeviceFamilyNumberCode() {
 		int[] rv = {
-				(int)(getData()[7] & 0xFF),
-				(int)(getData()[8] & 0xFF)
+				getData()[7] & 0xFF,
+				getData()[8] & 0xFF
 			};
 		return rv;
 	}
 	
 	public int[] getSoftwareRevisionLevel() {
 		int[] rv = {
-				(int)(getData()[9] & 0xFF),
-				(int)(getData()[10] & 0xFF),
-				(int)(getData()[11] & 0xFF),
-				(int)(getData()[12] & 0xFF)
+				getData()[9] & 0xFF,
+				getData()[10] & 0xFF,
+				getData()[11] & 0xFF,
+				getData()[12] & 0xFF
 			};
 		return rv;
 	}

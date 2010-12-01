@@ -37,9 +37,9 @@ public class PatchCommonParameters {
 	}
 	
 	public int getPatchTempo() {
-		return ((int) addressMap[0x0D] << 8) +
-				((int) addressMap[0x0E] << 4) +
-				(int) addressMap[0x0F];
+		return (addressMap[0x0D] << 8) +
+				(addressMap[0x0E] << 4) +
+				addressMap[0x0F];
 	}
 	
 	public boolean getArpeggioSwitch() {
@@ -64,7 +64,7 @@ public class PatchCommonParameters {
 	
 	// -3 ... 3
 	public int getOctaveShift() {
-		return (int) addressMap[0x15] - 64;
+		return addressMap[0x15] - 64;
 	}
 	
 	public int getPitchBendRangeUp() {
@@ -212,15 +212,15 @@ public class PatchCommonParameters {
 	}
 	
 	public int getReserved20() {
-		return (int) addressMap[0x3A] - 64;
+		return addressMap[0x3A] - 64;
 	}
 	
 	public int getReserved21() {
-		return (int) addressMap[0x3B] - 64;
+		return addressMap[0x3B] - 64;
 	}
 	
 	public int getReserved22() {
-		return (int) addressMap[0x3C] - 64;
+		return addressMap[0x3C] - 64;
 	}
 	
 	public String toString() {
