@@ -19,7 +19,7 @@ public class ResponseReceiver implements Receiver {
 	final static int MODEL_SH01 = 0x41;
 	final static int COMMAND_DT1 = 0x12;
 	
-	Gaia gaia;
+	private Gaia gaia;
 	
 	public ResponseReceiver(Gaia gaia) {
 		this.gaia = gaia;

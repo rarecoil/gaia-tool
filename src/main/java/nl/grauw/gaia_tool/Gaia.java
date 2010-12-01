@@ -32,11 +32,11 @@ import nl.grauw.gaia_tool.messages.IdentityRequest;
  */
 public class Gaia {
 
-	MidiDevice midi_in;
-	MidiDevice midi_out;
-	Receiver receiver;
-	Transmitter transmitter;
-	ResponseReceiver responseReceiver;
+	private MidiDevice midi_in;
+	private MidiDevice midi_out;
+	private Receiver receiver;
+	private Transmitter transmitter;
+	private ResponseReceiver responseReceiver;
 	
 	final static int synth_channel = 0;
 	final static int gm_channel = 1;

@@ -2,7 +2,7 @@ package nl.grauw.gaia_tool;
 
 public class Address {
 	
-	int address;
+	private int address;
 	
 	public Address(int byte1, int byte2, int byte3, int byte4) {
 		this(byte1 << 21 | byte2 << 14 | byte3 << 7 | byte4);

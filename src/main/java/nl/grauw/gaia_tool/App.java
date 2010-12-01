@@ -19,14 +19,14 @@ public class App extends Frame implements WindowListener, ActionListener, Observ
 	
 	private static final long serialVersionUID = 4950285236879118899L;
 	
-	Gaia gaia;
+	private Gaia gaia;
 	
-	MenuItem playItem;
-	MenuItem gm1SystemOn;
-	MenuItem gm2SystemOn;
-	MenuItem gmSystemOff;
-	MenuItem systemDataRequest;
-	TextArea log;
+	private MenuItem playItem;
+	private MenuItem gm1SystemOn;
+	private MenuItem gm2SystemOn;
+	private MenuItem gmSystemOff;
+	private MenuItem systemDataRequest;
+	private TextArea log;
 	
 	public App() throws MidiUnavailableException, InvalidMidiDataException {
 		super();
