@@ -15,26 +15,16 @@ public class IdentityRequestTest {
 	public void testIdentityRequest() throws InvalidMidiDataException {
 		MidiMessage mm = new IdentityRequest();
 		byte[] message = mm.getMessage();
-		assertEquals(6, message.length);
-		assertEquals((byte) 0xF0, message[0]);
-		assertEquals((byte) 0x7E, message[1]);
-		assertEquals((byte) 0x7F, message[2]);
-		assertEquals((byte) 0x06, message[3]);
-		assertEquals((byte) 0x01, message[4]);
-		assertEquals((byte) 0xF7, message[5]);
+		byte[] expected = {(byte)0xF0, 0x7E, 0x7F, 0x06, 0x01, (byte)0xF7};
+		assertArrayEquals(expected, message);
 	}
 
 	@Test
 	public void testIdentityRequestInt() throws InvalidMidiDataException {
 		MidiMessage mm = new IdentityRequest(0x10);
 		byte[] message = mm.getMessage();
-		assertEquals(6, message.length);
-		assertEquals((byte) 0xF0, message[0]);
-		assertEquals((byte) 0x7E, message[1]);
-		assertEquals((byte) 0x10, message[2]);
-		assertEquals((byte) 0x06, message[3]);
-		assertEquals((byte) 0x01, message[4]);
-		assertEquals((byte) 0xF7, message[5]);
+		byte[] expected = {(byte)0xF0, 0x7E, 0x10, 0x06, 0x01, (byte)0xF7};
+		assertArrayEquals(expected, message);
 	}
 
 	@Test (expected=RuntimeException.class)

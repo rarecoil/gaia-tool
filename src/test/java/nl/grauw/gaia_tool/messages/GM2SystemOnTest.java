@@ -25,13 +25,8 @@ public class GM2SystemOnTest {
 	public void testGM2SystemOn() throws InvalidMidiDataException {
 		MidiMessage mm = new GM2SystemOn();
 		byte[] message = mm.getMessage();
-		assertEquals(6, message.length);
-		assertEquals((byte) 0xF0, message[0]);
-		assertEquals((byte) 0x7E, message[1]);
-		assertEquals((byte) 0x7F, message[2]);
-		assertEquals((byte) 0x09, message[3]);
-		assertEquals((byte) 0x03, message[4]);
-		assertEquals((byte) 0xF7, message[5]);
+		byte[] expected = {(byte)0xF0, 0x7E, 0x7F, 0x09, 0x03, (byte)0xF7};
+		assertArrayEquals(expected, message);
 	}
 
 }
