@@ -96,6 +96,7 @@ public class Gaia {
 				}
 			}
 		}
+		log.log("");
 	}
 	
 	/**

@@ -4,6 +4,46 @@ public class SystemParameters {
 	
 	private byte[] addressMap;	// XXX: make AddressMap type
 	
+	public enum ClockSource {
+		PATCH, SYSTEM, MIDI, USB
+	}
+	
+	public enum KeyboardVelocity {
+		REAL, FIX
+	}
+	
+	public enum PedalPolarity {
+		STANDARD, REVERSE
+	}
+	
+	public enum PedalAssign {
+		HOLD, MODULATION, VOLUME, EXPRESSION, BEND_MODE, D_BEAM_SYNC, TAP_TEMPO
+	}
+	
+	public enum RecorderMetronomeMode {
+		OFF, REC_ONLY, REC_AND_PLAY, ALWAYS
+	}
+	
+	public enum PowerSaveMode {
+		OFF(0), MIN_1(1), MIN_3(3), MIN_5(5), MIN_10(10), MIN_20(20), MIN_30(30), MIN_60(60);
+		
+		private final int minutes;
+		
+		PowerSaveMode(int minutes) {
+			this.minutes = minutes;
+		}
+		
+		public int getMinutes() {
+			return this.minutes;
+		}
+		
+		public String toString() {
+			if (this.minutes == 0)
+				return "Off";
+			return "" + this.minutes + " min";
+		}
+	}
+	
 	public SystemParameters(byte[] addressMap) {
 		if (addressMap.length != 0x6E)
 			throw new RuntimeException("Address map size mismatch.");
@@ -12,9 +52,12 @@ public class SystemParameters {
 	}
 	
 	// 0-16383
-	public int getBankSelect() {
-		return (int) addressMap[0x00] * 128 +
-				(int) addressMap[0x01];
+	public int getBankSelectMSB() {
+		return addressMap[0x00];
+	}
+	
+	public int getBankSelectLSB() {
+		return addressMap[0x01];
 	}
 	
 	// 0-127
@@ -29,18 +72,23 @@ public class SystemParameters {
 	
 	// 24-2024 (-100.0 - 100.0 cent)
 	public int getMasterTune() {
-		return (int) addressMap[0x04] * 4096 +
-				(int) addressMap[0x04] * 256 +
-				(int) addressMap[0x04] * 16 +
-				(int) addressMap[0x04];
+		return ((int) addressMap[0x04] << 12) +
+				((int) addressMap[0x05] << 8) +
+				((int) addressMap[0x06] << 4) +
+				(int) addressMap[0x07];
+	}
+	
+	// 24-2024 (-100.0 - 100.0 cent)
+	public double getMasterTuneCent() {
+		return (getMasterTune() - 1024) / 10;
 	}
 	
 	public boolean getPatchRemain() {
 		return addressMap[0x08] == 1;
 	}
 	
-	public boolean getClockSource() {
-		return addressMap[0x09] == 1;
+	public ClockSource getClockSource() {
+		return ClockSource.values()[addressMap[0x09]];
 	}
 	
 	// 5-300 bpm
@@ -50,15 +98,107 @@ public class SystemParameters {
 				(int) addressMap[0x0C];
 	}
 	
+	public KeyboardVelocity getKeyboardVelocity() {
+		return KeyboardVelocity.values()[addressMap[0x0D]];
+	}
+	
+	public PedalPolarity getPedalPolarity() {
+		return PedalPolarity.values()[addressMap[0x0E]];
+	}
+	
+	public PedalAssign getPedalAssign() {
+		return PedalAssign.values()[addressMap[0x0F]];
+	}
+	
+	public int getDBeamSens() {
+		return addressMap[0x10];
+	}
+	
+	public int getRxTxChannel() {
+		return addressMap[0x11];
+	}
+	
+	public boolean getMidiUSBThru() {
+		return addressMap[0x12] == 1;
+	}
+	
+	public boolean getSoftThru() {
+		return addressMap[0x13] == 1;
+	}
+	
+	public boolean getRxProgramChange() {
+		return addressMap[0x14] == 1;
+	}
+	
+	public boolean getRxBankSelect() {
+		return addressMap[0x15] == 1;
+	}
+	
+	public boolean getRemoteKeyboard() {
+		return addressMap[0x16] == 1;
+	}
+	
+	public boolean getTxProgramChange() {
+		return addressMap[0x17] == 1;
+	}
+	
+	public boolean getTxBankSelect() {
+		return addressMap[0x18] == 1;
+	}
+	
+	public boolean getTxEditData() {
+		return addressMap[0x19] == 1;
+	}
+	
+	public boolean getRecorderSyncOutput() {
+		return addressMap[0x1A] == 1;
+	}
+	
+	public RecorderMetronomeMode getRecorderMetronomeMode() {
+		return RecorderMetronomeMode.values()[addressMap[0x1B]];
+	}
+	
+	public int getRecorderMetronomeLevel() {
+		return addressMap[0x1C];
+	}
+	
+	public int getWriteProtect(int bank, int patch) {
+		if (bank < 0 || bank > 8 || patch < 0 || patch > 8)
+			throw new RuntimeException("Invalid bank or patch number.");
+		return addressMap[0x2B + (bank << 3) + patch];
+	}
+	
+	public PowerSaveMode getPowerSaveMode() {
+		return PowerSaveMode.values()[addressMap[0x6B]];
+	}
+	
 	public String toString() {
 		return "System parameters:\n" +
-				"Bank select: " + getBankSelect() + "\n" +
-				"Program number: " + getProgramNumber() + "\n" +
-				"Master level: " + getMasterLevel() + "\n" +
-				"Master tune: " + getMasterTune() + "\n" +
-				"Patch remain: " + getPatchRemain() + "\n" +
-				"Clock source: " + getClockSource() + "\n" +
-				"System tempo: " + getSystemTempo() + "\n";
+				String.format("Bank select MSB: %s\n", getBankSelectMSB()) +
+				String.format("Bank select LSB: %s\n", getBankSelectLSB()) +
+				String.format("Program number: %s\n", getProgramNumber()) +
+				String.format("Master level: %s\n", getMasterLevel()) +
+				String.format("Master tune: %.1f cent\n", getMasterTuneCent()) +
+				String.format("Patch remain: %s\n", getPatchRemain() ? "On" : "Off") +
+				String.format("Clock source: %s\n", getClockSource()) +
+				String.format("System tempo: %s bpm\n", getSystemTempo()) +
+				String.format("Keyboard velocity: %s\n", getKeyboardVelocity()) +
+				String.format("Pedal polarity: %s\n", getPedalPolarity()) +
+				String.format("Pedal assign: %s\n", getPedalAssign()) +
+				String.format("D-Beam sens: %s\n", getDBeamSens()) +
+				String.format("Rx/Tx channel: %s\n", getRxTxChannel() + 1) +
+				String.format("MIDI-USB thru: %s\n", getMidiUSBThru() ? "On" : "Off") +
+				String.format("Soft thru: %s\n", getSoftThru() ? "On" : "Off") +
+				String.format("Rx program change: %s\n", getRxProgramChange() ? "On" : "Off") +
+				String.format("Rx bank select: %s\n", getRxBankSelect() ? "On" : "Off") +
+				String.format("Remote keyboard: %s\n", getRemoteKeyboard() ? "On" : "Off") +
+				String.format("Tx program change: %s\n", getTxProgramChange() ? "On" : "Off") +
+				String.format("Tx bank select: %s\n", getTxBankSelect() ? "On" : "Off") +
+				String.format("Tx edit data: %s\n", getTxEditData() ? "On" : "Off") +
+				String.format("Recorder sync output: %s\n", getRecorderSyncOutput() ? "On" : "Off") +
+				String.format("Recorder metronome mode: %s\n", getRecorderMetronomeMode()) +
+				String.format("Recorder metronome level: %s\n", getRecorderMetronomeLevel()) +
+				String.format("Power save mode: %s\n", getPowerSaveMode());
 	}
 	
 }
