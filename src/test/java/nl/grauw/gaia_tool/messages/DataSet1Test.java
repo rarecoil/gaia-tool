@@ -7,7 +7,6 @@ import static org.junit.Assert.*;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.SysexMessage;
 
 import nl.grauw.gaia_tool.Address;
