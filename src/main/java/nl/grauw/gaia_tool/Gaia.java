@@ -16,6 +16,7 @@ import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
+import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
 import nl.grauw.gaia_tool.parameters.PatchCommonParameters;
 import nl.grauw.gaia_tool.parameters.PatchToneParameters;
 import nl.grauw.gaia_tool.parameters.SystemParameters;
@@ -135,6 +136,8 @@ public class Gaia {
 				PatchArpeggioCommonParameters pacp = new PatchArpeggioCommonParameters(mm.getDataSet());
 				log.log(pacp.toString());
 			} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
+				PatchArpeggioPatternParameters papp = new PatchArpeggioPatternParameters(mm.getDataSet());
+				log.log(papp.toString());
 			}
 		}
 	}

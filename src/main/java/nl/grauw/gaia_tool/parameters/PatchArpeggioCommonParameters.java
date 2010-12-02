@@ -65,7 +65,7 @@ public class PatchArpeggioCommonParameters {
 	}
 	
 	public String toString() {
-		return "Arpeggio common parameters:\n" +
+		return "Patch arpeggio common parameters:\n" +
 				String.format("Arpeggio grid: %s\n", getArpeggioGrid()) +
 				String.format("Arpeggio duration: %s\n", getArpeggioDuration()) +
 				String.format("Arpeggio motif: %s\n", getArpeggioMotif()) +
