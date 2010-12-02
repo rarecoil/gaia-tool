@@ -16,6 +16,7 @@ import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
 import nl.grauw.gaia_tool.parameters.PatchCommonParameters;
+import nl.grauw.gaia_tool.parameters.PatchToneParameters;
 import nl.grauw.gaia_tool.parameters.SystemParameters;
 
 /**
@@ -118,9 +119,14 @@ public class Gaia {
 			log.log(systemParameters.toString());
 		}
 		if (mm.getAddress().getByte1() == 0x10 || mm.getAddress().getByte1() == 0x20) {
-			if (mm.getAddress().getByte3() == 0x00) {
-				PatchCommonParameters pp = new PatchCommonParameters(mm.getDataSet());
-				log.log(pp.toString());
+			byte byte3 = mm.getAddress().getByte3();
+			if (byte3 == 0x00) {
+				PatchCommonParameters pcp = new PatchCommonParameters(mm.getDataSet());
+				log.log(pcp.toString());
+			}
+			if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
+				PatchToneParameters ptp = new PatchToneParameters(mm.getDataSet());
+				log.log(ptp.toString());
 			}
 		}
 	}
@@ -246,7 +252,7 @@ public class Gaia {
 	 * @throws InvalidMidiDataException 
 	 */
 	public void sendPatchDataRequest() throws InvalidMidiDataException {
-		receiver.send(new DataRequest1(new Address(0x10, 0x00, 0x00, 0x00), 0x3D), -1);
+		receiver.send(new DataRequest1(new Address(0x10, 0x00, 0x00, 0x00), 0xE80), -1);
 	}
 	
 }
