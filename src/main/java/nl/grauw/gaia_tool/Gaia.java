@@ -18,6 +18,10 @@ import nl.grauw.gaia_tool.messages.IdentityRequest;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
 import nl.grauw.gaia_tool.parameters.PatchCommonParameters;
+import nl.grauw.gaia_tool.parameters.PatchDelayParameters;
+import nl.grauw.gaia_tool.parameters.PatchDistortionParameters;
+import nl.grauw.gaia_tool.parameters.PatchFlangerParameters;
+import nl.grauw.gaia_tool.parameters.PatchReverbParameters;
 import nl.grauw.gaia_tool.parameters.PatchToneParameters;
 import nl.grauw.gaia_tool.parameters.SystemParameters;
 
@@ -50,7 +54,6 @@ public class Gaia {
 	final static int gm2_channel = 2;
 	
 	private Log log;
-	private SystemParameters systemParameters;
 
 	public Gaia() {
 		log = new Log();
@@ -116,29 +119,31 @@ public class Gaia {
 	}
 	
 	private void receive(DataSet1 mm) {
+		Object parameters = null;
 		if ("01 00 00 00".equals(mm.getAddress().toHexString())) {
-			systemParameters = new SystemParameters(mm.getDataSet());
-			log.log(systemParameters.toString());
-		}
-		if (mm.getAddress().getByte1() == 0x10 || mm.getAddress().getByte1() == 0x20) {
+			parameters = new SystemParameters(mm.getDataSet());
+		} else if (mm.getAddress().getByte1() == 0x10 || mm.getAddress().getByte1() == 0x20) {
 			byte byte3 = mm.getAddress().getByte3();
 			if (byte3 == 0x00) {
-				PatchCommonParameters pcp = new PatchCommonParameters(mm.getDataSet());
-				log.log(pcp.toString());
+				parameters = new PatchCommonParameters(mm.getDataSet());
 			} else if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
-				PatchToneParameters ptp = new PatchToneParameters(mm.getDataSet());
-				log.log(ptp.toString());
+				parameters = new PatchToneParameters(mm.getDataSet());
 			} else if (byte3 == 0x04) {
+				parameters = new PatchDistortionParameters(mm.getDataSet());
 			} else if (byte3 == 0x06) {
+				parameters = new PatchFlangerParameters(mm.getDataSet());
 			} else if (byte3 == 0x08) {
+				parameters = new PatchDelayParameters(mm.getDataSet());
 			} else if (byte3 == 0x0A) {
+				parameters = new PatchReverbParameters(mm.getDataSet());
 			} else if (byte3 == 0x0C) {
-				PatchArpeggioCommonParameters pacp = new PatchArpeggioCommonParameters(mm.getDataSet());
-				log.log(pacp.toString());
+				parameters = new PatchArpeggioCommonParameters(mm.getDataSet());
 			} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
-				PatchArpeggioPatternParameters papp = new PatchArpeggioPatternParameters(mm.getDataSet());
-				log.log(papp.toString());
+				parameters = new PatchArpeggioPatternParameters(mm.getDataSet());
 			}
+		}
+		if (parameters != null) {
+			log.log(parameters.toString());
 		}
 	}
 	
