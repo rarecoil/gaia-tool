@@ -39,7 +39,7 @@ public class App extends Frame implements WindowListener, ActionListener, Observ
 		// initialise UI
 		addWindowListener(this);
 		setTitle("Roland GAIA SH-01 tool — by Grauw");
-		setSize(500, 400);
+		setSize(800, 700);
 		MenuBar mb = new MenuBar();
 		Menu testMenu = new Menu("Test");
 		playItem = new MenuItem("Play test notes");
