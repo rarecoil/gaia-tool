@@ -69,10 +69,10 @@ public class SystemParameters {
 	
 	// -1000 ... 1000 (-100.0 ... 100.0 cent)
 	public int getMasterTune() {
-		return (addressMap[0x04] << 12) +
-				(addressMap[0x05] << 8) +
-				(addressMap[0x06] << 4) +
-				addressMap[0x07] - 1024;
+		return (addressMap[0x04] << 12 |
+				addressMap[0x05] << 8 |
+				addressMap[0x06] << 4 |
+				addressMap[0x07]) - 1024;
 	}
 	
 	public boolean getPatchRemain() {
@@ -85,8 +85,8 @@ public class SystemParameters {
 	
 	// 5 ... 300 bpm
 	public int getSystemTempo() {
-		return (addressMap[0x0A] << 8) +
-				(addressMap[0x0B] << 4) +
+		return addressMap[0x0A] << 8 |
+				addressMap[0x0B] << 4 |
 				addressMap[0x0C];
 	}
 	
@@ -213,7 +213,7 @@ public class SystemParameters {
 	public int getWriteProtect(int bank, int patch) {
 		if (bank < 0 || bank > 8 || patch < 0 || patch > 8)
 			throw new RuntimeException("Invalid bank or patch number.");
-		return addressMap[0x2B + (bank << 3) + patch];
+		return addressMap[0x2B + bank * 8 + patch];
 	}
 	
 	public PowerSaveMode getPowerSaveMode() {

@@ -37,8 +37,8 @@ public class PatchCommonParameters {
 	}
 	
 	public int getPatchTempo() {
-		return (addressMap[0x0D] << 8) +
-				(addressMap[0x0E] << 4) +
+		return addressMap[0x0D] << 8 |
+				addressMap[0x0E] << 4 |
 				addressMap[0x0F];
 	}
 	
