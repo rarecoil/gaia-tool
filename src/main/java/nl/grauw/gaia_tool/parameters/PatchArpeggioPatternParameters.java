@@ -25,9 +25,10 @@ public class PatchArpeggioPatternParameters {
 	}
 	
 	public String toString() {
-		String stepData = "";
+		StringBuilder stepData = new StringBuilder(128);
 		for (int i = 1; i <= 32; i++) {
-			stepData += getStepData(i) + " ";
+			stepData.append(getStepData(i));
+			stepData.append(" ");
 		}
 		
 		return "Patch arpeggio pattern parameters:\n" +
