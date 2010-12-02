@@ -45,7 +45,7 @@ public class SystemParameters {
 	}
 	
 	public SystemParameters(byte[] addressMap) {
-		if (addressMap.length != 0x6E)
+		if (addressMap.length < 0x6E)
 			throw new RuntimeException("Address map size mismatch.");
 		
 		this.addressMap = addressMap;

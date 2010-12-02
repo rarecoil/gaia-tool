@@ -22,7 +22,7 @@ public class PatchCommonParameters {
 	}
 	
 	public PatchCommonParameters(byte[] addressMap) {
-		if (addressMap.length != 0x3D)
+		if (addressMap.length < 0x3D)
 			throw new RuntimeException("Address map size mismatch.");
 		
 		this.addressMap = addressMap;
