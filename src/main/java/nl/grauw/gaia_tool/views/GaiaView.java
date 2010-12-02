@@ -67,6 +67,7 @@ public class GaiaView extends Frame implements WindowListener, ActionListener, O
 		
 		// observe models
 		gaia.getLog().addObserver(this);
+		update(gaia.getLog(), null);
 	}
 	
 	public void windowClosing(WindowEvent e) {
