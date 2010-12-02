@@ -15,6 +15,7 @@ import nl.grauw.gaia_tool.messages.GM1SystemOn;
 import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
+import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
 import nl.grauw.gaia_tool.parameters.PatchCommonParameters;
 import nl.grauw.gaia_tool.parameters.PatchToneParameters;
 import nl.grauw.gaia_tool.parameters.SystemParameters;
@@ -123,10 +124,17 @@ public class Gaia {
 			if (byte3 == 0x00) {
 				PatchCommonParameters pcp = new PatchCommonParameters(mm.getDataSet());
 				log.log(pcp.toString());
-			}
-			if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
+			} else if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
 				PatchToneParameters ptp = new PatchToneParameters(mm.getDataSet());
 				log.log(ptp.toString());
+			} else if (byte3 == 0x04) {
+			} else if (byte3 == 0x06) {
+			} else if (byte3 == 0x08) {
+			} else if (byte3 == 0x0A) {
+			} else if (byte3 == 0x0C) {
+				PatchArpeggioCommonParameters pacp = new PatchArpeggioCommonParameters(mm.getDataSet());
+				log.log(pacp.toString());
+			} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
 			}
 		}
 	}
