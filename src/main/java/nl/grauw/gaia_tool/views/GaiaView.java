@@ -54,13 +54,17 @@ public class GaiaView extends Frame implements WindowListener, ActionListener, O
 		gmSystemOff = new MenuItem("GM system off");
 		gmSystemOff.addActionListener(this);
 		testMenu.add(gmSystemOff);
-		systemDataRequest = new MenuItem("System data request");
-		systemDataRequest.addActionListener(this);
-		testMenu.add(systemDataRequest);
-		patchDataRequest = new MenuItem("Patch data request");
-		patchDataRequest.addActionListener(this);
-		testMenu.add(patchDataRequest);
 		mb.add(testMenu);
+		
+		Menu dataMenu = new Menu("Data request");
+		systemDataRequest = new MenuItem("System data");
+		systemDataRequest.addActionListener(this);
+		dataMenu.add(systemDataRequest);
+		patchDataRequest = new MenuItem("Temporary patch data");
+		patchDataRequest.addActionListener(this);
+		dataMenu.add(patchDataRequest);
+		mb.add(dataMenu);
+		
 		setMenuBar(mb);
 		log = new TextArea("", 24, 80, TextArea.SCROLLBARS_VERTICAL_ONLY);
 		add(log);
