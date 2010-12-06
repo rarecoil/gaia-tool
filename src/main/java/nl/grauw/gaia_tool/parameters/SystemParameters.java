@@ -210,10 +210,10 @@ public class SystemParameters {
 		return addressMap[0x2A] - 64;
 	}
 	
-	public int getWriteProtect(int bank, int patch) {
+	public boolean getWriteProtect(int bank, int patch) {
 		if (bank < 0 || bank > 8 || patch < 0 || patch > 8)
 			throw new RuntimeException("Invalid bank or patch number.");
-		return addressMap[0x2B + bank * 8 + patch];
+		return addressMap[0x2B + bank * 8 + patch] == 1;
 	}
 	
 	public PowerSaveMode getPowerSaveMode() {
