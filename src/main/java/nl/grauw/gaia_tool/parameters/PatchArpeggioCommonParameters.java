@@ -1,5 +1,7 @@
 package nl.grauw.gaia_tool.parameters;
 
+import nl.grauw.gaia_tool.Value;
+
 public class PatchArpeggioCommonParameters {
 	
 	private byte[] addressMap;	// XXX: make AddressMap type
@@ -46,22 +48,21 @@ public class PatchArpeggioCommonParameters {
 		return ArpeggioMotif.values()[addressMap[0x02]];
 	}
 	
-	public int getArpeggioOctaveRange() {
-		return addressMap[0x03] - 64;
+	public Value getArpeggioOctaveRange() {
+		return new Value(addressMap[0x03] - 64, -3, +3);
 	}
 	
-	public int getArpeggioAccentRate() {
-		return addressMap[0x04];
+	public Value getArpeggioAccentRate() {
+		return new Value(addressMap[0x04], 0, 100);
 	}
 	
 	// 0 ... 127 (REAL, 1 ... 127)
-	public int getArpeggioVelocity() {
-		return addressMap[0x05];
+	public Value getArpeggioVelocity() {
+		return new Value(addressMap[0x05], 0, 127);
 	}
 	
-	public int getEndStep() {
-		return addressMap[0x06] << 4 |
-				addressMap[0x07];
+	public Value getEndStep() {
+		return new Value(addressMap[0x06] << 4 | addressMap[0x07], 1, 32);
 	}
 	
 	public String toString() {

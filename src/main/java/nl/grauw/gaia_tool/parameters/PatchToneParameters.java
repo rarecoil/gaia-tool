@@ -1,5 +1,7 @@
 package nl.grauw.gaia_tool.parameters;
 
+import nl.grauw.gaia_tool.Value;
+
 public class PatchToneParameters {
 	
 	private byte[] addressMap;	// XXX: make AddressMap type
@@ -49,33 +51,33 @@ public class PatchToneParameters {
 		return addressMap[0x02] == 1;
 	}
 	
-	public int getOSCPitch() {
-		return addressMap[0x03] - 64;
+	public Value getOSCPitch() {
+		return new Value(addressMap[0x03] - 64, -24, 24);
 	}
 	
-	public int getOSCDetune() {
-		return addressMap[0x04] - 64;
+	public Value getOSCDetune() {
+		return new Value(addressMap[0x04] - 64, -50, 50);
 	}
 	
-	public int getOSCPulseWidthModDepth() {
-		return addressMap[0x05];
+	public Value getOSCPulseWidthModDepth() {
+		return new Value(addressMap[0x05], 0, 127);
 	}
 	
-	public int getOSCPulseWidth() {
-		return addressMap[0x06];
+	public Value getOSCPulseWidth() {
+		return new Value(addressMap[0x06], 0, 127);
 	}
 	
-	public int getOSCPitchEnvAttackTime() {
-		return addressMap[0x07];
+	public Value getOSCPitchEnvAttackTime() {
+		return new Value(addressMap[0x07], 0, 127);
 	}
 	
 	// XXX: ...DecayTime? Slightly inconsistent...
-	public int getOSCPitchEnvDecay() {
-		return addressMap[0x08];
+	public Value getOSCPitchEnvDecay() {
+		return new Value(addressMap[0x08], 0, 127);
 	}
 	
-	public int getOSCPitchEnvDepth() {
-		return addressMap[0x09] - 64;
+	public Value getOSCPitchEnvDepth() {
+		return new Value(addressMap[0x09] - 64, -63, 63);
 	}
 	
 	public FilterMode getFilterMode() {
@@ -86,78 +88,78 @@ public class PatchToneParameters {
 		return FilterSlope.values()[addressMap[0x0B]];
 	}
 	
-	public int getFilterCutoff() {
-		return addressMap[0x0C];
+	public Value getFilterCutoff() {
+		return new Value(addressMap[0x0C], 0, 127);
 	}
 	
 	// -10 ... 10 (-100 ... 100)
-	public int getFilterCutoffKeyfollow() {
-		return addressMap[0x0D] - 64;
+	public Value getFilterCutoffKeyfollow() {
+		return new Value(addressMap[0x0D] - 64, -10, 10);
 	}
 	
-	public int getFilterEnvVelocitySens() {
-		return addressMap[0x0E] - 64;
+	public Value getFilterEnvVelocitySens() {
+		return new Value(addressMap[0x0E] - 64, -63, 63);
 	}
 	
-	public int getFilterResonance() {
-		return addressMap[0x09];
+	public Value getFilterResonance() {
+		return new Value(addressMap[0x09], 0, 127);
 	}
 	
-	public int getFilterEnvAttackTime() {
-		return addressMap[0x10];
+	public Value getFilterEnvAttackTime() {
+		return new Value(addressMap[0x10], 0, 127);
 	}
 	
-	public int getFilterEnvDecayTime() {
-		return addressMap[0x11];
+	public Value getFilterEnvDecayTime() {
+		return new Value(addressMap[0x11], 0, 127);
 	}
 	
-	public int getFilterEnvSustainLevel() {
-		return addressMap[0x12];
+	public Value getFilterEnvSustainLevel() {
+		return new Value(addressMap[0x12], 0, 127);
 	}
 	
-	public int getFilterEnvReleaseTime() {
-		return addressMap[0x13];
+	public Value getFilterEnvReleaseTime() {
+		return new Value(addressMap[0x13], 0, 127);
 	}
 	
-	public int getFilterEnvDepth() {
-		return addressMap[0x14] - 64;
+	public Value getFilterEnvDepth() {
+		return new Value(addressMap[0x14] - 64, -63, 63);
 	}
 	
-	public int getAmpLevel() {
-		return addressMap[0x15];
+	public Value getAmpLevel() {
+		return new Value(addressMap[0x15], 0, 127);
 	}
 	
-	public int getAmpLevelVelocitySens() {
-		return addressMap[0x16] - 64;
+	public Value getAmpLevelVelocitySens() {
+		return new Value(addressMap[0x16] - 64, -63, 63);
 	}
 	
-	public int getAmpEnvAttackTime() {
-		return addressMap[0x17];
+	public Value getAmpEnvAttackTime() {
+		return new Value(addressMap[0x17], 0, 127);
 	}
 	
-	public int getAmpEnvDecayTime() {
-		return addressMap[0x18];
+	public Value getAmpEnvDecayTime() {
+		return new Value(addressMap[0x18], 0, 127);
 	}
 	
-	public int getAmpEnvSustainLevel() {
-		return addressMap[0x19];
+	public Value getAmpEnvSustainLevel() {
+		return new Value(addressMap[0x19], 0, 127);
 	}
 	
-	public int getAmpEnvReleaseTime() {
-		return addressMap[0x1A];
+	public Value getAmpEnvReleaseTime() {
+		return new Value(addressMap[0x1A], 0, 127);
 	}
 	
 	// -64 ... 63 (L64 ... 63R)
-	public int getAmpPan() {
-		return addressMap[0x1B] - 64;
+	public Value getAmpPan() {
+		return new Value(addressMap[0x1B] - 64, -64, 63);
 	}
 	
 	public LFOShape getLFOShape() {
 		return LFOShape.values()[addressMap[0x1C]];
 	}
 	
-	public int getLFORate() {
-		return addressMap[0x1D];
+	public Value getLFORate() {
+		return new Value(addressMap[0x1D], 0, 127);
 	}
 	
 	public boolean getLFOTempoSyncSwitch() {
@@ -168,36 +170,36 @@ public class PatchToneParameters {
 		return LFOTempoSyncNote.values()[addressMap[0x1F]];
 	}
 	
-	public int getLFOFadeTime() {
-		return addressMap[0x20];
+	public Value getLFOFadeTime() {
+		return new Value(addressMap[0x20], 0, 127);
 	}
 	
 	public boolean getLFOKeyTrigger() {
 		return addressMap[0x21] == 1;
 	}
 	
-	public int getLFOPitchDepth() {
-		return addressMap[0x22] - 64;
+	public Value getLFOPitchDepth() {
+		return new Value(addressMap[0x22] - 64, -63, 63);
 	}
 	
-	public int getLFOFilterDepth() {
-		return addressMap[0x23] - 64;
+	public Value getLFOFilterDepth() {
+		return new Value(addressMap[0x23] - 64, -63, 63);
 	}
 	
-	public int getLFOAmpDepth() {
-		return addressMap[0x24] - 64;
+	public Value getLFOAmpDepth() {
+		return new Value(addressMap[0x24] - 64, -63, 63);
 	}
 	
-	public int getLFOPanDepth() {
-		return addressMap[0x25] - 64;
+	public Value getLFOPanDepth() {
+		return new Value(addressMap[0x25] - 64, -63, 63);
 	}
 	
 	public LFOShape getModulationLFOShape() {
 		return LFOShape.values()[addressMap[0x26]];
 	}
 	
-	public int getModulationLFORate() {
-		return addressMap[0x27];
+	public Value getModulationLFORate() {
+		return new Value(addressMap[0x27], 0, 127);
 	}
 	
 	public boolean getModulationLFOTempoSyncSwitch() {
@@ -208,84 +210,84 @@ public class PatchToneParameters {
 		return LFOTempoSyncNote.values()[addressMap[0x29]];
 	}
 	
-	public int getReserved2() {
-		return addressMap[0x2A];
+	public Value getReserved2() {
+		return new Value(addressMap[0x2A], 0, 127);
 	}
 	
-	public boolean getReserved3() {
-		return addressMap[0x2B] == 1;
+	public Value getReserved3() {
+		return new Value(addressMap[0x2B], 0, 1);
 	}
 	
-	public int getModulationLFOPitchDepth() {
-		return addressMap[0x2C] - 64;
+	public Value getModulationLFOPitchDepth() {
+		return new Value(addressMap[0x2C] - 64, -63, 63);
 	}
 	
-	public int getModulationLFOFilterDepth() {
-		return addressMap[0x2D] - 64;
+	public Value getModulationLFOFilterDepth() {
+		return new Value(addressMap[0x2D] - 64, -63, 63);
 	}
 	
-	public int getModulationLFOAmpDepth() {
-		return addressMap[0x2E] - 64;
+	public Value getModulationLFOAmpDepth() {
+		return new Value(addressMap[0x2E] - 64, -63, 63);
 	}
 	
-	public int getModulationLFOPanDepth() {
-		return addressMap[0x2F] - 64;
+	public Value getModulationLFOPanDepth() {
+		return new Value(addressMap[0x2F] - 64, -63, 63);
 	}
 	
-	public int getReserved4() {
-		return addressMap[0x30] - 64;
+	public Value getReserved4() {
+		return new Value(addressMap[0x30] - 64, -63, 63);
 	}
 	
-	public int getReserved5() {
-		return addressMap[0x31] - 64;
+	public Value getReserved5() {
+		return new Value(addressMap[0x31] - 64, -63, 63);
 	}
 	
-	public int getReserved6() {
-		return addressMap[0x32] - 64;
+	public Value getReserved6() {
+		return new Value(addressMap[0x32] - 64, -63, 63);
 	}
 	
-	public int getReserved7() {
-		return addressMap[0x33] - 64;
+	public Value getReserved7() {
+		return new Value(addressMap[0x33] - 64, -63, 63);
 	}
 	
-	public int getReserved8() {
-		return addressMap[0x34];
+	public Value getReserved8() {
+		return new Value(addressMap[0x34], 0, 1);
 	}
 	
-	public int getReserved9() {
-		return addressMap[0x35];
+	public Value getReserved9() {
+		return new Value(addressMap[0x35], 0, 1);
 	}
 	
-	public int getReserved10() {
-		return addressMap[0x36];
+	public Value getReserved10() {
+		return new Value(addressMap[0x36], 0, 1);
 	}
 	
-	public int getReserved11() {
-		return addressMap[0x37];
+	public Value getReserved11() {
+		return new Value(addressMap[0x37], 0, 1);
 	}
 	
-	public int getReserved12() {
-		return addressMap[0x38];
+	public Value getReserved12() {
+		return new Value(addressMap[0x38], 0, 127);
 	}
 	
-	public int getReserved13() {
-		return addressMap[0x39];
+	public Value getReserved13() {
+		return new Value(addressMap[0x39], 0, 127);
 	}
 	
-	public int getReserved14() {
-		return addressMap[0x3A];
+	public Value getReserved14() {
+		return new Value(addressMap[0x3A], 0, 127);
 	}
 	
-	public int getReserved15() {
-		return addressMap[0x3B];
+	public Value getReserved15() {
+		return new Value(addressMap[0x3B], 0, 127);
 	}
 	
-	public int getReserved16() {
-		return addressMap[0x3C] - 64;
+	public Value getReserved16() {
+		return new Value(addressMap[0x3C] - 64, -63, 63);
 	}
 	
-	public int getReserved17() {
-		return addressMap[0x3D] - 64;
+	public Value getReserved17() {
+		return new Value(addressMap[0x3D] - 64, -63, 63);
 	}
 	
 	public String toString() {

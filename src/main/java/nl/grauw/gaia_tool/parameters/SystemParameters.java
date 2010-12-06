@@ -1,5 +1,7 @@
 package nl.grauw.gaia_tool.parameters;
 
+import nl.grauw.gaia_tool.Value;
+
 public class SystemParameters {
 	
 	private byte[] addressMap;	// XXX: make AddressMap type
@@ -51,28 +53,28 @@ public class SystemParameters {
 		this.addressMap = addressMap;
 	}
 	
-	public int getBankSelectMSB() {
-		return addressMap[0x00];
+	public Value getBankSelectMSB() {
+		return new Value(addressMap[0x00], 0, 127);
 	}
 	
-	public int getBankSelectLSB() {
-		return addressMap[0x01];
+	public Value getBankSelectLSB() {
+		return new Value(addressMap[0x01], 0, 127);
 	}
 	
-	public int getProgramNumber() {
-		return addressMap[0x02];
+	public Value getProgramNumber() {
+		return new Value(addressMap[0x02], 0, 127);
 	}
 	
-	public int getMasterLevel() {
-		return addressMap[0x02];
+	public Value getMasterLevel() {
+		return new Value(addressMap[0x02], 0, 127);
 	}
 	
 	// -1000 ... 1000 (-100.0 ... 100.0 cent)
-	public int getMasterTune() {
-		return (addressMap[0x04] << 12 |
+	public Value getMasterTune() {
+		return new Value((addressMap[0x04] << 12 |
 				addressMap[0x05] << 8 |
 				addressMap[0x06] << 4 |
-				addressMap[0x07]) - 1024;
+				addressMap[0x07]) - 1024, -1000, 1000);
 	}
 	
 	public boolean getPatchRemain() {
@@ -83,11 +85,10 @@ public class SystemParameters {
 		return ClockSource.values()[addressMap[0x09]];
 	}
 	
-	// 5 ... 300 bpm
-	public int getSystemTempo() {
-		return addressMap[0x0A] << 8 |
+	public Value getSystemTempo() {
+		return new Value(addressMap[0x0A] << 8 |
 				addressMap[0x0B] << 4 |
-				addressMap[0x0C];
+				addressMap[0x0C], 5, 300);
 	}
 	
 	public KeyboardVelocity getKeyboardVelocity() {
@@ -102,12 +103,12 @@ public class SystemParameters {
 		return PedalAssign.values()[addressMap[0x0F]];
 	}
 	
-	public int getDBeamSens() {
-		return addressMap[0x10];
+	public Value getDBeamSens() {
+		return new Value(addressMap[0x10], 1, 8);
 	}
 	
-	public int getRxTxChannel() {
-		return addressMap[0x11] + 1;
+	public Value getRxTxChannel() {
+		return new Value(addressMap[0x11] + 1, 0, 15);
 	}
 	
 	public boolean getMidiUSBThru() {
@@ -150,64 +151,64 @@ public class SystemParameters {
 		return RecorderMetronomeMode.values()[addressMap[0x1B]];
 	}
 	
-	public int getRecorderMetronomeLevel() {
-		return addressMap[0x1C];
+	public Value getRecorderMetronomeLevel() {
+		return new Value(addressMap[0x1C], 0, 7);
 	}
 	
-	public int getReserved1() {
-		return addressMap[0x1D];
+	public Value getReserved1() {
+		return new Value(addressMap[0x1D], 0, 1);
 	}
 	
-	public int getReserved2() {
-		return addressMap[0x1E];
+	public Value getReserved2() {
+		return new Value(addressMap[0x1E], 0, 127);
 	}
 	
-	public int getReserved3() {
-		return addressMap[0x1F];
+	public Value getReserved3() {
+		return new Value(addressMap[0x1F], 0, 127);
 	}
 	
-	public int getReserved4() {
-		return addressMap[0x20];
+	public Value getReserved4() {
+		return new Value(addressMap[0x20], 0, 1);
 	}
 	
-	public int getReserved5() {
-		return addressMap[0x21] - 64;
+	public Value getReserved5() {
+		return new Value(addressMap[0x21] - 64, -5, 6);
 	}
 	
-	public int getReserved6() {
-		return addressMap[0x22] - 64;
+	public Value getReserved6() {
+		return new Value(addressMap[0x22] - 64, -3, 3);
 	}
 	
-	public int getReserved7() {
-		return addressMap[0x23];
+	public Value getReserved7() {
+		return new Value(addressMap[0x23], 0, 127);
 	}
 	
-	public int getReserved8() {
-		return addressMap[0x24];
+	public Value getReserved8() {
+		return new Value(addressMap[0x24], 0, 1);
 	}
 	
-	public int getReserved9() {
-		return addressMap[0x25];
+	public Value getReserved9() {
+		return new Value(addressMap[0x25], 0, 1);
 	}
 	
-	public int getReserved10() {
-		return addressMap[0x26];
+	public Value getReserved10() {
+		return new Value(addressMap[0x26], 0, 1);
 	}
 	
-	public int getReserved11() {
-		return addressMap[0x27];
+	public Value getReserved11() {
+		return new Value(addressMap[0x27], 0, 1);
 	}
 	
-	public int getReserved12() {
-		return addressMap[0x28];
+	public Value getReserved12() {
+		return new Value(addressMap[0x28], 0, 127);
 	}
 	
-	public int getReserved13() {
-		return addressMap[0x29];
+	public Value getReserved13() {
+		return new Value(addressMap[0x29], 0, 127);
 	}
 	
-	public int getReserved14() {
-		return addressMap[0x2A] - 64;
+	public Value getReserved14() {
+		return new Value(addressMap[0x2A] - 64, -63, 63);
 	}
 	
 	public boolean getWriteProtect(int bank, int patch) {
@@ -220,12 +221,12 @@ public class SystemParameters {
 		return PowerSaveMode.values()[addressMap[0x6B]];
 	}
 	
-	public int getReserved15() {
-		return addressMap[0x6C];
+	public Value getReserved15() {
+		return new Value(addressMap[0x6C], 0, 15);
 	}
 	
-	public int getReserved16() {
-		return addressMap[0x6D];
+	public Value getReserved16() {
+		return new Value(addressMap[0x6D], 0, 16);
 	}
 	
 	public String toString() {
@@ -234,7 +235,7 @@ public class SystemParameters {
 				String.format("Bank select LSB: %s\n", getBankSelectLSB()) +
 				String.format("Program number: %s\n", getProgramNumber()) +
 				String.format("Master level: %s\n", getMasterLevel()) +
-				String.format("Master tune: %.1f cent\n", getMasterTune() / 10.0) +
+				String.format("Master tune: %.1f cent\n", getMasterTune().getValue() / 10.0) +
 				String.format("Patch remain: %s\n", getPatchRemain() ? "On" : "Off") +
 				String.format("Clock source: %s\n", getClockSource()) +
 				String.format("System tempo: %s bpm\n", getSystemTempo()) +

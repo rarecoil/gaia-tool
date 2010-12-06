@@ -1,5 +1,7 @@
 package nl.grauw.gaia_tool.parameters;
 
+import nl.grauw.gaia_tool.Value;
+
 public class PatchCommonParameters {
 	
 	private byte[] addressMap;	// XXX: make AddressMap type
@@ -32,51 +34,50 @@ public class PatchCommonParameters {
 		return new String(addressMap, 0, 12);
 	}
 	
-	public int getPatchLevel() {
-		return addressMap[0x0D];
+	public Value getPatchLevel() {
+		return new Value(addressMap[0x0D], 0, 127);
 	}
 	
-	public int getPatchTempo() {
-		return addressMap[0x0D] << 8 |
+	public Value getPatchTempo() {
+		return new Value(addressMap[0x0D] << 8 |
 				addressMap[0x0E] << 4 |
-				addressMap[0x0F];
+				addressMap[0x0F], 5, 300);
 	}
 	
 	public boolean getArpeggioSwitch() {
 		return addressMap[0x10] == 1;
 	}
 	
-	public int getReserved1() {
-		return addressMap[0x11];
+	public Value getReserved1() {
+		return new Value(addressMap[0x11], 0, 1);
 	}
 	
 	public boolean getPortamentoSwitch() {
 		return addressMap[0x12] == 1;
 	}
 	
-	public int getPortamentoTime() {
-		return addressMap[0x13];
+	public Value getPortamentoTime() {
+		return new Value(addressMap[0x13], 0, 127);
 	}
 	
 	public boolean getMonoSwitch() {
 		return addressMap[0x14] == 1;
 	}
 	
-	// -3 ... 3
-	public int getOctaveShift() {
-		return addressMap[0x15] - 64;
+	public Value getOctaveShift() {
+		return new Value(addressMap[0x15] - 64, -3, 3);
 	}
 	
-	public int getPitchBendRangeUp() {
-		return addressMap[0x16];
+	public Value getPitchBendRangeUp() {
+		return new Value(addressMap[0x16], 0, 24);
 	}
 	
-	public int getPitchBendRangeDown() {
-		return addressMap[0x17];
+	public Value getPitchBendRangeDown() {
+		return new Value(addressMap[0x17], 0, 24);
 	}
 	
-	public int getReserved2() {
-		return addressMap[0x18];
+	public Value getReserved2() {
+		return new Value(addressMap[0x18], 0, 1);
 	}
 	
 	public boolean getTone1Switch() {
@@ -111,8 +112,8 @@ public class PatchCommonParameters {
 		return addressMap[0x20] == 1;
 	}
 	
-	public int getReserved3() {
-		return addressMap[0x21];
+	public Value getReserved3() {
+		return new Value(addressMap[0x21], 0, 3);
 	}
 	
 	public boolean getDelayTempoSyncSwitch() {
@@ -127,20 +128,20 @@ public class PatchCommonParameters {
 		return DBeamAssign.values()[addressMap[0x24]];
 	}
 	
-	public int getReserved4() {
-		return addressMap[0x25];
+	public Value getReserved4() {
+		return new Value(addressMap[0x25], 0, 1);
 	}
 	
-	public int getReserved5() {
-		return addressMap[0x26];
+	public Value getReserved5() {
+		return new Value(addressMap[0x26], 0, 1);
 	}
 	
-	public int getReserved6() {
-		return addressMap[0x27];
+	public Value getReserved6() {
+		return new Value(addressMap[0x27], 0, 1);
 	}
 	
-	public int getReserved7() {
-		return addressMap[0x28];
+	public Value getReserved7() {
+		return new Value(addressMap[0x28], 0, 1);
 	}
 	
 	public DBeamPolarity getDBeamPolarity() {
@@ -163,64 +164,64 @@ public class PatchCommonParameters {
 		return addressMap[0x2D] == 1;
 	}
 	
-	public int getReserved8() {
-		return addressMap[0x2E];
+	public Value getReserved8() {
+		return new Value(addressMap[0x2E], 0, 1);
 	}
 	
-	public int getReserved9() {
-		return addressMap[0x2F];
+	public Value getReserved9() {
+		return new Value(addressMap[0x2F], 0, 1);
 	}
 	
-	public int getReserved10() {
-		return addressMap[0x30];
+	public Value getReserved10() {
+		return new Value(addressMap[0x30], 0, 1);
 	}
 	
-	public int getReserved11() {
-		return addressMap[0x31];
+	public Value getReserved11() {
+		return new Value(addressMap[0x31], 0, 1);
 	}
 	
-	public int getReserved12() {
-		return addressMap[0x32];
+	public Value getReserved12() {
+		return new Value(addressMap[0x32], 0, 1);
 	}
 	
-	public int getReserved13() {
-		return addressMap[0x33];
+	public Value getReserved13() {
+		return new Value(addressMap[0x33], 0, 1);
 	}
 	
-	public int getReserved14() {
-		return addressMap[0x34];
+	public Value getReserved14() {
+		return new Value(addressMap[0x34], 0, 127);
 	}
 	
-	public int getReserved15() {
-		return addressMap[0x35];
+	public Value getReserved15() {
+		return new Value(addressMap[0x35], 0, 127);
 	}
 	
-	public int getReserved16() {
-		return addressMap[0x36];
+	public Value getReserved16() {
+		return new Value(addressMap[0x36], 0, 127);
 	}
 	
-	public int getReserved17() {
-		return addressMap[0x37];
+	public Value getReserved17() {
+		return new Value(addressMap[0x37], 0, 127);
 	}
 	
-	public int getReserved18() {
-		return addressMap[0x38];
+	public Value getReserved18() {
+		return new Value(addressMap[0x38], 0, 127);
 	}
 	
-	public int getReserved19() {
-		return addressMap[0x39];
+	public Value getReserved19() {
+		return new Value(addressMap[0x39], 0, 127);
 	}
 	
-	public int getReserved20() {
-		return addressMap[0x3A] - 64;
+	public Value getReserved20() {
+		return new Value(addressMap[0x3A] - 64, -63, 63);
 	}
 	
-	public int getReserved21() {
-		return addressMap[0x3B] - 64;
+	public Value getReserved21() {
+		return new Value(addressMap[0x3B] - 64, -63, 63);
 	}
 	
-	public int getReserved22() {
-		return addressMap[0x3C] - 64;
+	public Value getReserved22() {
+		return new Value(addressMap[0x3C] - 64, -63, 63);
 	}
 	
 	public String toString() {

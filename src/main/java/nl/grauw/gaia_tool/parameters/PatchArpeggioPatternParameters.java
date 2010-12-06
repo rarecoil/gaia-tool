@@ -1,5 +1,7 @@
 package nl.grauw.gaia_tool.parameters;
 
+import nl.grauw.gaia_tool.Value;
+
 public class PatchArpeggioPatternParameters {
 	
 	private byte[] addressMap;	// XXX: make AddressMap type
@@ -11,17 +13,15 @@ public class PatchArpeggioPatternParameters {
 		this.addressMap = addressMap;
 	}
 	
-	public int getOriginalNote() {
-		return addressMap[0x00] << 4 |
-				addressMap[0x01];
+	public Value getOriginalNote() {
+		return new Value(addressMap[0x00] << 4 | addressMap[0x01], 0, 128);
 	}
 	
-	public int getStepData(int step) {
+	public Value getStepData(int step) {
 		if (step < 1 || step > 32)
 			throw new RuntimeException("Invalid step number.");
 		
-		return addressMap[step * 2] << 4 |
-				addressMap[step * 2 + 1];
+		return new Value(addressMap[step * 2] << 4 | addressMap[step * 2 + 1], 0, 128);
 	}
 	
 	public String toString() {
