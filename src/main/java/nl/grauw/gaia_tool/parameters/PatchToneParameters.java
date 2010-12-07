@@ -304,7 +304,7 @@ public class PatchToneParameters {
 				String.format("Filter mode: %s\n", getFilterMode()) +
 				String.format("Filter slope: %s\n", getFilterSlope()) +
 				String.format("Filter cutoff: %s\n", getFilterCutoff()) +
-				String.format("Filter cutoff keyfollow: %s\n", getFilterCutoffKeyfollow()) +
+				String.format("Filter cutoff keyfollow: %s\n", getFilterCutoffKeyfollow().getValue() * 10) +
 				String.format("Filter env velocity sens: %s\n", getFilterEnvVelocitySens()) +
 				String.format("Filter resonance: %s\n", getFilterResonance()) +
 				String.format("Filter env attack time: %s\n", getFilterEnvAttackTime()) +
