@@ -10,8 +10,7 @@ public class GenericMessage extends MidiMessage {
 
 	@Override
 	public Object clone() {
-		// TODO Auto-generated method stub
-		return null;
+		return new GenericMessage(this);
 	}
 	
 	protected static String toHex(int number) {
