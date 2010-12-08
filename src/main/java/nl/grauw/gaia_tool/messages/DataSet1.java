@@ -77,7 +77,7 @@ public class DataSet1 extends SysexMessage {
 	}
 	
 	public String toString() {
-		return "Data set 1. Address: " + this.getAddress().toHexString();
+		return "Data set 1. Address: " + this.getAddress();
 	}
 	
 }
