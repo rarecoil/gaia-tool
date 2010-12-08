@@ -18,14 +18,7 @@ import nl.grauw.gaia_tool.messages.IdentityRequest;
 import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
 import nl.grauw.gaia_tool.messages.ProgramChangeMessage;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
-import nl.grauw.gaia_tool.parameters.PatchCommonParameters;
-import nl.grauw.gaia_tool.parameters.PatchDelayParameters;
-import nl.grauw.gaia_tool.parameters.PatchDistortionParameters;
-import nl.grauw.gaia_tool.parameters.PatchFlangerParameters;
-import nl.grauw.gaia_tool.parameters.PatchReverbParameters;
-import nl.grauw.gaia_tool.parameters.PatchToneParameters;
+import nl.grauw.gaia_tool.parameters.Parameters;
 import nl.grauw.gaia_tool.parameters.SystemParameters;
 
 /**
@@ -58,8 +51,16 @@ public class Gaia {
 	final static Note C_4 = new Note(NoteName.C, 4);
 	
 	private Log log;
-
+	
+	private SystemParameters system;
+	private PatchParameterGroup temporaryPatch;
+	private PatchParameterGroup[] userPatches = new PatchParameterGroup[64];
+	
 	public Gaia() {
+		temporaryPatch = new PatchParameterGroup();
+		for (int i = 0; i < 64; i++) {
+			userPatches[i] = new PatchParameterGroup();
+		}
 		log = new Log();
 		log.log("This is the log. Use the menu to trigger stuff.\n");
 		responseReceiver = new ResponseReceiver(this);
@@ -123,32 +124,33 @@ public class Gaia {
 	}
 	
 	private void receive(DataSet1 mm) {
-		Object parameters = null;
-		if ("01 00 00 00".equals(mm.getAddress().toHexString())) {
-			parameters = new SystemParameters(mm.getDataSet());
-		} else if (mm.getAddress().getByte1() == 0x10 || mm.getAddress().getByte1() == 0x20) {
-			byte byte3 = mm.getAddress().getByte3();
-			if (byte3 == 0x00) {
-				parameters = new PatchCommonParameters(mm.getDataSet());
-			} else if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
-				parameters = new PatchToneParameters(mm.getDataSet());
-			} else if (byte3 == 0x04) {
-				parameters = new PatchDistortionParameters(mm.getDataSet());
-			} else if (byte3 == 0x06) {
-				parameters = new PatchFlangerParameters(mm.getDataSet());
-			} else if (byte3 == 0x08) {
-				parameters = new PatchDelayParameters(mm.getDataSet());
-			} else if (byte3 == 0x0A) {
-				parameters = new PatchReverbParameters(mm.getDataSet());
-			} else if (byte3 == 0x0C) {
-				parameters = new PatchArpeggioCommonParameters(mm.getDataSet());
-			} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
-				parameters = new PatchArpeggioPatternParameters(mm.getDataSet());
-			}
+		Parameters p = updateParameters(mm.getAddress(), mm.getDataSet());
+		log.log(p.toString());
+	}
+	
+	public Parameters updateParameters(Address address, byte[] data) {
+		int byte1 = address.getByte1();
+		if (byte1 == 0x01) {
+			return system = new SystemParameters(data);
+		} else if (byte1 == 0x10) {
+			return temporaryPatch.updateParameters(address, data);
+		} else if (byte1 == 0x20) {
+			return userPatches[address.getByte2()].updateParameters(address, data);
+		} else {
+			throw new RuntimeException("Address not recognised.");
 		}
-		if (parameters != null) {
-			log.log(parameters.toString());
-		}
+	}
+	
+	public SystemParameters getSystem() {
+		return system;
+	}
+	
+	public PatchParameterGroup getTemporaryPatch() {
+		return temporaryPatch;
+	}
+	
+	public PatchParameterGroup getUserPatch(int bank, int patch) {
+		return userPatches[bank << 3 | patch];
 	}
 	
 	/**
