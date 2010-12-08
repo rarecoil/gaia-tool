@@ -2,19 +2,17 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Value;
 
-public class PatchFlangerParameters {
-	
-	private byte[] addressMap;	// XXX: make AddressMap type
+public class PatchFlangerParameters extends Parameters {
 	
 	public enum FlangerType {
 		OFF, FLANGER, PHASER, PITCH_SHIFTER
 	}
 	
 	public PatchFlangerParameters(byte[] addressMap) {
+		super(addressMap);
+		
 		if (addressMap.length < 0x51)
 			throw new RuntimeException("Address map size mismatch.");
-		
-		this.addressMap = addressMap;
 	}
 	
 	public FlangerType getFlangerType() {

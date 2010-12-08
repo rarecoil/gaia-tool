@@ -2,9 +2,7 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Value;
 
-public class SystemParameters {
-	
-	private byte[] addressMap;	// XXX: make AddressMap type
+public class SystemParameters extends Parameters {
 	
 	public enum ClockSource {
 		PATCH, SYSTEM, MIDI, USB
@@ -47,10 +45,10 @@ public class SystemParameters {
 	}
 	
 	public SystemParameters(byte[] addressMap) {
+		super(addressMap);
+		
 		if (addressMap.length < 0x6E)
 			throw new RuntimeException("Address map size mismatch.");
-		
-		this.addressMap = addressMap;
 	}
 	
 	public Value getBankSelectMSB() {

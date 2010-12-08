@@ -2,9 +2,7 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Value;
 
-public class PatchCommonParameters {
-	
-	private byte[] addressMap;	// XXX: make AddressMap type
+public class PatchCommonParameters extends Parameters {
 	
 	public enum SyncRingSelect {
 		OFF, SYNC, RING
@@ -24,10 +22,10 @@ public class PatchCommonParameters {
 	}
 	
 	public PatchCommonParameters(byte[] addressMap) {
+		super(addressMap);
+		
 		if (addressMap.length < 0x3D)
 			throw new RuntimeException("Address map size mismatch.");
-		
-		this.addressMap = addressMap;
 	}
 	
 	public String getPatchName() {

@@ -2,19 +2,17 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Value;
 
-public class PatchDistortionParameters {
-	
-	private byte[] addressMap;	// XXX: make AddressMap type
+public class PatchDistortionParameters extends Parameters {
 	
 	public enum DistortionType {
 		OFF, DIST, FUZZ, BIT_CRASH
 	}
 	
 	public PatchDistortionParameters(byte[] addressMap) {
+		super(addressMap);
+		
 		if (addressMap.length < 0x81)
 			throw new RuntimeException("Address map size mismatch.");
-		
-		this.addressMap = addressMap;
 	}
 	
 	public DistortionType getDistortionType() {

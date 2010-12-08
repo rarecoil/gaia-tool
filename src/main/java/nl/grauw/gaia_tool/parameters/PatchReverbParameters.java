@@ -2,19 +2,17 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Value;
 
-public class PatchReverbParameters {
-	
-	private byte[] addressMap;	// XXX: make AddressMap type
+public class PatchReverbParameters extends Parameters {
 	
 	public enum ReverbType {
 		OFF, REVERB
 	}
 	
 	public PatchReverbParameters(byte[] addressMap) {
+		super(addressMap);
+		
 		if (addressMap.length < 0x51)
 			throw new RuntimeException("Address map size mismatch.");
-		
-		this.addressMap = addressMap;
 	}
 	
 	public ReverbType getReverbType() {

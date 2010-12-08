@@ -2,19 +2,17 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Value;
 
-public class PatchDelayParameters {
-	
-	private byte[] addressMap;	// XXX: make AddressMap type
+public class PatchDelayParameters extends Parameters {
 	
 	public enum DelayType {
 		OFF, DELAY, PANNING_DELAY
 	}
 	
 	public PatchDelayParameters(byte[] addressMap) {
+		super(addressMap);
+		
 		if (addressMap.length < 0x51)
 			throw new RuntimeException("Address map size mismatch.");
-		
-		this.addressMap = addressMap;
 	}
 	
 	public DelayType getDelayType() {

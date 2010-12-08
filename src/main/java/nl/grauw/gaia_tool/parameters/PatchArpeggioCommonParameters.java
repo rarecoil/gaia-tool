@@ -2,9 +2,7 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Value;
 
-public class PatchArpeggioCommonParameters {
-	
-	private byte[] addressMap;	// XXX: make AddressMap type
+public class PatchArpeggioCommonParameters extends Parameters {
 	
 	public enum ArpeggioGrid {
 		_04_, _08_, _08L, _08H, _08t, _16_, _16L, _16H, _16t;
@@ -30,10 +28,10 @@ public class PatchArpeggioCommonParameters {
 	}
 	
 	public PatchArpeggioCommonParameters(byte[] addressMap) {
+		super(addressMap);
+		
 		if (addressMap.length < 0x08)
 			throw new RuntimeException("Address map size mismatch.");
-		
-		this.addressMap = addressMap;
 	}
 	
 	public ArpeggioGrid getArpeggioGrid() {

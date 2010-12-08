@@ -2,15 +2,13 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Value;
 
-public class PatchArpeggioPatternParameters {
-	
-	private byte[] addressMap;	// XXX: make AddressMap type
+public class PatchArpeggioPatternParameters extends Parameters {
 	
 	public PatchArpeggioPatternParameters(byte[] addressMap) {
+		super(addressMap);
+		
 		if (addressMap.length < 0x42)
 			throw new RuntimeException("Address map size mismatch.");
-		
-		this.addressMap = addressMap;
 	}
 	
 	public Value getOriginalNote() {

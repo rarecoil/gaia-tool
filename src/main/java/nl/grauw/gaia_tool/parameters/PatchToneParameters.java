@@ -2,9 +2,7 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Value;
 
-public class PatchToneParameters {
-	
-	private byte[] addressMap;	// XXX: make AddressMap type
+public class PatchToneParameters extends Parameters {
 	
 	public enum OSCWave {
 		SAW, SQR, PW_SQR, TRI, SINE, NOISE, SUPER_SAW
@@ -33,10 +31,10 @@ public class PatchToneParameters {
 	}
 	
 	public PatchToneParameters(byte[] addressMap) {
+		super(addressMap);
+		
 		if (addressMap.length < 0x3E)
 			throw new RuntimeException("Address map size mismatch.");
-		
-		this.addressMap = addressMap;
 	}
 	
 	public OSCWave getOSCWave() {
