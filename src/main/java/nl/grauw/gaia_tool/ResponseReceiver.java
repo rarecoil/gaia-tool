@@ -3,11 +3,13 @@ package nl.grauw.gaia_tool;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 
 import nl.grauw.gaia_tool.messages.DataSet1;
 import nl.grauw.gaia_tool.messages.GenericMessage;
 import nl.grauw.gaia_tool.messages.IdentityReply;
+import nl.grauw.gaia_tool.messages.NoteOnMessage;
 
 public class ResponseReceiver implements Receiver {
 
@@ -40,17 +42,30 @@ public class ResponseReceiver implements Receiver {
 	
 	public MidiMessage processMidiMessage(MidiMessage message) throws InvalidMidiDataException {
 		if (message instanceof SysexMessage) {
-			SysexMessage sem = (SysexMessage) message;
-			byte[] data = sem.getData();
-			if (data[0] == UNIVERSAL_NONREALTIME_SYSEX) {
-				if (data[2] == GENERAL_INFORMATION && sem.getData()[3] == IDENTITY_REPLY) {
-					return new IdentityReply(sem);
-				}
-			} else if (data[0] == ROLAND_ID && data[2] == 0 && data[3] == 0 && data[4] == MODEL_SH01) {
-				if (data[5] == COMMAND_DT1) {
-					return new DataSet1(sem);
-				}
+			return processMidiMessage((SysexMessage) message);
+		} else if (message instanceof ShortMessage) {
+			return processMidiMessage((ShortMessage) message);
+		}
+		return new GenericMessage(message);
+	}
+	
+	public MidiMessage processMidiMessage(SysexMessage message) throws InvalidMidiDataException {
+		byte[] data = message.getData();
+		if (data[0] == UNIVERSAL_NONREALTIME_SYSEX) {
+			if (data[2] == GENERAL_INFORMATION && message.getData()[3] == IDENTITY_REPLY) {
+				return new IdentityReply(message);
 			}
+		} else if (data[0] == ROLAND_ID && data[2] == 0 && data[3] == 0 && data[4] == MODEL_SH01) {
+			if (data[5] == COMMAND_DT1) {
+				return new DataSet1(message);
+			}
+		}
+		return new GenericMessage(message);
+	}
+	
+	public MidiMessage processMidiMessage(ShortMessage message) throws InvalidMidiDataException {
+		if (message.getCommand() == ShortMessage.NOTE_ON) {
+			return new NoteOnMessage(message);
 		}
 		return new GenericMessage(message);
 	}

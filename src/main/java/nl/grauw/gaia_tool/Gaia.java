@@ -9,12 +9,14 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Transmitter;
 
+import nl.grauw.gaia_tool.Note.NoteName;
 import nl.grauw.gaia_tool.messages.DataRequest1;
 import nl.grauw.gaia_tool.messages.DataSet1;
 import nl.grauw.gaia_tool.messages.GMSystemOn;
 import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
+import nl.grauw.gaia_tool.messages.NoteOnMessage;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
 import nl.grauw.gaia_tool.parameters.PatchCommonParameters;
@@ -51,6 +53,8 @@ public class Gaia {
 	
 	final static int synth_channel = 0;
 	final static int gm_channel = 1;
+	
+	final static Note C_4 = new Note(NoteName.C, 4);
 	
 	private Log log;
 
@@ -153,9 +157,8 @@ public class Gaia {
 		ShortMessage program_change = new ShortMessage();
 		program_change.setMessage(ShortMessage.PROGRAM_CHANGE, synth_channel, 0, 0);
 		receiver.send(program_change, -1);
-		
-		ShortMessage note_on = new ShortMessage();
-		note_on.setMessage(ShortMessage.NOTE_ON, synth_channel, 60, 127);
+
+		NoteOnMessage note_on = new NoteOnMessage(synth_channel, C_4, 127);
 		receiver.send(note_on, -1);
 		
 		try {
@@ -184,8 +187,7 @@ public class Gaia {
 		program_change.setMessage(ShortMessage.PROGRAM_CHANGE, gm_channel, 0, 0);
 		receiver.send(program_change, -1);
 		
-		ShortMessage note_on = new ShortMessage();
-		note_on.setMessage(ShortMessage.NOTE_ON, gm_channel, 60, 127);
+		NoteOnMessage note_on = new NoteOnMessage(gm_channel, C_4, 127);
 		receiver.send(note_on, -1);
 		
 		try {
