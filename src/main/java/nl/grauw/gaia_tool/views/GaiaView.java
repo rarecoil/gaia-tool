@@ -9,16 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
 import nl.grauw.gaia_tool.Gaia;
-import nl.grauw.gaia_tool.Log;
 
-public class GaiaView extends Frame implements WindowListener, ActionListener, Observer {
+public class GaiaView extends Frame implements WindowListener, ActionListener {
 	
 	private static final long serialVersionUID = 4950285236879118899L;
 	
@@ -66,12 +63,8 @@ public class GaiaView extends Frame implements WindowListener, ActionListener, O
 		mb.add(dataMenu);
 		
 		setMenuBar(mb);
-		log = new TextArea("", 24, 80, TextArea.SCROLLBARS_VERTICAL_ONLY);
+		log = new LogView(gaia.getLog());
 		add(log);
-		
-		// observe models
-		gaia.getLog().addObserver(this);
-		update(gaia.getLog(), null);
 	}
 	
 	public void windowClosing(WindowEvent e) {
@@ -110,17 +103,6 @@ public class GaiaView extends Frame implements WindowListener, ActionListener, O
 		} catch (InvalidMidiDataException e1) {
 			e1.printStackTrace();
 		}
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		if (o instanceof Log) {
-			update((Log) o, arg);
-		}
-	}
-	
-	public void update(Log l, Object arg) {
-		log.append(l.getLog().substring(log.getText().length()));
 	}
 	
 }
