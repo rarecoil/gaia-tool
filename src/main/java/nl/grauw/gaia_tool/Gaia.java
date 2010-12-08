@@ -155,11 +155,8 @@ public class Gaia {
 	 * Plays a C-4 note for one second.
 	 */
 	public void playTestNote() throws InvalidMidiDataException {
-		ProgramChangeMessage program_change = new ProgramChangeMessage(synth_channel, 0);
-		receiver.send(program_change, -1);
-
-		NoteOnMessage note_on = new NoteOnMessage(synth_channel, C_4, 127);
-		receiver.send(note_on, -1);
+		receiver.send(new ProgramChangeMessage(synth_channel, 0), -1);
+		receiver.send(new NoteOnMessage(synth_channel, C_4, 127), -1);
 		
 		try {
 			Thread.sleep(1000);
@@ -167,19 +164,15 @@ public class Gaia {
 			System.out.println(e);
 		}
 		
-		NoteOffMessage note_off = new NoteOffMessage(synth_channel, C_4, 127);
-		receiver.send(note_off, -1);
+		receiver.send(new NoteOffMessage(synth_channel, C_4, 127), -1);
 	}
 	
 	/**
 	 * Plays a C-4 note for one second on the GM channel.
 	 */
 	public void playGMTestNote() throws InvalidMidiDataException {
-		ProgramChangeMessage program_change = new ProgramChangeMessage(gm_channel, 0);
-		receiver.send(program_change, -1);
-		
-		NoteOnMessage note_on = new NoteOnMessage(gm_channel, C_4, 127);
-		receiver.send(note_on, -1);
+		receiver.send(new ProgramChangeMessage(gm_channel, 0), -1);
+		receiver.send(new NoteOnMessage(gm_channel, C_4, 127), -1);
 		
 		try {
 			Thread.sleep(1000);
@@ -187,8 +180,7 @@ public class Gaia {
 			System.out.println(e);
 		}
 		
-		NoteOffMessage note_off = new NoteOffMessage(gm_channel, C_4, 127);
-		receiver.send(note_off, -1);
+		receiver.send(new NoteOffMessage(gm_channel, C_4, 127), -1);
 	}
 	
 	/**
