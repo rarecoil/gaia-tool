@@ -12,6 +12,7 @@ import nl.grauw.gaia_tool.messages.GenericMessage;
 import nl.grauw.gaia_tool.messages.IdentityReply;
 import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
+import nl.grauw.gaia_tool.messages.PitchBendChangeMessage;
 import nl.grauw.gaia_tool.messages.ProgramChangeMessage;
 
 public class ResponseReceiver implements Receiver {
@@ -75,6 +76,8 @@ public class ResponseReceiver implements Receiver {
 			return new ProgramChangeMessage(message);
 		} else if (message.getCommand() == ShortMessage.CONTROL_CHANGE) {
 			return new ControlChangeMessage(message);
+		} else if (message.getCommand() == ShortMessage.PITCH_BEND) {
+			return new PitchBendChangeMessage(message);
 		}
 		return new GenericMessage(message);
 	}
