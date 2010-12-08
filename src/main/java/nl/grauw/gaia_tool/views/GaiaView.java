@@ -96,7 +96,6 @@ public class GaiaView extends Frame implements WindowListener, ActionListener, O
 			if (e.getSource() == playItem) {
 				gaia.playTestNote();
 				gaia.playGMTestNote();
-				gaia.playGM2TestNote();
 			} else if (e.getSource() == gm1SystemOn) {
 				gaia.sendGM1SystemOn();
 			} else if (e.getSource() == gm2SystemOn) {

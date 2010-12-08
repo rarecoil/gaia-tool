@@ -11,7 +11,7 @@ import javax.sound.midi.Transmitter;
 
 import nl.grauw.gaia_tool.messages.DataRequest1;
 import nl.grauw.gaia_tool.messages.DataSet1;
-import nl.grauw.gaia_tool.messages.GM1SystemOn;
+import nl.grauw.gaia_tool.messages.GMSystemOn;
 import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
@@ -51,7 +51,6 @@ public class Gaia {
 	
 	final static int synth_channel = 0;
 	final static int gm_channel = 1;
-	final static int gm2_channel = 2;
 	
 	private Log log;
 
@@ -171,7 +170,7 @@ public class Gaia {
 	}
 	
 	/**
-	 * Plays a C-4 note for one second on the first GM channel.
+	 * Plays a C-4 note for one second on the GM channel.
 	 */
 	public void playGMTestNote() throws InvalidMidiDataException {
 		receiver.send(new GMSystemOff(), -1);
@@ -201,29 +200,6 @@ public class Gaia {
 	}
 	
 	/**
-	 * Plays a C-4 note for one second on the second GM channel.
-	 */
-	public void playGM2TestNote() throws InvalidMidiDataException {
-		ShortMessage program_change = new ShortMessage();
-		program_change.setMessage(ShortMessage.PROGRAM_CHANGE, gm2_channel, 10, 0);
-		receiver.send(program_change, -1);
-		
-		ShortMessage note_on = new ShortMessage();
-		note_on.setMessage(ShortMessage.NOTE_ON, gm2_channel, 60, 127);
-		receiver.send(note_on, -1);
-		
-		try {
-			Thread.sleep(1000);
-		} catch(Exception e) {
-			System.out.println(e);
-		}
-		
-		ShortMessage note_off = new ShortMessage();
-		note_off.setMessage(ShortMessage.NOTE_OFF, gm2_channel, 60, 127);
-		receiver.send(note_off, -1);
-	}
-	
-	/**
 	 * Requests the device identity.
 	 * @throws InvalidMidiDataException 
 	 */
@@ -236,7 +212,7 @@ public class Gaia {
 	 * @throws InvalidMidiDataException 
 	 */
 	public void sendGM1SystemOn() throws InvalidMidiDataException {
-		receiver.send(new GM1SystemOn(), -1);
+		receiver.send(new GMSystemOn(), -1);
 	}
 	
 	/**
