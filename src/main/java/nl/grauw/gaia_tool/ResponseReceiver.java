@@ -9,6 +9,7 @@ import javax.sound.midi.SysexMessage;
 import nl.grauw.gaia_tool.messages.DataSet1;
 import nl.grauw.gaia_tool.messages.GenericMessage;
 import nl.grauw.gaia_tool.messages.IdentityReply;
+import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
 
 public class ResponseReceiver implements Receiver {
@@ -66,6 +67,8 @@ public class ResponseReceiver implements Receiver {
 	public MidiMessage processMidiMessage(ShortMessage message) throws InvalidMidiDataException {
 		if (message.getCommand() == ShortMessage.NOTE_ON) {
 			return new NoteOnMessage(message);
+		} else if (message.getCommand() == ShortMessage.NOTE_OFF) {
+			return new NoteOffMessage(message);
 		}
 		return new GenericMessage(message);
 	}

@@ -16,6 +16,7 @@ import nl.grauw.gaia_tool.messages.GMSystemOn;
 import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
+import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
@@ -167,8 +168,7 @@ public class Gaia {
 			System.out.println(e);
 		}
 		
-		ShortMessage note_off = new ShortMessage();
-		note_off.setMessage(ShortMessage.NOTE_OFF, synth_channel, 60, 127);
+		NoteOffMessage note_off = new NoteOffMessage(synth_channel, C_4, 127);
 		receiver.send(note_off, -1);
 	}
 	
@@ -196,8 +196,7 @@ public class Gaia {
 			System.out.println(e);
 		}
 		
-		ShortMessage note_off = new ShortMessage();
-		note_off.setMessage(ShortMessage.NOTE_OFF, gm_channel, 60, 127);
+		NoteOffMessage note_off = new NoteOffMessage(gm_channel, C_4, 127);
 		receiver.send(note_off, -1);
 	}
 	
