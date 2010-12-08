@@ -6,6 +6,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.messages.DataSet1;
 import nl.grauw.gaia_tool.messages.GenericMessage;
 import nl.grauw.gaia_tool.messages.IdentityReply;
@@ -72,6 +73,8 @@ public class ResponseReceiver implements Receiver {
 			return new NoteOffMessage(message);
 		} else if (message.getCommand() == ShortMessage.PROGRAM_CHANGE) {
 			return new ProgramChangeMessage(message);
+		} else if (message.getCommand() == ShortMessage.CONTROL_CHANGE) {
+			return new ControlChangeMessage(message);
 		}
 		return new GenericMessage(message);
 	}
