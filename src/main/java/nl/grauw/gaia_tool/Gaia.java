@@ -175,13 +175,6 @@ public class Gaia {
 	 * Plays a C-4 note for one second on the GM channel.
 	 */
 	public void playGMTestNote() throws InvalidMidiDataException {
-		receiver.send(new GMSystemOff(), -1);
-		
-//		SysexMessage gm_off = new SysexMessage();
-//		byte[] gm_off_data = {0x7E, 0x7F, 0x09, 0x02, (byte)0xF7};
-//		gm_off.setMessage(0xF0, gm_off_data, gm_off_data.length);
-//		receiver.send(gm_off, -1);
-		
 		ProgramChangeMessage program_change = new ProgramChangeMessage(gm_channel, 0);
 		receiver.send(program_change, -1);
 		
