@@ -6,7 +6,6 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Transmitter;
 
 import nl.grauw.gaia_tool.Note.NoteName;
@@ -18,6 +17,7 @@ import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
 import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
+import nl.grauw.gaia_tool.messages.ProgramChangeMessage;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
 import nl.grauw.gaia_tool.parameters.PatchCommonParameters;
@@ -155,8 +155,7 @@ public class Gaia {
 	 * Plays a C-4 note for one second.
 	 */
 	public void playTestNote() throws InvalidMidiDataException {
-		ShortMessage program_change = new ShortMessage();
-		program_change.setMessage(ShortMessage.PROGRAM_CHANGE, synth_channel, 0, 0);
+		ProgramChangeMessage program_change = new ProgramChangeMessage(synth_channel, 0);
 		receiver.send(program_change, -1);
 
 		NoteOnMessage note_on = new NoteOnMessage(synth_channel, C_4, 127);
@@ -183,8 +182,7 @@ public class Gaia {
 //		gm_off.setMessage(0xF0, gm_off_data, gm_off_data.length);
 //		receiver.send(gm_off, -1);
 		
-		ShortMessage program_change = new ShortMessage();
-		program_change.setMessage(ShortMessage.PROGRAM_CHANGE, gm_channel, 0, 0);
+		ProgramChangeMessage program_change = new ProgramChangeMessage(gm_channel, 0);
 		receiver.send(program_change, -1);
 		
 		NoteOnMessage note_on = new NoteOnMessage(gm_channel, C_4, 127);

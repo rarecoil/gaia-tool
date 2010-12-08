@@ -11,6 +11,7 @@ import nl.grauw.gaia_tool.messages.GenericMessage;
 import nl.grauw.gaia_tool.messages.IdentityReply;
 import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
+import nl.grauw.gaia_tool.messages.ProgramChangeMessage;
 
 public class ResponseReceiver implements Receiver {
 
@@ -69,6 +70,8 @@ public class ResponseReceiver implements Receiver {
 			return new NoteOnMessage(message);
 		} else if (message.getCommand() == ShortMessage.NOTE_OFF) {
 			return new NoteOffMessage(message);
+		} else if (message.getCommand() == ShortMessage.PROGRAM_CHANGE) {
+			return new ProgramChangeMessage(message);
 		}
 		return new GenericMessage(message);
 	}
