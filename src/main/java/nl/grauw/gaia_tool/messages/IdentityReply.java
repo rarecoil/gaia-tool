@@ -9,9 +9,7 @@ public class IdentityReply extends SysexMessage {
 	final static int IDENTITY_REPLY = 0x02;
 	
 	public IdentityReply(SysexMessage sem) throws InvalidMidiDataException {
-		super();
-		byte[] data = sem.getData();
-		setMessage(sem.getStatus(), data, data.length);
+		super(sem.getMessage());
 	}
 	
 	public int getDeviceId() {
