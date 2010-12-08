@@ -19,6 +19,11 @@ public class DataSet1 extends SysexMessage {
 	public DataSet1(SysexMessage sem) throws InvalidMidiDataException {
 		super();
 		byte[] data = sem.getData();
+		if (data[0] != ROLAND_ID || data[2] != 0 || data[3] != 0 || data[4] != MODEL_SH01 || data[5] != COMMAND_DT1)
+			throw new RuntimeException("Not a SH-01 DT1 MIDI message.");
+		if (calculateChecksum(data) != data[data.length - 2])
+			throw new RuntimeException("Checksum mismatch.");
+		
 		setMessage(sem.getStatus(), data, data.length);
 	}
 	
