@@ -161,8 +161,8 @@ public class Gaia {
 		
 		try {
 			Thread.sleep(1000);
-		} catch(Exception e) {
-			System.out.println(e);
+		} catch(InterruptedException e) {
+			e.printStackTrace();
 		}
 		
 		receiver.send(new NoteOffMessage(synth_channel, C_4, 127), -1);
@@ -177,8 +177,8 @@ public class Gaia {
 		
 		try {
 			Thread.sleep(1000);
-		} catch(Exception e) {
-			System.out.println(e);
+		} catch(InterruptedException e) {
+			e.printStackTrace();
 		}
 		
 		receiver.send(new NoteOffMessage(gm_channel, C_4, 127), -1);

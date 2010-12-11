@@ -35,8 +35,8 @@ public class ResponseReceiver implements Receiver {
 	public void send(MidiMessage message, long timeStamp) {
 		try {
 			gaia.receive(processMidiMessage(message));
-		} catch(Exception e) {
-			System.out.println("*** Error: " + e);
+		} catch(InvalidMidiDataException e) {
+			e.printStackTrace();
 		}
 	}
 
