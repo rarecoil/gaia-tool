@@ -3,6 +3,9 @@ package nl.grauw.gaia_tool.mvc;
 import java.lang.ref.WeakReference;
 import java.util.Vector;
 
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+
 /**
  * Class that implements observer pattern using weak references.
  * This allows observing views to get garbage collected if they
@@ -12,6 +15,25 @@ import java.util.Vector;
  * any annoying calls to setChanged().
  */
 public class Observable {
+	
+	public class UpdateRunnable implements Runnable {
+		
+		Observer target;
+		Observable source;
+		Object arg;
+		
+		public UpdateRunnable(Observer target, Observable source, Object arg) {
+			this.target = target;
+			this.source = source;
+			this.arg = arg;
+		}
+		
+		@Override
+		public void run() {
+			target.update(source, arg);
+		}
+		
+	}
 	
 	Vector<WeakReference<Observer>> observers = new Vector<WeakReference<Observer>>();
 	
@@ -39,6 +61,9 @@ public class Observable {
 			WeakReference<Observer> wro = observers.get(i);
 			Observer o = wro.get();
 			if (o != null) {
+				if (o instanceof JComponent && !SwingUtilities.isEventDispatchThread()) {
+					SwingUtilities.invokeLater(new UpdateRunnable(o, this, arg));
+				}
 				o.update(this, arg);
 			} else {
 				observers.remove(i);
