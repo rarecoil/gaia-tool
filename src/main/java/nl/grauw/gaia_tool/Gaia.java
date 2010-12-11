@@ -18,6 +18,7 @@ import nl.grauw.gaia_tool.messages.IdentityRequest;
 import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
 import nl.grauw.gaia_tool.messages.ProgramChangeMessage;
+import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.Parameters;
 import nl.grauw.gaia_tool.parameters.SystemParameters;
 
@@ -37,7 +38,7 @@ import nl.grauw.gaia_tool.parameters.SystemParameters;
  * that case the 1st GM synth will move to channel 0 and the 2nd one
  * will also adjust accordingly.
  */
-public class Gaia {
+public class Gaia extends Observable {
 
 	private MidiDevice midi_in;
 	private MidiDevice midi_out;
@@ -115,7 +116,7 @@ public class Gaia {
 	 * @param mm
 	 */
 	void receive(MidiMessage mm) {
-		log.log("Received: " + mm + "\n");
+		log.log("Received: " + mm);
 		
 		if (mm instanceof DataSet1) {
 			receive((DataSet1) mm);
@@ -123,14 +124,15 @@ public class Gaia {
 	}
 	
 	private void receive(DataSet1 mm) {
-		Parameters p = updateParameters(mm.getAddress(), mm.getDataSet());
-		log.log(p.toString());
+		updateParameters(mm.getAddress(), mm.getDataSet());
 	}
 	
 	public Parameters updateParameters(Address address, byte[] data) {
 		int byte1 = address.getByte1();
 		if (byte1 == 0x01) {
-			return system = new SystemParameters(data);
+			system = new SystemParameters(data);
+			notifyObservers("system");
+			return system;
 		} else if (byte1 == 0x10) {
 			return temporaryPatch.updateParameters(address, data);
 		} else if (byte1 == 0x20) {

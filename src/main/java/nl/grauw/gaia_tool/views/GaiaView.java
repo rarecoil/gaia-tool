@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.sound.midi.InvalidMidiDataException;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -13,10 +14,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.Gaia;
+import nl.grauw.gaia_tool.mvc.Observable;
+import nl.grauw.gaia_tool.mvc.Observer;
 
 import org.dyno.visual.swing.layouts.Bilateral;
 import org.dyno.visual.swing.layouts.Constraints;
@@ -25,7 +31,7 @@ import org.dyno.visual.swing.layouts.Leading;
 import org.dyno.visual.swing.layouts.Trailing;
 
 //VS4E -- DO NOT REMOVE THIS LINE!
-public class GaiaView extends JFrame implements ActionListener {
+public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, Observer {
 	
 	private Gaia gaia;
 
@@ -41,10 +47,11 @@ public class GaiaView extends JFrame implements ActionListener {
 	private JMenu dataRequestMenu;
 	private JMenuItem systemDataItem;
 	private JMenuItem temporaryPatchDataItem;
-	private JScrollPane jScrollPane1;
-	private JTree jTree0;
-	private JPanel jPanel0;
+	private JScrollPane contentSelectionScrollPane;
+	private JTree contentSelectionTree;
+	private JPanel contentPanel;
 	private LogView logView;
+	private ParametersView parametersView;
 
 	private static final String PREFERRED_LOOK_AND_FEEL = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
 
@@ -60,6 +67,15 @@ public class GaiaView extends JFrame implements ActionListener {
 	public void setModel(Gaia g) {
 		gaia = g;
 		logView.setModel(g.getLog());
+		gaia.addObserver(this);
+		update(g, null);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o == gaia) {
+			updateContentPanel();
+		}
 	}
 
 	private void initComponents() {
@@ -67,10 +83,17 @@ public class GaiaView extends JFrame implements ActionListener {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLayout(new GroupLayout());
 		add(getLogView(), new Constraints(new Bilateral(12, 12, 25), new Trailing(12, 97, 10, 10)));
-		add(getJPanel0(), new Constraints(new Bilateral(219, 12, 0), new Bilateral(11, 121, 0)));
-		add(getJScrollPane1(), new Constraints(new Leading(12, 195, 18, 18), new Bilateral(11, 121, 25)));
+		add(getContentPanel(), new Constraints(new Bilateral(219, 12, 0), new Bilateral(11, 121, 0)));
+		add(contentSelectionScrollPane(), new Constraints(new Leading(12, 195, 18, 18), new Bilateral(11, 121, 25)));
 		setJMenuBar(getMainMenuBar());
 		setSize(863, 557);
+	}
+
+	private ParametersView getParametersView() {
+		if (parametersView == null) {
+			parametersView = new ParametersView();
+		}
+		return parametersView;
 	}
 
 	private LogView getLogView() {
@@ -80,12 +103,13 @@ public class GaiaView extends JFrame implements ActionListener {
 		return logView;
 	}
 
-	private JPanel getJPanel0() {
-		if (jPanel0 == null) {
-			jPanel0 = new JPanel();
-			jPanel0.setLayout(new GroupLayout());
+	private JPanel getContentPanel() {
+		if (contentPanel == null) {
+			contentPanel = new JPanel();
+			contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+			contentPanel.add(getParametersView());
 		}
-		return jPanel0;
+		return contentPanel;
 	}
 
 	private JMenuBar getMainMenuBar() {
@@ -206,17 +230,17 @@ public class GaiaView extends JFrame implements ActionListener {
 		return temporaryPatchDataItem;
 	}
 
-	private JScrollPane getJScrollPane1() {
-		if (jScrollPane1 == null) {
-			jScrollPane1 = new JScrollPane();
-			jScrollPane1.setViewportView(getJTree0());
+	private JScrollPane contentSelectionScrollPane() {
+		if (contentSelectionScrollPane == null) {
+			contentSelectionScrollPane = new JScrollPane();
+			contentSelectionScrollPane.setViewportView(getContentSelectionTree());
 		}
-		return jScrollPane1;
+		return contentSelectionScrollPane;
 	}
 
-	private JTree getJTree0() {
-		if (jTree0 == null) {
-			jTree0 = new JTree();
+	private JTree getContentSelectionTree() {
+		if (contentSelectionTree == null) {
+			contentSelectionTree = new JTree();
 			DefaultTreeModel treeModel = null;
 			{
 				DefaultMutableTreeNode node0 = new DefaultMutableTreeNode("Parameters");
@@ -236,11 +260,13 @@ public class GaiaView extends JFrame implements ActionListener {
 				}
 				treeModel = new DefaultTreeModel(node0);
 			}
-			jTree0.setModel(treeModel);
-			jTree0.setShowsRootHandles(true);
-			jTree0.setRootVisible(false);
+			contentSelectionTree.setModel(treeModel);
+			contentSelectionTree.setShowsRootHandles(true);
+			contentSelectionTree.setRootVisible(false);
+			contentSelectionTree.addTreeSelectionListener(this);
+			contentSelectionTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		}
-		return jTree0;
+		return contentSelectionTree;
 	}
 	
 	private void addPatchTreeNodesTo(DefaultMutableTreeNode node1) {
@@ -330,6 +356,36 @@ public class GaiaView extends JFrame implements ActionListener {
 			}
 		} catch (InvalidMidiDataException e1) {
 			e1.printStackTrace();
+		}
+	}
+
+	@Override
+	public void valueChanged(TreeSelectionEvent e) {
+		if (e.getSource() == contentSelectionTree) {
+			updateContentPanel();
+		}
+	}
+	
+	public void updateContentPanel() {
+		Object node =  contentSelectionTree.getLastSelectedPathComponent();
+		if (node instanceof DefaultMutableTreeNode) {
+			updateContentPanel((DefaultMutableTreeNode) node);
+		} else {
+//			contentPanel.removeAll();
+		}
+	}
+	
+	public void updateContentPanel(DefaultMutableTreeNode node) {
+		if ("System".equals(node.getUserObject())) {
+			if (gaia.getSystem() == null) {
+				try {
+					gaia.sendSystemDataRequest();
+				} catch(InvalidMidiDataException ex) {
+					ex.printStackTrace();
+				}
+			} else {
+				parametersView.setModel(gaia.getSystem());
+			}
 		}
 	}
 

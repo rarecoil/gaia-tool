@@ -1,6 +1,8 @@
 package nl.grauw.gaia_tool.parameters;
 
-public class Parameters {
+import nl.grauw.gaia_tool.mvc.Observable;
+
+public class Parameters extends Observable {
 	
 	protected byte[] addressMap;
 	
