@@ -33,7 +33,9 @@ public class LogView extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		logArea.append(log.getLog().substring(logArea.getText().length()));
+		if (o == log) {
+			logArea.append(log.getLog().substring(logArea.getText().length()));
+		}
 	}
 
 	private void initComponents() {
