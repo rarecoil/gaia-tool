@@ -1,8 +1,5 @@
 package nl.grauw.gaia_tool.views;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -10,6 +7,8 @@ import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 
 import nl.grauw.gaia_tool.Log;
+import nl.grauw.gaia_tool.mvc.Observable;
+import nl.grauw.gaia_tool.mvc.Observer;
 
 //VS4E -- DO NOT REMOVE THIS LINE!
 public class LogView extends JPanel implements Observer {
@@ -26,7 +25,7 @@ public class LogView extends JPanel implements Observer {
 	
 	public void setModel(Log l) {
 		if (log != null)
-			log.deleteObserver(this);
+			log.removeObserver(this);
 		log = l;
 		log.addObserver(this);
 		update(log, null);

@@ -1,6 +1,6 @@
 package nl.grauw.gaia_tool;
 
-import java.util.Observable;
+import nl.grauw.gaia_tool.mvc.Observable;
 
 public class Log extends Observable {
 	
@@ -14,7 +14,6 @@ public class Log extends Observable {
 		log.append(message);
 		log.append("\n");
 		
-		setChanged();
 		notifyObservers();
 	}
 	
