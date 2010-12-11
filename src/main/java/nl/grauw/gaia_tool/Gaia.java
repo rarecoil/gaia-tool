@@ -62,7 +62,6 @@ public class Gaia {
 			userPatches[i] = new PatchParameterGroup();
 		}
 		log = new Log();
-		log.log("This is the log. Use the menu to trigger stuff.\n");
 		responseReceiver = new ResponseReceiver(this);
 	}
 
