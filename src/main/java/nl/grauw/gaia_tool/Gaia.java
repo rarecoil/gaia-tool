@@ -108,6 +108,11 @@ public class Gaia extends Observable {
 				}
 			}
 		}
+
+		if (midi_in == null || midi_out == null) {
+			throw new MidiUnavailableException("GAIA MIDI devices not found.");
+		}
+		
 		log.log("");
 	}
 	

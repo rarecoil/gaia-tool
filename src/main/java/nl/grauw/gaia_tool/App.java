@@ -2,6 +2,7 @@ package nl.grauw.gaia_tool;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import nl.grauw.gaia_tool.views.GaiaView;
@@ -17,7 +18,13 @@ public class App implements Runnable {
 	public App() throws MidiUnavailableException, InvalidMidiDataException {
 		// instantiate model
 		gaia = new Gaia();
-		gaia.open();
+		try {
+			gaia.open();
+		} catch(MidiUnavailableException e) {
+			JOptionPane.showMessageDialog(null, e + "\n\nVerify that the GAIA is connected by USB, and turned on.",
+					"Error connecting to Roland GAIA SH-01.", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
 		gaia.requestIdentity();
 		
 		// render view
