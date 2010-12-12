@@ -18,11 +18,14 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.Gaia;
+import nl.grauw.gaia_tool.PatchParameterGroup;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
+import nl.grauw.gaia_tool.parameters.Parameters;
 
 import org.dyno.visual.swing.layouts.Bilateral;
 import org.dyno.visual.swing.layouts.Constraints;
@@ -68,12 +71,19 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		gaia = g;
 		logView.setModel(g.getLog());
 		gaia.addObserver(this);
+		// also observe temporary patch and user patches
+		gaia.getTemporaryPatch().addObserver(this);
+		for (int bank = 0; bank < 8; bank++) {
+			for (int patch = 0; patch < 8; patch++) {
+				gaia.getUserPatch(bank, patch).addObserver(this);
+			}
+		}
 		update(g, null);
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o == gaia) {
+		if (o == gaia || o instanceof PatchParameterGroup) {
 			updateContentPanel();
 		}
 	}
@@ -352,7 +362,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			} else if (e.getSource() == systemDataItem) {
 				gaia.sendSystemDataRequest();
 			} else if (e.getSource() == temporaryPatchDataItem) {
-				gaia.sendPatchDataRequest();
+				gaia.sendTemporaryPatchDataRequest();
 			}
 		} catch (InvalidMidiDataException e1) {
 			e1.printStackTrace();
@@ -367,26 +377,76 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	}
 	
 	public void updateContentPanel() {
-		Object node =  contentSelectionTree.getLastSelectedPathComponent();
-		if (node instanceof DefaultMutableTreeNode) {
-			updateContentPanel((DefaultMutableTreeNode) node);
-		} else {
-//			contentPanel.removeAll();
-		}
+		Parameters p = getSelectedParameters();
+		parametersView.setModel(p);
 	}
 	
-	public void updateContentPanel(DefaultMutableTreeNode node) {
-		if ("System".equals(node.getUserObject())) {
-			if (gaia.getSystem() == null) {
-				try {
-					gaia.sendSystemDataRequest();
-				} catch(InvalidMidiDataException ex) {
-					ex.printStackTrace();
+	public Parameters getSelectedParameters() {
+		TreePath tp = contentSelectionTree.getSelectionPath();
+		if (tp != null && tp.getPathCount() >= 2) {
+			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
+			if ("System".equals(node1.getUserObject())) {
+				Parameters p = gaia.getSystem();
+				if (p == null) {
+					try {
+						gaia.sendSystemDataRequest();
+					} catch(InvalidMidiDataException ex) {
+						ex.printStackTrace();
+					}
 				}
-			} else {
-				parametersView.setModel(gaia.getSystem());
+				return p;
+			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() == 3) {
+				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(2);
+				Parameters p = getPatchParameterByName(gaia.getTemporaryPatch(), (String)node2.getUserObject());
+				if (p == null) {
+					try {
+						gaia.sendTemporaryPatchDataRequest();
+					} catch(InvalidMidiDataException ex) {
+						ex.printStackTrace();
+					}
+				}
+				return p;
+			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() == 5) {
+				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(2);
+				DefaultMutableTreeNode node3 = (DefaultMutableTreeNode)tp.getPathComponent(3);
+				DefaultMutableTreeNode node4 = (DefaultMutableTreeNode)tp.getPathComponent(4);
+				int bank = node1.getIndex(node2);
+				int patch = node2.getIndex(node3);
+				Parameters p = getPatchParameterByName(gaia.getUserPatch(bank, patch), (String)node4.getUserObject());
+				if (p == null) {
+					try {
+						gaia.sendUserPatchDataRequest(bank, patch);
+					} catch(InvalidMidiDataException ex) {
+						ex.printStackTrace();
+					}
+				}
+				return p;
 			}
 		}
+		return null;
 	}
-
+	
+	public Parameters getPatchParameterByName(PatchParameterGroup ppg, String desc) {
+		if ("Common".equals(desc)) {
+			return ppg.getCommon();
+		} else if ("Tone 1".equals(desc)) {
+			return ppg.getTone(1);
+		} else if ("Tone 2".equals(desc)) {
+			return ppg.getTone(2);
+		} else if ("Tone 3".equals(desc)) {
+			return ppg.getTone(3);
+		} else if ("Distortion".equals(desc)) {
+			return ppg.getDistortion();
+		} else if ("Flanger".equals(desc)) {
+			return ppg.getFlanger();
+		} else if ("Delay".equals(desc)) {
+			return ppg.getDelay();
+		} else if ("Reverb".equals(desc)) {
+			return ppg.getReverb();
+		} else if ("Arpeggio".equals(desc)) {
+			return ppg.getArpeggioCommon();
+		}
+		throw new RuntimeException("Parameters not found.");
+	}
+	
 }

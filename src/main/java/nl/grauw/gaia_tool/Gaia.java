@@ -232,11 +232,19 @@ public class Gaia extends Observable {
 	}
 	
 	/**
-	 * Sends a system data request directive.
+	 * Sends a temporary patch data request directive.
 	 * @throws InvalidMidiDataException 
 	 */
-	public void sendPatchDataRequest() throws InvalidMidiDataException {
+	public void sendTemporaryPatchDataRequest() throws InvalidMidiDataException {
 		receiver.send(new DataRequest1(new Address(0x10, 0x00, 0x00, 0x00), 0xE80), -1);
+	}
+	
+	/**
+	 * Sends a user patch data request directive.
+	 * @throws InvalidMidiDataException 
+	 */
+	public void sendUserPatchDataRequest(int bank, int patch) throws InvalidMidiDataException {
+		receiver.send(new DataRequest1(new Address(0x20, bank << 3 | patch, 0x00, 0x00), 0xE80), -1);
 	}
 	
 }
