@@ -292,6 +292,13 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		}
 		{
 			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Arpeggio");
+			{
+				String[] patterns = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+				for (String pattern : patterns) {
+					DefaultMutableTreeNode node3 = new DefaultMutableTreeNode("Pattern " + pattern);
+					node2.add(node3);
+				}
+			}
 			node1.add(node2);
 		}
 	}
@@ -357,10 +364,11 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	
 	public Parameters getSelectedParameters() {
 		TreePath tp = contentSelectionTree.getSelectionPath();
+		Parameters p = null;
 		if (tp != null && tp.getPathCount() >= 2) {
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
-			if ("System".equals(node1.getUserObject())) {
-				Parameters p = gaia.getSystem();
+			if ("System".equals(node1.getUserObject()) && tp.getPathCount() == 2) {
+				p = gaia.getSystem();
 				if (p == null) {
 					try {
 						gaia.sendSystemDataRequest();
@@ -368,10 +376,8 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 						ex.printStackTrace();
 					}
 				}
-				return p;
-			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() == 3) {
-				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(2);
-				Parameters p = getPatchParameterByName(gaia.getTemporaryPatch(), (String)node2.getUserObject());
+			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() >= 3) {
+				p = getPatchParameterByName(gaia.getTemporaryPatch(), tp, 2);
 				if (p == null) {
 					try {
 						gaia.sendTemporaryPatchDataRequest();
@@ -379,14 +385,12 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 						ex.printStackTrace();
 					}
 				}
-				return p;
-			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() == 5) {
+			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 5) {
 				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(2);
 				DefaultMutableTreeNode node3 = (DefaultMutableTreeNode)tp.getPathComponent(3);
-				DefaultMutableTreeNode node4 = (DefaultMutableTreeNode)tp.getPathComponent(4);
 				int bank = node1.getIndex(node2);
 				int patch = node2.getIndex(node3);
-				Parameters p = getPatchParameterByName(gaia.getUserPatch(bank, patch), (String)node4.getUserObject());
+				p = getPatchParameterByName(gaia.getUserPatch(bank, patch), tp, 4);
 				if (p == null) {
 					try {
 						gaia.sendUserPatchDataRequest(bank, patch);
@@ -394,13 +398,14 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 						ex.printStackTrace();
 					}
 				}
-				return p;
 			}
 		}
-		return null;
+		return p;
 	}
 	
-	public Parameters getPatchParameterByName(PatchParameterGroup ppg, String desc) {
+	public Parameters getPatchParameterByName(PatchParameterGroup ppg, TreePath tp, int startIndex) {
+		DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex);
+		String desc = (String)node1.getUserObject();
 		if ("Common".equals(desc)) {
 			return ppg.getCommon();
 		} else if ("Tone 1".equals(desc)) {
@@ -418,6 +423,10 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		} else if ("Reverb".equals(desc)) {
 			return ppg.getReverb();
 		} else if ("Arpeggio".equals(desc)) {
+			if (tp.getPathCount() == startIndex + 2) {
+				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex + 1);
+				return ppg.getArpeggioPattern(node1.getIndex(node2) + 1);
+			}
 			return ppg.getArpeggioCommon();
 		}
 		throw new RuntimeException("Parameters not found.");
