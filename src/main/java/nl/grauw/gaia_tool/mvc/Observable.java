@@ -63,8 +63,9 @@ public class Observable {
 			if (o != null) {
 				if (o instanceof JComponent && !SwingUtilities.isEventDispatchThread()) {
 					SwingUtilities.invokeLater(new UpdateRunnable(o, this, arg));
+				} else {
+					o.update(this, arg);
 				}
-				o.update(this, arg);
 			} else {
 				observers.remove(i);
 			}
