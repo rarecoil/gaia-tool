@@ -1,5 +1,6 @@
 package nl.grauw.gaia_tool;
 
+import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.Parameters;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
@@ -10,7 +11,7 @@ import nl.grauw.gaia_tool.parameters.PatchFlangerParameters;
 import nl.grauw.gaia_tool.parameters.PatchReverbParameters;
 import nl.grauw.gaia_tool.parameters.PatchToneParameters;
 
-public class PatchParameterGroup {
+public class PatchParameterGroup extends Observable {
 	
 	private PatchCommonParameters common;
 	private PatchToneParameters[] tones = new PatchToneParameters[3];
@@ -24,21 +25,37 @@ public class PatchParameterGroup {
 	public Parameters updateParameters(Address address, byte[] data) {
 		byte byte3 = address.getByte3();
 		if (byte3 == 0x00) {
-			return common = new PatchCommonParameters(data);
+			common = new PatchCommonParameters(data);
+			notifyObservers("common");
+			return common;
 		} else if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
-			return tones[byte3 - 0x01] = new PatchToneParameters(data);
+			tones[byte3 - 0x01] = new PatchToneParameters(data);
+			notifyObservers("tones");
+			return tones[byte3 - 0x01];
 		} else if (byte3 == 0x04) {
-			return distortion = new PatchDistortionParameters(data);
+			distortion = new PatchDistortionParameters(data);
+			notifyObservers("distortion");
+			return distortion;
 		} else if (byte3 == 0x06) {
-			return flanger = new PatchFlangerParameters(data);
+			flanger = new PatchFlangerParameters(data);
+			notifyObservers("flanger");
+			return flanger;
 		} else if (byte3 == 0x08) {
-			return delay = new PatchDelayParameters(data);
+			delay = new PatchDelayParameters(data);
+			notifyObservers("delay");
+			return delay;
 		} else if (byte3 == 0x0A) {
-			return reverb = new PatchReverbParameters(data);
+			reverb = new PatchReverbParameters(data);
+			notifyObservers("reverb");
+			return reverb;
 		} else if (byte3 == 0x0C) {
-			return arpeggioCommon = new PatchArpeggioCommonParameters(data);
+			arpeggioCommon = new PatchArpeggioCommonParameters(data);
+			notifyObservers("arpeggioCommon");
+			return arpeggioCommon;
 		} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
-			return arpeggioPatterns[byte3 - 0x0D] = new PatchArpeggioPatternParameters(data);
+			arpeggioPatterns[byte3 - 0x0D] = new PatchArpeggioPatternParameters(data);
+			notifyObservers("arpeggioPatterns");
+			return arpeggioPatterns[byte3 - 0x0D];
 		} else {
 			throw new RuntimeException("Address not recognised.");
 		}
