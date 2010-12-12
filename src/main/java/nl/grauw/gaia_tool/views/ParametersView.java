@@ -29,11 +29,20 @@ public class ParametersView extends JPanel implements Observer {
 	}
 	
 	public void setModel(Parameters p) {
-		if (parameters != null)
+		if (parameters != null) {
 			parameters.removeObserver(this);
-		parameters = p;
+		}
+		if (p != null) {
+			parameters = p;
+		} else {
+			parameters = new Parameters(new byte[0]) {
+				public String toString() {
+					return "";
+				}
+			};
+		}
 		parameters.addObserver(this);
-		update(p, null);
+		update(parameters, null);
 	}
 	
 	@Override
