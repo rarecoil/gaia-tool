@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -26,12 +27,6 @@ import nl.grauw.gaia_tool.PatchParameterGroup;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.Parameters;
-
-import org.dyno.visual.swing.layouts.Bilateral;
-import org.dyno.visual.swing.layouts.Constraints;
-import org.dyno.visual.swing.layouts.GroupLayout;
-import org.dyno.visual.swing.layouts.Leading;
-import org.dyno.visual.swing.layouts.Trailing;
 
 //VS4E -- DO NOT REMOVE THIS LINE!
 public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, Observer {
@@ -88,12 +83,30 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private void initComponents() {
 		setTitle("Roland GAIA SH-01 tool — by Grauw");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setLayout(new GroupLayout());
-		add(getLogView(), new Constraints(new Bilateral(12, 12, 25), new Trailing(12, 97, 10, 10)));
-		add(getContentPanel(), new Constraints(new Bilateral(219, 12, 0), new Bilateral(11, 121, 0)));
-		add(getContentSelectionScrollPane(), new Constraints(new Leading(12, 195, 18, 18), new Bilateral(11, 121, 25)));
+		GroupLayout layout = new GroupLayout(getContentPane());
+		setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+		layout.setHorizontalGroup(
+				layout.createParallelGroup()
+					.addGroup(
+						layout.createSequentialGroup()
+							.addComponent(getContentSelectionScrollPane(), GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+							.addComponent(getContentPanel())
+					)
+					.addComponent(getLogView())
+			);
+		layout.setVerticalGroup(
+				layout.createSequentialGroup()
+					.addGroup(
+						layout.createParallelGroup()
+							.addComponent(getContentSelectionScrollPane())
+							.addComponent(getContentPanel())
+					)
+					.addComponent(getLogView(), GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+			);
 		setJMenuBar(getMainMenuBar());
-		setSize(863, 557);
+		setSize(900, 600);
 	}
 
 	private ParametersView getParametersView() {
