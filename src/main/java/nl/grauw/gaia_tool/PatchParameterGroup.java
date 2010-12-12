@@ -65,8 +65,13 @@ public class PatchParameterGroup extends Observable {
 		return common;
 	}
 	
+	/**
+	 * Return one of the patch’s tone parameters.
+	 * @param number The tone number (1 - 3).
+	 * @return The patch tone parameters.
+	 */
 	public PatchToneParameters getTone(int number) {
-		return tones[number];
+		return tones[number - 1];
 	}
 	
 	public PatchDistortionParameters getDistortion() {
@@ -89,8 +94,13 @@ public class PatchParameterGroup extends Observable {
 		return arpeggioCommon;
 	}
 	
-	public PatchArpeggioPatternParameters getArpeggioPattern(int number) {
-		return arpeggioPatterns[number];
+	/**
+	 * Return one of the patch’s arpeggio pattern parameters.
+	 * @param note The arpeggio pattern note (1 - 16).
+	 * @return The patch arpeggio pattern parameters.
+	 */
+	public PatchArpeggioPatternParameters getArpeggioPattern(int note) {
+		return arpeggioPatterns[note - 1];
 	}
 	
 }
