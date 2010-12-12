@@ -37,7 +37,7 @@ public class LogView extends JPanel implements Observer {
 			int logTextLength = log.getLog().length();
 			int logAreaLength = logArea.getText().length();
 			if (logTextLength > logAreaLength) {
-				logArea.append(log.getLog().substring(logArea.getText().length()));
+				logArea.append(log.getLog().substring(logAreaLength));
 			} else if (logTextLength < logAreaLength) {
 				throw new RuntimeException("Length mismatch. Something is amiss here.");
 			}
