@@ -47,9 +47,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JMenuItem gmSystemOnItem;
 	private JMenuItem gm2SystemOnItem;
 	private JMenuItem gmSystemOffItem;
-	private JMenu dataRequestMenu;
-	private JMenuItem systemDataItem;
-	private JMenuItem temporaryPatchDataItem;
 	private JScrollPane contentSelectionScrollPane;
 	private JTree contentSelectionTree;
 	private JPanel contentPanel;
@@ -127,7 +124,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			mainMenuBar = new JMenuBar();
 			mainMenuBar.add(getFileMenu());
 			mainMenuBar.add(getTestMenu());
-			mainMenuBar.add(getDataRequestMenu());
 		}
 		return mainMenuBar;
 	}
@@ -207,37 +203,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			gmSystemOffItem.addActionListener(this);
 		}
 		return gmSystemOffItem;
-	}
-
-	private JMenu getDataRequestMenu() {
-		if (dataRequestMenu == null) {
-			dataRequestMenu = new JMenu();
-			dataRequestMenu.setText("Data request");
-			dataRequestMenu.setOpaque(false);
-			dataRequestMenu.add(getSystemDataItem());
-			dataRequestMenu.add(getTemporaryPatchDataItem());
-		}
-		return dataRequestMenu;
-	}
-
-	private JMenuItem getSystemDataItem() {
-		if (systemDataItem == null) {
-			systemDataItem = new JMenuItem();
-			systemDataItem.setText("System data");
-			systemDataItem.setOpaque(false);
-			systemDataItem.addActionListener(this);
-		}
-		return systemDataItem;
-	}
-
-	private JMenuItem getTemporaryPatchDataItem() {
-		if (temporaryPatchDataItem == null) {
-			temporaryPatchDataItem = new JMenuItem();
-			temporaryPatchDataItem.setText("Temporary patch data");
-			temporaryPatchDataItem.setOpaque(false);
-			temporaryPatchDataItem.addActionListener(this);
-		}
-		return temporaryPatchDataItem;
 	}
 
 	private JScrollPane contentSelectionScrollPane() {
@@ -359,10 +324,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 				gaia.sendGM2SystemOn();
 			} else if (e.getSource() == gmSystemOffItem) {
 				gaia.sendGMSystemOff();
-			} else if (e.getSource() == systemDataItem) {
-				gaia.sendSystemDataRequest();
-			} else if (e.getSource() == temporaryPatchDataItem) {
-				gaia.sendTemporaryPatchDataRequest();
 			}
 		} catch (InvalidMidiDataException e1) {
 			e1.printStackTrace();
