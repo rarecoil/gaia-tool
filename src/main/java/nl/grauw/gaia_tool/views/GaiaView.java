@@ -32,6 +32,8 @@ import nl.grauw.gaia_tool.parameters.Parameters;
 public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, Observer {
 	
 	private Gaia gaia;
+	
+	private String lastDataRequest;
 
 	private static final long serialVersionUID = 1L;
 	private JMenuBar mainMenuBar;
@@ -369,18 +371,20 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
 			if ("System".equals(node1.getUserObject()) && tp.getPathCount() == 2) {
 				p = gaia.getSystem();
-				if (p == null) {
+				if (p == null && !"system".equals(lastDataRequest)) {
 					try {
 						gaia.sendSystemDataRequest();
+						lastDataRequest = "system";
 					} catch(InvalidMidiDataException ex) {
 						ex.printStackTrace();
 					}
 				}
 			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() >= 3) {
 				p = getPatchParameterByName(gaia.getTemporaryPatch(), tp, 2);
-				if (p == null) {
+				if (p == null && !"temporaryPatch".equals(lastDataRequest)) {
 					try {
 						gaia.sendTemporaryPatchDataRequest();
+						lastDataRequest = "temporaryPatch";
 					} catch(InvalidMidiDataException ex) {
 						ex.printStackTrace();
 					}
@@ -391,9 +395,10 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 				int bank = node1.getIndex(node2);
 				int patch = node2.getIndex(node3);
 				p = getPatchParameterByName(gaia.getUserPatch(bank, patch), tp, 4);
-				if (p == null) {
+				if (p == null && !("userPatch" + bank + patch).equals(lastDataRequest)) {
 					try {
 						gaia.sendUserPatchDataRequest(bank, patch);
+						lastDataRequest = "userPatch" + bank + patch;
 					} catch(InvalidMidiDataException ex) {
 						ex.printStackTrace();
 					}
