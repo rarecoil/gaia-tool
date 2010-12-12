@@ -4,6 +4,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
@@ -61,6 +62,8 @@ public class ParametersView extends JPanel implements Observer {
 			parameterArea.setEditable(false);
 			parameterArea.setLineWrap(true);
 			parameterArea.setWrapStyleWord(true);
+			DefaultCaret caret = (DefaultCaret)parameterArea.getCaret();
+			caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		}
 		return parameterArea;
 	}
