@@ -10,7 +10,6 @@ import nl.grauw.gaia_tool.Log;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 
-//VS4E -- DO NOT REMOVE THIS LINE!
 public class LogView extends JPanel implements Observer {
 	
 	private Log log;

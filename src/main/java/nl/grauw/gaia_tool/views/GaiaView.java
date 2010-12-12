@@ -28,7 +28,6 @@ import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.Parameters;
 
-//VS4E -- DO NOT REMOVE THIS LINE!
 public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, Observer {
 	
 	private Gaia gaia;
