@@ -91,7 +91,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		setLayout(new GroupLayout());
 		add(getLogView(), new Constraints(new Bilateral(12, 12, 25), new Trailing(12, 97, 10, 10)));
 		add(getContentPanel(), new Constraints(new Bilateral(219, 12, 0), new Bilateral(11, 121, 0)));
-		add(contentSelectionScrollPane(), new Constraints(new Leading(12, 195, 18, 18), new Bilateral(11, 121, 25)));
+		add(getContentSelectionScrollPane(), new Constraints(new Leading(12, 195, 18, 18), new Bilateral(11, 121, 25)));
 		setJMenuBar(getMainMenuBar());
 		setSize(863, 557);
 	}
@@ -205,7 +205,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		return gmSystemOffItem;
 	}
 
-	private JScrollPane contentSelectionScrollPane() {
+	private JScrollPane getContentSelectionScrollPane() {
 		if (contentSelectionScrollPane == null) {
 			contentSelectionScrollPane = new JScrollPane();
 			contentSelectionScrollPane.setViewportView(getContentSelectionTree());
