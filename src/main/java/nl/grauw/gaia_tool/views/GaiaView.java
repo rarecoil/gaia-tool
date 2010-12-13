@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
@@ -169,6 +170,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			exitItem = new JMenuItem();
 			exitItem.setText("Exit");
 			exitItem.setOpaque(false);
+			exitItem.setAccelerator(KeyStroke.getKeyStroke("ctrl Q"));
 			exitItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
 					exitItemActionPerformed(event);
