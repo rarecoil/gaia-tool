@@ -253,25 +253,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JTree getContentSelectionTree() {
 		if (contentSelectionTree == null) {
 			contentSelectionTree = new JTree();
-			DefaultTreeModel treeModel = null;
-			{
-				DefaultMutableTreeNode node0 = new DefaultMutableTreeNode("Parameters");
-				{
-					DefaultMutableTreeNode node1 = new DefaultMutableTreeNode("System");
-					node0.add(node1);
-				}
-				{
-					DefaultMutableTreeNode node1 = new DefaultMutableTreeNode("Temporary patch");
-					addPatchTreeNodesTo(node1);
-					node0.add(node1);
-				}
-				{
-					DefaultMutableTreeNode node1 = new DefaultMutableTreeNode("User patches");
-					addUserPatchTreeNodesTo(node1);
-					node0.add(node1);
-				}
-				treeModel = new DefaultTreeModel(node0);
-			}
+			DefaultTreeModel treeModel = createContentSelectionTreeModel();
 			contentSelectionTree.setModel(treeModel);
 			contentSelectionTree.setShowsRootHandles(true);
 			contentSelectionTree.setRootVisible(false);
@@ -281,64 +263,44 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		return contentSelectionTree;
 	}
 	
-	private void addPatchTreeNodesTo(DefaultMutableTreeNode node1) {
-		{
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Common");
-			node1.add(node2);
-		}
-		{
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Tone 1");
-			node1.add(node2);
-		}
-		{
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Tone 2");
-			node1.add(node2);
-		}
-		{
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Tone 3");
-			node1.add(node2);
-		}
-		{
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Distortion");
-			node1.add(node2);
-		}
-		{
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Flanger");
-			node1.add(node2);
-		}
-		{
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Delay");
-			node1.add(node2);
-		}
-		{
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Reverb");
-			node1.add(node2);
-		}
-		{
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Arpeggio");
-			{
-				String[] patterns = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
-				for (String pattern : patterns) {
-					DefaultMutableTreeNode node3 = new DefaultMutableTreeNode("Pattern " + pattern);
-					node2.add(node3);
-				}
-			}
-			node1.add(node2);
-		}
-	}
-	
-	private void addUserPatchTreeNodesTo(DefaultMutableTreeNode node1) {
+	private DefaultTreeModel createContentSelectionTreeModel() {
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Parameters");
+		DefaultMutableTreeNode systemNode = new DefaultMutableTreeNode("System");
+		rootNode.add(systemNode);
+		DefaultMutableTreeNode temporaryPatchNode = new DefaultMutableTreeNode("Temporary patch");
+		addPatchTreeNodesTo(temporaryPatchNode);
+		rootNode.add(temporaryPatchNode);
+		DefaultMutableTreeNode userPatchesNode = new DefaultMutableTreeNode("User patches");
 		String[] banks = {"A", "B", "C", "D", "E", "F", "G", "H"};
 		for (String bank : banks) {
-			DefaultMutableTreeNode node2 = new DefaultMutableTreeNode("Bank " + bank);
+			DefaultMutableTreeNode bankNode = new DefaultMutableTreeNode("Bank " + bank);
 			String[] patches = {"1", "2", "3", "4", "5", "6", "7", "8"};
 			for (String patch : patches) {
-				DefaultMutableTreeNode node3 = new DefaultMutableTreeNode("Patch " + bank + "-" + patch);
-				addPatchTreeNodesTo(node3);
-				node2.add(node3);
+				DefaultMutableTreeNode patchNode = new DefaultMutableTreeNode("Patch " + bank + "-" + patch);
+				addPatchTreeNodesTo(patchNode);
+				bankNode.add(patchNode);
 			}
-			node1.add(node2);
+			userPatchesNode.add(bankNode);
 		}
+		rootNode.add(userPatchesNode);
+		return new DefaultTreeModel(rootNode);
+	}
+	
+	private void addPatchTreeNodesTo(DefaultMutableTreeNode patchNode) {
+		patchNode.add(new DefaultMutableTreeNode("Common"));
+		patchNode.add(new DefaultMutableTreeNode("Tone 1"));
+		patchNode.add(new DefaultMutableTreeNode("Tone 2"));
+		patchNode.add(new DefaultMutableTreeNode("Tone 3"));
+		patchNode.add(new DefaultMutableTreeNode("Distortion"));
+		patchNode.add(new DefaultMutableTreeNode("Flanger"));
+		patchNode.add(new DefaultMutableTreeNode("Delay"));
+		patchNode.add(new DefaultMutableTreeNode("Reverb"));
+		DefaultMutableTreeNode arpeggioNode = new DefaultMutableTreeNode("Arpeggio");
+		String[] patterns = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+		for (String pattern : patterns) {
+			arpeggioNode.add(new DefaultMutableTreeNode("Pattern " + pattern));
+		}
+		patchNode.add(arpeggioNode);
 	}
 	
 	public void updateContentPanel() {
