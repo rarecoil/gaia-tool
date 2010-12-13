@@ -2,6 +2,8 @@ package nl.grauw.gaia_tool.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.BoxLayout;
@@ -30,7 +32,7 @@ import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.Parameters;
 
-public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, Observer {
+public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, Observer, WindowListener {
 	
 	private Gaia gaia;
 	
@@ -331,35 +333,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			node1.add(node2);
 		}
 	}
-
-	private void exitItemActionPerformed(ActionEvent event) {
-		dispose();
-		gaia.close();
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		try {
-			if (e.getSource() == playTestNotesItem) {
-				gaia.playTestNote();
-				gaia.playGMTestNote();
-			} else if (e.getSource() == gmSystemOnItem) {
-				gaia.sendGM1SystemOn();
-			} else if (e.getSource() == gm2SystemOnItem) {
-				gaia.sendGM2SystemOn();
-			} else if (e.getSource() == gmSystemOffItem) {
-				gaia.sendGMSystemOff();
-			}
-		} catch (InvalidMidiDataException e1) {
-			e1.printStackTrace();
-		}
-	}
-
-	@Override
-	public void valueChanged(TreeSelectionEvent e) {
-		if (e.getSource() == contentSelectionTree) {
-			updateContentPanel();
-		}
-	}
 	
 	public void updateContentPanel() {
 		Parameters p = getSelectedParameters();
@@ -437,6 +410,35 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			return ppg.getArpeggioCommon();
 		}
 		throw new RuntimeException("Parameters not found.");
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		try {
+			if (e.getSource() == playTestNotesItem) {
+				gaia.playTestNote();
+				gaia.playGMTestNote();
+			} else if (e.getSource() == gmSystemOnItem) {
+				gaia.sendGM1SystemOn();
+			} else if (e.getSource() == gm2SystemOnItem) {
+				gaia.sendGM2SystemOn();
+			} else if (e.getSource() == gmSystemOffItem) {
+				gaia.sendGMSystemOff();
+			}
+		} catch (InvalidMidiDataException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	private void exitItemActionPerformed(ActionEvent event) {
+		dispose();
+		gaia.close();
+	}
+
+	@Override
+	public void valueChanged(TreeSelectionEvent e) {
+		if (e.getSource() == contentSelectionTree) {
+			updateContentPanel();
+		}
 	}
 	
 }
