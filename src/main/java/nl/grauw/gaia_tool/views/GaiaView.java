@@ -318,9 +318,16 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		patchNode.add(arpeggioNode);
 	}
 	
-	public void updateContentPanel() {
-		Parameters p = getSelectedParameters();
-		parametersView.setModel(p);
+	private void updateContentPanel() {
+		getContentPanel().removeAll();
+		TreePath tp = contentSelectionTree.getSelectionPath();
+		if (tp == null) {
+			// show introduction panel
+		} else {
+			Parameters p = getSelectedParameters();
+			getContentPanel().add(new ParametersView(p));
+		}
+		getContentPanel().revalidate();
 	}
 	
 	public Parameters getSelectedParameters() {
