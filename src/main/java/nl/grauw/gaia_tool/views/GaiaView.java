@@ -95,10 +95,16 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			e.printStackTrace();
 		}
 	}
+	
+	public void exit() {
+		dispose();
+		gaia.close();
+		System.exit(0);
+	}
 
 	private void initComponents() {
 		setTitle("Roland GAIA SH-01 tool — by Grauw");
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		GroupLayout layout = new GroupLayout(getContentPane());
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
@@ -430,8 +436,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	}
 
 	private void exitItemActionPerformed(ActionEvent event) {
-		dispose();
-		gaia.close();
+		exit();
 	}
 
 	@Override
@@ -439,6 +444,18 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (e.getSource() == contentSelectionTree) {
 			updateContentPanel();
 		}
+	}
+
+	public void windowOpened(WindowEvent e) {}
+	public void windowClosed(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		exit();
 	}
 	
 }
