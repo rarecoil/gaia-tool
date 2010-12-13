@@ -28,7 +28,7 @@ public class App implements Runnable {
 		gaia.requestIdentity();
 		
 		// render view
-		GaiaView.installLnF();
+		GaiaView.installLookAndFeel();
 		SwingUtilities.invokeLater(this);
 	}
 	
