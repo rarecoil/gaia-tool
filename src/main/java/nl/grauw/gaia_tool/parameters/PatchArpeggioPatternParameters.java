@@ -36,7 +36,7 @@ public class PatchArpeggioPatternParameters extends Parameters {
 		}
 		
 		return "Patch arpeggio pattern parameters:\n" +
-				String.format("Original note: %s\n", getOriginalNote().getNoteNumber() != 129 ? getOriginalNote() : "OFF") +
+				String.format("Original note: %s\n", getOriginalNote().getNoteNumber() != 128 ? getOriginalNote() : "OFF") +
 				String.format("Step data: %s\n", stepData);
 	}
 	
