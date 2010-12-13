@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -49,8 +50,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private LogView logView;
 	private ParametersView parametersView;
 
-	private static final String PREFERRED_LOOK_AND_FEEL = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
-
 	public GaiaView() {
 		initComponents();
 	}
@@ -78,6 +77,19 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	public void update(Observable o, Object arg) {
 		if (o == gaia || o instanceof PatchParameterGroup) {
 			updateContentPanel();
+		}
+	}
+
+	public static void installLnF() {
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -315,18 +327,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 				node2.add(node3);
 			}
 			node1.add(node2);
-		}
-	}
-
-	public static void installLnF() {
-		try {
-			String lnfClassname = PREFERRED_LOOK_AND_FEEL;
-			if (lnfClassname == null)
-				lnfClassname = UIManager.getCrossPlatformLookAndFeelClassName();
-			UIManager.setLookAndFeel(lnfClassname);
-		} catch (Exception e) {
-			System.err.println("Cannot install " + PREFERRED_LOOK_AND_FEEL
-					+ " on this platform:" + e.getMessage());
 		}
 	}
 
