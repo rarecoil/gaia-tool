@@ -105,6 +105,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private void initComponents() {
 		setTitle("Roland GAIA SH-01 tool — by Grauw");
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		addWindowListener(this);
 		GroupLayout layout = new GroupLayout(getContentPane());
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
