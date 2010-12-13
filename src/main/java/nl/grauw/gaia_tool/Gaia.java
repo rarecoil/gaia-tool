@@ -85,7 +85,7 @@ public class Gaia extends Observable {
 	/**
 	 * Cleans up the system.
 	 */
-	public void close() throws MidiUnavailableException {
+	public void close() {
 		midi_in.close();
 		midi_out.close();
 		receiver.close();

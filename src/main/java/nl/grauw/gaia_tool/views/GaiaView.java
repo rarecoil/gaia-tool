@@ -334,6 +334,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private void exitItemActionPerformed(ActionEvent event) {
 		dispose();
+		gaia.close();
 	}
 
 	public void actionPerformed(ActionEvent e) {
