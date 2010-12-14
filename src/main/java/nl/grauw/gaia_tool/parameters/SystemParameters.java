@@ -79,7 +79,7 @@ public class SystemParameters extends Parameters {
 	}
 	
 	public Value getMasterLevel() {
-		return new Value(addressMap[0x02], 0, 127);
+		return new Value(addressMap[0x03], 0, 127);
 	}
 	
 	// -1000 ... 1000 (-100.0 ... 100.0 cent)
