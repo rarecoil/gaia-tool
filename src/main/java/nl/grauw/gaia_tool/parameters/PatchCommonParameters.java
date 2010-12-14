@@ -48,7 +48,7 @@ public class PatchCommonParameters extends Parameters {
 	}
 	
 	public Value getPatchLevel() {
-		return new Value(addressMap[0x0D], 0, 127);
+		return new Value(addressMap[0x0C], 0, 127);
 	}
 	
 	public Value getPatchTempo() {
