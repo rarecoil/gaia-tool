@@ -15,6 +15,8 @@
  */
 package nl.grauw.gaia_tool;
 
+import javax.sound.midi.InvalidMidiDataException;
+
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.Parameters;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
@@ -28,6 +30,12 @@ import nl.grauw.gaia_tool.parameters.PatchToneParameters;
 
 public class PatchParameterGroup extends Observable {
 	
+	private Gaia gaia;
+	private int bank;
+	private int patch;
+	
+	private Address lastRequestAddress;
+	
 	private PatchCommonParameters common;
 	private PatchToneParameters[] tones = new PatchToneParameters[3];
 	private PatchDistortionParameters distortion;
@@ -36,6 +44,44 @@ public class PatchParameterGroup extends Observable {
 	private PatchReverbParameters reverb;
 	private PatchArpeggioCommonParameters arpeggioCommon;
 	private PatchArpeggioPatternParameters[] arpeggioPatterns = new PatchArpeggioPatternParameters[16];
+	
+	public PatchParameterGroup(Gaia gaia) {
+		this(gaia, -1, -1);
+	}
+	
+	public PatchParameterGroup(Gaia gaia, int bank, int patch) {
+		if (bank < -1 || bank > 7)
+			throw new RuntimeException("Invalid bank number.");
+		if (patch < -1 || patch > 7)
+			throw new RuntimeException("Invalid patch number.");
+		if (bank == -1 && patch != -1)
+			throw new RuntimeException("Bank and patch number must both be -1.");
+		this.gaia = gaia;
+		this.bank = bank;
+		this.patch = patch;
+	}
+	
+	public Address getAddress() {
+		return getAddress(0);
+	}
+	
+	public Address getAddress(int byte3) {
+		if (this.bank == -1) {
+			return new Address(0x10, 0x00, byte3, 0x00);
+		} else {
+			return new Address(0x20, bank << 3 | patch, byte3, 0x00);
+		}
+	}
+	
+	public void requestMissingData(Address address, int length) {
+		if (!address.equals(lastRequestAddress)) {
+			try {
+				gaia.sendDataRequest(address, length);
+			} catch(InvalidMidiDataException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public Parameters updateParameters(Address address, byte[] data) {
 		byte byte3 = address.getByte3();
@@ -77,6 +123,8 @@ public class PatchParameterGroup extends Observable {
 	}
 	
 	public PatchCommonParameters getCommon() {
+		if (common == null)
+			requestMissingData(getAddress(0x00), 0x6E);
 		return common;
 	}
 	
@@ -86,26 +134,38 @@ public class PatchParameterGroup extends Observable {
 	 * @return The patch tone parameters.
 	 */
 	public PatchToneParameters getTone(int number) {
+		if (tones[number - 1] == null)
+			requestMissingData(getAddress(0x01 + number - 1), 0x3E);
 		return tones[number - 1];
 	}
 	
 	public PatchDistortionParameters getDistortion() {
+		if (distortion == null)
+			requestMissingData(getAddress(0x04), 0x81);
 		return distortion;
 	}
 	
 	public PatchFlangerParameters getFlanger() {
+		if (flanger == null)
+			requestMissingData(getAddress(0x06), 0x51);
 		return flanger;
 	}
 	
 	public PatchDelayParameters getDelay() {
+		if (delay == null)
+			requestMissingData(getAddress(0x08), 0x51);
 		return delay;
 	}
 	
 	public PatchReverbParameters getReverb() {
+		if (reverb == null)
+			requestMissingData(getAddress(0x0A), 0x51);
 		return reverb;
 	}
 	
 	public PatchArpeggioCommonParameters getArpeggioCommon() {
+		if (arpeggioCommon == null)
+			requestMissingData(getAddress(0x0C), 0x08);
 		return arpeggioCommon;
 	}
 	
@@ -115,6 +175,8 @@ public class PatchParameterGroup extends Observable {
 	 * @return The patch arpeggio pattern parameters.
 	 */
 	public PatchArpeggioPatternParameters getArpeggioPattern(int note) {
+		if (arpeggioPatterns[note - 1] == null)
+			requestMissingData(getAddress(0x0D + note - 1), 0x42);
 		return arpeggioPatterns[note - 1];
 	}
 	

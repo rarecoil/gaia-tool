@@ -20,7 +20,6 @@ import java.awt.Font;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class IntroPanel extends JPanel {

@@ -51,8 +51,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	
 	private Gaia gaia;
 	
-	private String lastDataRequest;
-
 	private static final long serialVersionUID = 1L;
 	private JMenuBar mainMenuBar;
 	private JMenu fileMenu;
@@ -319,59 +317,43 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	}
 	
 	private void updateContentPanel() {
-		getContentPanel().removeAll();
-		TreePath tp = contentSelectionTree.getSelectionPath();
-		if (tp == null) {
-			getContentPanel().add(getIntroPanel());
-		} else {
-			Parameters p = getSelectedParameters();
-			getContentPanel().add(new ParametersView(p));
+		JPanel cp = getContentPanel();
+		JPanel spv = getSelectedParametersView();
+		if (spv != null && cp.getComponent(0) != spv) {
+			cp.removeAll();
+			cp.add(spv);
+			cp.revalidate();
 		}
-		getContentPanel().revalidate();
 	}
 	
-	public Parameters getSelectedParameters() {
+	/**
+	 * Returns a panel corresponding to the current selection in the tree.
+	 * @return A panel that is to be shown, or null if the current panel should
+	 *         hold off updating for a little longer (to avoid flickering).
+	 */
+	public JPanel getSelectedParametersView() {
 		TreePath tp = contentSelectionTree.getSelectionPath();
-		Parameters p = null;
-		if (tp != null && tp.getPathCount() >= 2) {
+		if (tp == null) {
+			return getIntroPanel();
+		} else if (tp.getPathCount() >= 2) {
+			Parameters p = null;
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
 			if ("System".equals(node1.getUserObject()) && tp.getPathCount() == 2) {
 				p = gaia.getSystem();
-				if (p == null && !"system".equals(lastDataRequest)) {
-					try {
-						gaia.sendSystemDataRequest();
-						lastDataRequest = "system";
-					} catch(InvalidMidiDataException ex) {
-						ex.printStackTrace();
-					}
-				}
+				return p != null ? new ParametersView(p) : null;
 			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() >= 3) {
 				p = getPatchParameterByName(gaia.getTemporaryPatch(), tp, 2);
-				if (p == null && !"temporaryPatch".equals(lastDataRequest)) {
-					try {
-						gaia.sendTemporaryPatchDataRequest();
-						lastDataRequest = "temporaryPatch";
-					} catch(InvalidMidiDataException ex) {
-						ex.printStackTrace();
-					}
-				}
+				return p != null ? new ParametersView(p) : null;
 			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 5) {
 				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(2);
 				DefaultMutableTreeNode node3 = (DefaultMutableTreeNode)tp.getPathComponent(3);
 				int bank = node1.getIndex(node2);
 				int patch = node2.getIndex(node3);
 				p = getPatchParameterByName(gaia.getUserPatch(bank, patch), tp, 4);
-				if (p == null && !("userPatch" + bank + patch).equals(lastDataRequest)) {
-					try {
-						gaia.sendUserPatchDataRequest(bank, patch);
-						lastDataRequest = "userPatch" + bank + patch;
-					} catch(InvalidMidiDataException ex) {
-						ex.printStackTrace();
-					}
-				}
+				return p != null ? new ParametersView(p) : null;
 			}
 		}
-		return p;
+		return new JPanel();
 	}
 	
 	public Parameters getPatchParameterByName(PatchParameterGroup ppg, TreePath tp, int startIndex) {

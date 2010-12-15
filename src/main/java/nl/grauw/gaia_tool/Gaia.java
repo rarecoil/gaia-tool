@@ -73,9 +73,11 @@ public class Gaia extends Observable {
 	private PatchParameterGroup[] userPatches = new PatchParameterGroup[64];
 	
 	public Gaia() {
-		temporaryPatch = new PatchParameterGroup();
-		for (int i = 0; i < 64; i++) {
-			userPatches[i] = new PatchParameterGroup();
+		temporaryPatch = new PatchParameterGroup(this);
+		for (int bank = 0; bank < 8; bank++) {
+			for (int patch = 0; patch < 8; patch++) {
+				userPatches[bank << 3 | patch] = new PatchParameterGroup(this, bank, patch);
+			}
 		}
 		log = new Log();
 		responseReceiver = new ResponseReceiver(this);
@@ -163,6 +165,13 @@ public class Gaia extends Observable {
 	}
 	
 	public SystemParameters getSystem() {
+		if (system == null) {
+			try {
+				sendDataRequest(new Address(0x01, 0x00, 0x00, 0x00), 0x6E);
+			} catch(InvalidMidiDataException ex) {
+				ex.printStackTrace();
+			}
+		}
 		return system;
 	}
 	
@@ -239,27 +248,13 @@ public class Gaia extends Observable {
 	}
 	
 	/**
-	 * Sends a system data request directive.
-	 * @throws InvalidMidiDataException 
+	 * Sends a data request directive.
+	 * @param address The start address of the desired data.
+	 * @param length The length of the desired data.
+	 * @throws InvalidMidiDataException
 	 */
-	public void sendSystemDataRequest() throws InvalidMidiDataException {
-		receiver.send(new DataRequest1(new Address(0x01, 0x00, 0x00, 0x00), 0x6E), -1);
-	}
-	
-	/**
-	 * Sends a temporary patch data request directive.
-	 * @throws InvalidMidiDataException 
-	 */
-	public void sendTemporaryPatchDataRequest() throws InvalidMidiDataException {
-		receiver.send(new DataRequest1(new Address(0x10, 0x00, 0x00, 0x00), 0xE80), -1);
-	}
-	
-	/**
-	 * Sends a user patch data request directive.
-	 * @throws InvalidMidiDataException 
-	 */
-	public void sendUserPatchDataRequest(int bank, int patch) throws InvalidMidiDataException {
-		receiver.send(new DataRequest1(new Address(0x20, bank << 3 | patch, 0x00, 0x00), 0xE80), -1);
+	public void sendDataRequest(Address address, int length) throws InvalidMidiDataException {
+		receiver.send(new DataRequest1(address, length), -1);
 	}
 	
 }
