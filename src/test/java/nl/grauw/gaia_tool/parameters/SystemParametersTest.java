@@ -284,6 +284,30 @@ public class SystemParametersTest {
 		assertEquals(true, sp.getWriteProtect(7, 7));
 	}
 
+	@Test (expected = RuntimeException.class)
+	public void testGetWriteProtect_BankTooLow() {
+		SystemParameters sp = new SystemParameters(testAddressMap);
+		sp.getWriteProtect(-1, 0);
+	}
+
+	@Test (expected = RuntimeException.class)
+	public void testGetWriteProtect_BankTooHigh() {
+		SystemParameters sp = new SystemParameters(testAddressMap);
+		sp.getWriteProtect(8, 0);
+	}
+
+	@Test (expected = RuntimeException.class)
+	public void testGetWriteProtect_PatchTooLow() {
+		SystemParameters sp = new SystemParameters(testAddressMap);
+		sp.getWriteProtect(0, -1);
+	}
+
+	@Test (expected = RuntimeException.class)
+	public void testGetWriteProtect_PatchTooHigh() {
+		SystemParameters sp = new SystemParameters(testAddressMap);
+		sp.getWriteProtect(0, 8);
+	}
+
 	@Test
 	public void testGetPowerSaveMode() {
 		SystemParameters sp = new SystemParameters(testAddressMap);
