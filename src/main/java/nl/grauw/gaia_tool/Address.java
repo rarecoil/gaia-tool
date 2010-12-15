@@ -53,7 +53,7 @@ public class Address {
 		} else if (getByte1() == 0x10) {
 			return "Temporary patch - " + getSubDescription();
 		} else if (getByte1() == 0x20) {
-			return "User patch (" + "ABCDEFGH".charAt(getByte2() >> 3) + ((getByte2() & 7) + 1) +
+			return "User patch (" + "ABCDEFGH".charAt(getByte2() >> 3) + "-" + ((getByte2() & 7) + 1) +
 					") - " + getSubDescription();
 		}
 		return "Unknown";
