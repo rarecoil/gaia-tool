@@ -83,6 +83,8 @@ public class Observable {
 				}
 			} else {
 				observers.remove(i);
+				len--;
+				i--;
 			}
 		}
 	}
