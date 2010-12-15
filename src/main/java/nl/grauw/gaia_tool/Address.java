@@ -53,8 +53,8 @@ public class Address {
 		} else if (getByte1() == 0x10) {
 			return "Temporary patch - " + getSubDescription();
 		} else if (getByte1() == 0x20) {
-			return "User patch (" + "ABCDEFGH".charAt(getByte2() >> 3) + "-" + ((getByte2() & 7) + 1) +
-					") - " + getSubDescription();
+			return "User patch (" + "ABCDEFGH".charAt(getByte2() >> 3) + "-" + 
+					((getByte2() & 7) + 1) + ") - " + getSubDescription();
 		}
 		return "Unknown";
 	}
@@ -85,6 +85,18 @@ public class Address {
 	
 	public String toHexString() {
 		return String.format("%02X %02X %02X %02X", getByte1(), getByte2(), getByte3(), getByte4());
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof Address)
+			return ((Address)other).getValue() == address;
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return address;
 	}
 	
 	public String toString() {
