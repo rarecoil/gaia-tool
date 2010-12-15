@@ -115,7 +115,7 @@ public class PatchToneParameters extends Parameters {
 	}
 	
 	public Value getFilterResonance() {
-		return new Value(addressMap[0x09], 0, 127);
+		return new Value(addressMap[0x0F], 0, 127);
 	}
 	
 	public Value getFilterEnvAttackTime() {
