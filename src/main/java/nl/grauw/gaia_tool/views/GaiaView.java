@@ -66,7 +66,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JTree contentSelectionTree;
 	private JPanel contentPanel;
 	private LogView logView;
-	private ParametersView parametersView;
+	private IntroPanel introPanel;
 
 	public GaiaView() {
 		initComponents();
@@ -147,13 +147,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		setSize(900, 600);
 	}
 
-	private ParametersView getParametersView() {
-		if (parametersView == null) {
-			parametersView = new ParametersView();
-		}
-		return parametersView;
-	}
-
 	private LogView getLogView() {
 		if (logView == null) {
 			logView = new LogView();
@@ -165,9 +158,16 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (contentPanel == null) {
 			contentPanel = new JPanel();
 			contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-			contentPanel.add(getParametersView());
+			contentPanel.add(getIntroPanel());
 		}
 		return contentPanel;
+	}
+
+	private IntroPanel getIntroPanel() {
+		if (introPanel == null) {
+			introPanel = new IntroPanel();
+		}
+		return introPanel;
 	}
 
 	private JMenuBar getMainMenuBar() {
@@ -318,9 +318,16 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		patchNode.add(arpeggioNode);
 	}
 	
-	public void updateContentPanel() {
-		Parameters p = getSelectedParameters();
-		parametersView.setModel(p);
+	private void updateContentPanel() {
+		getContentPanel().removeAll();
+		TreePath tp = contentSelectionTree.getSelectionPath();
+		if (tp == null) {
+			getContentPanel().add(getIntroPanel());
+		} else {
+			Parameters p = getSelectedParameters();
+			getContentPanel().add(new ParametersView(p));
+		}
+		getContentPanel().revalidate();
 	}
 	
 	public Parameters getSelectedParameters() {
