@@ -65,7 +65,7 @@ public abstract class ParameterGroupView extends JPanel implements Observer, Act
 					.addGroup(
 						layout.createSequentialGroup()
 							.addComponent(getTitleLabel())
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, 100000)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Integer.MAX_VALUE)
 							.addComponent(getReloadButton())
 					)
 					.addComponent(getParametersContainer())
