@@ -16,20 +16,26 @@
 package nl.grauw.gaia_tool.views;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.Parameters;
 
-public abstract class ParameterGroupView extends JPanel implements Observer {
+public abstract class ParameterGroupView extends JPanel implements Observer, ActionListener {
 	
 	private static final long serialVersionUID = 123L;
 	private JLabel titleLabel;
+	private JButton reloadButton;
 	private JPanel parametersContainer;
 	private ParametersView parametersView;
 	
@@ -56,12 +62,21 @@ public abstract class ParameterGroupView extends JPanel implements Observer {
 		layout.setAutoCreateGaps(true);
 		layout.setHorizontalGroup(
 				layout.createParallelGroup()
-					.addComponent(getTitleLabel())
+					.addGroup(
+						layout.createSequentialGroup()
+							.addComponent(getTitleLabel())
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, 100000)
+							.addComponent(getReloadButton())
+					)
 					.addComponent(getParametersContainer())
 			);
 		layout.setVerticalGroup(
 				layout.createSequentialGroup()
-					.addComponent(getTitleLabel())
+					.addGroup(
+						layout.createParallelGroup(Alignment.CENTER)
+							.addComponent(getTitleLabel())
+							.addComponent(getReloadButton())
+					)
 					.addComponent(getParametersContainer())
 			);
 	}
@@ -91,6 +106,22 @@ public abstract class ParameterGroupView extends JPanel implements Observer {
 			titleLabel.setText(getTitle());
 		}
 		return titleLabel;
+	}
+	
+	private JButton getReloadButton() {
+		if (reloadButton == null) {
+			reloadButton = new JButton();
+			reloadButton.setText("Reload");
+			reloadButton.addActionListener(this);
+		}
+		return reloadButton;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == reloadButton) {
+			loadParameters();
+		}
 	}
 
 }
