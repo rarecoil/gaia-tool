@@ -290,12 +290,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		patchNode.add(new DefaultMutableTreeNode("Flanger"));
 		patchNode.add(new DefaultMutableTreeNode("Delay"));
 		patchNode.add(new DefaultMutableTreeNode("Reverb"));
-		DefaultMutableTreeNode arpeggioNode = new DefaultMutableTreeNode("Arpeggio");
-		String[] patterns = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
-		for (String pattern : patterns) {
-			arpeggioNode.add(new DefaultMutableTreeNode("Pattern " + pattern));
-		}
-		patchNode.add(arpeggioNode);
+		patchNode.add(new DefaultMutableTreeNode("Arpeggio"));
 	}
 	
 	private void updateContentPanel() {
@@ -334,7 +329,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		return new JPanel();
 	}
 	
-	public ParameterGroupView getPatchParameterByName(PatchParameterGroup ppg, TreePath tp, int startIndex) {
+	public JPanel getPatchParameterByName(PatchParameterGroup ppg, TreePath tp, int startIndex) {
 		DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex);
 		String desc = (String)node1.getUserObject();
 		if ("Common".equals(desc)) {
@@ -354,11 +349,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		} else if ("Reverb".equals(desc)) {
 			return new PatchReverbView(ppg);
 		} else if ("Arpeggio".equals(desc)) {
-			if (tp.getPathCount() == startIndex + 2) {
-				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex + 1);
-				return new PatchArpeggioPatternView(ppg, node1.getIndex(node2) + 1);
-			}
-			return new PatchArpeggioCommonView(ppg);
+			return new PatchArpeggioView(ppg);
 		}
 		throw new RuntimeException("Parameters not found.");
 	}

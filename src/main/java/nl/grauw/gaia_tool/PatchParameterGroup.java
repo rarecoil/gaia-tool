@@ -196,4 +196,8 @@ public class PatchParameterGroup extends Observable {
 		loadData(getAddress(0x0D + note - 1), 0x42);
 	}
 	
+	public void loadArpeggioAll() {
+		loadData(getAddress(0x0C), 0xB80);
+	}
+	
 }
