@@ -61,7 +61,7 @@ public class Note {
 	}
 	
 	public String toString() {
-		return note + " " + octave;
+		return note + (note.toString().length() == 1 ? " " : "") + octave;
 	}
 
 }
