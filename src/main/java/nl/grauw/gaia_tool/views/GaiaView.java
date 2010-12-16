@@ -43,10 +43,8 @@ import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.PatchParameterGroup;
-import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 
-public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, Observer, WindowListener {
+public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, WindowListener {
 	
 	private Gaia gaia;
 	
@@ -77,22 +75,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	public void setModel(Gaia g) {
 		gaia = g;
 		logView.setModel(g.getLog());
-		gaia.addObserver(this);
-		// also observe temporary patch and user patches
-		gaia.getTemporaryPatch().addObserver(this);
-		for (int bank = 0; bank < 8; bank++) {
-			for (int patch = 0; patch < 8; patch++) {
-				gaia.getUserPatch(bank, patch).addObserver(this);
-			}
-		}
-		update(g, null);
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		if (o == gaia || o instanceof PatchParameterGroup) {
-			updateContentPanel();
-		}
+		updateContentPanel();
 	}
 
 	public static void installLookAndFeel() {
