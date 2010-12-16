@@ -35,6 +35,8 @@ public abstract class ParameterGroupView extends JPanel implements Observer {
 	
 	public abstract Parameters getParameters();
 	
+	public abstract void loadParameters();
+	
 	public abstract String getTitle();
 	
 	@Override
@@ -75,6 +77,8 @@ public abstract class ParameterGroupView extends JPanel implements Observer {
 	
 	private ParametersView getParametersView() {
 		if (parametersView == null || parametersView.getModel() != getParameters()) {
+			if (getParameters() == null)
+				loadParameters();
 			parametersView = new ParametersView(getParameters());
 		}
 		return parametersView;

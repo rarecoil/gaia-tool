@@ -73,7 +73,7 @@ public class PatchParameterGroup extends Observable {
 		}
 	}
 	
-	public void requestMissingData(Address address, int length) {
+	private void loadData(Address address, int length) {
 		if (!address.equals(lastRequestAddress)) {
 			try {
 				gaia.sendDataRequest(address, length);
@@ -123,9 +123,11 @@ public class PatchParameterGroup extends Observable {
 	}
 	
 	public PatchCommonParameters getCommon() {
-		if (common == null)
-			requestMissingData(getAddress(0x00), 0x6E);
 		return common;
+	}
+	
+	public void loadCommon() {
+		loadData(getAddress(0x00), 0x6E);
 	}
 	
 	/**
@@ -134,39 +136,51 @@ public class PatchParameterGroup extends Observable {
 	 * @return The patch tone parameters.
 	 */
 	public PatchToneParameters getTone(int number) {
-		if (tones[number - 1] == null)
-			requestMissingData(getAddress(0x01 + number - 1), 0x3E);
 		return tones[number - 1];
 	}
 	
+	public void loadTone(int number) {
+		loadData(getAddress(0x01 + number - 1), 0x3E);
+	}
+	
 	public PatchDistortionParameters getDistortion() {
-		if (distortion == null)
-			requestMissingData(getAddress(0x04), 0x81);
 		return distortion;
 	}
 	
+	public void loadDistortion() {
+		loadData(getAddress(0x04), 0x81);
+	}
+	
 	public PatchFlangerParameters getFlanger() {
-		if (flanger == null)
-			requestMissingData(getAddress(0x06), 0x51);
 		return flanger;
 	}
 	
+	public void loadFlanger() {
+		loadData(getAddress(0x06), 0x51);
+	}
+	
 	public PatchDelayParameters getDelay() {
-		if (delay == null)
-			requestMissingData(getAddress(0x08), 0x51);
 		return delay;
 	}
 	
+	public void loadDelay() {
+		loadData(getAddress(0x08), 0x51);
+	}
+	
 	public PatchReverbParameters getReverb() {
-		if (reverb == null)
-			requestMissingData(getAddress(0x0A), 0x51);
 		return reverb;
 	}
 	
+	public void loadReverb() {
+		loadData(getAddress(0x0A), 0x51);
+	}
+	
 	public PatchArpeggioCommonParameters getArpeggioCommon() {
-		if (arpeggioCommon == null)
-			requestMissingData(getAddress(0x0C), 0x08);
 		return arpeggioCommon;
+	}
+	
+	public void loadArpeggioCommon() {
+		loadData(getAddress(0x0C), 0x08);
 	}
 	
 	/**
@@ -175,9 +189,11 @@ public class PatchParameterGroup extends Observable {
 	 * @return The patch arpeggio pattern parameters.
 	 */
 	public PatchArpeggioPatternParameters getArpeggioPattern(int note) {
-		if (arpeggioPatterns[note - 1] == null)
-			requestMissingData(getAddress(0x0D + note - 1), 0x42);
 		return arpeggioPatterns[note - 1];
+	}
+	
+	public void loadArpeggioPattern(int note) {
+		loadData(getAddress(0x0D + note - 1), 0x42);
 	}
 	
 }

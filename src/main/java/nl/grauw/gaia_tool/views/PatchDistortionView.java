@@ -34,6 +34,11 @@ public class PatchDistortionView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return parameterGroup.getDistortion();
 	}
+	
+	@Override
+	public void loadParameters() {
+		parameterGroup.loadDistortion();
+	}
 
 	@Override
 	public String getTitle() {

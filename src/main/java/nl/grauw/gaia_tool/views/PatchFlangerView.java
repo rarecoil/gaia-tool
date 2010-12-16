@@ -34,6 +34,11 @@ public class PatchFlangerView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return parameterGroup.getFlanger();
 	}
+	
+	@Override
+	public void loadParameters() {
+		parameterGroup.loadFlanger();
+	}
 
 	@Override
 	public String getTitle() {

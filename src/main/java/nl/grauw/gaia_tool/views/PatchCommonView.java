@@ -34,6 +34,11 @@ public class PatchCommonView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return parameterGroup.getCommon();
 	}
+	
+	@Override
+	public void loadParameters() {
+		parameterGroup.loadCommon();
+	}
 
 	@Override
 	public String getTitle() {

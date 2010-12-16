@@ -36,6 +36,11 @@ public class PatchArpeggioPatternView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return parameterGroup.getArpeggioPattern(note);
 	}
+	
+	@Override
+	public void loadParameters() {
+		parameterGroup.loadArpeggioPattern(note);
+	}
 
 	@Override
 	public String getTitle() {

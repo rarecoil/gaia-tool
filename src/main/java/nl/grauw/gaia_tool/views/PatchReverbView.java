@@ -34,6 +34,11 @@ public class PatchReverbView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return parameterGroup.getReverb();
 	}
+	
+	@Override
+	public void loadParameters() {
+		parameterGroup.loadReverb();
+	}
 
 	@Override
 	public String getTitle() {

@@ -36,6 +36,11 @@ public class PatchToneView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return parameterGroup.getTone(toneNumber);
 	}
+	
+	@Override
+	public void loadParameters() {
+		parameterGroup.loadTone(toneNumber);
+	}
 
 	@Override
 	public String getTitle() {

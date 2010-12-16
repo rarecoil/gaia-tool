@@ -165,14 +165,15 @@ public class Gaia extends Observable {
 	}
 	
 	public SystemParameters getSystem() {
-		if (system == null) {
-			try {
-				sendDataRequest(new Address(0x01, 0x00, 0x00, 0x00), 0x6E);
-			} catch(InvalidMidiDataException ex) {
-				ex.printStackTrace();
-			}
-		}
 		return system;
+	}
+	
+	public void loadSystem() {
+		try {
+			sendDataRequest(new Address(0x01, 0x00, 0x00, 0x00), 0x6E);
+		} catch(InvalidMidiDataException ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	public PatchParameterGroup getTemporaryPatch() {

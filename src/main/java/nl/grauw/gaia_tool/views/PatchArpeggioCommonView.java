@@ -34,6 +34,11 @@ public class PatchArpeggioCommonView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return parameterGroup.getArpeggioCommon();
 	}
+	
+	@Override
+	public void loadParameters() {
+		parameterGroup.loadArpeggioCommon();
+	}
 
 	@Override
 	public String getTitle() {

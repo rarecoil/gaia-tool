@@ -34,6 +34,11 @@ public class PatchDelayView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return parameterGroup.getDelay();
 	}
+	
+	@Override
+	public void loadParameters() {
+		parameterGroup.loadDelay();
+	}
 
 	@Override
 	public String getTitle() {
