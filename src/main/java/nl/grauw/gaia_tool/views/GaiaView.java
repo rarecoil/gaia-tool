@@ -45,7 +45,6 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.PatchParameterGroup;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
-import nl.grauw.gaia_tool.parameters.Parameters;
 
 public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, Observer, WindowListener {
 	
@@ -336,51 +335,47 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (tp == null) {
 			return getIntroPanel();
 		} else if (tp.getPathCount() >= 2) {
-			Parameters p = null;
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
 			if ("System".equals(node1.getUserObject()) && tp.getPathCount() == 2) {
-				p = gaia.getSystem();
-				return p != null ? new ParametersView(p) : null;
+				return new SystemView(gaia);
 			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() >= 3) {
-				p = getPatchParameterByName(gaia.getTemporaryPatch(), tp, 2);
-				return p != null ? new ParametersView(p) : null;
+				return getPatchParameterByName(gaia.getTemporaryPatch(), tp, 2);
 			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 5) {
 				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(2);
 				DefaultMutableTreeNode node3 = (DefaultMutableTreeNode)tp.getPathComponent(3);
 				int bank = node1.getIndex(node2);
 				int patch = node2.getIndex(node3);
-				p = getPatchParameterByName(gaia.getUserPatch(bank, patch), tp, 4);
-				return p != null ? new ParametersView(p) : null;
+				return getPatchParameterByName(gaia.getUserPatch(bank, patch), tp, 4);
 			}
 		}
 		return new JPanel();
 	}
 	
-	public Parameters getPatchParameterByName(PatchParameterGroup ppg, TreePath tp, int startIndex) {
+	public ParameterGroupView getPatchParameterByName(PatchParameterGroup ppg, TreePath tp, int startIndex) {
 		DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex);
 		String desc = (String)node1.getUserObject();
 		if ("Common".equals(desc)) {
-			return ppg.getCommon();
+			return new PatchCommonView(ppg);
 		} else if ("Tone 1".equals(desc)) {
-			return ppg.getTone(1);
+			return new PatchToneView(ppg, 1);
 		} else if ("Tone 2".equals(desc)) {
-			return ppg.getTone(2);
+			return new PatchToneView(ppg, 2);
 		} else if ("Tone 3".equals(desc)) {
-			return ppg.getTone(3);
+			return new PatchToneView(ppg, 3);
 		} else if ("Distortion".equals(desc)) {
-			return ppg.getDistortion();
+			return new PatchDistortionView(ppg);
 		} else if ("Flanger".equals(desc)) {
-			return ppg.getFlanger();
+			return new PatchFlangerView(ppg);
 		} else if ("Delay".equals(desc)) {
-			return ppg.getDelay();
+			return new PatchDelayView(ppg);
 		} else if ("Reverb".equals(desc)) {
-			return ppg.getReverb();
+			return new PatchReverbView(ppg);
 		} else if ("Arpeggio".equals(desc)) {
 			if (tp.getPathCount() == startIndex + 2) {
 				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex + 1);
-				return ppg.getArpeggioPattern(node1.getIndex(node2) + 1);
+				return new PatchArpeggioPatternView(ppg, node1.getIndex(node2) + 1);
 			}
-			return ppg.getArpeggioCommon();
+			return new PatchArpeggioCommonView(ppg);
 		}
 		throw new RuntimeException("Parameters not found.");
 	}

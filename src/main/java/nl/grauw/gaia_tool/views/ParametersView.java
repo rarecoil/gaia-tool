@@ -59,6 +59,10 @@ public class ParametersView extends JPanel implements Observer {
 		update(parameters, null);
 	}
 	
+	public Parameters getModel() {
+		return parameters;
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o == parameters) {
