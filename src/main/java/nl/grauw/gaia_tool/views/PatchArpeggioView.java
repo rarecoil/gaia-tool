@@ -36,7 +36,6 @@ import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.PatchParameterGroup;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
-import nl.grauw.gaia_tool.parameters.Parameters;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
 
@@ -90,25 +89,23 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 	private JLabel titleLabel;
 	private JButton reloadButton;
 	private JPanel parametersContainer;
-	private ParametersView parametersView;
+	private PatchArpeggioCommonParametersView parametersView;
 	private JScrollPane patternScrollPane;
 	private JTable patternTable;
 	
 	public PatchArpeggioView(PatchParameterGroup ppg) {
 		parameterGroup = ppg;
 		ppg.addObserver(this);
+		if (ppg.getArpeggioCommon() == null)
+			loadParameters();
 		initComponents();
 	}
 	
-	protected Parameters getParameters() {
-		return parameterGroup.getArpeggioCommon();
-	}
-	
-	protected void loadParameters() {
+	private void loadParameters() {
 		parameterGroup.loadArpeggioAll();
 	}
 
-	protected String getTitle() {
+	private String getTitle() {
 		return "Patch arpeggio common";
 	}
 	
@@ -124,10 +121,11 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 	
 	private void updateParametersView() {
 		JPanel pc = getParametersContainer();
-		ParametersView pv = getParametersView();
-		if (pc.getComponentCount() > 0 && pc.getComponent(0) != pv) {
+		PatchArpeggioCommonParametersView pv = getParametersView();
+		if (pc.getComponentCount() == 0 || pc.getComponent(0) != pv) {
 			pc.removeAll();
-			pc.add(pv);
+			if (pv != null)
+				pc.add(pv);
 			pc.revalidate();
 		}
 	}
@@ -163,16 +161,18 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 		if (parametersContainer == null) {
 			parametersContainer = new JPanel();
 			parametersContainer.setLayout(new BoxLayout(parametersContainer, BoxLayout.X_AXIS));
-			parametersContainer.add(getParametersView());
+			PatchArpeggioCommonParametersView pv = getParametersView();
+			if (pv != null)
+				parametersContainer.add(pv);
 		}
 		return parametersContainer;
 	}
 	
-	private ParametersView getParametersView() {
-		if (parametersView == null || parametersView.getModel() != getParameters()) {
-			if (getParameters() == null)
-				loadParameters();
-			parametersView = new ParametersView(getParameters());
+	private PatchArpeggioCommonParametersView getParametersView() {
+		PatchArpeggioCommonParameters pacp = parameterGroup.getArpeggioCommon();
+		if (parametersView == null || parametersView.getModel() != pacp) {
+			if (pacp != null)
+				parametersView = new PatchArpeggioCommonParametersView(pacp);
 		}
 		return parametersView;
 	}
