@@ -42,7 +42,8 @@ public class LogTest {
 		Log l = new Log();
 		l.log("test1");
 		l.log("test2");
-		assertTrue("test1\ntest2\n".equals(l.getLog()));
+		l.log(3);
+		assertTrue("test1\ntest2\n3\n".equals(l.getLog()));
 	}
 
 }

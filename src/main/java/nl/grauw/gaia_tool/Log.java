@@ -25,8 +25,8 @@ public class Log extends Observable {
 		log = new StringBuffer();
 	}
 	
-	public void log(String message) {
-		log.append(message);
+	public void log(Object message) {
+		log.append(message.toString());
 		log.append("\n");
 		
 		notifyObservers();
