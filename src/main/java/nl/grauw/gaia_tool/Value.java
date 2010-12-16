@@ -39,11 +39,11 @@ public class Value {
 		this.value = value;
 	}
 	
-	public int getMin() {
+	public int getMinimum() {
 		return min;
 	}
 	
-	public int getMax() {
+	public int getMaximum() {
 		return max;
 	}
 	
