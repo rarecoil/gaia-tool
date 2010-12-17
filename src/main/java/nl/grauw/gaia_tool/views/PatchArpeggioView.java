@@ -152,7 +152,7 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 							.addComponent(getTitleLabel())
 							.addComponent(getReloadButton())
 					)
-					.addComponent(getParametersContainer())
+					.addComponent(getParametersContainer(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addComponent(getPatternScrollPane())
 			);
 	}

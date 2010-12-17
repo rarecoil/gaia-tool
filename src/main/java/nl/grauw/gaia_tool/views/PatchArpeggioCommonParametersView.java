@@ -15,18 +15,27 @@
  */
 package nl.grauw.gaia_tool.views;
 
-import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
+import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters.ArpeggioDuration;
+import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters.ArpeggioGrid;
+import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters.ArpeggioMotif;
 
 public class PatchArpeggioCommonParametersView extends JPanel implements Observer {
 	
 	private PatchArpeggioCommonParameters parameters;
 	
 	private static final long serialVersionUID = 123L;
+	private EnumComboBox gridComboBox;
+	private EnumComboBox durationComboBox;
+	private EnumComboBox motifComboBox;
+	private ValueSpinner octaveRangeSpinner;
+	private ValueSpinner accentRateSpinner;
+	private ValueSpinner velocitySpinner;
 	private ValueSpinner endStepSpinner;
 	
 	public PatchArpeggioCommonParametersView(PatchArpeggioCommonParameters pacp) {
@@ -47,8 +56,83 @@ public class PatchArpeggioCommonParametersView extends JPanel implements Observe
 	}
 	
 	private void initComponents() {
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		add(getEndStepSpinner());
+		GroupLayout layout = new GroupLayout(this);
+		setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setHorizontalGroup(
+				layout.createParallelGroup()
+					.addGroup(
+						layout.createSequentialGroup()
+							.addComponent(getArpeggioGridComboBox())
+							.addComponent(getArpeggioDurationComboBox())
+							.addComponent(getArpeggioMotifComboBox())
+						)
+					.addGroup(
+						layout.createSequentialGroup()
+							.addComponent(getArpeggioOctaveRangeSpinner())
+							.addComponent(getArpeggioAccentRateSpinner())
+							.addComponent(getArpeggioVelocitySpinner())
+							.addComponent(getEndStepSpinner())
+						)
+			);
+		layout.setVerticalGroup(
+				layout.createSequentialGroup()
+					.addGroup(
+						layout.createParallelGroup()
+							.addComponent(getArpeggioGridComboBox())
+							.addComponent(getArpeggioDurationComboBox())
+							.addComponent(getArpeggioMotifComboBox())
+						)
+					.addGroup(
+						layout.createParallelGroup()
+							.addComponent(getArpeggioOctaveRangeSpinner())
+							.addComponent(getArpeggioAccentRateSpinner())
+							.addComponent(getArpeggioVelocitySpinner())
+							.addComponent(getEndStepSpinner())
+						)
+			);
+	}
+	
+	private EnumComboBox getArpeggioGridComboBox() {
+		if (gridComboBox == null) {
+			gridComboBox = new EnumComboBox(parameters.getArpeggioGrid(), ArpeggioGrid.values(), "Grid");
+		}
+		return gridComboBox;
+	}
+	
+	private EnumComboBox getArpeggioDurationComboBox() {
+		if (durationComboBox == null) {
+			durationComboBox = new EnumComboBox(parameters.getArpeggioDuration(), ArpeggioDuration.values(), "Duration");
+		}
+		return durationComboBox;
+	}
+	
+	private EnumComboBox getArpeggioMotifComboBox() {
+		if (motifComboBox == null) {
+			motifComboBox = new EnumComboBox(parameters.getArpeggioMotif(), ArpeggioMotif.values(), "Motif");
+		}
+		return motifComboBox;
+	}
+	
+	private ValueSpinner getArpeggioOctaveRangeSpinner() {
+		if (octaveRangeSpinner == null) {
+			octaveRangeSpinner = new ValueSpinner(parameters.getArpeggioOctaveRange(), "Octave range");
+		}
+		return octaveRangeSpinner;
+	}
+	
+	private ValueSpinner getArpeggioAccentRateSpinner() {
+		if (accentRateSpinner == null) {
+			accentRateSpinner = new ValueSpinner(parameters.getArpeggioAccentRate(), "Accent rate");
+		}
+		return accentRateSpinner;
+	}
+	
+	private ValueSpinner getArpeggioVelocitySpinner() {
+		if (velocitySpinner == null) {
+			velocitySpinner = new ValueSpinner(parameters.getArpeggioVelocity(), "Velocity");
+		}
+		return velocitySpinner;
 	}
 	
 	private ValueSpinner getEndStepSpinner() {
