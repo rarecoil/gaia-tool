@@ -27,7 +27,7 @@ public class ArpeggioPattern extends Parameters {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x42)
-			throw new RuntimeException("Address map size mismatch.");
+			throw new IllegalArgumentException("Address map size mismatch.");
 	}
 	
 	/**
@@ -41,7 +41,7 @@ public class ArpeggioPattern extends Parameters {
 	
 	public Value getStepData(int step) {
 		if (step < 1 || step > 32)
-			throw new RuntimeException("Invalid step number.");
+			throw new IllegalArgumentException("Invalid step number.");
 		
 		return new Value8Bit(parameterData, step * 2, 0, 128);
 	}

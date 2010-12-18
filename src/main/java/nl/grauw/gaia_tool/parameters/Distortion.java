@@ -30,7 +30,7 @@ public class Distortion extends Parameters {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x81)
-			throw new RuntimeException("Address map size mismatch.");
+			throw new IllegalArgumentException("Address map size mismatch.");
 	}
 	
 	public DistortionType getDistortionType() {
@@ -39,7 +39,7 @@ public class Distortion extends Parameters {
 	
 	public Value getMFXParameter(int number) {
 		if (number < 1 || number > 32)
-			throw new RuntimeException("Invalid parameter number.");
+			throw new IllegalArgumentException("Invalid parameter number.");
 		
 		int index = (number - 1) * 4;
 		return new SignedValue16Bit(parameterData, 0x01 + index, -20000, 20000);

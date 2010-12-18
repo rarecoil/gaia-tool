@@ -50,7 +50,7 @@ public class ArpeggioCommon extends Parameters {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x08)
-			throw new RuntimeException("Address map size mismatch.");
+			throw new IllegalArgumentException("Address map size mismatch.");
 	}
 	
 	public ArpeggioGrid getArpeggioGrid() {

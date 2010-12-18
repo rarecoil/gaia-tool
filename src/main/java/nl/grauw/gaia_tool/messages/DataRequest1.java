@@ -38,7 +38,7 @@ public class DataRequest1 extends SysexMessage {
 	public DataRequest1(int device_id, Address address, int size) throws InvalidMidiDataException {
 		super();
 		if (device_id != 0x7F && (device_id < 0x10 || device_id > 0x1F))
-			throw new RuntimeException("Invalid device ID.");
+			throw new IllegalArgumentException("Invalid device ID.");
 		
 		byte[] message = new byte[16];
 		message[0] = ROLAND_ID;

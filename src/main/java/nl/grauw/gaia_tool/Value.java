@@ -44,7 +44,7 @@ public class Value {
 	
 	protected void checkRange(int value) {
 		if (value < min || value > max)
-			throw new RuntimeException("Value out of range.");
+			throw new IllegalArgumentException("Value out of range.");
 	}
 	
 	public int getMinimum() {

@@ -44,7 +44,7 @@ public class PatchCommon extends Parameters {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x3D)
-			throw new RuntimeException("Address map size mismatch.");
+			throw new IllegalArgumentException("Address map size mismatch.");
 	}
 	
 	public String getPatchName() {

@@ -159,7 +159,7 @@ public class Gaia extends Observable {
 		} else if (byte1 == 0x20) {
 			return userPatches[parameterData.getAddress().getByte2()].updateParameters(parameterData);
 		} else {
-			throw new RuntimeException("Address not recognised.");
+			throw new IllegalArgumentException("Address not recognised.");
 		}
 	}
 	

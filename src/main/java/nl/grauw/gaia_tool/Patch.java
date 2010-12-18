@@ -50,11 +50,11 @@ public class Patch extends Observable {
 	
 	public Patch(Gaia gaia, int bank, int patch) {
 		if (bank < -1 || bank > 7)
-			throw new RuntimeException("Invalid bank number.");
+			throw new IllegalArgumentException("Invalid bank number.");
 		if (patch < -1 || patch > 7)
-			throw new RuntimeException("Invalid patch number.");
+			throw new IllegalArgumentException("Invalid patch number.");
 		if (bank == -1 && patch != -1)
-			throw new RuntimeException("Bank and patch number must both be -1.");
+			throw new IllegalArgumentException("Bank and patch number must both be -1.");
 		this.gaia = gaia;
 		this.bank = bank;
 		this.patch = patch;
@@ -117,7 +117,7 @@ public class Patch extends Observable {
 			notifyObservers("arpeggioPatterns");
 			return arpeggioPatterns[byte3 - 0x0D];
 		} else {
-			throw new RuntimeException("Address not recognised.");
+			throw new IllegalArgumentException("Address not recognised.");
 		}
 	}
 	

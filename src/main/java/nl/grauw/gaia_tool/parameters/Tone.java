@@ -52,7 +52,7 @@ public class Tone extends Parameters {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x3E)
-			throw new RuntimeException("Address map size mismatch.");
+			throw new IllegalArgumentException("Address map size mismatch.");
 	}
 	
 	public OSCWave getOSCWave() {

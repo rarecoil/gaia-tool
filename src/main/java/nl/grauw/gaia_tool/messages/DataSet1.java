@@ -36,9 +36,9 @@ public class DataSet1 extends SysexMessage {
 		
 		byte[] data = getData();
 		if (data[0] != ROLAND_ID || data[2] != 0 || data[3] != 0 || data[4] != MODEL_SH01 || data[5] != COMMAND_DT1)
-			throw new RuntimeException("Not a SH-01 DT1 MIDI message.");
+			throw new IllegalArgumentException("Not a SH-01 DT1 MIDI message.");
 		if (calculateChecksum(data) != data[data.length - 2])
-			throw new RuntimeException("Checksum mismatch.");
+			throw new IllegalArgumentException("Checksum mismatch.");
 	}
 	
 	public DataSet1(Address address, byte[] data) throws InvalidMidiDataException {
@@ -48,7 +48,7 @@ public class DataSet1 extends SysexMessage {
 	public DataSet1(int device_id, Address address, byte[] data) throws InvalidMidiDataException {
 		super();
 		if (device_id != 0x7F && (device_id < 0x10 || device_id > 0x1F))
-			throw new RuntimeException("Invalid device ID.");
+			throw new IllegalArgumentException("Invalid device ID.");
 		
 		byte[] message = new byte[data.length + 12];
 		message[0] = ROLAND_ID;

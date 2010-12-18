@@ -30,7 +30,7 @@ public class Delay extends Parameters {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x51)
-			throw new RuntimeException("Address map size mismatch.");
+			throw new IllegalArgumentException("Address map size mismatch.");
 	}
 	
 	public DelayType getDelayType() {
@@ -39,7 +39,7 @@ public class Delay extends Parameters {
 	
 	public Value getDelayParameter(int number) {
 		if (number < 1 || number > 20)
-			throw new RuntimeException("Invalid parameter number.");
+			throw new IllegalArgumentException("Invalid parameter number.");
 		
 		int index = (number - 1) * 4;
 		return new SignedValue16Bit(parameterData, 0x01 + index, -20000, 20000);

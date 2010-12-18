@@ -38,7 +38,7 @@ public class IdentityRequest extends UniversalSysex {
 		
 		// stupid super call restriction prevents me from making this assertion earlier
 		if (device_id < 0x10 || device_id > 0x1F)
-			throw new RuntimeException("Invalid device ID.");
+			throw new IllegalArgumentException("Invalid device ID.");
 	}
 	
 }
