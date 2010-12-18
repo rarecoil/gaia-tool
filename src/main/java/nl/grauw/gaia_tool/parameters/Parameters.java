@@ -15,14 +15,15 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
+import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.mvc.Observable;
 
 public class Parameters extends Observable {
 	
-	protected byte[] addressMap;
+	protected ParameterData parameterData;
 	
-	public Parameters(byte[] addressMap) {
-		this.addressMap = addressMap;
+	public Parameters(ParameterData parameterData) {
+		this.parameterData = parameterData;
 	}
 	
 }

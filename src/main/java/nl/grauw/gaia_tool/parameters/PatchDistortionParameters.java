@@ -15,6 +15,7 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
+import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Value;
 
 public class PatchDistortionParameters extends Parameters {
@@ -23,15 +24,15 @@ public class PatchDistortionParameters extends Parameters {
 		OFF, DIST, FUZZ, BIT_CRASH
 	}
 	
-	public PatchDistortionParameters(byte[] addressMap) {
-		super(addressMap);
+	public PatchDistortionParameters(ParameterData parameterData) {
+		super(parameterData);
 		
-		if (addressMap.length < 0x81)
+		if (parameterData.getLength() < 0x81)
 			throw new RuntimeException("Address map size mismatch.");
 	}
 	
 	public DistortionType getDistortionType() {
-		return DistortionType.values()[addressMap[0x00]];
+		return DistortionType.values()[parameterData.getValue(0x00)];
 	}
 	
 	public Value getMFXParameter(int number) {
@@ -39,10 +40,7 @@ public class PatchDistortionParameters extends Parameters {
 			throw new RuntimeException("Invalid parameter number.");
 		
 		int index = (number - 1) * 4;
-		return new Value((addressMap[0x01 + index] << 12 |
-				addressMap[0x02 + index] << 8 |
-				addressMap[0x03 + index] << 4 |
-				addressMap[0x04 + index]) - 32768, -20000, 20000);
+		return new Value(parameterData.get16BitValue(0x01 + index) - 32768, -20000, 20000);
 	}
 	
 	public String toString() {

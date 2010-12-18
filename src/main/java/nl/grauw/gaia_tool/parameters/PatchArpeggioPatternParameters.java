@@ -15,15 +15,16 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
+import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.Value;
 
 public class PatchArpeggioPatternParameters extends Parameters {
 	
-	public PatchArpeggioPatternParameters(byte[] addressMap) {
-		super(addressMap);
+	public PatchArpeggioPatternParameters(ParameterData parameterData) {
+		super(parameterData);
 		
-		if (addressMap.length < 0x42)
+		if (parameterData.getLength() < 0x42)
 			throw new RuntimeException("Address map size mismatch.");
 	}
 	
@@ -33,14 +34,14 @@ public class PatchArpeggioPatternParameters extends Parameters {
 	 * @return The pattern original note.
 	 */
 	public Note getOriginalNote() {
-		return new Note(addressMap[0x00] << 4 | addressMap[0x01]);
+		return new Note(parameterData.get8BitValue(0x00));
 	}
 	
 	public Value getStepData(int step) {
 		if (step < 1 || step > 32)
 			throw new RuntimeException("Invalid step number.");
 		
-		return new Value(addressMap[step * 2] << 4 | addressMap[step * 2 + 1], 0, 128);
+		return new Value(parameterData.get8BitValue(step * 2), 0, 128);
 	}
 	
 	public String toString() {

@@ -2,13 +2,16 @@ package nl.grauw.gaia_tool.parameters;
 
 import static org.junit.Assert.*;
 
+import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.parameters.PatchDistortionParameters.DistortionType;
 
 import org.junit.Test;
 
 public class PatchDistortionParametersTest {
 
-	static byte[] testAddressMap = {
+	static Address testAddress = new Address(0x10, 0x00, 0x04, 0x00);
+	static byte[] testParameterData = {
 		0x03, // 0x00
 		0x08, 0x00, 0x07, 0x0F, 0x08, 0x00, 0x07, 0x0E, // 0x01
 		0x08, 0x00, 0x07, 0x0D, 0x08, 0x00, 0x07, 0x0C, // 0x09
@@ -27,21 +30,26 @@ public class PatchDistortionParametersTest {
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x71
 		0x0C, 0x0A, 0x0F, 0x0E, 0x0B, 0x0A, 0x0B, 0x0E  // 0x79
 	};
+	
+	public static PatchDistortionParameters getTestParameters() {
+		ParameterData data = new ParameterData(testAddress, testParameterData);
+		return new PatchDistortionParameters(data);
+	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchDistortionParameters() {
-		new PatchDistortionParameters(new byte[128]);
+		new PatchDistortionParameters(new ParameterData(testAddress, new byte[128]));
 	}
 
 	@Test
 	public void testGetDistortionType() {
-		PatchDistortionParameters pdp = new PatchDistortionParameters(testAddressMap);
+		PatchDistortionParameters pdp = getTestParameters();
 		assertEquals(DistortionType.BIT_CRASH, pdp.getDistortionType());
 	}
 
 	@Test
 	public void testGetMFXParameter() {
-		PatchDistortionParameters pdp = new PatchDistortionParameters(testAddressMap);
+		PatchDistortionParameters pdp = getTestParameters();
 		assertEquals(127, pdp.getMFXParameter(1).getValue());
 		assertEquals(126, pdp.getMFXParameter(2).getValue());
 		assertEquals(125, pdp.getMFXParameter(3).getValue());
@@ -54,13 +62,13 @@ public class PatchDistortionParametersTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetMFXParameterInvalidLow() {
-		PatchDistortionParameters pdp = new PatchDistortionParameters(testAddressMap);
+		PatchDistortionParameters pdp = getTestParameters();
 		pdp.getMFXParameter(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetMFXParameterInvalidHigh() {
-		PatchDistortionParameters pdp = new PatchDistortionParameters(testAddressMap);
+		PatchDistortionParameters pdp = getTestParameters();
 		pdp.getMFXParameter(33);
 	}
 

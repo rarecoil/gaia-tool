@@ -83,38 +83,38 @@ public class PatchParameterGroup extends Observable {
 		}
 	}
 	
-	public Parameters updateParameters(Address address, byte[] data) {
-		byte byte3 = address.getByte3();
+	public Parameters updateParameters(ParameterData parameterData) {
+		byte byte3 = parameterData.getAddress().getByte3();
 		if (byte3 == 0x00) {
-			common = new PatchCommonParameters(data);
+			common = new PatchCommonParameters(parameterData);
 			notifyObservers("common");
 			return common;
 		} else if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
-			tones[byte3 - 0x01] = new PatchToneParameters(data);
+			tones[byte3 - 0x01] = new PatchToneParameters(parameterData);
 			notifyObservers("tones");
 			return tones[byte3 - 0x01];
 		} else if (byte3 == 0x04) {
-			distortion = new PatchDistortionParameters(data);
+			distortion = new PatchDistortionParameters(parameterData);
 			notifyObservers("distortion");
 			return distortion;
 		} else if (byte3 == 0x06) {
-			flanger = new PatchFlangerParameters(data);
+			flanger = new PatchFlangerParameters(parameterData);
 			notifyObservers("flanger");
 			return flanger;
 		} else if (byte3 == 0x08) {
-			delay = new PatchDelayParameters(data);
+			delay = new PatchDelayParameters(parameterData);
 			notifyObservers("delay");
 			return delay;
 		} else if (byte3 == 0x0A) {
-			reverb = new PatchReverbParameters(data);
+			reverb = new PatchReverbParameters(parameterData);
 			notifyObservers("reverb");
 			return reverb;
 		} else if (byte3 == 0x0C) {
-			arpeggioCommon = new PatchArpeggioCommonParameters(data);
+			arpeggioCommon = new PatchArpeggioCommonParameters(parameterData);
 			notifyObservers("arpeggioCommon");
 			return arpeggioCommon;
 		} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
-			arpeggioPatterns[byte3 - 0x0D] = new PatchArpeggioPatternParameters(data);
+			arpeggioPatterns[byte3 - 0x0D] = new PatchArpeggioPatternParameters(parameterData);
 			notifyObservers("arpeggioPatterns");
 			return arpeggioPatterns[byte3 - 0x0D];
 		} else {

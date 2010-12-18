@@ -15,6 +15,7 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
+import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Value;
 
 public class PatchFlangerParameters extends Parameters {
@@ -23,15 +24,15 @@ public class PatchFlangerParameters extends Parameters {
 		OFF, FLANGER, PHASER, PITCH_SHIFTER
 	}
 	
-	public PatchFlangerParameters(byte[] addressMap) {
-		super(addressMap);
+	public PatchFlangerParameters(ParameterData parameterData) {
+		super(parameterData);
 		
-		if (addressMap.length < 0x51)
+		if (parameterData.getLength() < 0x51)
 			throw new RuntimeException("Address map size mismatch.");
 	}
 	
 	public FlangerType getFlangerType() {
-		return FlangerType.values()[addressMap[0x00]];
+		return FlangerType.values()[parameterData.getValue(0x00)];
 	}
 	
 	public Value getFlangerParameter(int number) {
@@ -39,10 +40,7 @@ public class PatchFlangerParameters extends Parameters {
 			throw new RuntimeException("Invalid parameter number.");
 		
 		int index = (number - 1) * 4;
-		return new Value((addressMap[0x01 + index] << 12 |
-				addressMap[0x02 + index] << 8 |
-				addressMap[0x03 + index] << 4 |
-				addressMap[0x04 + index]) - 32768, -20000, 20000);
+		return new Value(parameterData.get16BitValue(0x01 + index) - 32768, -20000, 20000);
 	}
 	
 	public String toString() {

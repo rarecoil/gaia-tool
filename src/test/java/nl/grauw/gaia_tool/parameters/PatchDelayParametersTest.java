@@ -2,13 +2,16 @@ package nl.grauw.gaia_tool.parameters;
 
 import static org.junit.Assert.*;
 
+import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.parameters.PatchDelayParameters.DelayType;
 
 import org.junit.Test;
 
 public class PatchDelayParametersTest {
 
-	static byte[] testAddressMap = {
+	static Address testAddress = new Address(0x10, 0x00, 0x08, 0x00);
+	static byte[] testParameterData = {
 		0x02, // 0x00
 		0x08, 0x00, 0x07, 0x0F, 0x08, 0x00, 0x07, 0x0E, // 0x01
 		0x08, 0x00, 0x07, 0x0D, 0x08, 0x00, 0x07, 0x0C, // 0x09
@@ -21,21 +24,26 @@ public class PatchDelayParametersTest {
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x41
 		0x0C, 0x0A, 0x0F, 0x0E, 0x0B, 0x0A, 0x0B, 0x0E  // 0x49
 	};
+	
+	public static PatchDelayParameters getTestParameters() {
+		ParameterData data = new ParameterData(testAddress, testParameterData);
+		return new PatchDelayParameters(data);
+	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchDelayParameters() {
-		new PatchDelayParameters(new byte[80]);
+		new PatchDelayParameters(new ParameterData(testAddress, new byte[80]));
 	}
 
 	@Test
 	public void testGetDelayType() {
-		PatchDelayParameters pdp = new PatchDelayParameters(testAddressMap);
+		PatchDelayParameters pdp = getTestParameters();
 		assertEquals(DelayType.PANNING_DELAY, pdp.getDelayType());
 	}
 
 	@Test
 	public void testGetDelayParameter() {
-		PatchDelayParameters pdp = new PatchDelayParameters(testAddressMap);
+		PatchDelayParameters pdp = getTestParameters();
 		assertEquals(127, pdp.getDelayParameter(1).getValue());
 		assertEquals(126, pdp.getDelayParameter(2).getValue());
 		assertEquals(125, pdp.getDelayParameter(3).getValue());
@@ -48,13 +56,13 @@ public class PatchDelayParametersTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetDelayParameterInvalidLow() {
-		PatchDelayParameters pdp = new PatchDelayParameters(testAddressMap);
+		PatchDelayParameters pdp = getTestParameters();
 		pdp.getDelayParameter(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetDelayParameterInvalidHigh() {
-		PatchDelayParameters pdp = new PatchDelayParameters(testAddressMap);
+		PatchDelayParameters pdp = getTestParameters();
 		pdp.getDelayParameter(21);
 	}
 
