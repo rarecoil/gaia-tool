@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.ParameterData;
-import nl.grauw.gaia_tool.parameters.PatchFlangerParameters.FlangerType;
+import nl.grauw.gaia_tool.parameters.Flanger.FlangerType;
 
 import org.junit.Test;
 
@@ -25,25 +25,25 @@ public class PatchFlangerParametersTest {
 		0x0C, 0x0A, 0x0F, 0x0E, 0x0B, 0x0A, 0x0B, 0x0E  // 0x49
 	};
 	
-	public static PatchFlangerParameters getTestParameters() {
+	public static Flanger getTestParameters() {
 		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new PatchFlangerParameters(data);
+		return new Flanger(data);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchFlangerParameters() {
-		new PatchFlangerParameters(new ParameterData(testAddress, new byte[80]));
+		new Flanger(new ParameterData(testAddress, new byte[80]));
 	}
 
 	@Test
 	public void testGetFlangerType() {
-		PatchFlangerParameters pfp = getTestParameters();
+		Flanger pfp = getTestParameters();
 		assertEquals(FlangerType.PITCH_SHIFTER, pfp.getFlangerType());
 	}
 
 	@Test
 	public void testGetFlangerParameter() {
-		PatchFlangerParameters pfp = getTestParameters();
+		Flanger pfp = getTestParameters();
 		assertEquals(127, pfp.getFlangerParameter(1).getValue());
 		assertEquals(126, pfp.getFlangerParameter(2).getValue());
 		assertEquals(125, pfp.getFlangerParameter(3).getValue());
@@ -56,13 +56,13 @@ public class PatchFlangerParametersTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetFlangerParameterInvalidLow() {
-		PatchFlangerParameters pfp = getTestParameters();
+		Flanger pfp = getTestParameters();
 		pfp.getFlangerParameter(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetFlangerParameterInvalidHigh() {
-		PatchFlangerParameters pfp = getTestParameters();
+		Flanger pfp = getTestParameters();
 		pfp.getFlangerParameter(21);
 	}
 

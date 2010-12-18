@@ -34,8 +34,7 @@ import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
 import nl.grauw.gaia_tool.messages.ProgramChangeMessage;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.parameters.Parameters;
-import nl.grauw.gaia_tool.parameters.SystemParameters;
+import nl.grauw.gaia_tool.parameters.System;
 
 /**
  * Represents the Roland GAIA SH-01 synthesizer
@@ -68,7 +67,7 @@ public class Gaia extends Observable {
 	
 	private Log log;
 	
-	private SystemParameters system;
+	private System system;
 	private PatchParameterGroup temporaryPatch;
 	private PatchParameterGroup[] userPatches = new PatchParameterGroup[64];
 	
@@ -152,7 +151,7 @@ public class Gaia extends Observable {
 	public Parameters updateParameters(ParameterData parameterData) {
 		int byte1 = parameterData.getAddress().getByte1();
 		if (byte1 == 0x01) {
-			system = new SystemParameters(parameterData);
+			system = new System(parameterData);
 			notifyObservers("system");
 			return system;
 		} else if (byte1 == 0x10) {
@@ -164,7 +163,7 @@ public class Gaia extends Observable {
 		}
 	}
 	
-	public SystemParameters getSystem() {
+	public System getSystem() {
 		return system;
 	}
 	

@@ -22,10 +22,10 @@ import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.PatchParameterGroup;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
-import nl.grauw.gaia_tool.parameters.Parameters;
 
 public abstract class PatchParameterGroupView extends JPanel implements Observer {
 	

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.ParameterData;
-import nl.grauw.gaia_tool.parameters.PatchDistortionParameters.DistortionType;
+import nl.grauw.gaia_tool.parameters.Distortion.DistortionType;
 
 import org.junit.Test;
 
@@ -31,25 +31,25 @@ public class PatchDistortionParametersTest {
 		0x0C, 0x0A, 0x0F, 0x0E, 0x0B, 0x0A, 0x0B, 0x0E  // 0x79
 	};
 	
-	public static PatchDistortionParameters getTestParameters() {
+	public static Distortion getTestParameters() {
 		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new PatchDistortionParameters(data);
+		return new Distortion(data);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchDistortionParameters() {
-		new PatchDistortionParameters(new ParameterData(testAddress, new byte[128]));
+		new Distortion(new ParameterData(testAddress, new byte[128]));
 	}
 
 	@Test
 	public void testGetDistortionType() {
-		PatchDistortionParameters pdp = getTestParameters();
+		Distortion pdp = getTestParameters();
 		assertEquals(DistortionType.BIT_CRASH, pdp.getDistortionType());
 	}
 
 	@Test
 	public void testGetMFXParameter() {
-		PatchDistortionParameters pdp = getTestParameters();
+		Distortion pdp = getTestParameters();
 		assertEquals(127, pdp.getMFXParameter(1).getValue());
 		assertEquals(126, pdp.getMFXParameter(2).getValue());
 		assertEquals(125, pdp.getMFXParameter(3).getValue());
@@ -62,13 +62,13 @@ public class PatchDistortionParametersTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetMFXParameterInvalidLow() {
-		PatchDistortionParameters pdp = getTestParameters();
+		Distortion pdp = getTestParameters();
 		pdp.getMFXParameter(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetMFXParameterInvalidHigh() {
-		PatchDistortionParameters pdp = getTestParameters();
+		Distortion pdp = getTestParameters();
 		pdp.getMFXParameter(33);
 	}
 

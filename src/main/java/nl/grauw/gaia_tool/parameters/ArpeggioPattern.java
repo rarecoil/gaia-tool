@@ -17,11 +17,12 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Note;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Value;
 
-public class PatchArpeggioPatternParameters extends Parameters {
+public class ArpeggioPattern extends Parameters {
 	
-	public PatchArpeggioPatternParameters(ParameterData parameterData) {
+	public ArpeggioPattern(ParameterData parameterData) {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x42)

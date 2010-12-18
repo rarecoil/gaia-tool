@@ -16,15 +16,16 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Value;
 
-public class PatchDelayParameters extends Parameters {
+public class Delay extends Parameters {
 	
 	public enum DelayType {
 		OFF, DELAY, PANNING_DELAY
 	}
 	
-	public PatchDelayParameters(ParameterData parameterData) {
+	public Delay(ParameterData parameterData) {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x51)

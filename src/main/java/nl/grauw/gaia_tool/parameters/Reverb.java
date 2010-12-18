@@ -16,15 +16,16 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Value;
 
-public class PatchReverbParameters extends Parameters {
+public class Reverb extends Parameters {
 	
 	public enum ReverbType {
 		OFF, REVERB
 	}
 	
-	public PatchReverbParameters(ParameterData parameterData) {
+	public Reverb(ParameterData parameterData) {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x51)

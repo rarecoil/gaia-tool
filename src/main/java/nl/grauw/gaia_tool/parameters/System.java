@@ -16,9 +16,10 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Value;
 
-public class SystemParameters extends Parameters {
+public class System extends Parameters {
 	
 	public enum ClockSource {
 		PATCH, SYSTEM, MIDI, USB
@@ -60,7 +61,7 @@ public class SystemParameters extends Parameters {
 		}
 	}
 	
-	public SystemParameters(ParameterData parameterData) {
+	public System(ParameterData parameterData) {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x6E)

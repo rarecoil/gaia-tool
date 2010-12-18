@@ -23,9 +23,9 @@ import javax.swing.text.DefaultCaret;
 
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
-import nl.grauw.gaia_tool.parameters.Parameters;
 
 public class ParametersView extends JPanel implements Observer {
 	

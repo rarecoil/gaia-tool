@@ -18,15 +18,14 @@ package nl.grauw.gaia_tool;
 import javax.sound.midi.InvalidMidiDataException;
 
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.parameters.Parameters;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
-import nl.grauw.gaia_tool.parameters.PatchCommonParameters;
-import nl.grauw.gaia_tool.parameters.PatchDelayParameters;
-import nl.grauw.gaia_tool.parameters.PatchDistortionParameters;
-import nl.grauw.gaia_tool.parameters.PatchFlangerParameters;
-import nl.grauw.gaia_tool.parameters.PatchReverbParameters;
-import nl.grauw.gaia_tool.parameters.PatchToneParameters;
+import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
+import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
+import nl.grauw.gaia_tool.parameters.PatchCommon;
+import nl.grauw.gaia_tool.parameters.Delay;
+import nl.grauw.gaia_tool.parameters.Distortion;
+import nl.grauw.gaia_tool.parameters.Flanger;
+import nl.grauw.gaia_tool.parameters.Reverb;
+import nl.grauw.gaia_tool.parameters.Tone;
 
 public class PatchParameterGroup extends Observable {
 	
@@ -36,14 +35,14 @@ public class PatchParameterGroup extends Observable {
 	
 	private Address lastRequestAddress;
 	
-	private PatchCommonParameters common;
-	private PatchToneParameters[] tones = new PatchToneParameters[3];
-	private PatchDistortionParameters distortion;
-	private PatchFlangerParameters flanger;
-	private PatchDelayParameters delay;
-	private PatchReverbParameters reverb;
-	private PatchArpeggioCommonParameters arpeggioCommon;
-	private PatchArpeggioPatternParameters[] arpeggioPatterns = new PatchArpeggioPatternParameters[16];
+	private PatchCommon common;
+	private Tone[] tones = new Tone[3];
+	private Distortion distortion;
+	private Flanger flanger;
+	private Delay delay;
+	private Reverb reverb;
+	private ArpeggioCommon arpeggioCommon;
+	private ArpeggioPattern[] arpeggioPatterns = new ArpeggioPattern[16];
 	
 	public PatchParameterGroup(Gaia gaia) {
 		this(gaia, -1, -1);
@@ -86,35 +85,35 @@ public class PatchParameterGroup extends Observable {
 	public Parameters updateParameters(ParameterData parameterData) {
 		byte byte3 = parameterData.getAddress().getByte3();
 		if (byte3 == 0x00) {
-			common = new PatchCommonParameters(parameterData);
+			common = new PatchCommon(parameterData);
 			notifyObservers("common");
 			return common;
 		} else if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
-			tones[byte3 - 0x01] = new PatchToneParameters(parameterData);
+			tones[byte3 - 0x01] = new Tone(parameterData);
 			notifyObservers("tones");
 			return tones[byte3 - 0x01];
 		} else if (byte3 == 0x04) {
-			distortion = new PatchDistortionParameters(parameterData);
+			distortion = new Distortion(parameterData);
 			notifyObservers("distortion");
 			return distortion;
 		} else if (byte3 == 0x06) {
-			flanger = new PatchFlangerParameters(parameterData);
+			flanger = new Flanger(parameterData);
 			notifyObservers("flanger");
 			return flanger;
 		} else if (byte3 == 0x08) {
-			delay = new PatchDelayParameters(parameterData);
+			delay = new Delay(parameterData);
 			notifyObservers("delay");
 			return delay;
 		} else if (byte3 == 0x0A) {
-			reverb = new PatchReverbParameters(parameterData);
+			reverb = new Reverb(parameterData);
 			notifyObservers("reverb");
 			return reverb;
 		} else if (byte3 == 0x0C) {
-			arpeggioCommon = new PatchArpeggioCommonParameters(parameterData);
+			arpeggioCommon = new ArpeggioCommon(parameterData);
 			notifyObservers("arpeggioCommon");
 			return arpeggioCommon;
 		} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
-			arpeggioPatterns[byte3 - 0x0D] = new PatchArpeggioPatternParameters(parameterData);
+			arpeggioPatterns[byte3 - 0x0D] = new ArpeggioPattern(parameterData);
 			notifyObservers("arpeggioPatterns");
 			return arpeggioPatterns[byte3 - 0x0D];
 		} else {
@@ -122,7 +121,7 @@ public class PatchParameterGroup extends Observable {
 		}
 	}
 	
-	public PatchCommonParameters getCommon() {
+	public PatchCommon getCommon() {
 		return common;
 	}
 	
@@ -135,7 +134,7 @@ public class PatchParameterGroup extends Observable {
 	 * @param number The tone number (1 - 3).
 	 * @return The patch tone parameters.
 	 */
-	public PatchToneParameters getTone(int number) {
+	public Tone getTone(int number) {
 		return tones[number - 1];
 	}
 	
@@ -143,7 +142,7 @@ public class PatchParameterGroup extends Observable {
 		loadData(getAddress(0x01 + number - 1), 0x3E);
 	}
 	
-	public PatchDistortionParameters getDistortion() {
+	public Distortion getDistortion() {
 		return distortion;
 	}
 	
@@ -151,7 +150,7 @@ public class PatchParameterGroup extends Observable {
 		loadData(getAddress(0x04), 0x81);
 	}
 	
-	public PatchFlangerParameters getFlanger() {
+	public Flanger getFlanger() {
 		return flanger;
 	}
 	
@@ -159,7 +158,7 @@ public class PatchParameterGroup extends Observable {
 		loadData(getAddress(0x06), 0x51);
 	}
 	
-	public PatchDelayParameters getDelay() {
+	public Delay getDelay() {
 		return delay;
 	}
 	
@@ -167,7 +166,7 @@ public class PatchParameterGroup extends Observable {
 		loadData(getAddress(0x08), 0x51);
 	}
 	
-	public PatchReverbParameters getReverb() {
+	public Reverb getReverb() {
 		return reverb;
 	}
 	
@@ -175,7 +174,7 @@ public class PatchParameterGroup extends Observable {
 		loadData(getAddress(0x0A), 0x51);
 	}
 	
-	public PatchArpeggioCommonParameters getArpeggioCommon() {
+	public ArpeggioCommon getArpeggioCommon() {
 		return arpeggioCommon;
 	}
 	
@@ -188,7 +187,7 @@ public class PatchParameterGroup extends Observable {
 	 * @param note The arpeggio pattern note (1 - 16).
 	 * @return The patch arpeggio pattern parameters.
 	 */
-	public PatchArpeggioPatternParameters getArpeggioPattern(int note) {
+	public ArpeggioPattern getArpeggioPattern(int note) {
 		return arpeggioPatterns[note - 1];
 	}
 	

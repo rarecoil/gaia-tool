@@ -16,9 +16,10 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Value;
 
-public class PatchCommonParameters extends Parameters {
+public class PatchCommon extends Parameters {
 	
 	public enum SyncRingSelect {
 		OFF, SYNC, RING
@@ -37,7 +38,7 @@ public class PatchCommonParameters extends Parameters {
 		NORMAL, REVERSE
 	}
 	
-	public PatchCommonParameters(ParameterData parameterData) {
+	public PatchCommon(ParameterData parameterData) {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x3D)

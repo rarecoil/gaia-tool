@@ -23,26 +23,26 @@ public class PatchArpeggioPatternParametersTest {
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00  // 0x3A
 	};
 	
-	public static PatchArpeggioPatternParameters getTestParameters() {
+	public static ArpeggioPattern getTestParameters() {
 		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new PatchArpeggioPatternParameters(data);
+		return new ArpeggioPattern(data);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchArpeggioPatternParameters() {
-		new PatchArpeggioPatternParameters(new ParameterData(testAddress, new byte[65]));
+		new ArpeggioPattern(new ParameterData(testAddress, new byte[65]));
 	}
 
 	@Test
 	public void testGetOriginalNote() {
-		PatchArpeggioPatternParameters papp = getTestParameters();
+		ArpeggioPattern papp = getTestParameters();
 		assertEquals(NoteName.C, papp.getOriginalNote().getNote());
 		assertEquals(4, papp.getOriginalNote().getOctave());
 	}
 
 	@Test
 	public void testGetStepData() {
-		PatchArpeggioPatternParameters papp = getTestParameters();
+		ArpeggioPattern papp = getTestParameters();
 		assertEquals(0, papp.getStepData(1).getValue());
 		assertEquals(127, papp.getStepData(2).getValue());
 		assertEquals(128, papp.getStepData(3).getValue());
@@ -51,13 +51,13 @@ public class PatchArpeggioPatternParametersTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetStepDataInvalidLow() {
-		PatchArpeggioPatternParameters papp = getTestParameters();
+		ArpeggioPattern papp = getTestParameters();
 		papp.getStepData(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetStepDataInvalidHigh() {
-		PatchArpeggioPatternParameters papp = getTestParameters();
+		ArpeggioPattern papp = getTestParameters();
 		papp.getStepData(33);
 	}
 

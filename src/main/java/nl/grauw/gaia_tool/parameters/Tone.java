@@ -16,9 +16,10 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Value;
 
-public class PatchToneParameters extends Parameters {
+public class Tone extends Parameters {
 	
 	public enum OSCWave {
 		SAW, SQR, PW_SQR, TRI, SINE, NOISE, SUPER_SAW
@@ -46,7 +47,7 @@ public class PatchToneParameters extends Parameters {
 		_1_12TH, _1_16TH, _1_24TH, _1_32ND
 	}
 	
-	public PatchToneParameters(ParameterData parameterData) {
+	public Tone(ParameterData parameterData) {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x3E)

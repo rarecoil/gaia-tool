@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.ParameterData;
-import nl.grauw.gaia_tool.parameters.PatchReverbParameters.ReverbType;
+import nl.grauw.gaia_tool.parameters.Reverb.ReverbType;
 
 import org.junit.Test;
 
@@ -25,25 +25,25 @@ public class PatchReverbParametersTest {
 		0x0C, 0x0A, 0x0F, 0x0E, 0x0B, 0x0A, 0x0B, 0x0E  // 0x49
 	};
 	
-	public static PatchReverbParameters getTestParameters() {
+	public static Reverb getTestParameters() {
 		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new PatchReverbParameters(data);
+		return new Reverb(data);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchReverbParameters() {
-		new PatchReverbParameters(new ParameterData(testAddress, new byte[80]));
+		new Reverb(new ParameterData(testAddress, new byte[80]));
 	}
 
 	@Test
 	public void testGetReverbType() {
-		PatchReverbParameters prp = getTestParameters();
+		Reverb prp = getTestParameters();
 		assertEquals(ReverbType.REVERB, prp.getReverbType());
 	}
 
 	@Test
 	public void testGetReverbParameter() {
-		PatchReverbParameters prp = getTestParameters();
+		Reverb prp = getTestParameters();
 		assertEquals(127, prp.getReverbParameter(1).getValue());
 		assertEquals(126, prp.getReverbParameter(2).getValue());
 		assertEquals(125, prp.getReverbParameter(3).getValue());
@@ -56,13 +56,13 @@ public class PatchReverbParametersTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetReverbParameterInvalidLow() {
-		PatchReverbParameters prp = getTestParameters();
+		Reverb prp = getTestParameters();
 		prp.getReverbParameter(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetReverbParameterInvalidHigh() {
-		PatchReverbParameters prp = getTestParameters();
+		Reverb prp = getTestParameters();
 		prp.getReverbParameter(21);
 	}
 

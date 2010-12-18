@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.ParameterData;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters.ArpeggioDuration;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters.ArpeggioGrid;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters.ArpeggioMotif;
+import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioDuration;
+import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioGrid;
+import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioMotif;
 
 import org.junit.Test;
 
@@ -17,55 +17,55 @@ public class PatchArpeggioCommonParametersTest {
 		0x08, 0x09, 0x0B, 0x3D, 0x64, 0x00, 0x01, 0x08 // 0x00
 	};
 	
-	public static PatchArpeggioCommonParameters getTestParameters() {
+	public static ArpeggioCommon getTestParameters() {
 		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new PatchArpeggioCommonParameters(data);
+		return new ArpeggioCommon(data);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchArpeggioCommonParameters() {
-		new PatchArpeggioCommonParameters(new ParameterData(testAddress, new byte[7]));
+		new ArpeggioCommon(new ParameterData(testAddress, new byte[7]));
 	}
 
 	@Test
 	public void testGetArpeggioGrid() {
-		PatchArpeggioCommonParameters pacp = getTestParameters();
+		ArpeggioCommon pacp = getTestParameters();
 		assertEquals(ArpeggioGrid._16t, pacp.getArpeggioGrid());
 	}
 
 	@Test
 	public void testGetArpeggioDuration() {
-		PatchArpeggioCommonParameters pacp = getTestParameters();
+		ArpeggioCommon pacp = getTestParameters();
 		assertEquals(ArpeggioDuration.FUL, pacp.getArpeggioDuration());
 	}
 
 	@Test
 	public void testGetArpeggioMotif() {
-		PatchArpeggioCommonParameters pacp = getTestParameters();
+		ArpeggioCommon pacp = getTestParameters();
 		assertEquals(ArpeggioMotif.PHRASE, pacp.getArpeggioMotif());
 	}
 
 	@Test
 	public void testGetArpeggioOctaveRange() {
-		PatchArpeggioCommonParameters pacp = getTestParameters();
+		ArpeggioCommon pacp = getTestParameters();
 		assertEquals(-3, pacp.getArpeggioOctaveRange().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioAccentRate() {
-		PatchArpeggioCommonParameters pacp = getTestParameters();
+		ArpeggioCommon pacp = getTestParameters();
 		assertEquals(100, pacp.getArpeggioAccentRate().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioVelocity() {
-		PatchArpeggioCommonParameters pacp = getTestParameters();
+		ArpeggioCommon pacp = getTestParameters();
 		assertEquals(0, pacp.getArpeggioVelocity().getValue());
 	}
 
 	@Test
 	public void testGetEndStep() {
-		PatchArpeggioCommonParameters pacp = getTestParameters();
+		ArpeggioCommon pacp = getTestParameters();
 		assertEquals(24, pacp.getEndStep().getValue());
 	}
 

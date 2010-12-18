@@ -16,27 +16,28 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Value;
 
-public class PatchDistortionParameters extends Parameters {
+public class Flanger extends Parameters {
 	
-	public enum DistortionType {
-		OFF, DIST, FUZZ, BIT_CRASH
+	public enum FlangerType {
+		OFF, FLANGER, PHASER, PITCH_SHIFTER
 	}
 	
-	public PatchDistortionParameters(ParameterData parameterData) {
+	public Flanger(ParameterData parameterData) {
 		super(parameterData);
 		
-		if (parameterData.getLength() < 0x81)
+		if (parameterData.getLength() < 0x51)
 			throw new RuntimeException("Address map size mismatch.");
 	}
 	
-	public DistortionType getDistortionType() {
-		return DistortionType.values()[parameterData.getValue(0x00)];
+	public FlangerType getFlangerType() {
+		return FlangerType.values()[parameterData.getValue(0x00)];
 	}
 	
-	public Value getMFXParameter(int number) {
-		if (number < 1 || number > 32)
+	public Value getFlangerParameter(int number) {
+		if (number < 1 || number > 20)
 			throw new RuntimeException("Invalid parameter number.");
 		
 		int index = (number - 1) * 4;
@@ -44,15 +45,15 @@ public class PatchDistortionParameters extends Parameters {
 	}
 	
 	public String toString() {
-		StringBuilder mfxParameters = new StringBuilder(128);
-		for (int i = 1; i <= 32; i++) {
-			mfxParameters.append(getMFXParameter(i));
-			mfxParameters.append(" ");
+		StringBuilder flangerParameters = new StringBuilder(128);
+		for (int i = 1; i <= 20; i++) {
+			flangerParameters.append(getFlangerParameter(i));
+			flangerParameters.append(" ");
 		}
 		
-		return "Patch distortion parameters:\n" +
-				String.format("Distortion type: %s\n", getDistortionType()) +
-				String.format("MFX parameters: %s\n", mfxParameters);
+		return "Patch flanger parameters:\n" +
+				String.format("Flanger type: %s\n", getFlangerType()) +
+				String.format("Flanger parameters: %s\n", flangerParameters);
 	}
 	
 }

@@ -20,14 +20,14 @@ import javax.swing.JPanel;
 
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters.ArpeggioDuration;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters.ArpeggioGrid;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters.ArpeggioMotif;
+import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
+import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioDuration;
+import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioGrid;
+import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioMotif;
 
 public class PatchArpeggioCommonParametersView extends JPanel implements Observer {
 	
-	private PatchArpeggioCommonParameters parameters;
+	private ArpeggioCommon parameters;
 	
 	private static final long serialVersionUID = 123L;
 	private EnumComboBox gridComboBox;
@@ -38,13 +38,13 @@ public class PatchArpeggioCommonParametersView extends JPanel implements Observe
 	private ValueSpinner velocitySpinner;
 	private ValueSpinner endStepSpinner;
 	
-	public PatchArpeggioCommonParametersView(PatchArpeggioCommonParameters pacp) {
+	public PatchArpeggioCommonParametersView(ArpeggioCommon pacp) {
 		parameters = pacp;
 		initComponents();
 		update(parameters, null);
 	}
 	
-	public PatchArpeggioCommonParameters getModel() {
+	public ArpeggioCommon getModel() {
 		return parameters;
 	}
 	

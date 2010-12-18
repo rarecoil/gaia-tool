@@ -15,8 +15,8 @@
  */
 package nl.grauw.gaia_tool.views;
 
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.PatchParameterGroup;
-import nl.grauw.gaia_tool.parameters.Parameters;
 
 public class PatchDistortionView extends ParameterGroupView {
 

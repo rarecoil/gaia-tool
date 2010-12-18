@@ -16,9 +16,10 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Value;
 
-public class PatchArpeggioCommonParameters extends Parameters {
+public class ArpeggioCommon extends Parameters {
 	
 	public enum ArpeggioGrid {
 		_04_, _08_, _08L, _08H, _08t, _16_, _16L, _16H, _16t;
@@ -43,7 +44,7 @@ public class PatchArpeggioCommonParameters extends Parameters {
 		UP_AND_DOWN_L, UP_AND_DOWN_L_AND_H, UP_AND_DOWN__, RANDOM_L, RANDOM__, PHRASE
 	}
 	
-	public PatchArpeggioCommonParameters(ParameterData parameterData) {
+	public ArpeggioCommon(ParameterData parameterData) {
 		super(parameterData);
 		
 		if (parameterData.getLength() < 0x08)

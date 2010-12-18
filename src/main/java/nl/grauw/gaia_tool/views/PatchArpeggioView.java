@@ -36,8 +36,8 @@ import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.PatchParameterGroup;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioCommonParameters;
-import nl.grauw.gaia_tool.parameters.PatchArpeggioPatternParameters;
+import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
+import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 
 public class PatchArpeggioView extends JPanel implements Observer, ActionListener {
 	
@@ -57,7 +57,7 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 
 		@Override
 		public int getColumnCount() {
-			PatchArpeggioCommonParameters pacp = parameterGroup.getArpeggioCommon();
+			ArpeggioCommon pacp = parameterGroup.getArpeggioCommon();
 			if (pacp == null)
 				return 1;
 			return pacp.getEndStep().getValue() + 1;
@@ -71,7 +71,7 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 
 		@Override
 		public Object getValueAt(int row, int column) {
-			PatchArpeggioPatternParameters papp = parameterGroup.getArpeggioPattern(row + 1);
+			ArpeggioPattern papp = parameterGroup.getArpeggioPattern(row + 1);
 			if (papp == null)
 				return "";
 			if (column == 0) {
@@ -169,7 +169,7 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 	}
 	
 	private PatchArpeggioCommonParametersView getParametersView() {
-		PatchArpeggioCommonParameters pacp = parameterGroup.getArpeggioCommon();
+		ArpeggioCommon pacp = parameterGroup.getArpeggioCommon();
 		if (parametersView == null || parametersView.getModel() != pacp) {
 			if (pacp != null)
 				parametersView = new PatchArpeggioCommonParametersView(pacp);

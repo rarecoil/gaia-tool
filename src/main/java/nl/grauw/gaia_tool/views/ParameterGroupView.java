@@ -27,9 +27,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
-import nl.grauw.gaia_tool.parameters.Parameters;
 
 public abstract class ParameterGroupView extends JPanel implements Observer, ActionListener {
 	
