@@ -11,4 +11,9 @@ public class Value16Bit extends Value {
 		return parameterData.get16BitValue(offset);
 	}
 	
+	@Override
+	public void setValueNoCheck(int value) {
+		parameterData.set16BitValue(offset, value);
+	}
+	
 }

@@ -94,6 +94,10 @@ public class System extends Parameters {
 			public int getValue() {
 				return super.getValue() - 1024;
 			}
+			@Override
+			public void setValueNoCheck(int value) {
+				super.setValueNoCheck(value + 1024);
+			}
 		};
 	}
 	
@@ -130,6 +134,10 @@ public class System extends Parameters {
 			@Override
 			public int getValue() {
 				return super.getValue() + 1;
+			}
+			@Override
+			public void setValueNoCheck(int value) {
+				super.setValueNoCheck(value + 1);
 			}
 		};
 	}

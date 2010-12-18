@@ -45,4 +45,34 @@ public class ParameterData {
 		return new String(data, offset, length);
 	}
 	
+	public void setValue(int offset, int value) {
+		if (value < 0 || value >= 128)
+			throw new RuntimeException("Value out of range.");
+		this.data[offset] = (byte)value;
+	}
+	
+	public void set8BitValue(int offset, int value) {
+		if (value < 0 || value >= 256)
+			throw new RuntimeException("Value out of range.");
+		this.data[offset] = (byte) (value >> 4 & 0x0F);
+		this.data[offset + 1] = (byte) (value & 0x0F);
+	}
+	
+	public void set12BitValue(int offset, int value) {
+		if (value < 0 || value >= 4096)
+			throw new RuntimeException("Value out of range.");
+		this.data[offset] = (byte) (value >> 8 & 0x0F);
+		this.data[offset + 1] = (byte) (value >> 4 & 0x0F);
+		this.data[offset + 2] = (byte) (value & 0x0F);
+	}
+	
+	public void set16BitValue(int offset, int value) {
+		if (value < 0 || value >= 65536)
+			throw new RuntimeException("Value out of range.");
+		this.data[offset] = (byte) (value >> 12 & 0x0F);
+		this.data[offset + 1] = (byte) (value >> 8 & 0x0F);
+		this.data[offset + 2] = (byte) (value >> 4 & 0x0F);
+		this.data[offset + 3] = (byte) (value & 0x0F);
+	}
+	
 }

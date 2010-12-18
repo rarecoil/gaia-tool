@@ -11,4 +11,9 @@ public class SignedValue extends Value {
 		return super.getValue() - 64;
 	}
 	
+	@Override
+	public void setValueNoCheck(int value) {
+		super.setValueNoCheck(value + 64);
+	}
+	
 }

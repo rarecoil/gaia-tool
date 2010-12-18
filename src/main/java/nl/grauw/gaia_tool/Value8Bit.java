@@ -11,4 +11,9 @@ public class Value8Bit extends Value {
 		return parameterData.get8BitValue(offset);
 	}
 	
+	@Override
+	public void setValueNoCheck(int value) {
+		parameterData.set8BitValue(offset, value);
+	}
+	
 }

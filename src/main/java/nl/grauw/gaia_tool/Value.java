@@ -33,6 +33,20 @@ public class Value {
 		return parameterData.getValue(offset);
 	}
 	
+	public void setValue(int value) {
+		checkRange(value);
+		setValueNoCheck(value);
+	}
+	
+	protected void setValueNoCheck(int value) {
+		parameterData.setValue(offset, value);
+	}
+	
+	protected void checkRange(int value) {
+		if (value < min || value > max)
+			throw new RuntimeException("Value out of range.");
+	}
+	
 	public int getMinimum() {
 		return min;
 	}
