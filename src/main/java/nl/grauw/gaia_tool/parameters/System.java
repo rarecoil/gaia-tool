@@ -17,7 +17,10 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.SignedValue;
 import nl.grauw.gaia_tool.Value;
+import nl.grauw.gaia_tool.Value12Bit;
+import nl.grauw.gaia_tool.Value16Bit;
 
 public class System extends Parameters {
 	
@@ -69,24 +72,29 @@ public class System extends Parameters {
 	}
 	
 	public Value getBankSelectMSB() {
-		return new Value(parameterData.getValue(0x00), 0, 127);
+		return new Value(parameterData, 0x00, 0, 127);
 	}
 	
 	public Value getBankSelectLSB() {
-		return new Value(parameterData.getValue(0x01), 0, 127);
+		return new Value(parameterData, 0x01, 0, 127);
 	}
 	
 	public Value getProgramNumber() {
-		return new Value(parameterData.getValue(0x02), 0, 127);
+		return new Value(parameterData, 0x02, 0, 127);
 	}
 	
 	public Value getMasterLevel() {
-		return new Value(parameterData.getValue(0x03), 0, 127);
+		return new Value(parameterData, 0x03, 0, 127);
 	}
 	
 	// -1000 ... 1000 (-100.0 ... 100.0 cent)
 	public Value getMasterTune() {
-		return new Value(parameterData.get16BitValue(0x04) - 1024, -1000, 1000);
+		return new Value16Bit(parameterData, 0x04, -1000, 1000) {
+			@Override
+			public int getValue() {
+				return super.getValue() - 1024;
+			}
+		};
 	}
 	
 	public boolean getPatchRemain() {
@@ -98,7 +106,7 @@ public class System extends Parameters {
 	}
 	
 	public Value getSystemTempo() {
-		return new Value(parameterData.get12BitValue(0x0A), 5, 300);
+		return new Value12Bit(parameterData, 0x0A, 5, 300);
 	}
 	
 	public KeyboardVelocity getKeyboardVelocity() {
@@ -114,11 +122,16 @@ public class System extends Parameters {
 	}
 	
 	public Value getDBeamSens() {
-		return new Value(parameterData.getValue(0x10), 1, 8);
+		return new Value(parameterData, 0x10, 1, 8);
 	}
 	
 	public Value getRxTxChannel() {
-		return new Value(parameterData.getValue(0x11) + 1, 0, 15);
+		return new Value(parameterData, 0x11, 0, 15) {
+			@Override
+			public int getValue() {
+				return super.getValue() + 1;
+			}
+		};
 	}
 	
 	public boolean getMidiUSBThru() {
@@ -162,63 +175,63 @@ public class System extends Parameters {
 	}
 	
 	public Value getRecorderMetronomeLevel() {
-		return new Value(parameterData.getValue(0x1C), 0, 7);
+		return new Value(parameterData, 0x1C, 0, 7);
 	}
 	
 	public Value getReserved1() {
-		return new Value(parameterData.getValue(0x1D), 0, 1);
+		return new Value(parameterData, 0x1D, 0, 1);
 	}
 	
 	public Value getReserved2() {
-		return new Value(parameterData.getValue(0x1E), 0, 127);
+		return new Value(parameterData, 0x1E, 0, 127);
 	}
 	
 	public Value getReserved3() {
-		return new Value(parameterData.getValue(0x1F), 0, 127);
+		return new Value(parameterData, 0x1F, 0, 127);
 	}
 	
 	public Value getReserved4() {
-		return new Value(parameterData.getValue(0x20), 0, 1);
+		return new Value(parameterData, 0x20, 0, 1);
 	}
 	
 	public Value getReserved5() {
-		return new Value(parameterData.getValue(0x21) - 64, -5, 6);
+		return new SignedValue(parameterData, 0x21, -5, 6);
 	}
 	
 	public Value getReserved6() {
-		return new Value(parameterData.getValue(0x22) - 64, -3, 3);
+		return new SignedValue(parameterData, 0x22, -3, 3);
 	}
 	
 	public Value getReserved7() {
-		return new Value(parameterData.getValue(0x23), 0, 127);
+		return new Value(parameterData, 0x23, 0, 127);
 	}
 	
 	public Value getReserved8() {
-		return new Value(parameterData.getValue(0x24), 0, 1);
+		return new Value(parameterData, 0x24, 0, 1);
 	}
 	
 	public Value getReserved9() {
-		return new Value(parameterData.getValue(0x25), 0, 1);
+		return new Value(parameterData, 0x25, 0, 1);
 	}
 	
 	public Value getReserved10() {
-		return new Value(parameterData.getValue(0x26), 0, 1);
+		return new Value(parameterData, 0x26, 0, 1);
 	}
 	
 	public Value getReserved11() {
-		return new Value(parameterData.getValue(0x27), 0, 1);
+		return new Value(parameterData, 0x27, 0, 1);
 	}
 	
 	public Value getReserved12() {
-		return new Value(parameterData.getValue(0x28), 0, 127);
+		return new Value(parameterData, 0x28, 0, 127);
 	}
 	
 	public Value getReserved13() {
-		return new Value(parameterData.getValue(0x29), 0, 127);
+		return new Value(parameterData, 0x29, 0, 127);
 	}
 	
 	public Value getReserved14() {
-		return new Value(parameterData.getValue(0x2A) - 64, -63, 63);
+		return new SignedValue(parameterData, 0x2A, -63, 63);
 	}
 	
 	public boolean getWriteProtect(int bank, int patch) {
@@ -232,11 +245,11 @@ public class System extends Parameters {
 	}
 	
 	public Value getReserved15() {
-		return new Value(parameterData.getValue(0x6C), 0, 15);
+		return new Value(parameterData, 0x6C, 0, 15);
 	}
 	
 	public Value getReserved16() {
-		return new Value(parameterData.getValue(0x6D), 0, 16);
+		return new Value(parameterData, 0x6D, 0, 16);
 	}
 	
 	public String toString() {

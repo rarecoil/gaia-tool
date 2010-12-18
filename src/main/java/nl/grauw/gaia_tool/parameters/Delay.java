@@ -17,6 +17,7 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.SignedValue16Bit;
 import nl.grauw.gaia_tool.Value;
 
 public class Delay extends Parameters {
@@ -41,7 +42,7 @@ public class Delay extends Parameters {
 			throw new RuntimeException("Invalid parameter number.");
 		
 		int index = (number - 1) * 4;
-		return new Value(parameterData.get16BitValue(0x01 + index) - 32768, -20000, 20000);
+		return new SignedValue16Bit(parameterData, 0x01 + index, -20000, 20000);
 	}
 	
 	public String toString() {

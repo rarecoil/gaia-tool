@@ -16,27 +16,21 @@
 package nl.grauw.gaia_tool;
 
 public class Value {
-	
-	private int value;
+
+	protected ParameterData parameterData;
+	protected int offset;
 	private int min;
 	private int max;
 	
-	public Value(int value, int min, int max) {
-		if (value < min || value > max)
-			throw new RuntimeException("Illegal value.");
-		this.value = value;
+	public Value(ParameterData parameterData, int offset, int min, int max) {
+		this.parameterData = parameterData;
+		this.offset = offset;
 		this.min = min;
 		this.max = max;
 	}
 	
 	public int getValue() {
-		return value;
-	}
-	
-	public void setValue(int value) {
-		if (value < min || value > max)
-			throw new RuntimeException("Illegal value.");
-		this.value = value;
+		return parameterData.getValue(offset);
 	}
 	
 	public int getMinimum() {
@@ -48,7 +42,7 @@ public class Value {
 	}
 	
 	public String toString() {
-		return String.valueOf(value);
+		return String.valueOf(getValue());
 	}
 	
 }

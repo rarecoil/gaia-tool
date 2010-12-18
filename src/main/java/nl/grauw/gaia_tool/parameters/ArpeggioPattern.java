@@ -19,6 +19,7 @@ import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Value;
+import nl.grauw.gaia_tool.Value8Bit;
 
 public class ArpeggioPattern extends Parameters {
 	
@@ -42,7 +43,7 @@ public class ArpeggioPattern extends Parameters {
 		if (step < 1 || step > 32)
 			throw new RuntimeException("Invalid step number.");
 		
-		return new Value(parameterData.get8BitValue(step * 2), 0, 128);
+		return new Value8Bit(parameterData, step * 2, 0, 128);
 	}
 	
 	public String toString() {

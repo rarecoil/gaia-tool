@@ -17,7 +17,9 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.SignedValue;
 import nl.grauw.gaia_tool.Value;
+import nl.grauw.gaia_tool.Value8Bit;
 
 public class ArpeggioCommon extends Parameters {
 	
@@ -64,20 +66,20 @@ public class ArpeggioCommon extends Parameters {
 	}
 	
 	public Value getArpeggioOctaveRange() {
-		return new Value(parameterData.getValue(0x03) - 64, -3, +3);
+		return new SignedValue(parameterData, 0x03, -3, +3);
 	}
 	
 	public Value getArpeggioAccentRate() {
-		return new Value(parameterData.getValue(0x04), 0, 100);
+		return new Value(parameterData, 0x04, 0, 100);
 	}
 	
 	// 0 ... 127 (REAL, 1 ... 127)
 	public Value getArpeggioVelocity() {
-		return new Value(parameterData.getValue(0x05), 0, 127);
+		return new Value(parameterData, 0x05, 0, 127);
 	}
 	
 	public Value getEndStep() {
-		return new Value(parameterData.get8BitValue(0x06), 1, 32);
+		return new Value8Bit(parameterData, 0x06, 1, 32);
 	}
 	
 	public String toString() {
