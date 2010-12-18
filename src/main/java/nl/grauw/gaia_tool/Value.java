@@ -15,7 +15,10 @@
  */
 package nl.grauw.gaia_tool;
 
-public class Value {
+import nl.grauw.gaia_tool.mvc.Observable;
+import nl.grauw.gaia_tool.mvc.Observer;
+
+public class Value extends Observable implements Observer {
 
 	protected ParameterData parameterData;
 	protected int offset;
@@ -27,6 +30,8 @@ public class Value {
 		this.offset = offset;
 		this.min = min;
 		this.max = max;
+		
+		parameterData.addObserver(this);
 	}
 	
 	public int getValue() {
@@ -53,6 +58,13 @@ public class Value {
 	
 	public int getMaximum() {
 		return max;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o == parameterData && arg instanceof Integer && (Integer)arg == offset) {
+			notifyObservers();
+		}
 	}
 	
 	public String toString() {

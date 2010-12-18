@@ -2,7 +2,9 @@ package nl.grauw.gaia_tool;
 
 import java.util.Arrays;
 
-public class ParameterData {
+import nl.grauw.gaia_tool.mvc.Observable;
+
+public class ParameterData extends Observable {
 	
 	private Address address;
 	private byte[] data;
@@ -49,6 +51,7 @@ public class ParameterData {
 		if (value < 0 || value >= 128)
 			throw new IllegalArgumentException("Value out of range.");
 		this.data[offset] = (byte)value;
+		this.notifyObservers(offset);
 	}
 	
 	public void set8BitValue(int offset, int value) {
@@ -56,6 +59,7 @@ public class ParameterData {
 			throw new IllegalArgumentException("Value out of range.");
 		this.data[offset] = (byte) (value >> 4 & 0x0F);
 		this.data[offset + 1] = (byte) (value & 0x0F);
+		this.notifyObservers(offset);
 	}
 	
 	public void set12BitValue(int offset, int value) {
@@ -64,6 +68,7 @@ public class ParameterData {
 		this.data[offset] = (byte) (value >> 8 & 0x0F);
 		this.data[offset + 1] = (byte) (value >> 4 & 0x0F);
 		this.data[offset + 2] = (byte) (value & 0x0F);
+		this.notifyObservers(offset);
 	}
 	
 	public void set16BitValue(int offset, int value) {
@@ -73,6 +78,7 @@ public class ParameterData {
 		this.data[offset + 1] = (byte) (value >> 8 & 0x0F);
 		this.data[offset + 2] = (byte) (value >> 4 & 0x0F);
 		this.data[offset + 3] = (byte) (value & 0x0F);
+		this.notifyObservers(offset);
 	}
 	
 }
