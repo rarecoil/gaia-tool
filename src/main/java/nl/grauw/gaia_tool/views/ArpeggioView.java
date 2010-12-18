@@ -28,11 +28,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import nl.grauw.gaia_tool.Note;
+import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
@@ -49,6 +49,24 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 		public ArpeggioModel(Patch patch) {
 			this.patch = patch;
 			patch.addObserver(this);
+			addCommonObserver();
+			addPatternObservers();
+		}
+		
+		private void addCommonObserver() {
+			Parameters common = patch.getArpeggioCommon();
+			if (common != null && !common.hasObserver(this)) {
+				common.addObserver(this);
+			}
+		}
+		
+		private void addPatternObservers() {
+			for (int note = 1; note <= 16; note++) {
+				Parameters pattern = patch.getArpeggioPattern(note);
+				if (pattern != null && !pattern.hasObserver(this)) {
+					pattern.addObserver(this);
+				}
+			}
 		}
 		
 		@Override
@@ -84,8 +102,23 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 
 		@Override
 		public void update(Observable o, Object arg) {
-			if (o == patch && ("arpeggioCommon".equals(arg) || "arpeggioPatterns".equals(arg))) {
-				fireTableDataChanged();
+			if (o == patch) {
+				if ("arpeggioCommon".equals(arg)) {
+					addCommonObserver();
+					fireTableStructureChanged();
+				} else if ("arpeggioPatterns".equals(arg)) {
+					addPatternObservers();
+					fireTableDataChanged();
+				}
+			} else if (o == patch.getArpeggioCommon()) {
+				fireTableStructureChanged();
+			} else if (o instanceof ArpeggioPattern) {
+				for (int note = 1; note <= 16; note++) {
+					if (o == patch.getArpeggioPattern(note)) {
+						fireTableRowsUpdated(note - 1, note - 1);
+						break;
+					}
+				}
 			}
 		}
 	}
