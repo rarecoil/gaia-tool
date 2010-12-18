@@ -41,13 +41,14 @@ import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 
 public class ArpeggioView extends JPanel implements AWTObserver, ActionListener {
 	
-	public class ArpeggioModel extends AbstractTableModel {
+	public class ArpeggioModel extends AbstractTableModel implements AWTObserver {
 		private static final long serialVersionUID = 1L;
 		
 		Patch patch;
 		
 		public ArpeggioModel(Patch patch) {
 			this.patch = patch;
+			patch.addObserver(this);
 		}
 		
 		@Override
@@ -79,6 +80,13 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 				return originalNote.getNoteNumber() == 128 ? "OFF" : originalNote;
 			}
 			return papp.getStepData(column);
+		}
+
+		@Override
+		public void update(Observable o, Object arg) {
+			if (o == patch && ("arpeggioCommon".equals(arg) || "arpeggioPatterns".equals(arg))) {
+				fireTableDataChanged();
+			}
 		}
 	}
 	
@@ -115,7 +123,6 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 			if ("arpeggioCommon".equals(arg)) {
 				updateParametersView();
 			}
-			getPatternTable().tableChanged(new TableModelEvent(getPatternTable().getModel()));
 		}
 	}
 	
