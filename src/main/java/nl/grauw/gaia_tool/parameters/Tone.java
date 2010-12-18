@@ -15,7 +15,7 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
-import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedValue;
 import nl.grauw.gaia_tool.Value;
@@ -48,262 +48,262 @@ public class Tone extends Parameters {
 		_1_12TH, _1_16TH, _1_24TH, _1_32ND
 	}
 	
-	public Tone(ParameterData parameterData) {
-		super(parameterData);
+	public Tone(Address address, byte[] data) {
+		super(address, data);
 		
-		if (parameterData.getLength() < 0x3E)
-			throw new IllegalArgumentException("Address map size mismatch.");
+		if (data.length < 0x3E)
+			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
 	public OSCWave getOSCWave() {
-		return OSCWave.values()[parameterData.getValue(0x00)];
+		return OSCWave.values()[getValue(0x00)];
 	}
 	
 	public OSCWaveVariation getOSCWaveVariation() {
-		return OSCWaveVariation.values()[parameterData.getValue(0x01)];
+		return OSCWaveVariation.values()[getValue(0x01)];
 	}
 	
 	public boolean getReserved1() {
-		return parameterData.getValue(0x02) == 1;
+		return getValue(0x02) == 1;
 	}
 	
 	public Value getOSCPitch() {
-		return new SignedValue(parameterData, 0x03, -24, 24);
+		return new SignedValue(this, 0x03, -24, 24);
 	}
 	
 	public Value getOSCDetune() {
-		return new SignedValue(parameterData, 0x04, -50, 50);
+		return new SignedValue(this, 0x04, -50, 50);
 	}
 	
 	public Value getOSCPulseWidthModDepth() {
-		return new Value(parameterData, 0x05, 0, 127);
+		return new Value(this, 0x05, 0, 127);
 	}
 	
 	public Value getOSCPulseWidth() {
-		return new Value(parameterData, 0x06, 0, 127);
+		return new Value(this, 0x06, 0, 127);
 	}
 	
 	public Value getOSCPitchEnvAttackTime() {
-		return new Value(parameterData, 0x07, 0, 127);
+		return new Value(this, 0x07, 0, 127);
 	}
 	
 	// XXX: ...DecayTime? Slightly inconsistent...
 	public Value getOSCPitchEnvDecay() {
-		return new Value(parameterData, 0x08, 0, 127);
+		return new Value(this, 0x08, 0, 127);
 	}
 	
 	public Value getOSCPitchEnvDepth() {
-		return new SignedValue(parameterData, 0x09, -63, 63);
+		return new SignedValue(this, 0x09, -63, 63);
 	}
 	
 	public FilterMode getFilterMode() {
-		return FilterMode.values()[parameterData.getValue(0x0A)];
+		return FilterMode.values()[getValue(0x0A)];
 	}
 	
 	public FilterSlope getFilterSlope() {
-		return FilterSlope.values()[parameterData.getValue(0x0B)];
+		return FilterSlope.values()[getValue(0x0B)];
 	}
 	
 	public Value getFilterCutoff() {
-		return new Value(parameterData, 0x0C, 0, 127);
+		return new Value(this, 0x0C, 0, 127);
 	}
 	
 	// -10 ... 10 (-100 ... 100)
 	public Value getFilterCutoffKeyfollow() {
-		return new SignedValue(parameterData, 0x0D, -10, 10);
+		return new SignedValue(this, 0x0D, -10, 10);
 	}
 	
 	public Value getFilterEnvVelocitySens() {
-		return new SignedValue(parameterData, 0x0E, -63, 63);
+		return new SignedValue(this, 0x0E, -63, 63);
 	}
 	
 	public Value getFilterResonance() {
-		return new Value(parameterData, 0x0F, 0, 127);
+		return new Value(this, 0x0F, 0, 127);
 	}
 	
 	public Value getFilterEnvAttackTime() {
-		return new Value(parameterData, 0x10, 0, 127);
+		return new Value(this, 0x10, 0, 127);
 	}
 	
 	public Value getFilterEnvDecayTime() {
-		return new Value(parameterData, 0x11, 0, 127);
+		return new Value(this, 0x11, 0, 127);
 	}
 	
 	public Value getFilterEnvSustainLevel() {
-		return new Value(parameterData, 0x12, 0, 127);
+		return new Value(this, 0x12, 0, 127);
 	}
 	
 	public Value getFilterEnvReleaseTime() {
-		return new Value(parameterData, 0x13, 0, 127);
+		return new Value(this, 0x13, 0, 127);
 	}
 	
 	public Value getFilterEnvDepth() {
-		return new SignedValue(parameterData, 0x14, -63, 63);
+		return new SignedValue(this, 0x14, -63, 63);
 	}
 	
 	public Value getAmpLevel() {
-		return new Value(parameterData, 0x15, 0, 127);
+		return new Value(this, 0x15, 0, 127);
 	}
 	
 	public Value getAmpLevelVelocitySens() {
-		return new SignedValue(parameterData, 0x16, -63, 63);
+		return new SignedValue(this, 0x16, -63, 63);
 	}
 	
 	public Value getAmpEnvAttackTime() {
-		return new Value(parameterData, 0x17, 0, 127);
+		return new Value(this, 0x17, 0, 127);
 	}
 	
 	public Value getAmpEnvDecayTime() {
-		return new Value(parameterData, 0x18, 0, 127);
+		return new Value(this, 0x18, 0, 127);
 	}
 	
 	public Value getAmpEnvSustainLevel() {
-		return new Value(parameterData, 0x19, 0, 127);
+		return new Value(this, 0x19, 0, 127);
 	}
 	
 	public Value getAmpEnvReleaseTime() {
-		return new Value(parameterData, 0x1A, 0, 127);
+		return new Value(this, 0x1A, 0, 127);
 	}
 	
 	// -64 ... 63 (L64 ... 63R)
 	public Value getAmpPan() {
-		return new SignedValue(parameterData, 0x1B, -64, 63);
+		return new SignedValue(this, 0x1B, -64, 63);
 	}
 	
 	public LFOShape getLFOShape() {
-		return LFOShape.values()[parameterData.getValue(0x1C)];
+		return LFOShape.values()[getValue(0x1C)];
 	}
 	
 	public Value getLFORate() {
-		return new Value(parameterData, 0x1D, 0, 127);
+		return new Value(this, 0x1D, 0, 127);
 	}
 	
 	public boolean getLFOTempoSyncSwitch() {
-		return parameterData.getValue(0x1E) == 1;
+		return getValue(0x1E) == 1;
 	}
 	
 	public LFOTempoSyncNote getLFOTempoSyncNote() {
-		return LFOTempoSyncNote.values()[parameterData.getValue(0x1F)];
+		return LFOTempoSyncNote.values()[getValue(0x1F)];
 	}
 	
 	public Value getLFOFadeTime() {
-		return new Value(parameterData, 0x20, 0, 127);
+		return new Value(this, 0x20, 0, 127);
 	}
 	
 	public boolean getLFOKeyTrigger() {
-		return parameterData.getValue(0x21) == 1;
+		return getValue(0x21) == 1;
 	}
 	
 	public Value getLFOPitchDepth() {
-		return new SignedValue(parameterData, 0x22, -63, 63);
+		return new SignedValue(this, 0x22, -63, 63);
 	}
 	
 	public Value getLFOFilterDepth() {
-		return new SignedValue(parameterData, 0x23, -63, 63);
+		return new SignedValue(this, 0x23, -63, 63);
 	}
 	
 	public Value getLFOAmpDepth() {
-		return new SignedValue(parameterData, 0x24, -63, 63);
+		return new SignedValue(this, 0x24, -63, 63);
 	}
 	
 	public Value getLFOPanDepth() {
-		return new SignedValue(parameterData, 0x25, -63, 63);
+		return new SignedValue(this, 0x25, -63, 63);
 	}
 	
 	public LFOShape getModulationLFOShape() {
-		return LFOShape.values()[parameterData.getValue(0x26)];
+		return LFOShape.values()[getValue(0x26)];
 	}
 	
 	public Value getModulationLFORate() {
-		return new Value(parameterData, 0x27, 0, 127);
+		return new Value(this, 0x27, 0, 127);
 	}
 	
 	public boolean getModulationLFOTempoSyncSwitch() {
-		return parameterData.getValue(0x28) == 1;
+		return getValue(0x28) == 1;
 	}
 	
 	public LFOTempoSyncNote getModulationLFOTempoSyncNote() {
-		return LFOTempoSyncNote.values()[parameterData.getValue(0x29)];
+		return LFOTempoSyncNote.values()[getValue(0x29)];
 	}
 	
 	public Value getReserved2() {
-		return new Value(parameterData, 0x2A, 0, 127);
+		return new Value(this, 0x2A, 0, 127);
 	}
 	
 	public Value getReserved3() {
-		return new Value(parameterData, 0x2B, 0, 1);
+		return new Value(this, 0x2B, 0, 1);
 	}
 	
 	public Value getModulationLFOPitchDepth() {
-		return new SignedValue(parameterData, 0x2C, -63, 63);
+		return new SignedValue(this, 0x2C, -63, 63);
 	}
 	
 	public Value getModulationLFOFilterDepth() {
-		return new SignedValue(parameterData, 0x2D, -63, 63);
+		return new SignedValue(this, 0x2D, -63, 63);
 	}
 	
 	public Value getModulationLFOAmpDepth() {
-		return new SignedValue(parameterData, 0x2E, -63, 63);
+		return new SignedValue(this, 0x2E, -63, 63);
 	}
 	
 	public Value getModulationLFOPanDepth() {
-		return new SignedValue(parameterData, 0x2F, -63, 63);
+		return new SignedValue(this, 0x2F, -63, 63);
 	}
 	
 	public Value getReserved4() {
-		return new SignedValue(parameterData, 0x30, -63, 63);
+		return new SignedValue(this, 0x30, -63, 63);
 	}
 	
 	public Value getReserved5() {
-		return new SignedValue(parameterData, 0x31, -63, 63);
+		return new SignedValue(this, 0x31, -63, 63);
 	}
 	
 	public Value getReserved6() {
-		return new SignedValue(parameterData, 0x32, -63, 63);
+		return new SignedValue(this, 0x32, -63, 63);
 	}
 	
 	public Value getReserved7() {
-		return new SignedValue(parameterData, 0x33, -63, 63);
+		return new SignedValue(this, 0x33, -63, 63);
 	}
 	
 	public Value getReserved8() {
-		return new Value(parameterData, 0x34, 0, 1);
+		return new Value(this, 0x34, 0, 1);
 	}
 	
 	public Value getReserved9() {
-		return new Value(parameterData, 0x35, 0, 1);
+		return new Value(this, 0x35, 0, 1);
 	}
 	
 	public Value getReserved10() {
-		return new Value(parameterData, 0x36, 0, 1);
+		return new Value(this, 0x36, 0, 1);
 	}
 	
 	public Value getReserved11() {
-		return new Value(parameterData, 0x37, 0, 1);
+		return new Value(this, 0x37, 0, 1);
 	}
 	
 	public Value getReserved12() {
-		return new Value(parameterData, 0x38, 0, 127);
+		return new Value(this, 0x38, 0, 127);
 	}
 	
 	public Value getReserved13() {
-		return new Value(parameterData, 0x39, 0, 127);
+		return new Value(this, 0x39, 0, 127);
 	}
 	
 	public Value getReserved14() {
-		return new Value(parameterData, 0x3A, 0, 127);
+		return new Value(this, 0x3A, 0, 127);
 	}
 	
 	public Value getReserved15() {
-		return new Value(parameterData, 0x3B, 0, 127);
+		return new Value(this, 0x3B, 0, 127);
 	}
 	
 	public Value getReserved16() {
-		return new SignedValue(parameterData, 0x3C, -63, 63);
+		return new SignedValue(this, 0x3C, -63, 63);
 	}
 	
 	public Value getReserved17() {
-		return new SignedValue(parameterData, 0x3D, -63, 63);
+		return new SignedValue(this, 0x3D, -63, 63);
 	}
 	
 	public String toString() {

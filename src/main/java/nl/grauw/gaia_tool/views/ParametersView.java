@@ -22,7 +22,6 @@ import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 
 import nl.grauw.gaia_tool.Address;
-import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
@@ -51,7 +50,7 @@ public class ParametersView extends JPanel implements AWTObserver {
 		if (p != null) {
 			parameters = p;
 		} else {
-			parameters = new Parameters(new ParameterData(new Address(0), new byte[0])) {
+			parameters = new Parameters(new Address(0), new byte[0]) {
 				@Override
 				public String toString() {
 					return "";

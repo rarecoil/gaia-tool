@@ -3,7 +3,6 @@ package nl.grauw.gaia_tool.parameters;
 import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
-import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.parameters.Distortion.DistortionType;
 
 import org.junit.Test;
@@ -32,13 +31,12 @@ public class DistortionTest {
 	};
 	
 	public static Distortion getTestParameters() {
-		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new Distortion(data);
+		return new Distortion(testAddress, testParameterData);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchDistortionParameters() {
-		new Distortion(new ParameterData(testAddress, new byte[128]));
+		new Distortion(testAddress, new byte[128]);
 	}
 
 	@Test

@@ -15,7 +15,7 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
-import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedValue;
 import nl.grauw.gaia_tool.Value;
@@ -64,32 +64,32 @@ public class System extends Parameters {
 		}
 	}
 	
-	public System(ParameterData parameterData) {
-		super(parameterData);
+	public System(Address address, byte[] data) {
+		super(address, data);
 		
-		if (parameterData.getLength() < 0x6E)
-			throw new IllegalArgumentException("Address map size mismatch.");
+		if (data.length < 0x6E)
+			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
 	public Value getBankSelectMSB() {
-		return new Value(parameterData, 0x00, 0, 127);
+		return new Value(this, 0x00, 0, 127);
 	}
 	
 	public Value getBankSelectLSB() {
-		return new Value(parameterData, 0x01, 0, 127);
+		return new Value(this, 0x01, 0, 127);
 	}
 	
 	public Value getProgramNumber() {
-		return new Value(parameterData, 0x02, 0, 127);
+		return new Value(this, 0x02, 0, 127);
 	}
 	
 	public Value getMasterLevel() {
-		return new Value(parameterData, 0x03, 0, 127);
+		return new Value(this, 0x03, 0, 127);
 	}
 	
 	// -1000 ... 1000 (-100.0 ... 100.0 cent)
 	public Value getMasterTune() {
-		return new Value16Bit(parameterData, 0x04, -1000, 1000) {
+		return new Value16Bit(this, 0x04, -1000, 1000) {
 			@Override
 			public int getValue() {
 				return super.getValue() - 1024;
@@ -102,35 +102,35 @@ public class System extends Parameters {
 	}
 	
 	public boolean getPatchRemain() {
-		return parameterData.getValue(0x08) == 1;
+		return getValue(0x08) == 1;
 	}
 	
 	public ClockSource getClockSource() {
-		return ClockSource.values()[parameterData.getValue(0x09)];
+		return ClockSource.values()[getValue(0x09)];
 	}
 	
 	public Value getSystemTempo() {
-		return new Value12Bit(parameterData, 0x0A, 5, 300);
+		return new Value12Bit(this, 0x0A, 5, 300);
 	}
 	
 	public KeyboardVelocity getKeyboardVelocity() {
-		return KeyboardVelocity.values()[parameterData.getValue(0x0D)];
+		return KeyboardVelocity.values()[getValue(0x0D)];
 	}
 	
 	public PedalPolarity getPedalPolarity() {
-		return PedalPolarity.values()[parameterData.getValue(0x0E)];
+		return PedalPolarity.values()[getValue(0x0E)];
 	}
 	
 	public PedalAssign getPedalAssign() {
-		return PedalAssign.values()[parameterData.getValue(0x0F)];
+		return PedalAssign.values()[getValue(0x0F)];
 	}
 	
 	public Value getDBeamSens() {
-		return new Value(parameterData, 0x10, 1, 8);
+		return new Value(this, 0x10, 1, 8);
 	}
 	
 	public Value getRxTxChannel() {
-		return new Value(parameterData, 0x11, 0, 15) {
+		return new Value(this, 0x11, 0, 15) {
 			@Override
 			public int getValue() {
 				return super.getValue() + 1;
@@ -143,121 +143,121 @@ public class System extends Parameters {
 	}
 	
 	public boolean getMidiUSBThru() {
-		return parameterData.getValue(0x12) == 1;
+		return getValue(0x12) == 1;
 	}
 	
 	public boolean getSoftThru() {
-		return parameterData.getValue(0x13) == 1;
+		return getValue(0x13) == 1;
 	}
 	
 	public boolean getRxProgramChange() {
-		return parameterData.getValue(0x14) == 1;
+		return getValue(0x14) == 1;
 	}
 	
 	public boolean getRxBankSelect() {
-		return parameterData.getValue(0x15) == 1;
+		return getValue(0x15) == 1;
 	}
 	
 	public boolean getRemoteKeyboard() {
-		return parameterData.getValue(0x16) == 1;
+		return getValue(0x16) == 1;
 	}
 	
 	public boolean getTxProgramChange() {
-		return parameterData.getValue(0x17) == 1;
+		return getValue(0x17) == 1;
 	}
 	
 	public boolean getTxBankSelect() {
-		return parameterData.getValue(0x18) == 1;
+		return getValue(0x18) == 1;
 	}
 	
 	public boolean getTxEditData() {
-		return parameterData.getValue(0x19) == 1;
+		return getValue(0x19) == 1;
 	}
 	
 	public boolean getRecorderSyncOutput() {
-		return parameterData.getValue(0x1A) == 1;
+		return getValue(0x1A) == 1;
 	}
 	
 	public RecorderMetronomeMode getRecorderMetronomeMode() {
-		return RecorderMetronomeMode.values()[parameterData.getValue(0x1B)];
+		return RecorderMetronomeMode.values()[getValue(0x1B)];
 	}
 	
 	public Value getRecorderMetronomeLevel() {
-		return new Value(parameterData, 0x1C, 0, 7);
+		return new Value(this, 0x1C, 0, 7);
 	}
 	
 	public Value getReserved1() {
-		return new Value(parameterData, 0x1D, 0, 1);
+		return new Value(this, 0x1D, 0, 1);
 	}
 	
 	public Value getReserved2() {
-		return new Value(parameterData, 0x1E, 0, 127);
+		return new Value(this, 0x1E, 0, 127);
 	}
 	
 	public Value getReserved3() {
-		return new Value(parameterData, 0x1F, 0, 127);
+		return new Value(this, 0x1F, 0, 127);
 	}
 	
 	public Value getReserved4() {
-		return new Value(parameterData, 0x20, 0, 1);
+		return new Value(this, 0x20, 0, 1);
 	}
 	
 	public Value getReserved5() {
-		return new SignedValue(parameterData, 0x21, -5, 6);
+		return new SignedValue(this, 0x21, -5, 6);
 	}
 	
 	public Value getReserved6() {
-		return new SignedValue(parameterData, 0x22, -3, 3);
+		return new SignedValue(this, 0x22, -3, 3);
 	}
 	
 	public Value getReserved7() {
-		return new Value(parameterData, 0x23, 0, 127);
+		return new Value(this, 0x23, 0, 127);
 	}
 	
 	public Value getReserved8() {
-		return new Value(parameterData, 0x24, 0, 1);
+		return new Value(this, 0x24, 0, 1);
 	}
 	
 	public Value getReserved9() {
-		return new Value(parameterData, 0x25, 0, 1);
+		return new Value(this, 0x25, 0, 1);
 	}
 	
 	public Value getReserved10() {
-		return new Value(parameterData, 0x26, 0, 1);
+		return new Value(this, 0x26, 0, 1);
 	}
 	
 	public Value getReserved11() {
-		return new Value(parameterData, 0x27, 0, 1);
+		return new Value(this, 0x27, 0, 1);
 	}
 	
 	public Value getReserved12() {
-		return new Value(parameterData, 0x28, 0, 127);
+		return new Value(this, 0x28, 0, 127);
 	}
 	
 	public Value getReserved13() {
-		return new Value(parameterData, 0x29, 0, 127);
+		return new Value(this, 0x29, 0, 127);
 	}
 	
 	public Value getReserved14() {
-		return new SignedValue(parameterData, 0x2A, -63, 63);
+		return new SignedValue(this, 0x2A, -63, 63);
 	}
 	
 	public boolean getWriteProtect(int bank, int patch) {
 		if (bank < 0 || bank > 7 || patch < 0 || patch > 7)
 			throw new IllegalArgumentException("Invalid bank or patch number.");
-		return parameterData.getValue(0x2B + bank * 8 + patch) == 1;
+		return getValue(0x2B + bank * 8 + patch) == 1;
 	}
 	
 	public PowerSaveMode getPowerSaveMode() {
-		return PowerSaveMode.values()[parameterData.getValue(0x6B)];
+		return PowerSaveMode.values()[getValue(0x6B)];
 	}
 	
 	public Value getReserved15() {
-		return new Value(parameterData, 0x6C, 0, 15);
+		return new Value(this, 0x6C, 0, 15);
 	}
 	
 	public Value getReserved16() {
-		return new Value(parameterData, 0x6D, 0, 16);
+		return new Value(this, 0x6D, 0, 16);
 	}
 	
 	public String toString() {

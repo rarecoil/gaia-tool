@@ -3,7 +3,6 @@ package nl.grauw.gaia_tool.parameters;
 import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
-import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.parameters.Reverb.ReverbType;
 
 import org.junit.Test;
@@ -26,13 +25,12 @@ public class ReverbTest {
 	};
 	
 	public static Reverb getTestParameters() {
-		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new Reverb(data);
+		return new Reverb(testAddress, testParameterData);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchReverbParameters() {
-		new Reverb(new ParameterData(testAddress, new byte[80]));
+		new Reverb(testAddress, new byte[80]);
 	}
 
 	@Test

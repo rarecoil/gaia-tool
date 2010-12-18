@@ -15,7 +15,7 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
-import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedValue16Bit;
 import nl.grauw.gaia_tool.Value;
@@ -26,15 +26,15 @@ public class Delay extends Parameters {
 		OFF, DELAY, PANNING_DELAY
 	}
 	
-	public Delay(ParameterData parameterData) {
-		super(parameterData);
+	public Delay(Address address, byte[] data) {
+		super(address, data);
 		
-		if (parameterData.getLength() < 0x51)
-			throw new IllegalArgumentException("Address map size mismatch.");
+		if (data.length < 0x51)
+			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
 	public DelayType getDelayType() {
-		return DelayType.values()[parameterData.getValue(0x00)];
+		return DelayType.values()[getValue(0x00)];
 	}
 	
 	public Value getDelayParameter(int number) {
@@ -42,7 +42,7 @@ public class Delay extends Parameters {
 			throw new IllegalArgumentException("Invalid parameter number.");
 		
 		int index = (number - 1) * 4;
-		return new SignedValue16Bit(parameterData, 0x01 + index, -20000, 20000);
+		return new SignedValue16Bit(this, 0x01 + index, -20000, 20000);
 	}
 	
 	public String toString() {

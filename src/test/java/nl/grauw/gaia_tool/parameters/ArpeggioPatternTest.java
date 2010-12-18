@@ -3,7 +3,6 @@ package nl.grauw.gaia_tool.parameters;
 import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
-import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Note.NoteName;
 
 import org.junit.Test;
@@ -24,13 +23,12 @@ public class ArpeggioPatternTest {
 	};
 	
 	public static ArpeggioPattern getTestParameters() {
-		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new ArpeggioPattern(data);
+		return new ArpeggioPattern(testAddress, testParameterData);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchArpeggioPatternParameters() {
-		new ArpeggioPattern(new ParameterData(testAddress, new byte[65]));
+		new ArpeggioPattern(testAddress, new byte[65]);
 	}
 
 	@Test

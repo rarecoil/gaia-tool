@@ -3,7 +3,6 @@ package nl.grauw.gaia_tool.parameters;
 import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
-import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.parameters.Delay.DelayType;
 
 import org.junit.Test;
@@ -26,13 +25,12 @@ public class DelayTest {
 	};
 	
 	public static Delay getTestParameters() {
-		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new Delay(data);
+		return new Delay(testAddress, testParameterData);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchDelayParameters() {
-		new Delay(new ParameterData(testAddress, new byte[80]));
+		new Delay(testAddress, new byte[80]);
 	}
 
 	@Test

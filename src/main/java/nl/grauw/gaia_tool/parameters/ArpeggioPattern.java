@@ -15,19 +15,19 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
-import nl.grauw.gaia_tool.ParameterData;
-import nl.grauw.gaia_tool.Note;
+import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.Value;
 import nl.grauw.gaia_tool.Value8Bit;
 
 public class ArpeggioPattern extends Parameters {
 	
-	public ArpeggioPattern(ParameterData parameterData) {
-		super(parameterData);
+	public ArpeggioPattern(Address address, byte[] data) {
+		super(address, data);
 		
-		if (parameterData.getLength() < 0x42)
-			throw new IllegalArgumentException("Address map size mismatch.");
+		if (data.length < 0x42)
+			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
 	/**
@@ -36,14 +36,14 @@ public class ArpeggioPattern extends Parameters {
 	 * @return The pattern original note.
 	 */
 	public Note getOriginalNote() {
-		return new Note(parameterData.get8BitValue(0x00));
+		return new Note(get8BitValue(0x00));
 	}
 	
 	public Value getStepData(int step) {
 		if (step < 1 || step > 32)
 			throw new IllegalArgumentException("Invalid step number.");
 		
-		return new Value8Bit(parameterData, step * 2, 0, 128);
+		return new Value8Bit(this, step * 2, 0, 128);
 	}
 	
 	public String toString() {

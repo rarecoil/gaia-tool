@@ -2,18 +2,18 @@ package nl.grauw.gaia_tool;
 
 public class Value16Bit extends Value {
 	
-	public Value16Bit(ParameterData parameterData, int offset, int min, int max) {
-		super(parameterData, offset, min, max);
+	public Value16Bit(Parameters parameters, int offset, int min, int max) {
+		super(parameters, offset, min, max);
 	}
 	
 	@Override
 	public int getValue() {
-		return parameterData.get16BitValue(offset);
+		return parameters.get16BitValue(offset);
 	}
 	
 	@Override
 	public void setValueNoCheck(int value) {
-		parameterData.set16BitValue(offset, value);
+		parameters.set16BitValue(offset, value);
 	}
 	
 }

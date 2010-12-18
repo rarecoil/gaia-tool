@@ -15,7 +15,7 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
-import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedValue16Bit;
 import nl.grauw.gaia_tool.Value;
@@ -26,15 +26,15 @@ public class Flanger extends Parameters {
 		OFF, FLANGER, PHASER, PITCH_SHIFTER
 	}
 	
-	public Flanger(ParameterData parameterData) {
-		super(parameterData);
+	public Flanger(Address address, byte[] data) {
+		super(address, data);
 		
-		if (parameterData.getLength() < 0x51)
-			throw new IllegalArgumentException("Address map size mismatch.");
+		if (data.length < 0x51)
+			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
 	public FlangerType getFlangerType() {
-		return FlangerType.values()[parameterData.getValue(0x00)];
+		return FlangerType.values()[getValue(0x00)];
 	}
 	
 	public Value getFlangerParameter(int number) {
@@ -42,7 +42,7 @@ public class Flanger extends Parameters {
 			throw new IllegalArgumentException("Invalid parameter number.");
 		
 		int index = (number - 1) * 4;
-		return new SignedValue16Bit(parameterData, 0x01 + index, -20000, 20000);
+		return new SignedValue16Bit(this, 0x01 + index, -20000, 20000);
 	}
 	
 	public String toString() {

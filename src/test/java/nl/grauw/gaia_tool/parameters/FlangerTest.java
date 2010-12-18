@@ -3,7 +3,6 @@ package nl.grauw.gaia_tool.parameters;
 import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
-import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.parameters.Flanger.FlangerType;
 
 import org.junit.Test;
@@ -26,13 +25,12 @@ public class FlangerTest {
 	};
 	
 	public static Flanger getTestParameters() {
-		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new Flanger(data);
+		return new Flanger(testAddress, testParameterData);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchFlangerParameters() {
-		new Flanger(new ParameterData(testAddress, new byte[80]));
+		new Flanger(testAddress, new byte[80]);
 	}
 
 	@Test

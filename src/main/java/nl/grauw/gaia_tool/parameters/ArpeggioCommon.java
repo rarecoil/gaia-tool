@@ -15,7 +15,7 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
-import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedValue;
 import nl.grauw.gaia_tool.Value;
@@ -46,40 +46,40 @@ public class ArpeggioCommon extends Parameters {
 		UP_AND_DOWN_L, UP_AND_DOWN_L_AND_H, UP_AND_DOWN__, RANDOM_L, RANDOM__, PHRASE
 	}
 	
-	public ArpeggioCommon(ParameterData parameterData) {
-		super(parameterData);
+	public ArpeggioCommon(Address address, byte[] data) {
+		super(address, data);
 		
-		if (parameterData.getLength() < 0x08)
-			throw new IllegalArgumentException("Address map size mismatch.");
+		if (data.length < 0x08)
+			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
 	public ArpeggioGrid getArpeggioGrid() {
-		return ArpeggioGrid.values()[parameterData.getValue(0x00)];
+		return ArpeggioGrid.values()[getValue(0x00)];
 	}
 	
 	public ArpeggioDuration getArpeggioDuration() {
-		return ArpeggioDuration.values()[parameterData.getValue(0x01)];
+		return ArpeggioDuration.values()[getValue(0x01)];
 	}
 	
 	public ArpeggioMotif getArpeggioMotif() {
-		return ArpeggioMotif.values()[parameterData.getValue(0x02)];
+		return ArpeggioMotif.values()[getValue(0x02)];
 	}
 	
 	public Value getArpeggioOctaveRange() {
-		return new SignedValue(parameterData, 0x03, -3, +3);
+		return new SignedValue(this, 0x03, -3, +3);
 	}
 	
 	public Value getArpeggioAccentRate() {
-		return new Value(parameterData, 0x04, 0, 100);
+		return new Value(this, 0x04, 0, 100);
 	}
 	
 	// 0 ... 127 (REAL, 1 ... 127)
 	public Value getArpeggioVelocity() {
-		return new Value(parameterData, 0x05, 0, 127);
+		return new Value(this, 0x05, 0, 127);
 	}
 	
 	public Value getEndStep() {
-		return new Value8Bit(parameterData, 0x06, 1, 32);
+		return new Value8Bit(this, 0x06, 1, 32);
 	}
 	
 	public String toString() {

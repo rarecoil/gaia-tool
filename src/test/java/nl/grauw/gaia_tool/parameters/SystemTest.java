@@ -6,7 +6,6 @@ package nl.grauw.gaia_tool.parameters;
 import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
-import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.parameters.System.ClockSource;
 import nl.grauw.gaia_tool.parameters.System.KeyboardVelocity;
 import nl.grauw.gaia_tool.parameters.System.PedalAssign;
@@ -42,13 +41,12 @@ public class SystemTest {
 	};
 	
 	public static System getTestParameters() {
-		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new System(data);
+		return new System(testAddress, testParameterData);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testSystemParameters() {
-		new System(new ParameterData(testAddress, new byte[109]));
+		new System(testAddress, new byte[109]);
 	}
 
 	@Test

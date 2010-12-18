@@ -3,7 +3,6 @@ package nl.grauw.gaia_tool.parameters;
 import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
-import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.parameters.Tone.FilterMode;
 import nl.grauw.gaia_tool.parameters.Tone.FilterSlope;
 import nl.grauw.gaia_tool.parameters.Tone.LFOShape;
@@ -28,13 +27,12 @@ public class ToneTest {
 	};
 	
 	public static Tone getTestParameters() {
-		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new Tone(data);
+		return new Tone(testAddress, testParameterData);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchToneParameters() {
-		new Tone(new ParameterData(testAddress, new byte[61]));
+		new Tone(testAddress, new byte[61]);
 	}
 
 	@Test

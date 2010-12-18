@@ -2,8 +2,8 @@ package nl.grauw.gaia_tool;
 
 public class SignedValue extends Value {
 	
-	public SignedValue(ParameterData parameterData, int offset, int min, int max) {
-		super(parameterData, offset, min, max);
+	public SignedValue(Parameters parameters, int offset, int min, int max) {
+		super(parameters, offset, min, max);
 	}
 	
 	@Override

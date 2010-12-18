@@ -20,22 +20,22 @@ import nl.grauw.gaia_tool.mvc.Observer;
 
 public class Value extends Observable implements Observer {
 
-	protected ParameterData parameterData;
+	protected Parameters parameters;
 	protected int offset;
 	private int min;
 	private int max;
 	
-	public Value(ParameterData parameterData, int offset, int min, int max) {
-		this.parameterData = parameterData;
+	public Value(Parameters parameters, int offset, int min, int max) {
+		this.parameters = parameters;
 		this.offset = offset;
 		this.min = min;
 		this.max = max;
 		
-		parameterData.addObserver(this);
+		parameters.addObserver(this);
 	}
 	
 	public int getValue() {
-		return parameterData.getValue(offset);
+		return parameters.getValue(offset);
 	}
 	
 	public void setValue(int value) {
@@ -44,7 +44,7 @@ public class Value extends Observable implements Observer {
 	}
 	
 	protected void setValueNoCheck(int value) {
-		parameterData.setValue(offset, value);
+		parameters.setValue(offset, value);
 	}
 	
 	protected void checkRange(int value) {
@@ -62,7 +62,7 @@ public class Value extends Observable implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o == parameterData && arg instanceof Integer && (Integer)arg == offset) {
+		if (o == parameters && arg instanceof Integer && (Integer)arg == offset) {
 			notifyObservers();
 		}
 	}

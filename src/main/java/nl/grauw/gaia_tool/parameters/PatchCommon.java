@@ -15,7 +15,7 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
-import nl.grauw.gaia_tool.ParameterData;
+import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedValue;
 import nl.grauw.gaia_tool.Value;
@@ -40,203 +40,203 @@ public class PatchCommon extends Parameters {
 		NORMAL, REVERSE
 	}
 	
-	public PatchCommon(ParameterData parameterData) {
-		super(parameterData);
+	public PatchCommon(Address address, byte[] data) {
+		super(address, data);
 		
-		if (parameterData.getLength() < 0x3D)
-			throw new IllegalArgumentException("Address map size mismatch.");
+		if (data.length < 0x3D)
+			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
 	public String getPatchName() {
-		return parameterData.getString(0x00, 12);
+		return getString(0x00, 12);
 	}
 	
 	public Value getPatchLevel() {
-		return new Value(parameterData, 0x0C, 0, 127);
+		return new Value(this, 0x0C, 0, 127);
 	}
 	
 	public Value getPatchTempo() {
-		return new Value12Bit(parameterData, 0x0D, 5, 300);
+		return new Value12Bit(this, 0x0D, 5, 300);
 	}
 	
 	public boolean getArpeggioSwitch() {
-		return parameterData.getValue(0x10) == 1;
+		return getValue(0x10) == 1;
 	}
 	
 	public Value getReserved1() {
-		return new Value(parameterData, 0x11, 0, 1);
+		return new Value(this, 0x11, 0, 1);
 	}
 	
 	public boolean getPortamentoSwitch() {
-		return parameterData.getValue(0x12) == 1;
+		return getValue(0x12) == 1;
 	}
 	
 	public Value getPortamentoTime() {
-		return new Value(parameterData, 0x13, 0, 127);
+		return new Value(this, 0x13, 0, 127);
 	}
 	
 	public boolean getMonoSwitch() {
-		return parameterData.getValue(0x14) == 1;
+		return getValue(0x14) == 1;
 	}
 	
 	public Value getOctaveShift() {
-		return new SignedValue(parameterData, 0x15, -3, 3);
+		return new SignedValue(this, 0x15, -3, 3);
 	}
 	
 	public Value getPitchBendRangeUp() {
-		return new Value(parameterData, 0x16, 0, 24);
+		return new Value(this, 0x16, 0, 24);
 	}
 	
 	public Value getPitchBendRangeDown() {
-		return new Value(parameterData, 0x17, 0, 24);
+		return new Value(this, 0x17, 0, 24);
 	}
 	
 	public Value getReserved2() {
-		return new Value(parameterData, 0x18, 0, 1);
+		return new Value(this, 0x18, 0, 1);
 	}
 	
 	public boolean getTone1Switch() {
-		return parameterData.getValue(0x19) == 1;
+		return getValue(0x19) == 1;
 	}
 	
 	public boolean getTone1Select() {
-		return parameterData.getValue(0x1A) == 1;
+		return getValue(0x1A) == 1;
 	}
 	
 	public boolean getTone2Switch() {
-		return parameterData.getValue(0x1B) == 1;
+		return getValue(0x1B) == 1;
 	}
 	
 	public boolean getTone2Select() {
-		return parameterData.getValue(0x1C) == 1;
+		return getValue(0x1C) == 1;
 	}
 	
 	public boolean getTone3Switch() {
-		return parameterData.getValue(0x1D) == 1;
+		return getValue(0x1D) == 1;
 	}
 	
 	public boolean getTone3Select() {
-		return parameterData.getValue(0x1E) == 1;
+		return getValue(0x1E) == 1;
 	}
 	
 	public SyncRingSelect getSyncRingSelect() {
-		return SyncRingSelect.values()[parameterData.getValue(0x1F)];
+		return SyncRingSelect.values()[getValue(0x1F)];
 	}
 	
 	public boolean getEffectsMasterSwitch() {
-		return parameterData.getValue(0x20) == 1;
+		return getValue(0x20) == 1;
 	}
 	
 	public Value getReserved3() {
-		return new Value(parameterData, 0x21, 0, 3);
+		return new Value(this, 0x21, 0, 3);
 	}
 	
 	public boolean getDelayTempoSyncSwitch() {
-		return parameterData.getValue(0x22) == 1;
+		return getValue(0x22) == 1;
 	}
 	
 	public boolean getLowBoostSwitch() {
-		return parameterData.getValue(0x23) == 1;
+		return getValue(0x23) == 1;
 	}
 	
 	public DBeamAssign getDBeamAssign() {
-		return DBeamAssign.values()[parameterData.getValue(0x24)];
+		return DBeamAssign.values()[getValue(0x24)];
 	}
 	
 	public Value getReserved4() {
-		return new Value(parameterData, 0x25, 0, 1);
+		return new Value(this, 0x25, 0, 1);
 	}
 	
 	public Value getReserved5() {
-		return new Value(parameterData, 0x26, 0, 1);
+		return new Value(this, 0x26, 0, 1);
 	}
 	
 	public Value getReserved6() {
-		return new Value(parameterData, 0x27, 0, 1);
+		return new Value(this, 0x27, 0, 1);
 	}
 	
 	public Value getReserved7() {
-		return new Value(parameterData, 0x28, 0, 1);
+		return new Value(this, 0x28, 0, 1);
 	}
 	
 	public DBeamPolarity getDBeamPolarity() {
-		return DBeamPolarity.values()[parameterData.getValue(0x29)];
+		return DBeamPolarity.values()[getValue(0x29)];
 	}
 	
 	public boolean getEffectsDistortionSelect() {
-		return parameterData.getValue(0x2A) == 1;
+		return getValue(0x2A) == 1;
 	}
 	
 	public boolean getEffectsFlangerSelect() {
-		return parameterData.getValue(0x2B) == 1;
+		return getValue(0x2B) == 1;
 	}
 	
 	public boolean getEffectsDelaySelect() {
-		return parameterData.getValue(0x2C) == 1;
+		return getValue(0x2C) == 1;
 	}
 	
 	public boolean getEffectsReverbSelect() {
-		return parameterData.getValue(0x2D) == 1;
+		return getValue(0x2D) == 1;
 	}
 	
 	public Value getReserved8() {
-		return new Value(parameterData, 0x2E, 0, 1);
+		return new Value(this, 0x2E, 0, 1);
 	}
 	
 	public Value getReserved9() {
-		return new Value(parameterData, 0x2F, 0, 1);
+		return new Value(this, 0x2F, 0, 1);
 	}
 	
 	public Value getReserved10() {
-		return new Value(parameterData, 0x30, 0, 1);
+		return new Value(this, 0x30, 0, 1);
 	}
 	
 	public Value getReserved11() {
-		return new Value(parameterData, 0x31, 0, 1);
+		return new Value(this, 0x31, 0, 1);
 	}
 	
 	public Value getReserved12() {
-		return new Value(parameterData, 0x32, 0, 1);
+		return new Value(this, 0x32, 0, 1);
 	}
 	
 	public Value getReserved13() {
-		return new Value(parameterData, 0x33, 0, 1);
+		return new Value(this, 0x33, 0, 1);
 	}
 	
 	public Value getReserved14() {
-		return new Value(parameterData, 0x34, 0, 127);
+		return new Value(this, 0x34, 0, 127);
 	}
 	
 	public Value getReserved15() {
-		return new Value(parameterData, 0x35, 0, 127);
+		return new Value(this, 0x35, 0, 127);
 	}
 	
 	public Value getReserved16() {
-		return new Value(parameterData, 0x36, 0, 127);
+		return new Value(this, 0x36, 0, 127);
 	}
 	
 	public Value getReserved17() {
-		return new Value(parameterData, 0x37, 0, 127);
+		return new Value(this, 0x37, 0, 127);
 	}
 	
 	public Value getReserved18() {
-		return new Value(parameterData, 0x38, 0, 127);
+		return new Value(this, 0x38, 0, 127);
 	}
 	
 	public Value getReserved19() {
-		return new Value(parameterData, 0x39, 0, 127);
+		return new Value(this, 0x39, 0, 127);
 	}
 	
 	public Value getReserved20() {
-		return new SignedValue(parameterData, 0x3A, -63, 63);
+		return new SignedValue(this, 0x3A, -63, 63);
 	}
 	
 	public Value getReserved21() {
-		return new SignedValue(parameterData, 0x3B, -63, 63);
+		return new SignedValue(this, 0x3B, -63, 63);
 	}
 	
 	public Value getReserved22() {
-		return new SignedValue(parameterData, 0x3C, -63, 63);
+		return new SignedValue(this, 0x3C, -63, 63);
 	}
 	
 	public String toString() {

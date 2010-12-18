@@ -6,7 +6,6 @@ package nl.grauw.gaia_tool.parameters;
 import static org.junit.Assert.*;
 
 import nl.grauw.gaia_tool.Address;
-import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.parameters.PatchCommon.DBeamAssign;
 import nl.grauw.gaia_tool.parameters.PatchCommon.DBeamPolarity;
 import nl.grauw.gaia_tool.parameters.PatchCommon.SyncRingSelect;
@@ -32,13 +31,12 @@ public class PatchCommonTest {
 	};
 	
 	public static PatchCommon getTestParameters() {
-		ParameterData data = new ParameterData(testAddress, testParameterData);
-		return new PatchCommon(data);
+		return new PatchCommon(testAddress, testParameterData);
 	}
 	
 	@Test (expected = RuntimeException.class)
 	public void testPatchCommonParameters() {
-		new PatchCommon(new ParameterData(testAddress, new byte[60]));
+		new PatchCommon(testAddress, new byte[60]);
 	}
 
 	@Test
