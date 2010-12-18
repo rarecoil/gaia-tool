@@ -8,7 +8,7 @@ import nl.grauw.gaia_tool.parameters.Reverb.ReverbType;
 
 import org.junit.Test;
 
-public class PatchReverbParametersTest {
+public class ReverbTest {
 
 	static Address testAddress = new Address(0x10, 0x00, 0x0A, 0x00);
 	static byte[] testParameterData = {

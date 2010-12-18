@@ -8,7 +8,7 @@ import nl.grauw.gaia_tool.Note.NoteName;
 
 import org.junit.Test;
 
-public class PatchArpeggioPatternParametersTest {
+public class ArpeggioPatternTest {
 
 	static Address testAddress = new Address(0x10, 0x00, 0x0D, 0x00);
 	static byte[] testParameterData = {

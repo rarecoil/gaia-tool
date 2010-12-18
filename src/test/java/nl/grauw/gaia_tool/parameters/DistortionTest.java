@@ -8,7 +8,7 @@ import nl.grauw.gaia_tool.parameters.Distortion.DistortionType;
 
 import org.junit.Test;
 
-public class PatchDistortionParametersTest {
+public class DistortionTest {
 
 	static Address testAddress = new Address(0x10, 0x00, 0x04, 0x00);
 	static byte[] testParameterData = {

@@ -13,7 +13,7 @@ import nl.grauw.gaia_tool.parameters.Tone.OSCWaveVariation;
 
 import org.junit.Test;
 
-public class PatchToneParametersTest {
+public class ToneTest {
 	
 	static Address testAddress = new Address(0x10, 0x00, 0x01, 0x00);
 	static byte[] testParameterData = {

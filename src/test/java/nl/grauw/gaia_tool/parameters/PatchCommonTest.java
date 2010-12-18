@@ -17,7 +17,7 @@ import org.junit.Test;
  * @author Grauw
  *
  */
-public class PatchCommonParametersTest {
+public class PatchCommonTest {
 	
 	static Address testAddress = new Address(0x10, 0x00, 0x00, 0x00);
 	static byte[] testParameterData = {

@@ -20,7 +20,7 @@ import org.junit.Test;
  * @author Grauw
  *
  */
-public class SystemParametersTest {
+public class SystemTest {
 	
 	static Address testAddress = new Address(0x01, 0x00, 0x00, 0x00);
 	static byte[] testParameterData = {

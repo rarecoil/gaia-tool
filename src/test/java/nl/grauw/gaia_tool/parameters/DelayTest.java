@@ -8,7 +8,7 @@ import nl.grauw.gaia_tool.parameters.Delay.DelayType;
 
 import org.junit.Test;
 
-public class PatchDelayParametersTest {
+public class DelayTest {
 
 	static Address testAddress = new Address(0x10, 0x00, 0x08, 0x00);
 	static byte[] testParameterData = {

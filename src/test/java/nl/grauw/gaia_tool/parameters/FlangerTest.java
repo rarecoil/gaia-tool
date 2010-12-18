@@ -8,7 +8,7 @@ import nl.grauw.gaia_tool.parameters.Flanger.FlangerType;
 
 import org.junit.Test;
 
-public class PatchFlangerParametersTest {
+public class FlangerTest {
 
 	static Address testAddress = new Address(0x10, 0x00, 0x06, 0x00);
 	static byte[] testParameterData = {

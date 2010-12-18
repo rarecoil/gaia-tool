@@ -10,7 +10,7 @@ import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioMotif;
 
 import org.junit.Test;
 
-public class PatchArpeggioCommonParametersTest {
+public class ArpeggioCommonTest {
 
 	static Address testAddress = new Address(0x10, 0x00, 0x0C, 0x00);
 	static byte[] testParameterData = {
