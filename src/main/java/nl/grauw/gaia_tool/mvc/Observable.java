@@ -69,8 +69,8 @@ public class Observable {
 		}
 	}
 	
-	public void hasObserver(Observer o) {
-		observers.contains(o);
+	public boolean hasObserver(Observer o) {
+		return observers.contains(o);
 	}
 	
 	public void notifyObservers(Object arg) {
