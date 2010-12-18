@@ -106,7 +106,7 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 	}
 
 	private String getTitle() {
-		return "Patch arpeggio common";
+		return "Patch arpeggio";
 	}
 	
 	@Override
