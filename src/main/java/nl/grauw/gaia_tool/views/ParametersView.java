@@ -24,10 +24,10 @@ import javax.swing.text.DefaultCaret;
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.ParameterData;
 import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 
-public class ParametersView extends JPanel implements Observer {
+public class ParametersView extends JPanel implements AWTObserver {
 	
 	private Parameters parameters;
 	
@@ -52,6 +52,7 @@ public class ParametersView extends JPanel implements Observer {
 			parameters = p;
 		} else {
 			parameters = new Parameters(new ParameterData(new Address(0), new byte[0])) {
+				@Override
 				public String toString() {
 					return "";
 				}

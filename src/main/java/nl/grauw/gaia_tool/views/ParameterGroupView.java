@@ -28,10 +28,10 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 
-public abstract class ParameterGroupView extends JPanel implements Observer, ActionListener {
+public abstract class ParameterGroupView extends JPanel implements AWTObserver, ActionListener {
 	
 	private static final long serialVersionUID = 123L;
 	private JLabel titleLabel;

@@ -22,10 +22,10 @@ import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 
 import nl.grauw.gaia_tool.Log;
+import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 
-public class LogView extends JPanel implements Observer {
+public class LogView extends JPanel implements AWTObserver {
 	
 	private Log log;
 

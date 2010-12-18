@@ -18,14 +18,14 @@ package nl.grauw.gaia_tool.views;
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 
+import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioDuration;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioGrid;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioMotif;
 
-public class ArpeggioCommonView extends JPanel implements Observer {
+public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	
 	private ArpeggioCommon parameters;
 	

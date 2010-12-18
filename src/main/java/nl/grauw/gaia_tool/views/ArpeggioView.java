@@ -34,12 +34,12 @@ import javax.swing.table.TableModel;
 
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 
-public class ArpeggioView extends JPanel implements Observer, ActionListener {
+public class ArpeggioView extends JPanel implements AWTObserver, ActionListener {
 	
 	public class ArpeggioModel extends AbstractTableModel {
 		private static final long serialVersionUID = 1L;

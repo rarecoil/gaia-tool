@@ -23,12 +23,12 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 
 import nl.grauw.gaia_tool.Value;
+import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 
 public class ValueSpinner extends JPanel {
 	
-	public class ValueSpinnerModel extends AbstractSpinnerModel implements Observer {
+	public class ValueSpinnerModel extends AbstractSpinnerModel implements AWTObserver {
 		
 		private Value value;
 

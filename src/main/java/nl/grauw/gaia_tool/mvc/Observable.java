@@ -53,6 +53,8 @@ public class Observable {
 	Vector<WeakReference<Observer>> observers = new Vector<WeakReference<Observer>>();
 	
 	public void addObserver(Observer o) {
+		if (o instanceof JComponent && !(o instanceof AWTObserver))
+			throw new IllegalArgumentException("Swing components and all observers that directly interact with them must implement AWTObserver.");
 		observers.add(new WeakReference<Observer>(o));
 	}
 	
@@ -76,7 +78,7 @@ public class Observable {
 			WeakReference<Observer> wro = observers.get(i);
 			Observer o = wro.get();
 			if (o != null) {
-				if (o instanceof JComponent && !SwingUtilities.isEventDispatchThread()) {
+				if (o instanceof AWTObserver && !SwingUtilities.isEventDispatchThread()) {
 					SwingUtilities.invokeLater(new UpdateRunnable(o, this, arg));
 				} else {
 					o.update(this, arg);
