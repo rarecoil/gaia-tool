@@ -27,7 +27,7 @@ import nl.grauw.gaia_tool.parameters.Flanger;
 import nl.grauw.gaia_tool.parameters.Reverb;
 import nl.grauw.gaia_tool.parameters.Tone;
 
-public class PatchParameterGroup extends Observable {
+public class Patch extends Observable {
 	
 	private Gaia gaia;
 	private int bank;
@@ -44,11 +44,11 @@ public class PatchParameterGroup extends Observable {
 	private ArpeggioCommon arpeggioCommon;
 	private ArpeggioPattern[] arpeggioPatterns = new ArpeggioPattern[16];
 	
-	public PatchParameterGroup(Gaia gaia) {
+	public Patch(Gaia gaia) {
 		this(gaia, -1, -1);
 	}
 	
-	public PatchParameterGroup(Gaia gaia, int bank, int patch) {
+	public Patch(Gaia gaia, int bank, int patch) {
 		if (bank < -1 || bank > 7)
 			throw new RuntimeException("Invalid bank number.");
 		if (patch < -1 || patch > 7)

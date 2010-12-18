@@ -16,28 +16,28 @@
 package nl.grauw.gaia_tool.views;
 
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.PatchParameterGroup;
+import nl.grauw.gaia_tool.Patch;
 
 public class ReverbView extends ParameterGroupView {
 
 	private static final long serialVersionUID = 1L;
 
-	private PatchParameterGroup parameterGroup;
+	private Patch patch;
 	
-	public ReverbView(PatchParameterGroup ppg) {
-		parameterGroup = ppg;
-		ppg.addObserver(this);
+	public ReverbView(Patch patch) {
+		this.patch = patch;
+		patch.addObserver(this);
 		initComponents();
 	}
 
 	@Override
 	public Parameters getParameters() {
-		return parameterGroup.getReverb();
+		return patch.getReverb();
 	}
 	
 	@Override
 	public void loadParameters() {
-		parameterGroup.loadReverb();
+		patch.loadReverb();
 	}
 
 	@Override

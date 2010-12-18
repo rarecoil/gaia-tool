@@ -16,30 +16,30 @@
 package nl.grauw.gaia_tool.views;
 
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.PatchParameterGroup;
+import nl.grauw.gaia_tool.Patch;
 
 public class ToneView extends ParameterGroupView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private PatchParameterGroup parameterGroup;
+	private Patch patch;
 	int toneNumber;
 	
-	public ToneView(PatchParameterGroup ppg, int toneNumber) {
-		parameterGroup = ppg;
-		ppg.addObserver(this);
+	public ToneView(Patch patch, int toneNumber) {
+		this.patch = patch;
+		patch.addObserver(this);
 		this.toneNumber = toneNumber;
 		initComponents();
 	}
 	
 	@Override
 	public Parameters getParameters() {
-		return parameterGroup.getTone(toneNumber);
+		return patch.getTone(toneNumber);
 	}
 	
 	@Override
 	public void loadParameters() {
-		parameterGroup.loadTone(toneNumber);
+		patch.loadTone(toneNumber);
 	}
 
 	@Override

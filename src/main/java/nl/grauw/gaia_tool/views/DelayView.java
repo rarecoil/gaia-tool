@@ -16,28 +16,28 @@
 package nl.grauw.gaia_tool.views;
 
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.PatchParameterGroup;
+import nl.grauw.gaia_tool.Patch;
 
 public class DelayView extends ParameterGroupView {
 
 	private static final long serialVersionUID = 1L;
 	
-	private PatchParameterGroup parameterGroup;
+	private Patch patch;
 	
-	public DelayView(PatchParameterGroup ppg) {
-		parameterGroup = ppg;
-		ppg.addObserver(this);
+	public DelayView(Patch patch) {
+		this.patch = patch;
+		patch.addObserver(this);
 		initComponents();
 	}
 
 	@Override
 	public Parameters getParameters() {
-		return parameterGroup.getDelay();
+		return patch.getDelay();
 	}
 	
 	@Override
 	public void loadParameters() {
-		parameterGroup.loadDelay();
+		patch.loadDelay();
 	}
 
 	@Override

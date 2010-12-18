@@ -16,28 +16,28 @@
 package nl.grauw.gaia_tool.views;
 
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.PatchParameterGroup;
+import nl.grauw.gaia_tool.Patch;
 
 public class DistortionView extends ParameterGroupView {
 
 	private static final long serialVersionUID = 1L;
 
-	private PatchParameterGroup parameterGroup;
+	private Patch patch;
 	
-	public DistortionView(PatchParameterGroup ppg) {
-		parameterGroup = ppg;
-		ppg.addObserver(this);
+	public DistortionView(Patch patch) {
+		this.patch = patch;
+		patch.addObserver(this);
 		initComponents();
 	}
 
 	@Override
 	public Parameters getParameters() {
-		return parameterGroup.getDistortion();
+		return patch.getDistortion();
 	}
 	
 	@Override
 	public void loadParameters() {
-		parameterGroup.loadDistortion();
+		patch.loadDistortion();
 	}
 
 	@Override

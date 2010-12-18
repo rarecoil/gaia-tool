@@ -68,14 +68,14 @@ public class Gaia extends Observable {
 	private Log log;
 	
 	private System system;
-	private PatchParameterGroup temporaryPatch;
-	private PatchParameterGroup[] userPatches = new PatchParameterGroup[64];
+	private Patch temporaryPatch;
+	private Patch[] userPatches = new Patch[64];
 	
 	public Gaia() {
-		temporaryPatch = new PatchParameterGroup(this);
+		temporaryPatch = new Patch(this);
 		for (int bank = 0; bank < 8; bank++) {
 			for (int patch = 0; patch < 8; patch++) {
-				userPatches[bank << 3 | patch] = new PatchParameterGroup(this, bank, patch);
+				userPatches[bank << 3 | patch] = new Patch(this, bank, patch);
 			}
 		}
 		log = new Log();
@@ -175,11 +175,11 @@ public class Gaia extends Observable {
 		}
 	}
 	
-	public PatchParameterGroup getTemporaryPatch() {
+	public Patch getTemporaryPatch() {
 		return temporaryPatch;
 	}
 	
-	public PatchParameterGroup getUserPatch(int bank, int patch) {
+	public Patch getUserPatch(int bank, int patch) {
 		return userPatches[bank << 3 | patch];
 	}
 	

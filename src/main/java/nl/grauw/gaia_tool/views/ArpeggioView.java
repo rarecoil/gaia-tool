@@ -33,7 +33,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import nl.grauw.gaia_tool.Note;
-import nl.grauw.gaia_tool.PatchParameterGroup;
+import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
@@ -44,10 +44,10 @@ public class ArpeggioView extends JPanel implements Observer, ActionListener {
 	public class ArpeggioModel extends AbstractTableModel {
 		private static final long serialVersionUID = 1L;
 		
-		PatchParameterGroup parameterGroup;
+		Patch patch;
 		
-		public ArpeggioModel(PatchParameterGroup ppg) {
-			parameterGroup = ppg;
+		public ArpeggioModel(Patch patch) {
+			this.patch = patch;
 		}
 		
 		@Override
@@ -57,7 +57,7 @@ public class ArpeggioView extends JPanel implements Observer, ActionListener {
 
 		@Override
 		public int getColumnCount() {
-			ArpeggioCommon pacp = parameterGroup.getArpeggioCommon();
+			ArpeggioCommon pacp = patch.getArpeggioCommon();
 			if (pacp == null)
 				return 1;
 			return pacp.getEndStep().getValue() + 1;
@@ -71,7 +71,7 @@ public class ArpeggioView extends JPanel implements Observer, ActionListener {
 
 		@Override
 		public Object getValueAt(int row, int column) {
-			ArpeggioPattern papp = parameterGroup.getArpeggioPattern(row + 1);
+			ArpeggioPattern papp = patch.getArpeggioPattern(row + 1);
 			if (papp == null)
 				return "";
 			if (column == 0) {
@@ -84,7 +84,7 @@ public class ArpeggioView extends JPanel implements Observer, ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 
-	private PatchParameterGroup parameterGroup;
+	private Patch patch;
 	
 	private JLabel titleLabel;
 	private JButton reloadButton;
@@ -93,16 +93,16 @@ public class ArpeggioView extends JPanel implements Observer, ActionListener {
 	private JScrollPane patternScrollPane;
 	private JTable patternTable;
 	
-	public ArpeggioView(PatchParameterGroup ppg) {
-		parameterGroup = ppg;
-		ppg.addObserver(this);
-		if (ppg.getArpeggioCommon() == null)
+	public ArpeggioView(Patch patch) {
+		this.patch = patch;
+		patch.addObserver(this);
+		if (patch.getArpeggioCommon() == null)
 			loadParameters();
 		initComponents();
 	}
 	
 	private void loadParameters() {
-		parameterGroup.loadArpeggioAll();
+		patch.loadArpeggioAll();
 	}
 
 	private String getTitle() {
@@ -111,7 +111,7 @@ public class ArpeggioView extends JPanel implements Observer, ActionListener {
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o == parameterGroup) {
+		if (o == patch) {
 			if ("arpeggioCommon".equals(arg)) {
 				updateParametersView();
 			}
@@ -169,7 +169,7 @@ public class ArpeggioView extends JPanel implements Observer, ActionListener {
 	}
 	
 	private ArpeggioCommonView getParametersView() {
-		ArpeggioCommon pacp = parameterGroup.getArpeggioCommon();
+		ArpeggioCommon pacp = patch.getArpeggioCommon();
 		if (parametersView == null || parametersView.getModel() != pacp) {
 			if (pacp != null)
 				parametersView = new ArpeggioCommonView(pacp);
@@ -205,7 +205,7 @@ public class ArpeggioView extends JPanel implements Observer, ActionListener {
 	
 	private JTable getPatternTable() {
 		if (patternTable == null) {
-			TableModel model = new ArpeggioModel(parameterGroup);
+			TableModel model = new ArpeggioModel(patch);
 			patternTable = new JTable(model);
 			patternTable.setFillsViewportHeight(true);
 		}

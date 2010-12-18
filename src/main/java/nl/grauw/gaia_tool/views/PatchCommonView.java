@@ -16,28 +16,28 @@
 package nl.grauw.gaia_tool.views;
 
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.PatchParameterGroup;
+import nl.grauw.gaia_tool.Patch;
 
 public class PatchCommonView extends ParameterGroupView {
 
 	private static final long serialVersionUID = 1L;
 	
-	private PatchParameterGroup parameterGroup;
+	private Patch patch;
 	
-	public PatchCommonView(PatchParameterGroup ppg) {
-		parameterGroup = ppg;
-		ppg.addObserver(this);
+	public PatchCommonView(Patch patch) {
+		this.patch = patch;
+		patch.addObserver(this);
 		initComponents();
 	}
 
 	@Override
 	public Parameters getParameters() {
-		return parameterGroup.getCommon();
+		return patch.getCommon();
 	}
 	
 	@Override
 	public void loadParameters() {
-		parameterGroup.loadCommon();
+		patch.loadCommon();
 	}
 
 	@Override

@@ -16,28 +16,28 @@
 package nl.grauw.gaia_tool.views;
 
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.PatchParameterGroup;
+import nl.grauw.gaia_tool.Patch;
 
 public class FlangerView extends ParameterGroupView {
 
 	private static final long serialVersionUID = 1L;
 
-	private PatchParameterGroup parameterGroup;
+	private Patch patch;
 	
-	public FlangerView(PatchParameterGroup ppg) {
-		parameterGroup = ppg;
-		ppg.addObserver(this);
+	public FlangerView(Patch patch) {
+		this.patch = patch;
+		patch.addObserver(this);
 		initComponents();
 	}
 
 	@Override
 	public Parameters getParameters() {
-		return parameterGroup.getFlanger();
+		return patch.getFlanger();
 	}
 	
 	@Override
 	public void loadParameters() {
-		parameterGroup.loadFlanger();
+		patch.loadFlanger();
 	}
 
 	@Override

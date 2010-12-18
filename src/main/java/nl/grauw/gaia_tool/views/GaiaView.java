@@ -42,7 +42,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.Gaia;
-import nl.grauw.gaia_tool.PatchParameterGroup;
+import nl.grauw.gaia_tool.Patch;
 
 public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, WindowListener {
 	
@@ -329,7 +329,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		return new JPanel();
 	}
 	
-	public JPanel getPatchParameterByName(PatchParameterGroup ppg, TreePath tp, int startIndex) {
+	public JPanel getPatchParameterByName(Patch ppg, TreePath tp, int startIndex) {
 		DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex);
 		String desc = (String)node1.getUserObject();
 		if ("Common".equals(desc)) {
