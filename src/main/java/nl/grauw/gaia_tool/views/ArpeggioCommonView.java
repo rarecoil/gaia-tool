@@ -25,7 +25,7 @@ import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioDuration;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioGrid;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioMotif;
 
-public class PatchArpeggioCommonParametersView extends JPanel implements Observer {
+public class ArpeggioCommonView extends JPanel implements Observer {
 	
 	private ArpeggioCommon parameters;
 	
@@ -38,7 +38,7 @@ public class PatchArpeggioCommonParametersView extends JPanel implements Observe
 	private ValueSpinner velocitySpinner;
 	private ValueSpinner endStepSpinner;
 	
-	public PatchArpeggioCommonParametersView(ArpeggioCommon pacp) {
+	public ArpeggioCommonView(ArpeggioCommon pacp) {
 		parameters = pacp;
 		initComponents();
 		update(parameters, null);

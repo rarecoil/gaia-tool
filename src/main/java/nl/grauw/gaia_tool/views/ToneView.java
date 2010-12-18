@@ -18,31 +18,33 @@ package nl.grauw.gaia_tool.views;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.PatchParameterGroup;
 
-public class PatchReverbView extends ParameterGroupView {
-
-	private static final long serialVersionUID = 1L;
-
-	private PatchParameterGroup parameterGroup;
+public class ToneView extends ParameterGroupView {
 	
-	public PatchReverbView(PatchParameterGroup ppg) {
+	private static final long serialVersionUID = 1L;
+	
+	private PatchParameterGroup parameterGroup;
+	int toneNumber;
+	
+	public ToneView(PatchParameterGroup ppg, int toneNumber) {
 		parameterGroup = ppg;
 		ppg.addObserver(this);
+		this.toneNumber = toneNumber;
 		initComponents();
 	}
-
+	
 	@Override
 	public Parameters getParameters() {
-		return parameterGroup.getReverb();
+		return parameterGroup.getTone(toneNumber);
 	}
 	
 	@Override
 	public void loadParameters() {
-		parameterGroup.loadReverb();
+		parameterGroup.loadTone(toneNumber);
 	}
 
 	@Override
 	public String getTitle() {
-		return "Patch reverb";
+		return "Patch tone " + toneNumber;
 	}
 
 }

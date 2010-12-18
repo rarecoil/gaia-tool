@@ -18,13 +18,13 @@ package nl.grauw.gaia_tool.views;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.PatchParameterGroup;
 
-public class PatchFlangerView extends ParameterGroupView {
+public class DistortionView extends ParameterGroupView {
 
 	private static final long serialVersionUID = 1L;
 
 	private PatchParameterGroup parameterGroup;
 	
-	public PatchFlangerView(PatchParameterGroup ppg) {
+	public DistortionView(PatchParameterGroup ppg) {
 		parameterGroup = ppg;
 		ppg.addObserver(this);
 		initComponents();
@@ -32,17 +32,17 @@ public class PatchFlangerView extends ParameterGroupView {
 
 	@Override
 	public Parameters getParameters() {
-		return parameterGroup.getFlanger();
+		return parameterGroup.getDistortion();
 	}
 	
 	@Override
 	public void loadParameters() {
-		parameterGroup.loadFlanger();
+		parameterGroup.loadDistortion();
 	}
 
 	@Override
 	public String getTitle() {
-		return "Patch flanger";
+		return "Patch distortion";
 	}
 
 }

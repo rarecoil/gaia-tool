@@ -39,7 +39,7 @@ import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 
-public class PatchArpeggioView extends JPanel implements Observer, ActionListener {
+public class ArpeggioView extends JPanel implements Observer, ActionListener {
 	
 	public class ArpeggioModel extends AbstractTableModel {
 		private static final long serialVersionUID = 1L;
@@ -89,11 +89,11 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 	private JLabel titleLabel;
 	private JButton reloadButton;
 	private JPanel parametersContainer;
-	private PatchArpeggioCommonParametersView parametersView;
+	private ArpeggioCommonView parametersView;
 	private JScrollPane patternScrollPane;
 	private JTable patternTable;
 	
-	public PatchArpeggioView(PatchParameterGroup ppg) {
+	public ArpeggioView(PatchParameterGroup ppg) {
 		parameterGroup = ppg;
 		ppg.addObserver(this);
 		if (ppg.getArpeggioCommon() == null)
@@ -121,7 +121,7 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 	
 	private void updateParametersView() {
 		JPanel pc = getParametersContainer();
-		PatchArpeggioCommonParametersView pv = getParametersView();
+		ArpeggioCommonView pv = getParametersView();
 		if (pc.getComponentCount() == 0 || pc.getComponent(0) != pv) {
 			pc.removeAll();
 			if (pv != null)
@@ -161,18 +161,18 @@ public class PatchArpeggioView extends JPanel implements Observer, ActionListene
 		if (parametersContainer == null) {
 			parametersContainer = new JPanel();
 			parametersContainer.setLayout(new BoxLayout(parametersContainer, BoxLayout.X_AXIS));
-			PatchArpeggioCommonParametersView pv = getParametersView();
+			ArpeggioCommonView pv = getParametersView();
 			if (pv != null)
 				parametersContainer.add(pv);
 		}
 		return parametersContainer;
 	}
 	
-	private PatchArpeggioCommonParametersView getParametersView() {
+	private ArpeggioCommonView getParametersView() {
 		ArpeggioCommon pacp = parameterGroup.getArpeggioCommon();
 		if (parametersView == null || parametersView.getModel() != pacp) {
 			if (pacp != null)
-				parametersView = new PatchArpeggioCommonParametersView(pacp);
+				parametersView = new ArpeggioCommonView(pacp);
 		}
 		return parametersView;
 	}

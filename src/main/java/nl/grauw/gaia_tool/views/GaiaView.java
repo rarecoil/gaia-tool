@@ -335,21 +335,21 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if ("Common".equals(desc)) {
 			return new PatchCommonView(ppg);
 		} else if ("Tone 1".equals(desc)) {
-			return new PatchToneView(ppg, 1);
+			return new ToneView(ppg, 1);
 		} else if ("Tone 2".equals(desc)) {
-			return new PatchToneView(ppg, 2);
+			return new ToneView(ppg, 2);
 		} else if ("Tone 3".equals(desc)) {
-			return new PatchToneView(ppg, 3);
+			return new ToneView(ppg, 3);
 		} else if ("Distortion".equals(desc)) {
-			return new PatchDistortionView(ppg);
+			return new DistortionView(ppg);
 		} else if ("Flanger".equals(desc)) {
-			return new PatchFlangerView(ppg);
+			return new FlangerView(ppg);
 		} else if ("Delay".equals(desc)) {
-			return new PatchDelayView(ppg);
+			return new DelayView(ppg);
 		} else if ("Reverb".equals(desc)) {
-			return new PatchReverbView(ppg);
+			return new ReverbView(ppg);
 		} else if ("Arpeggio".equals(desc)) {
-			return new PatchArpeggioView(ppg);
+			return new ArpeggioView(ppg);
 		}
 		throw new RuntimeException("Parameters not found.");
 	}

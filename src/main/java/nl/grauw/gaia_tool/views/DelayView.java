@@ -18,13 +18,13 @@ package nl.grauw.gaia_tool.views;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.PatchParameterGroup;
 
-public class PatchDistortionView extends ParameterGroupView {
+public class DelayView extends ParameterGroupView {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	private PatchParameterGroup parameterGroup;
 	
-	public PatchDistortionView(PatchParameterGroup ppg) {
+	public DelayView(PatchParameterGroup ppg) {
 		parameterGroup = ppg;
 		ppg.addObserver(this);
 		initComponents();
@@ -32,17 +32,17 @@ public class PatchDistortionView extends ParameterGroupView {
 
 	@Override
 	public Parameters getParameters() {
-		return parameterGroup.getDistortion();
+		return parameterGroup.getDelay();
 	}
 	
 	@Override
 	public void loadParameters() {
-		parameterGroup.loadDistortion();
+		parameterGroup.loadDelay();
 	}
 
 	@Override
 	public String getTitle() {
-		return "Patch distortion";
+		return "Patch delay";
 	}
 
 }
