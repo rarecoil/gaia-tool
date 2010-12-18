@@ -50,7 +50,7 @@ public class Observable {
 		
 	}
 	
-	Vector<WeakReference<Observer>> observers = new Vector<WeakReference<Observer>>();
+	private Vector<WeakReference<Observer>> observers = new Vector<WeakReference<Observer>>();
 	
 	public void addObserver(Observer o) {
 		if (o instanceof JComponent && !(o instanceof AWTObserver))
@@ -70,7 +70,7 @@ public class Observable {
 	}
 	
 	public boolean hasObserver(Observer o) {
-		return observers.contains(o);
+		return getObservers().contains(o);
 	}
 	
 	public void notifyObservers(Object arg) {
@@ -89,6 +89,27 @@ public class Observable {
 				i--;
 			}
 		}
+	}
+	
+	/**
+	 * Returns a copy of the observers registered on this observable.
+	 * Any weakly referenced observers that no longer exist will be cleaned up and not in the list.
+	 * @return The observers registered on this object.
+	 */
+	protected Vector<Observer> getObservers() {
+		Vector<Observer> observersCopy = new Vector<Observer>(observers.size());
+		for (int i = 0, len = observers.size(); i < len; i++) {
+			WeakReference<Observer> wro = observers.get(i);
+			Observer observer = wro.get();
+			if (observer != null) {
+				observersCopy.add(observer);
+			} else {
+				observers.remove(i);
+				len--;
+				i--;
+			}
+		}
+		return observersCopy;
 	}
 	
 	public void notifyObservers() {
