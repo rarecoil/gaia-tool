@@ -180,6 +180,10 @@ public class Gaia extends Observable {
 	}
 	
 	public Patch getUserPatch(int bank, int patch) {
+		if (bank < 0 || bank > 7)
+			throw new IllegalArgumentException("Invalid bank number.");
+		if (patch < 0 || patch > 7)
+			throw new IllegalArgumentException("Invalid patch number.");
 		return userPatches[bank << 3 | patch];
 	}
 	
