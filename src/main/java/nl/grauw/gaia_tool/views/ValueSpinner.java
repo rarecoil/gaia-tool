@@ -15,14 +15,68 @@
  */
 package nl.grauw.gaia_tool.views;
 
+import java.awt.Dimension;
+
+import javax.swing.AbstractSpinnerModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 
 import nl.grauw.gaia_tool.Value;
+import nl.grauw.gaia_tool.mvc.Observable;
+import nl.grauw.gaia_tool.mvc.Observer;
 
 public class ValueSpinner extends JPanel {
+	
+	public class ValueSpinnerModel extends AbstractSpinnerModel implements Observer {
+		
+		private Value value;
+
+		public ValueSpinnerModel(Value value) {
+			this.value = value;
+			value.addObserver(this);
+		}
+		
+		@Override
+		public Object getValue() {
+			return value.getValue();
+		}
+
+		@Override
+		public void setValue(Object val) {
+			if (val instanceof Integer) {
+				Integer iVal = (Integer) val;
+				value.setValue(iVal);
+			} else {
+				throw new IllegalArgumentException("");
+			}
+		}
+
+		@Override
+		public Object getNextValue() {
+			int v = value.getValue();
+			if (v >= value.getMaximum())
+				return null;
+			return v + 1;
+		}
+
+		@Override
+		public Object getPreviousValue() {
+			int v = value.getValue();
+			if (v <= value.getMinimum())
+				return null;
+			return v - 1;
+		}
+
+		@Override
+		public void update(Observable o, Object arg) {
+			if (o == value) {
+				fireStateChanged();
+			}
+		}
+		
+	}
+	
 	private static final long serialVersionUID = 1L;
 	
 	private Value value;
@@ -44,7 +98,9 @@ public class ValueSpinner extends JPanel {
 	
 	private JSpinner getSpinner() {
 		if (valueSpinner == null) {
-			valueSpinner = new JSpinner(new SpinnerNumberModel(value.getValue(), value.getMinimum(), value.getMaximum(), 1));
+			valueSpinner = new JSpinner(new ValueSpinnerModel(value));
+			Dimension preferredSize = new Dimension(60, valueSpinner.getPreferredSize().height);
+			valueSpinner.setPreferredSize(preferredSize);
 		}
 		return valueSpinner;
 	}
