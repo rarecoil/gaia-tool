@@ -74,19 +74,12 @@ public class Observable {
 	}
 	
 	public void notifyObservers(Object arg) {
-		for (int i = 0, len = observers.size(); i < len; i++) {
-			WeakReference<Observer> wro = observers.get(i);
-			Observer o = wro.get();
-			if (o != null) {
-				if (o instanceof AWTObserver && !SwingUtilities.isEventDispatchThread()) {
-					SwingUtilities.invokeLater(new UpdateRunnable(o, this, arg));
-				} else {
-					o.update(this, arg);
-				}
+		Vector<Observer> observers = getObservers();
+		for (Observer o : observers) {
+			if (o instanceof AWTObserver && !SwingUtilities.isEventDispatchThread()) {
+				SwingUtilities.invokeLater(new UpdateRunnable(o, this, arg));
 			} else {
-				observers.remove(i);
-				len--;
-				i--;
+				o.update(this, arg);
 			}
 		}
 	}

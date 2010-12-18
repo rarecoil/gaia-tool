@@ -22,6 +22,13 @@ public class ObservableTest {
 		}
 	}
 	
+	public class RemoveSelfObserver extends TestObserver implements Observer {
+		public void update(Observable source, Object arg) {
+			super.update(source, arg);
+			source.removeObserver(this);
+		}
+	}
+	
 	public class TestAWTObserver1 extends TestObserver implements AWTObserver {
 		private static final long serialVersionUID = 1L;
 	}
@@ -152,6 +159,21 @@ public class ObservableTest {
 		assertEquals(0, observer2.updateCount);
 		assertEquals(1, observer3.updateCount);
 		assertEquals(1, observer4.updateCount);
+	}
+
+	@Test
+	public void testNotifyObservers_RemovedInUpdate() {
+		Observable o = new Observable();
+		TestObserver observer1 = new TestObserver();
+		o.addObserver(observer1);
+		TestObserver observer2 = new RemoveSelfObserver();
+		o.addObserver(observer2);
+		TestObserver observer3 = new TestObserver();
+		o.addObserver(observer3);
+		o.notifyObservers();
+		assertEquals(1, observer1.updateCount);
+		assertEquals(1, observer2.updateCount);
+		assertEquals(1, observer3.updateCount);
 	}
 
 	@Test
