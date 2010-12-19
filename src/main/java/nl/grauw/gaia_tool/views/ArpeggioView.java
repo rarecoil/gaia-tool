@@ -15,11 +15,14 @@
  */
 package nl.grauw.gaia_tool.views;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,12 +30,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
-
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.NoteValue;
@@ -216,6 +219,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 	private ArpeggioCommonView parametersView;
 	private JScrollPane patternScrollPane;
 	private JTable patternTable;
+	private JTextField editField;
 	
 	public ArpeggioView(Patch patch) {
 		this.patch = patch;
@@ -357,8 +361,25 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 			TableModel model = new ArpeggioModel(patch);
 			patternTable = new JTable(model);
 			patternTable.setFillsViewportHeight(true);
+			patternTable.setDefaultEditor(Object.class, new DefaultCellEditor(getEditField()));
 		}
 		return patternTable;
+	}
+	
+	private JTextField getEditField() {
+		if (editField == null) {
+			// edit field that selects its text on focus
+			editField = new JTextField() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public void requestFocus() {
+					selectAll();
+					super.requestFocus();
+				}
+			};
+			editField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		}
+		return editField;
 	}
 	
 	@Override
