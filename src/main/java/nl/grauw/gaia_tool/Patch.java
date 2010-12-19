@@ -82,6 +82,14 @@ public class Patch extends Observable {
 		}
 	}
 	
+	private void saveData(Parameters parameters) {
+		try {
+			gaia.sendDataTransmission(parameters);
+		} catch(InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Parameters updateParameters(Address address, byte[] data) {
 		byte byte3 = address.getByte3();
 		if (byte3 == 0x00) {
@@ -197,6 +205,15 @@ public class Patch extends Observable {
 	
 	public void loadArpeggioAll() {
 		loadData(getAddress(0x0C), 0xB80);
+	}
+	
+	public void saveArpeggioAll() {
+		if (arpeggioCommon != null)
+			saveData(arpeggioCommon);
+		for (ArpeggioPattern pattern : arpeggioPatterns) {
+			if (pattern != null)
+				saveData(pattern);
+		}
 	}
 	
 }

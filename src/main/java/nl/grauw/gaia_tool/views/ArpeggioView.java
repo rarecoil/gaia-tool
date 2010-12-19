@@ -129,6 +129,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 	
 	private JLabel titleLabel;
 	private JButton reloadButton;
+	private JButton saveButton;
 	private JPanel parametersContainer;
 	private ArpeggioCommonView parametersView;
 	private JScrollPane patternScrollPane;
@@ -144,6 +145,10 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 	
 	private void loadParameters() {
 		patch.loadArpeggioAll();
+	}
+	
+	private void saveParameters() {
+		patch.saveArpeggioAll();
 	}
 
 	private String getTitle() {
@@ -180,6 +185,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 						layout.createSequentialGroup()
 							.addComponent(getTitleLabel())
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Integer.MAX_VALUE)
+							.addComponent(getSaveButton())
 							.addComponent(getReloadButton())
 					)
 					.addComponent(getParametersContainer())
@@ -190,6 +196,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 					.addGroup(
 						layout.createParallelGroup(Alignment.CENTER)
 							.addComponent(getTitleLabel())
+							.addComponent(getSaveButton())
 							.addComponent(getReloadButton())
 					)
 					.addComponent(getParametersContainer(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -235,6 +242,15 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 		return reloadButton;
 	}
 	
+	private JButton getSaveButton() {
+		if (saveButton == null) {
+			saveButton = new JButton();
+			saveButton.setText("Save");
+			saveButton.addActionListener(this);
+		}
+		return saveButton;
+	}
+	
 	private JScrollPane getPatternScrollPane() {
 		if (patternScrollPane == null) {
 			patternScrollPane = new JScrollPane();
@@ -256,6 +272,9 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == reloadButton) {
 			loadParameters();
+		}
+		if (e.getSource() == saveButton) {
+			saveParameters();
 		}
 	}
 

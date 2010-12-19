@@ -270,4 +270,13 @@ public class Gaia extends Observable {
 		send(new DataRequest1(address, length));
 	}
 	
+	/**
+	 * Sends a data transmission.
+	 * @param parameters The Parameters object containing the address and data to send.
+	 * @throws InvalidMidiDataException
+	 */
+	public void sendDataTransmission(Parameters parameters) throws InvalidMidiDataException {
+		send(new DataSet1(parameters.getAddress(), parameters.getData()));
+	}
+	
 }
