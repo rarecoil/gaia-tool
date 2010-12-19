@@ -22,7 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 
-import nl.grauw.gaia_tool.Value;
+import nl.grauw.gaia_tool.IntValue;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
@@ -30,9 +30,9 @@ public class ValueSpinner extends JPanel {
 	
 	public class ValueSpinnerModel extends AbstractSpinnerModel implements AWTObserver {
 		
-		private Value value;
+		private IntValue value;
 
-		public ValueSpinnerModel(Value value) {
+		public ValueSpinnerModel(IntValue value) {
 			this.value = value;
 			value.addObserver(this);
 		}
@@ -79,13 +79,13 @@ public class ValueSpinner extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Value value;
+	private IntValue value;
 	private String label;
 	
 	private JLabel labelLabel;
 	private JSpinner valueSpinner;
 	
-	public ValueSpinner(Value value, String label) {
+	public ValueSpinner(IntValue value, String label) {
 		this.value = value;
 		this.label = label;
 		initComponents();

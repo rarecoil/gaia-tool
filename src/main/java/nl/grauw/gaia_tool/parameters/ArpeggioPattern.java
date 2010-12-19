@@ -18,8 +18,8 @@ package nl.grauw.gaia_tool.parameters;
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Note;
-import nl.grauw.gaia_tool.Value;
-import nl.grauw.gaia_tool.Value8Bit;
+import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.Int8BitValue;
 
 public class ArpeggioPattern extends Parameters {
 	
@@ -39,11 +39,11 @@ public class ArpeggioPattern extends Parameters {
 		return new Note(get8BitValue(0x00));
 	}
 	
-	public Value getStepData(int step) {
+	public IntValue getStepData(int step) {
 		if (step < 1 || step > 32)
 			throw new IllegalArgumentException("Invalid step number.");
 		
-		return new Value8Bit(this, step * 2, 0, 128);
+		return new Int8BitValue(this, step * 2, 0, 128);
 	}
 	
 	public String toString() {

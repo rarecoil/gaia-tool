@@ -17,8 +17,8 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.SignedValue;
-import nl.grauw.gaia_tool.Value;
+import nl.grauw.gaia_tool.SignedIntValue;
+import nl.grauw.gaia_tool.IntValue;
 
 public class Tone extends Parameters {
 	
@@ -67,33 +67,33 @@ public class Tone extends Parameters {
 		return getValue(0x02) == 1;
 	}
 	
-	public Value getOSCPitch() {
-		return new SignedValue(this, 0x03, -24, 24);
+	public IntValue getOSCPitch() {
+		return new SignedIntValue(this, 0x03, -24, 24);
 	}
 	
-	public Value getOSCDetune() {
-		return new SignedValue(this, 0x04, -50, 50);
+	public IntValue getOSCDetune() {
+		return new SignedIntValue(this, 0x04, -50, 50);
 	}
 	
-	public Value getOSCPulseWidthModDepth() {
-		return new Value(this, 0x05, 0, 127);
+	public IntValue getOSCPulseWidthModDepth() {
+		return new IntValue(this, 0x05, 0, 127);
 	}
 	
-	public Value getOSCPulseWidth() {
-		return new Value(this, 0x06, 0, 127);
+	public IntValue getOSCPulseWidth() {
+		return new IntValue(this, 0x06, 0, 127);
 	}
 	
-	public Value getOSCPitchEnvAttackTime() {
-		return new Value(this, 0x07, 0, 127);
+	public IntValue getOSCPitchEnvAttackTime() {
+		return new IntValue(this, 0x07, 0, 127);
 	}
 	
 	// XXX: ...DecayTime? Slightly inconsistent...
-	public Value getOSCPitchEnvDecay() {
-		return new Value(this, 0x08, 0, 127);
+	public IntValue getOSCPitchEnvDecay() {
+		return new IntValue(this, 0x08, 0, 127);
 	}
 	
-	public Value getOSCPitchEnvDepth() {
-		return new SignedValue(this, 0x09, -63, 63);
+	public IntValue getOSCPitchEnvDepth() {
+		return new SignedIntValue(this, 0x09, -63, 63);
 	}
 	
 	public FilterMode getFilterMode() {
@@ -104,78 +104,78 @@ public class Tone extends Parameters {
 		return FilterSlope.values()[getValue(0x0B)];
 	}
 	
-	public Value getFilterCutoff() {
-		return new Value(this, 0x0C, 0, 127);
+	public IntValue getFilterCutoff() {
+		return new IntValue(this, 0x0C, 0, 127);
 	}
 	
 	// -10 ... 10 (-100 ... 100)
-	public Value getFilterCutoffKeyfollow() {
-		return new SignedValue(this, 0x0D, -10, 10);
+	public IntValue getFilterCutoffKeyfollow() {
+		return new SignedIntValue(this, 0x0D, -10, 10);
 	}
 	
-	public Value getFilterEnvVelocitySens() {
-		return new SignedValue(this, 0x0E, -63, 63);
+	public IntValue getFilterEnvVelocitySens() {
+		return new SignedIntValue(this, 0x0E, -63, 63);
 	}
 	
-	public Value getFilterResonance() {
-		return new Value(this, 0x0F, 0, 127);
+	public IntValue getFilterResonance() {
+		return new IntValue(this, 0x0F, 0, 127);
 	}
 	
-	public Value getFilterEnvAttackTime() {
-		return new Value(this, 0x10, 0, 127);
+	public IntValue getFilterEnvAttackTime() {
+		return new IntValue(this, 0x10, 0, 127);
 	}
 	
-	public Value getFilterEnvDecayTime() {
-		return new Value(this, 0x11, 0, 127);
+	public IntValue getFilterEnvDecayTime() {
+		return new IntValue(this, 0x11, 0, 127);
 	}
 	
-	public Value getFilterEnvSustainLevel() {
-		return new Value(this, 0x12, 0, 127);
+	public IntValue getFilterEnvSustainLevel() {
+		return new IntValue(this, 0x12, 0, 127);
 	}
 	
-	public Value getFilterEnvReleaseTime() {
-		return new Value(this, 0x13, 0, 127);
+	public IntValue getFilterEnvReleaseTime() {
+		return new IntValue(this, 0x13, 0, 127);
 	}
 	
-	public Value getFilterEnvDepth() {
-		return new SignedValue(this, 0x14, -63, 63);
+	public IntValue getFilterEnvDepth() {
+		return new SignedIntValue(this, 0x14, -63, 63);
 	}
 	
-	public Value getAmpLevel() {
-		return new Value(this, 0x15, 0, 127);
+	public IntValue getAmpLevel() {
+		return new IntValue(this, 0x15, 0, 127);
 	}
 	
-	public Value getAmpLevelVelocitySens() {
-		return new SignedValue(this, 0x16, -63, 63);
+	public IntValue getAmpLevelVelocitySens() {
+		return new SignedIntValue(this, 0x16, -63, 63);
 	}
 	
-	public Value getAmpEnvAttackTime() {
-		return new Value(this, 0x17, 0, 127);
+	public IntValue getAmpEnvAttackTime() {
+		return new IntValue(this, 0x17, 0, 127);
 	}
 	
-	public Value getAmpEnvDecayTime() {
-		return new Value(this, 0x18, 0, 127);
+	public IntValue getAmpEnvDecayTime() {
+		return new IntValue(this, 0x18, 0, 127);
 	}
 	
-	public Value getAmpEnvSustainLevel() {
-		return new Value(this, 0x19, 0, 127);
+	public IntValue getAmpEnvSustainLevel() {
+		return new IntValue(this, 0x19, 0, 127);
 	}
 	
-	public Value getAmpEnvReleaseTime() {
-		return new Value(this, 0x1A, 0, 127);
+	public IntValue getAmpEnvReleaseTime() {
+		return new IntValue(this, 0x1A, 0, 127);
 	}
 	
 	// -64 ... 63 (L64 ... 63R)
-	public Value getAmpPan() {
-		return new SignedValue(this, 0x1B, -64, 63);
+	public IntValue getAmpPan() {
+		return new SignedIntValue(this, 0x1B, -64, 63);
 	}
 	
 	public LFOShape getLFOShape() {
 		return LFOShape.values()[getValue(0x1C)];
 	}
 	
-	public Value getLFORate() {
-		return new Value(this, 0x1D, 0, 127);
+	public IntValue getLFORate() {
+		return new IntValue(this, 0x1D, 0, 127);
 	}
 	
 	public boolean getLFOTempoSyncSwitch() {
@@ -186,36 +186,36 @@ public class Tone extends Parameters {
 		return LFOTempoSyncNote.values()[getValue(0x1F)];
 	}
 	
-	public Value getLFOFadeTime() {
-		return new Value(this, 0x20, 0, 127);
+	public IntValue getLFOFadeTime() {
+		return new IntValue(this, 0x20, 0, 127);
 	}
 	
 	public boolean getLFOKeyTrigger() {
 		return getValue(0x21) == 1;
 	}
 	
-	public Value getLFOPitchDepth() {
-		return new SignedValue(this, 0x22, -63, 63);
+	public IntValue getLFOPitchDepth() {
+		return new SignedIntValue(this, 0x22, -63, 63);
 	}
 	
-	public Value getLFOFilterDepth() {
-		return new SignedValue(this, 0x23, -63, 63);
+	public IntValue getLFOFilterDepth() {
+		return new SignedIntValue(this, 0x23, -63, 63);
 	}
 	
-	public Value getLFOAmpDepth() {
-		return new SignedValue(this, 0x24, -63, 63);
+	public IntValue getLFOAmpDepth() {
+		return new SignedIntValue(this, 0x24, -63, 63);
 	}
 	
-	public Value getLFOPanDepth() {
-		return new SignedValue(this, 0x25, -63, 63);
+	public IntValue getLFOPanDepth() {
+		return new SignedIntValue(this, 0x25, -63, 63);
 	}
 	
 	public LFOShape getModulationLFOShape() {
 		return LFOShape.values()[getValue(0x26)];
 	}
 	
-	public Value getModulationLFORate() {
-		return new Value(this, 0x27, 0, 127);
+	public IntValue getModulationLFORate() {
+		return new IntValue(this, 0x27, 0, 127);
 	}
 	
 	public boolean getModulationLFOTempoSyncSwitch() {
@@ -226,84 +226,84 @@ public class Tone extends Parameters {
 		return LFOTempoSyncNote.values()[getValue(0x29)];
 	}
 	
-	public Value getReserved2() {
-		return new Value(this, 0x2A, 0, 127);
+	public IntValue getReserved2() {
+		return new IntValue(this, 0x2A, 0, 127);
 	}
 	
-	public Value getReserved3() {
-		return new Value(this, 0x2B, 0, 1);
+	public IntValue getReserved3() {
+		return new IntValue(this, 0x2B, 0, 1);
 	}
 	
-	public Value getModulationLFOPitchDepth() {
-		return new SignedValue(this, 0x2C, -63, 63);
+	public IntValue getModulationLFOPitchDepth() {
+		return new SignedIntValue(this, 0x2C, -63, 63);
 	}
 	
-	public Value getModulationLFOFilterDepth() {
-		return new SignedValue(this, 0x2D, -63, 63);
+	public IntValue getModulationLFOFilterDepth() {
+		return new SignedIntValue(this, 0x2D, -63, 63);
 	}
 	
-	public Value getModulationLFOAmpDepth() {
-		return new SignedValue(this, 0x2E, -63, 63);
+	public IntValue getModulationLFOAmpDepth() {
+		return new SignedIntValue(this, 0x2E, -63, 63);
 	}
 	
-	public Value getModulationLFOPanDepth() {
-		return new SignedValue(this, 0x2F, -63, 63);
+	public IntValue getModulationLFOPanDepth() {
+		return new SignedIntValue(this, 0x2F, -63, 63);
 	}
 	
-	public Value getReserved4() {
-		return new SignedValue(this, 0x30, -63, 63);
+	public IntValue getReserved4() {
+		return new SignedIntValue(this, 0x30, -63, 63);
 	}
 	
-	public Value getReserved5() {
-		return new SignedValue(this, 0x31, -63, 63);
+	public IntValue getReserved5() {
+		return new SignedIntValue(this, 0x31, -63, 63);
 	}
 	
-	public Value getReserved6() {
-		return new SignedValue(this, 0x32, -63, 63);
+	public IntValue getReserved6() {
+		return new SignedIntValue(this, 0x32, -63, 63);
 	}
 	
-	public Value getReserved7() {
-		return new SignedValue(this, 0x33, -63, 63);
+	public IntValue getReserved7() {
+		return new SignedIntValue(this, 0x33, -63, 63);
 	}
 	
-	public Value getReserved8() {
-		return new Value(this, 0x34, 0, 1);
+	public IntValue getReserved8() {
+		return new IntValue(this, 0x34, 0, 1);
 	}
 	
-	public Value getReserved9() {
-		return new Value(this, 0x35, 0, 1);
+	public IntValue getReserved9() {
+		return new IntValue(this, 0x35, 0, 1);
 	}
 	
-	public Value getReserved10() {
-		return new Value(this, 0x36, 0, 1);
+	public IntValue getReserved10() {
+		return new IntValue(this, 0x36, 0, 1);
 	}
 	
-	public Value getReserved11() {
-		return new Value(this, 0x37, 0, 1);
+	public IntValue getReserved11() {
+		return new IntValue(this, 0x37, 0, 1);
 	}
 	
-	public Value getReserved12() {
-		return new Value(this, 0x38, 0, 127);
+	public IntValue getReserved12() {
+		return new IntValue(this, 0x38, 0, 127);
 	}
 	
-	public Value getReserved13() {
-		return new Value(this, 0x39, 0, 127);
+	public IntValue getReserved13() {
+		return new IntValue(this, 0x39, 0, 127);
 	}
 	
-	public Value getReserved14() {
-		return new Value(this, 0x3A, 0, 127);
+	public IntValue getReserved14() {
+		return new IntValue(this, 0x3A, 0, 127);
 	}
 	
-	public Value getReserved15() {
-		return new Value(this, 0x3B, 0, 127);
+	public IntValue getReserved15() {
+		return new IntValue(this, 0x3B, 0, 127);
 	}
 	
-	public Value getReserved16() {
-		return new SignedValue(this, 0x3C, -63, 63);
+	public IntValue getReserved16() {
+		return new SignedIntValue(this, 0x3C, -63, 63);
 	}
 	
-	public Value getReserved17() {
-		return new SignedValue(this, 0x3D, -63, 63);
+	public IntValue getReserved17() {
+		return new SignedIntValue(this, 0x3D, -63, 63);
 	}
 	
 	public String toString() {

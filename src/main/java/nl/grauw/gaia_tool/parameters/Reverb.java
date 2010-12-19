@@ -17,8 +17,8 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.SignedValue16Bit;
-import nl.grauw.gaia_tool.Value;
+import nl.grauw.gaia_tool.SignedInt16BitValue;
+import nl.grauw.gaia_tool.IntValue;
 
 public class Reverb extends Parameters {
 	
@@ -37,12 +37,12 @@ public class Reverb extends Parameters {
 		return ReverbType.values()[getValue(0x00)];
 	}
 	
-	public Value getReverbParameter(int number) {
+	public IntValue getReverbParameter(int number) {
 		if (number < 1 || number > 20)
 			throw new IllegalArgumentException("Invalid parameter number.");
 		
 		int index = (number - 1) * 4;
-		return new SignedValue16Bit(this, 0x01 + index, -20000, 20000);
+		return new SignedInt16BitValue(this, 0x01 + index, -20000, 20000);
 	}
 	
 	public String toString() {

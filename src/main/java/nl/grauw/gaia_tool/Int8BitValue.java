@@ -1,8 +1,8 @@
 package nl.grauw.gaia_tool;
 
-public class Value8Bit extends Value {
+public class Int8BitValue extends IntValue {
 	
-	public Value8Bit(Parameters parameters, int offset, int min, int max) {
+	public Int8BitValue(Parameters parameters, int offset, int min, int max) {
 		super(parameters, offset, min, max);
 	}
 	

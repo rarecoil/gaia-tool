@@ -18,9 +18,9 @@ package nl.grauw.gaia_tool.parameters;
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.EnumValue;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.SignedValue;
-import nl.grauw.gaia_tool.Value;
-import nl.grauw.gaia_tool.Value8Bit;
+import nl.grauw.gaia_tool.SignedIntValue;
+import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.Int8BitValue;
 
 public class ArpeggioCommon extends Parameters {
 	
@@ -66,21 +66,21 @@ public class ArpeggioCommon extends Parameters {
 		return new EnumValue<ArpeggioMotif>(this, 0x02, ArpeggioMotif.values());
 	}
 	
-	public Value getArpeggioOctaveRange() {
-		return new SignedValue(this, 0x03, -3, +3);
+	public IntValue getArpeggioOctaveRange() {
+		return new SignedIntValue(this, 0x03, -3, +3);
 	}
 	
-	public Value getArpeggioAccentRate() {
-		return new Value(this, 0x04, 0, 100);
+	public IntValue getArpeggioAccentRate() {
+		return new IntValue(this, 0x04, 0, 100);
 	}
 	
 	// 0 ... 127 (REAL, 1 ... 127)
-	public Value getArpeggioVelocity() {
-		return new Value(this, 0x05, 0, 127);
+	public IntValue getArpeggioVelocity() {
+		return new IntValue(this, 0x05, 0, 127);
 	}
 	
-	public Value getEndStep() {
-		return new Value8Bit(this, 0x06, 1, 32);
+	public IntValue getEndStep() {
+		return new Int8BitValue(this, 0x06, 1, 32);
 	}
 	
 	public String toString() {

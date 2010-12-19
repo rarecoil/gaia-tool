@@ -17,10 +17,10 @@ package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.SignedValue;
-import nl.grauw.gaia_tool.Value;
-import nl.grauw.gaia_tool.Value12Bit;
-import nl.grauw.gaia_tool.Value16Bit;
+import nl.grauw.gaia_tool.SignedIntValue;
+import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.Int12BitValue;
+import nl.grauw.gaia_tool.Int16BitValue;
 
 public class System extends Parameters {
 	
@@ -71,25 +71,25 @@ public class System extends Parameters {
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
-	public Value getBankSelectMSB() {
-		return new Value(this, 0x00, 0, 127);
+	public IntValue getBankSelectMSB() {
+		return new IntValue(this, 0x00, 0, 127);
 	}
 	
-	public Value getBankSelectLSB() {
-		return new Value(this, 0x01, 0, 127);
+	public IntValue getBankSelectLSB() {
+		return new IntValue(this, 0x01, 0, 127);
 	}
 	
-	public Value getProgramNumber() {
-		return new Value(this, 0x02, 0, 127);
+	public IntValue getProgramNumber() {
+		return new IntValue(this, 0x02, 0, 127);
 	}
 	
-	public Value getMasterLevel() {
-		return new Value(this, 0x03, 0, 127);
+	public IntValue getMasterLevel() {
+		return new IntValue(this, 0x03, 0, 127);
 	}
 	
 	// -1000 ... 1000 (-100.0 ... 100.0 cent)
-	public Value getMasterTune() {
-		return new Value16Bit(this, 0x04, -1000, 1000) {
+	public IntValue getMasterTune() {
+		return new Int16BitValue(this, 0x04, -1000, 1000) {
 			@Override
 			public int getValue() {
 				return super.getValue() - 1024;
@@ -109,8 +109,8 @@ public class System extends Parameters {
 		return ClockSource.values()[getValue(0x09)];
 	}
 	
-	public Value getSystemTempo() {
-		return new Value12Bit(this, 0x0A, 5, 300);
+	public IntValue getSystemTempo() {
+		return new Int12BitValue(this, 0x0A, 5, 300);
 	}
 	
 	public KeyboardVelocity getKeyboardVelocity() {
@@ -125,12 +125,12 @@ public class System extends Parameters {
 		return PedalAssign.values()[getValue(0x0F)];
 	}
 	
-	public Value getDBeamSens() {
-		return new Value(this, 0x10, 1, 8);
+	public IntValue getDBeamSens() {
+		return new IntValue(this, 0x10, 1, 8);
 	}
 	
-	public Value getRxTxChannel() {
-		return new Value(this, 0x11, 0, 15) {
+	public IntValue getRxTxChannel() {
+		return new IntValue(this, 0x11, 0, 15) {
 			@Override
 			public int getValue() {
 				return super.getValue() + 1;
@@ -182,64 +182,64 @@ public class System extends Parameters {
 		return RecorderMetronomeMode.values()[getValue(0x1B)];
 	}
 	
-	public Value getRecorderMetronomeLevel() {
-		return new Value(this, 0x1C, 0, 7);
+	public IntValue getRecorderMetronomeLevel() {
+		return new IntValue(this, 0x1C, 0, 7);
 	}
 	
-	public Value getReserved1() {
-		return new Value(this, 0x1D, 0, 1);
+	public IntValue getReserved1() {
+		return new IntValue(this, 0x1D, 0, 1);
 	}
 	
-	public Value getReserved2() {
-		return new Value(this, 0x1E, 0, 127);
+	public IntValue getReserved2() {
+		return new IntValue(this, 0x1E, 0, 127);
 	}
 	
-	public Value getReserved3() {
-		return new Value(this, 0x1F, 0, 127);
+	public IntValue getReserved3() {
+		return new IntValue(this, 0x1F, 0, 127);
 	}
 	
-	public Value getReserved4() {
-		return new Value(this, 0x20, 0, 1);
+	public IntValue getReserved4() {
+		return new IntValue(this, 0x20, 0, 1);
 	}
 	
-	public Value getReserved5() {
-		return new SignedValue(this, 0x21, -5, 6);
+	public IntValue getReserved5() {
+		return new SignedIntValue(this, 0x21, -5, 6);
 	}
 	
-	public Value getReserved6() {
-		return new SignedValue(this, 0x22, -3, 3);
+	public IntValue getReserved6() {
+		return new SignedIntValue(this, 0x22, -3, 3);
 	}
 	
-	public Value getReserved7() {
-		return new Value(this, 0x23, 0, 127);
+	public IntValue getReserved7() {
+		return new IntValue(this, 0x23, 0, 127);
 	}
 	
-	public Value getReserved8() {
-		return new Value(this, 0x24, 0, 1);
+	public IntValue getReserved8() {
+		return new IntValue(this, 0x24, 0, 1);
 	}
 	
-	public Value getReserved9() {
-		return new Value(this, 0x25, 0, 1);
+	public IntValue getReserved9() {
+		return new IntValue(this, 0x25, 0, 1);
 	}
 	
-	public Value getReserved10() {
-		return new Value(this, 0x26, 0, 1);
+	public IntValue getReserved10() {
+		return new IntValue(this, 0x26, 0, 1);
 	}
 	
-	public Value getReserved11() {
-		return new Value(this, 0x27, 0, 1);
+	public IntValue getReserved11() {
+		return new IntValue(this, 0x27, 0, 1);
 	}
 	
-	public Value getReserved12() {
-		return new Value(this, 0x28, 0, 127);
+	public IntValue getReserved12() {
+		return new IntValue(this, 0x28, 0, 127);
 	}
 	
-	public Value getReserved13() {
-		return new Value(this, 0x29, 0, 127);
+	public IntValue getReserved13() {
+		return new IntValue(this, 0x29, 0, 127);
 	}
 	
-	public Value getReserved14() {
-		return new SignedValue(this, 0x2A, -63, 63);
+	public IntValue getReserved14() {
+		return new SignedIntValue(this, 0x2A, -63, 63);
 	}
 	
 	public boolean getWriteProtect(int bank, int patch) {
@@ -252,12 +252,12 @@ public class System extends Parameters {
 		return PowerSaveMode.values()[getValue(0x6B)];
 	}
 	
-	public Value getReserved15() {
-		return new Value(this, 0x6C, 0, 15);
+	public IntValue getReserved15() {
+		return new IntValue(this, 0x6C, 0, 15);
 	}
 	
-	public Value getReserved16() {
-		return new Value(this, 0x6D, 0, 16);
+	public IntValue getReserved16() {
+		return new IntValue(this, 0x6D, 0, 16);
 	}
 	
 	public String toString() {

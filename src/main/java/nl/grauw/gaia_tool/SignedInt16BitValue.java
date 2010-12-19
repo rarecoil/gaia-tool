@@ -1,8 +1,8 @@
 package nl.grauw.gaia_tool;
 
-public class SignedValue16Bit extends Value16Bit {
+public class SignedInt16BitValue extends Int16BitValue {
 	
-	public SignedValue16Bit(Parameters parameters, int offset, int min, int max) {
+	public SignedInt16BitValue(Parameters parameters, int offset, int min, int max) {
 		super(parameters, offset, min, max);
 	}
 	

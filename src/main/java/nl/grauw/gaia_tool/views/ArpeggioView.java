@@ -34,7 +34,7 @@ import javax.swing.table.TableModel;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
-import nl.grauw.gaia_tool.Value;
+import nl.grauw.gaia_tool.IntValue;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
@@ -111,7 +111,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 				if (aValue instanceof String) {
 					// XXX: make cell editor for Value type (incl. min/max etc.)
 					ArpeggioPattern pattern = patch.getArpeggioPattern(rowIndex + 1);
-					Value stepData = pattern.getStepData(columnIndex);
+					IntValue stepData = pattern.getStepData(columnIndex);
 					try {
 						stepData.setValue(new Integer((String) aValue));
 					} catch(IllegalArgumentException e) {

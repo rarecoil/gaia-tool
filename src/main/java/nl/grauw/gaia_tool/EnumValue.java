@@ -1,6 +1,6 @@
 package nl.grauw.gaia_tool;
 
-public class EnumValue<T extends Enum<T>> extends ValueBase {
+public class EnumValue<T extends Enum<T>> extends Value {
 	
 	protected T[] choices;
 	

@@ -1,8 +1,8 @@
 package nl.grauw.gaia_tool;
 
-public class SignedValue extends Value {
+public class SignedIntValue extends IntValue {
 	
-	public SignedValue(Parameters parameters, int offset, int min, int max) {
+	public SignedIntValue(Parameters parameters, int offset, int min, int max) {
 		super(parameters, offset, min, max);
 	}
 	
