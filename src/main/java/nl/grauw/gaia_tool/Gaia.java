@@ -145,7 +145,7 @@ public class Gaia extends Observable {
 	 * Receives an incoming MidiMessage object from the ResponseReceiver.
 	 * @param mm
 	 */
-	void receive(MidiMessage mm) {
+	public void receive(MidiMessage mm) {
 		log.log("Received: " + mm);
 		
 		if (mm instanceof DataSet1) {
