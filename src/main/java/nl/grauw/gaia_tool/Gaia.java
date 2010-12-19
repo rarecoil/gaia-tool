@@ -133,6 +133,15 @@ public class Gaia extends Observable {
 	}
 	
 	/**
+	 * Sends a MidiMessage to the GAIA.
+	 * @param message
+	 */
+	public void send(MidiMessage message) {
+		receiver.send(message, -1);
+		log.log("Sent: " + message);
+	}
+	
+	/**
 	 * Receives an incoming MidiMessage object from the ResponseReceiver.
 	 * @param mm
 	 */
@@ -191,8 +200,8 @@ public class Gaia extends Observable {
 	 * Plays a C-4 note for one second.
 	 */
 	public void playTestNote() throws InvalidMidiDataException {
-		receiver.send(new ProgramChangeMessage(synth_channel, 0), -1);
-		receiver.send(new NoteOnMessage(synth_channel, C_4, 127), -1);
+		send(new ProgramChangeMessage(synth_channel, 0));
+		send(new NoteOnMessage(synth_channel, C_4, 127));
 		
 		try {
 			Thread.sleep(1000);
@@ -200,15 +209,15 @@ public class Gaia extends Observable {
 			e.printStackTrace();
 		}
 		
-		receiver.send(new NoteOffMessage(synth_channel, C_4, 127), -1);
+		send(new NoteOffMessage(synth_channel, C_4, 127));
 	}
 	
 	/**
 	 * Plays a C-4 note for one second on the GM channel.
 	 */
 	public void playGMTestNote() throws InvalidMidiDataException {
-		receiver.send(new ProgramChangeMessage(gm_channel, 0), -1);
-		receiver.send(new NoteOnMessage(gm_channel, C_4, 127), -1);
+		send(new ProgramChangeMessage(gm_channel, 0));
+		send(new NoteOnMessage(gm_channel, C_4, 127));
 		
 		try {
 			Thread.sleep(1000);
@@ -216,7 +225,7 @@ public class Gaia extends Observable {
 			e.printStackTrace();
 		}
 		
-		receiver.send(new NoteOffMessage(gm_channel, C_4, 127), -1);
+		send(new NoteOffMessage(gm_channel, C_4, 127));
 	}
 	
 	/**
@@ -224,7 +233,7 @@ public class Gaia extends Observable {
 	 * @throws InvalidMidiDataException 
 	 */
 	public void requestIdentity() throws InvalidMidiDataException {
-		receiver.send(new IdentityRequest(), -1);
+		send(new IdentityRequest());
 	}
 	
 	/**
@@ -232,7 +241,7 @@ public class Gaia extends Observable {
 	 * @throws InvalidMidiDataException 
 	 */
 	public void sendGM1SystemOn() throws InvalidMidiDataException {
-		receiver.send(new GMSystemOn(), -1);
+		send(new GMSystemOn());
 	}
 	
 	/**
@@ -240,7 +249,7 @@ public class Gaia extends Observable {
 	 * @throws InvalidMidiDataException 
 	 */
 	public void sendGM2SystemOn() throws InvalidMidiDataException {
-		receiver.send(new GM2SystemOn(), -1);
+		send(new GM2SystemOn());
 	}
 	
 	/**
@@ -248,7 +257,7 @@ public class Gaia extends Observable {
 	 * @throws InvalidMidiDataException 
 	 */
 	public void sendGMSystemOff() throws InvalidMidiDataException {
-		receiver.send(new GMSystemOff(), -1);
+		send(new GMSystemOff());
 	}
 	
 	/**
@@ -258,7 +267,7 @@ public class Gaia extends Observable {
 	 * @throws InvalidMidiDataException
 	 */
 	public void sendDataRequest(Address address, int length) throws InvalidMidiDataException {
-		receiver.send(new DataRequest1(address, length), -1);
+		send(new DataRequest1(address, length));
 	}
 	
 }
