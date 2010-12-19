@@ -29,7 +29,6 @@ public class IntroPanel extends JPanel {
 	private JLabel title;
 	private JLabel copyright;
 	private JLabel introduction;
-	private JLabel instructions;
 	private JLabel notice;
 	
 	public IntroPanel() {
@@ -40,10 +39,10 @@ public class IntroPanel extends JPanel {
 		title = new JLabel("<html>Welcome to the Roland GAIA SH-01 tool</html>");
 		copyright = new JLabel("<html>Copyright © 2010 Laurens Holst</html>");
 		introduction = new JLabel("<html>With this tool you can view your Roland GAIA’s settings, " +
-				"such as patch names, patch parameters, arpeggio patterns and system settings.</html>");
-		instructions = new JLabel("<html>Use the tree on the left to select the system or patch parameters " +
-				"that you want to view. E.g. by expanding Temporary Patch and then selecting Arpeggio, you " +
-				"can edit the patch arpeggio.</html>");
+				"such as patch names, patch parameters, arpeggio patterns and system settings. Use " +
+				"the tree on the left to select the system or patch parameters that you want to view. " +
+				"E.g. by expanding Temporary Patch and then selecting Arpeggio, you can edit the " +
+				"patch’s arpeggio.</html>");
 		notice = new JLabel("<html>This is free software licensed under the Apache 2.0 license. " +
 				"For more information and downloads visit the GAIA tool project page at " +
 				"http://www.grauw.nl/projects/gaia-tool/.</html>");
@@ -58,7 +57,6 @@ public class IntroPanel extends JPanel {
 					.addComponent(title)
 					.addComponent(copyright)
 					.addComponent(introduction)
-					.addComponent(instructions)
 					.addComponent(notice)
 			);
 		layout.setVerticalGroup(
@@ -67,7 +65,6 @@ public class IntroPanel extends JPanel {
 					.addComponent(copyright)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(introduction)
-					.addComponent(instructions)
 					.addComponent(notice)
 			);
 	}
