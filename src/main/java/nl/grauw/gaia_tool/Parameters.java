@@ -96,4 +96,14 @@ public class Parameters extends Observable {
 		this.notifyObservers(offset);
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder parameterData = new StringBuilder(128);
+		for (byte b : data) {
+			parameterData.append(String.format("%02X ", b));
+		}
+		
+		return String.format("Parameters. Address: %s. Data: %s.", getAddress(), parameterData.toString().trim());
+	}
+	
 }
