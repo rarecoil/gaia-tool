@@ -19,19 +19,19 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class EnumComboBox extends JPanel {
+public class EnumComboBox<T extends Enum<T>> extends JPanel {
 	private static final long serialVersionUID = 1L;
-
-	private Enum<?> value;
-	private Object[] enums;
+	
+	private T value;
+	private T[] enums;
 	private String label;
 	
 	private JLabel labelLabel;
 	private JComboBox valueComboBox;
 	
-	public EnumComboBox(Enum<?> value, Object[] enums, String label) {
+	public EnumComboBox(T value, String label) {
 		this.value = value;
-		this.enums = enums;
+		this.enums = value.getDeclaringClass().getEnumConstants();
 		this.label = label;
 		initComponents();
 	}

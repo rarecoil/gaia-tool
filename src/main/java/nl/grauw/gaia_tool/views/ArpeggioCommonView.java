@@ -30,9 +30,9 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	private ArpeggioCommon parameters;
 	
 	private static final long serialVersionUID = 123L;
-	private EnumComboBox gridComboBox;
-	private EnumComboBox durationComboBox;
-	private EnumComboBox motifComboBox;
+	private EnumComboBox<ArpeggioGrid> gridComboBox;
+	private EnumComboBox<ArpeggioDuration> durationComboBox;
+	private EnumComboBox<ArpeggioMotif> motifComboBox;
 	private ValueSpinner octaveRangeSpinner;
 	private ValueSpinner accentRateSpinner;
 	private ValueSpinner velocitySpinner;
@@ -93,23 +93,23 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 			);
 	}
 	
-	private EnumComboBox getArpeggioGridComboBox() {
+	private EnumComboBox<ArpeggioGrid> getArpeggioGridComboBox() {
 		if (gridComboBox == null) {
-			gridComboBox = new EnumComboBox(parameters.getArpeggioGrid(), ArpeggioGrid.values(), "Grid");
+			gridComboBox = new EnumComboBox<ArpeggioGrid>(parameters.getArpeggioGrid(), "Grid");
 		}
 		return gridComboBox;
 	}
 	
-	private EnumComboBox getArpeggioDurationComboBox() {
+	private EnumComboBox<ArpeggioDuration> getArpeggioDurationComboBox() {
 		if (durationComboBox == null) {
-			durationComboBox = new EnumComboBox(parameters.getArpeggioDuration(), ArpeggioDuration.values(), "Duration");
+			durationComboBox = new EnumComboBox<ArpeggioDuration>(parameters.getArpeggioDuration(), "Duration");
 		}
 		return durationComboBox;
 	}
 	
-	private EnumComboBox getArpeggioMotifComboBox() {
+	private EnumComboBox<ArpeggioMotif> getArpeggioMotifComboBox() {
 		if (motifComboBox == null) {
-			motifComboBox = new EnumComboBox(parameters.getArpeggioMotif(), ArpeggioMotif.values(), "Motif");
+			motifComboBox = new EnumComboBox<ArpeggioMotif>(parameters.getArpeggioMotif(), "Motif");
 		}
 		return motifComboBox;
 	}
