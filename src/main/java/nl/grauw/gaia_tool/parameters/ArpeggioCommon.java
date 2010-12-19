@@ -25,26 +25,49 @@ import nl.grauw.gaia_tool.Int8BitValue;
 public class ArpeggioCommon extends Parameters {
 	
 	public enum ArpeggioGrid {
-		_04_, _08_, _08L, _08H, _08t, _16_, _16L, _16H, _16t;
+		_04_("Quarter"), _08_("Eigth"), _08L("Eigth light shuffle"), _08H("Eigth heavy shuffle"), _08t("Eigth triplet"),
+		_16_("Sixteenth"), _16L("Sixteenth light shuffle"), _16H("Sixteenth heavy shuffle"), _16t("Sixteenth triplet");
+		
+		String label;
+		
+		private ArpeggioGrid(String label) {
+			this.label = label;
+		}
 		
 		public String toString() {
-			return super.toString().substring(1);
+			return label;
 		}
 	}
 	
 	public enum ArpeggioDuration {
-		_30, _40, _50, _60, _70, _80, _90, _100, _120, FUL;
+		_30("30%"), _40("40%"), _50("50%"), _60("60%"), _70("70%"), _80("80%"), _90("90%"),
+		_100("100%"), _120("120%"), FUL("Full");
+		
+		String label;
+		
+		private ArpeggioDuration(String label) {
+			this.label = label;
+		}
 		
 		public String toString() {
-			if (this == FUL)
-				return "FUL";
-			return super.toString().substring(1);
+			return label;
 		}
 	}
 	
 	public enum ArpeggioMotif {
-		UP_L, UP_L_AND_H, UP__, DOWN_L, DOWN_L_AND_H, DOWN__,
-		UP_AND_DOWN_L, UP_AND_DOWN_L_AND_H, UP_AND_DOWN__, RANDOM_L, RANDOM__, PHRASE
+		UP_L("Up (L)"), UP_L_AND_H("Up (L&H)"), UP__("Up"), DOWN_L("Down (L)"), DOWN_L_AND_H("Down (L&H)"),
+		DOWN__("Down"), UP_AND_DOWN_L("Up & down (L)"), UP_AND_DOWN_L_AND_H("Up & down (L&H)"),
+		UP_AND_DOWN__("Up & down"), RANDOM_L("Random (L)"), RANDOM__("Random"), PHRASE("Phrase");
+		
+		String label;
+		
+		private ArpeggioMotif(String label) {
+			this.label = label;
+		}
+		
+		public String toString() {
+			return label;
+		}
 	}
 	
 	public ArpeggioCommon(Address address, byte[] data) {
