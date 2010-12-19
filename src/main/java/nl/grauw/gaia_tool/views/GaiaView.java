@@ -296,7 +296,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private void updateContentPanel() {
 		JPanel cp = getContentPanel();
 		JPanel spv = getSelectedParametersView();
-		if (spv != null && cp.getComponent(0) != spv) {
+		if (cp.getComponent(0) != spv) {
 			cp.removeAll();
 			cp.add(spv);
 			cp.revalidate();
