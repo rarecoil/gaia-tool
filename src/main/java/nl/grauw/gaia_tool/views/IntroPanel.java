@@ -68,9 +68,7 @@ public class IntroPanel extends JPanel {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(introduction)
 					.addComponent(instructions)
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Integer.MAX_VALUE)
 					.addComponent(notice)
-					.addContainerGap()
 			);
 	}
 
