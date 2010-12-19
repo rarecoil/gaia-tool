@@ -64,20 +64,13 @@ public class Note {
 	
 	/**
 	 * 
-	 * @param noteString A string in the form "C 4" or "G#5". Some variations in case and spacing are accepted.
+	 * @param noteString A string in the form "C 4", "C4", "G# 5" or "G#5".
 	 */
 	public Note(String noteString) {
-		this(parseNoteName(noteString), parseOctave(noteString));
-	}
-	
-	private static NoteName parseNoteName(String noteString) {
-		String trimmedString = noteString.trim().toUpperCase();
-		return NoteName.getNoteByName(trimmedString.substring(0, trimmedString.charAt(1) == '#' ? 2 : 1));
-	}
-	
-	private static int parseOctave(String noteString) {
-		String trimmedString = noteString.trim().toUpperCase();
-		return new Integer(trimmedString.substring(trimmedString.charAt(1) == '#' ? 2 : 1).trim());
+		this(
+				NoteName.getNoteByName(noteString.substring(0, noteString.charAt(1) == '#' ? 2 : 1)),
+				new Integer(noteString.substring(noteString.charAt(1) == '#' ? 2 : 1).trim())
+			);
 	}
 	
 	public NoteName getNote() {

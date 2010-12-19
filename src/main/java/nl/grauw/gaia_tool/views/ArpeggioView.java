@@ -102,27 +102,45 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 			if (column == 0) {
 				Note originalNote = papp.getOriginalNote().getValue();
 				return originalNote.getNoteNumber() == 128 ? "OFF" : originalNote;
+			} else {
+				int velocity = papp.getStepData(column).getValue();
+//				if (velocity == 0)
+//					return "Rest";
+				if (velocity == 128)
+					return "Tie";
+				return velocity;
 			}
-			return papp.getStepData(column).getValue();
 		}
 		
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			if (aValue instanceof String) {
+				setValueAt((String) aValue, rowIndex, columnIndex);
+			}
+		}
+		
+		private void setValueAt(String aValue, int rowIndex, int columnIndex) {
+			aValue = aValue.trim().toUpperCase();
 			ArpeggioPattern pattern = patch.getArpeggioPattern(rowIndex + 1);
 			if (columnIndex == 0) {
-				if (aValue instanceof String) {
-					NoteValue originalNote = pattern.getOriginalNote();
+				NoteValue originalNote = pattern.getOriginalNote();
+				if (aValue.equals("OFF")) {
+					originalNote.setValue(new Note(128));
+				} else {
 					try {
-						originalNote.setValue(new Note((String) aValue));
+						originalNote.setValue(new Note(aValue));
 					} catch(IllegalArgumentException e) {
 					}
 				}
 			} else {
-				if (aValue instanceof String) {
-					// XXX: make cell editor for Value type (incl. min/max etc.)
-					IntValue stepData = pattern.getStepData(columnIndex);
+				IntValue stepData = pattern.getStepData(columnIndex);
+				if (aValue.equals("TIE")) {
+					stepData.setValue(128);
+				} else if (aValue.equals("REST")) {
+					stepData.setValue(0);
+				} else {
 					try {
-						stepData.setValue(new Integer((String) aValue));
+						stepData.setValue(new Integer(aValue));
 					} catch(IllegalArgumentException e) {
 					}
 				}
