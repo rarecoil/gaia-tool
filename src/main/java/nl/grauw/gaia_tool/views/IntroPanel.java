@@ -41,7 +41,7 @@ public class IntroPanel extends JPanel {
 		introduction = new JLabel("<html>With this tool you can view your Roland GAIA’s settings, " +
 				"such as patch names, patch parameters, arpeggio patterns and system settings. Use " +
 				"the tree on the left to select the system or patch parameters that you want to view. " +
-				"E.g. by expanding Temporary Patch and then selecting Arpeggio, you can edit the " +
+				"E.g. by expanding “Temporary patch” and then selecting “Arpeggio”, you can edit the " +
 				"patch’s arpeggio.</html>");
 		notice = new JLabel("<html>This is free software licensed under the Apache 2.0 license. " +
 				"For more information and downloads visit the GAIA tool project page at " +
