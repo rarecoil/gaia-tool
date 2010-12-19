@@ -21,18 +21,15 @@ import javax.swing.JPanel;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
-import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioDuration;
-import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioGrid;
-import nl.grauw.gaia_tool.parameters.ArpeggioCommon.ArpeggioMotif;
 
 public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	
 	private ArpeggioCommon parameters;
 	
 	private static final long serialVersionUID = 123L;
-	private EnumComboBox<ArpeggioGrid> gridComboBox;
-	private EnumComboBox<ArpeggioDuration> durationComboBox;
-	private EnumComboBox<ArpeggioMotif> motifComboBox;
+	private EnumComboBox gridComboBox;
+	private EnumComboBox durationComboBox;
+	private EnumComboBox motifComboBox;
 	private ValueSpinner octaveRangeSpinner;
 	private ValueSpinner accentRateSpinner;
 	private ValueSpinner velocitySpinner;
@@ -93,23 +90,23 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 			);
 	}
 	
-	private EnumComboBox<ArpeggioGrid> getArpeggioGridComboBox() {
+	private EnumComboBox getArpeggioGridComboBox() {
 		if (gridComboBox == null) {
-			gridComboBox = new EnumComboBox<ArpeggioGrid>(parameters.getArpeggioGrid(), "Grid");
+			gridComboBox = new EnumComboBox(parameters.getArpeggioGrid(), "Grid");
 		}
 		return gridComboBox;
 	}
 	
-	private EnumComboBox<ArpeggioDuration> getArpeggioDurationComboBox() {
+	private EnumComboBox getArpeggioDurationComboBox() {
 		if (durationComboBox == null) {
-			durationComboBox = new EnumComboBox<ArpeggioDuration>(parameters.getArpeggioDuration(), "Duration");
+			durationComboBox = new EnumComboBox(parameters.getArpeggioDuration(), "Duration");
 		}
 		return durationComboBox;
 	}
 	
-	private EnumComboBox<ArpeggioMotif> getArpeggioMotifComboBox() {
+	private EnumComboBox getArpeggioMotifComboBox() {
 		if (motifComboBox == null) {
-			motifComboBox = new EnumComboBox<ArpeggioMotif>(parameters.getArpeggioMotif(), "Motif");
+			motifComboBox = new EnumComboBox(parameters.getArpeggioMotif(), "Motif");
 		}
 		return motifComboBox;
 	}

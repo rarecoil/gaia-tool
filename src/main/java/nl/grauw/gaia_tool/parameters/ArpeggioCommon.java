@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.EnumValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedValue;
 import nl.grauw.gaia_tool.Value;
@@ -53,16 +54,16 @@ public class ArpeggioCommon extends Parameters {
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
-	public ArpeggioGrid getArpeggioGrid() {
-		return ArpeggioGrid.values()[getValue(0x00)];
+	public EnumValue<ArpeggioGrid> getArpeggioGrid() {
+		return new EnumValue<ArpeggioGrid>(this, 0x00, ArpeggioGrid.values());
 	}
 	
-	public ArpeggioDuration getArpeggioDuration() {
-		return ArpeggioDuration.values()[getValue(0x01)];
+	public EnumValue<ArpeggioDuration> getArpeggioDuration() {
+		return new EnumValue<ArpeggioDuration>(this, 0x01, ArpeggioDuration.values());
 	}
 	
-	public ArpeggioMotif getArpeggioMotif() {
-		return ArpeggioMotif.values()[getValue(0x02)];
+	public EnumValue<ArpeggioMotif> getArpeggioMotif() {
+		return new EnumValue<ArpeggioMotif>(this, 0x02, ArpeggioMotif.values());
 	}
 	
 	public Value getArpeggioOctaveRange() {
