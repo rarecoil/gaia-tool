@@ -27,10 +27,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JToggleButton;
+import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.NoteValue;
 import nl.grauw.gaia_tool.Parameters;
@@ -38,6 +41,7 @@ import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.IntValue;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
+import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 
@@ -153,6 +157,35 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 		}
 	}
 	
+	public class SynchronizeModel extends ToggleButtonModel implements Observer {
+		private static final long serialVersionUID = 1L;
+		
+		private Gaia gaia;
+		
+		public SynchronizeModel(Gaia g) {
+			gaia = g;
+			gaia.addObserver(this);
+		}
+		
+		@Override
+		public boolean isSelected() {
+			return gaia.getSynchronize();
+		}
+		
+		@Override
+		public void setSelected(boolean b) {
+			gaia.setSynchronize(b);
+		}
+
+		@Override
+		public void update(Observable source, Object arg) {
+			if (source == gaia && "synchronize".equals(arg)) {
+				fireStateChanged();
+			}
+		}
+		
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 	private Patch patch;
@@ -160,6 +193,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 	private JLabel titleLabel;
 	private JButton reloadButton;
 	private JButton saveButton;
+	private JToggleButton syncButton;
 	private JPanel parametersContainer;
 	private ArpeggioCommonView parametersView;
 	private JScrollPane patternScrollPane;
@@ -215,6 +249,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 						layout.createSequentialGroup()
 							.addComponent(getTitleLabel())
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Integer.MAX_VALUE)
+							.addComponent(getSyncButton())
 							.addComponent(getSaveButton())
 							.addComponent(getReloadButton())
 					)
@@ -226,6 +261,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 					.addGroup(
 						layout.createParallelGroup(Alignment.CENTER)
 							.addComponent(getTitleLabel())
+							.addComponent(getSyncButton())
 							.addComponent(getSaveButton())
 							.addComponent(getReloadButton())
 					)
@@ -279,6 +315,15 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 			saveButton.addActionListener(this);
 		}
 		return saveButton;
+	}
+	
+	private JToggleButton getSyncButton() {
+		if (syncButton == null) {
+			syncButton = new JToggleButton();
+			syncButton.setText("Sync");
+			syncButton.setModel(new SynchronizeModel(patch.getGaia()));
+		}
+		return syncButton;
 	}
 	
 	private JScrollPane getPatternScrollPane() {

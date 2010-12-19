@@ -15,11 +15,38 @@
  */
 package nl.grauw.gaia_tool;
 
-import java.util.Arrays;
-
 import nl.grauw.gaia_tool.mvc.Observable;
 
 public class Parameters extends Observable {
+	
+	public class ParameterChange {
+		private int offset;
+		private int length;
+		
+		public ParameterChange(int offset, int length) {
+			this.offset = offset;
+			this.length = length;
+		}
+		
+		public int getOffset() {
+			return offset;
+		}
+		
+		public int getLength() {
+			return length;
+		}
+		
+		/**
+		 * Test whether the parameter changes include a certain offset.
+		 */
+		public boolean includes(int testOffset) {
+			return testOffset >= offset && testOffset < (offset + length);
+		}
+		
+		public String toString() {
+			return "data";
+		}
+	}
 	
 	private Address address;
 	private byte[] data;
@@ -34,7 +61,13 @@ public class Parameters extends Observable {
 	}
 	
 	public byte[] getData() {
-		return Arrays.copyOf(data, data.length);
+		return getData(0, data.length);
+	}
+	
+	public byte[] getData(int offset, int length) {
+		byte[] copy = new byte[length];
+		System.arraycopy(data, offset, copy, 0, length);
+		return copy;
 	}
 	
 	public int getLength() {
@@ -66,7 +99,7 @@ public class Parameters extends Observable {
 		if (value < 0 || value >= 128)
 			throw new IllegalArgumentException("Value out of range.");
 		this.data[offset] = (byte)value;
-		this.notifyObservers(offset);
+		this.notifyObservers(new ParameterChange(offset, 1));
 	}
 	
 	public void set8BitValue(int offset, int value) {
@@ -74,7 +107,7 @@ public class Parameters extends Observable {
 			throw new IllegalArgumentException("Value out of range.");
 		this.data[offset] = (byte) (value >> 4 & 0x0F);
 		this.data[offset + 1] = (byte) (value & 0x0F);
-		this.notifyObservers(offset);
+		this.notifyObservers(new ParameterChange(offset, 2));
 	}
 	
 	public void set12BitValue(int offset, int value) {
@@ -83,7 +116,7 @@ public class Parameters extends Observable {
 		this.data[offset] = (byte) (value >> 8 & 0x0F);
 		this.data[offset + 1] = (byte) (value >> 4 & 0x0F);
 		this.data[offset + 2] = (byte) (value & 0x0F);
-		this.notifyObservers(offset);
+		this.notifyObservers(new ParameterChange(offset, 3));
 	}
 	
 	public void set16BitValue(int offset, int value) {
@@ -93,7 +126,7 @@ public class Parameters extends Observable {
 		this.data[offset + 1] = (byte) (value >> 8 & 0x0F);
 		this.data[offset + 2] = (byte) (value >> 4 & 0x0F);
 		this.data[offset + 3] = (byte) (value & 0x0F);
-		this.notifyObservers(offset);
+		this.notifyObservers(new ParameterChange(offset, 4));
 	}
 	
 	@Override

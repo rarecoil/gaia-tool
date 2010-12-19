@@ -71,6 +71,8 @@ public class Gaia extends Observable {
 	private Patch temporaryPatch;
 	private Patch[] userPatches = new Patch[64];
 	
+	private boolean synchronize = false;
+	
 	public Gaia() {
 		temporaryPatch = new Patch(this);
 		for (int bank = 0; bank < 8; bank++) {
@@ -84,6 +86,15 @@ public class Gaia extends Observable {
 
 	public Log getLog() {
 		return log;
+	}
+	
+	public boolean getSynchronize() {
+		return synchronize;
+	}
+	
+	public void setSynchronize(boolean sync) {
+		synchronize = sync;
+		notifyObservers("synchronize");
 	}
 	
 	/**

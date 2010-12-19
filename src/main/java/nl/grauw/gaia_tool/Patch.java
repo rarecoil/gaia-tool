@@ -17,7 +17,9 @@ package nl.grauw.gaia_tool;
 
 import javax.sound.midi.InvalidMidiDataException;
 
+import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.mvc.Observable;
+import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 import nl.grauw.gaia_tool.parameters.PatchCommon;
@@ -27,7 +29,7 @@ import nl.grauw.gaia_tool.parameters.Flanger;
 import nl.grauw.gaia_tool.parameters.Reverb;
 import nl.grauw.gaia_tool.parameters.Tone;
 
-public class Patch extends Observable {
+public class Patch extends Observable implements Observer {
 	
 	private Gaia gaia;
 	private int bank;
@@ -58,6 +60,10 @@ public class Patch extends Observable {
 		this.gaia = gaia;
 		this.bank = bank;
 		this.patch = patch;
+	}
+	
+	public Gaia getGaia() {
+		return gaia;
 	}
 	
 	public Address getAddress() {
@@ -91,41 +97,52 @@ public class Patch extends Observable {
 	}
 	
 	public Parameters updateParameters(Address address, byte[] data) {
+		Parameters p;
 		byte byte3 = address.getByte3();
 		if (byte3 == 0x00) {
-			common = new PatchCommon(address, data);
+			p = common = new PatchCommon(address, data);
 			notifyObservers("common");
-			return common;
 		} else if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
-			tones[byte3 - 0x01] = new Tone(address, data);
+			p = tones[byte3 - 0x01] = new Tone(address, data);
 			notifyObservers("tones");
-			return tones[byte3 - 0x01];
 		} else if (byte3 == 0x04) {
-			distortion = new Distortion(address, data);
+			p = distortion = new Distortion(address, data);
 			notifyObservers("distortion");
-			return distortion;
 		} else if (byte3 == 0x06) {
-			flanger = new Flanger(address, data);
+			p = flanger = new Flanger(address, data);
 			notifyObservers("flanger");
-			return flanger;
 		} else if (byte3 == 0x08) {
-			delay = new Delay(address, data);
+			p = delay = new Delay(address, data);
 			notifyObservers("delay");
-			return delay;
 		} else if (byte3 == 0x0A) {
-			reverb = new Reverb(address, data);
+			p = reverb = new Reverb(address, data);
 			notifyObservers("reverb");
-			return reverb;
 		} else if (byte3 == 0x0C) {
-			arpeggioCommon = new ArpeggioCommon(address, data);
+			p = arpeggioCommon = new ArpeggioCommon(address, data);
 			notifyObservers("arpeggioCommon");
-			return arpeggioCommon;
 		} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
-			arpeggioPatterns[byte3 - 0x0D] = new ArpeggioPattern(address, data);
+			p = arpeggioPatterns[byte3 - 0x0D] = new ArpeggioPattern(address, data);
 			notifyObservers("arpeggioPatterns");
-			return arpeggioPatterns[byte3 - 0x0D];
 		} else {
 			throw new IllegalArgumentException("Address not recognised.");
+		}
+		if (!p.hasObserver(this))
+			p.addObserver(this);
+		return p;
+	}
+	
+	@Override
+	public void update(Observable source, Object arg) {
+		if (source instanceof Parameters && arg instanceof ParameterChange) {
+			update((Parameters) source, (ParameterChange) arg);
+		}
+	}
+	
+	private void update(Parameters source, ParameterChange arg) {
+		if (gaia.getSynchronize()) {
+			Address address = source.getAddress().add(arg.getOffset());
+			byte[] data = source.getData(arg.getOffset(), arg.getLength());
+			saveData(new Parameters(address, data));
 		}
 	}
 	
