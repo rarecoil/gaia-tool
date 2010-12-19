@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.NoteValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.IntValue;
@@ -35,8 +36,8 @@ public class ArpeggioPattern extends Parameters {
 	 * Note number 128 (G#9) means OFF.
 	 * @return The pattern original note.
 	 */
-	public Note getOriginalNote() {
-		return new Note(get8BitValue(0x00));
+	public NoteValue getOriginalNote() {
+		return new NoteValue(this, 0x00);
 	}
 	
 	public IntValue getStepData(int step) {
@@ -53,8 +54,9 @@ public class ArpeggioPattern extends Parameters {
 			stepData.append(" ");
 		}
 		
+		Note originalNote = getOriginalNote().getValue();
 		return "Patch arpeggio pattern parameters:\n" +
-				String.format("Original note: %s\n", getOriginalNote().getNoteNumber() != 128 ? getOriginalNote() : "OFF") +
+				String.format("Original note: %s\n", originalNote.getNoteNumber() != 128 ? originalNote : "OFF") +
 				String.format("Step data: %s\n", stepData);
 	}
 	

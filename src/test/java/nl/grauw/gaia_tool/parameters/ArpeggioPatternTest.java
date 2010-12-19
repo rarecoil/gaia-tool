@@ -34,8 +34,8 @@ public class ArpeggioPatternTest {
 	@Test
 	public void testGetOriginalNote() {
 		ArpeggioPattern papp = getTestParameters();
-		assertEquals(NoteName.C, papp.getOriginalNote().getNote());
-		assertEquals(4, papp.getOriginalNote().getOctave());
+		assertEquals(NoteName.C, papp.getOriginalNote().getValue().getNote());
+		assertEquals(4, papp.getOriginalNote().getValue().getOctave());
 	}
 
 	@Test

@@ -21,7 +21,7 @@ public class Note {
 		C("C"), C_SHARP("C#"), D("D"), D_SHARP("D#"), E("E"), F("F"), F_SHARP("F#"),
 		G("G"), G_SHARP("G#"), A("A"), A_SHARP("A#"), B("B");
 		
-		String label;
+		private String label;
 		
 		NoteName(String label) {
 			this.label = label;
@@ -30,10 +30,29 @@ public class Note {
 		public String toString() {
 			return label;
 		}
+		
+		public static NoteName getNoteByName(String name) {
+			for (NoteName note : values()) {
+				if (note.label.equals(name)) {
+					return note;
+				}
+			}
+			return null;
+		}
 	}
 	
 	private NoteName note;
 	private int octave;
+	
+	public Note(NoteName note, int octave) {
+		if (note == null || octave < -1 || octave > 9 ||
+				(octave == 9 && (note == NoteName.A || note == NoteName.A_SHARP || note == NoteName.B))) {
+			// XXX: should also include NoteName.G but this is used for OFF sometimes...
+			throw new IllegalArgumentException("Specified note is out of range.");
+		}
+		this.note = note;
+		this.octave = octave;
+	}
 	
 	/**
 	 * 
@@ -43,9 +62,22 @@ public class Note {
 		this(NoteName.values()[noteNumber % 12], noteNumber / 12 - 1);
 	}
 	
-	public Note(NoteName note, int octave) {
-		this.note = note;
-		this.octave = octave;
+	/**
+	 * 
+	 * @param noteString A string in the form "C 4" or "G#5". Some variations in case and spacing are accepted.
+	 */
+	public Note(String noteString) {
+		this(parseNoteName(noteString), parseOctave(noteString));
+	}
+	
+	private static NoteName parseNoteName(String noteString) {
+		String trimmedString = noteString.trim().toUpperCase();
+		return NoteName.getNoteByName(trimmedString.substring(0, trimmedString.charAt(1) == '#' ? 2 : 1));
+	}
+	
+	private static int parseOctave(String noteString) {
+		String trimmedString = noteString.trim().toUpperCase();
+		return new Integer(trimmedString.substring(trimmedString.charAt(1) == '#' ? 2 : 1).trim());
 	}
 	
 	public NoteName getNote() {

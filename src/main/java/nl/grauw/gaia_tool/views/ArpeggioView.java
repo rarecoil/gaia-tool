@@ -32,6 +32,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import nl.grauw.gaia_tool.Note;
+import nl.grauw.gaia_tool.NoteValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.IntValue;
@@ -95,7 +96,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 			if (papp == null)
 				return "";
 			if (column == 0) {
-				Note originalNote = papp.getOriginalNote();
+				Note originalNote = papp.getOriginalNote().getValue();
 				return originalNote.getNoteNumber() == 128 ? "OFF" : originalNote;
 			}
 			return papp.getStepData(column).getValue();
@@ -103,14 +104,18 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 		
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			ArpeggioPattern pattern = patch.getArpeggioPattern(rowIndex + 1);
 			if (columnIndex == 0) {
-				if (aValue instanceof Note) {
-					// TODO: make cell editor for Note type (or rather, NoteValue)
+				if (aValue instanceof String) {
+					NoteValue originalNote = pattern.getOriginalNote();
+					try {
+						originalNote.setValue(new Note((String) aValue));
+					} catch(IllegalArgumentException e) {
+					}
 				}
 			} else {
 				if (aValue instanceof String) {
 					// XXX: make cell editor for Value type (incl. min/max etc.)
-					ArpeggioPattern pattern = patch.getArpeggioPattern(rowIndex + 1);
 					IntValue stepData = pattern.getStepData(columnIndex);
 					try {
 						stepData.setValue(new Integer((String) aValue));
@@ -122,7 +127,7 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 		
 		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
-			return columnIndex >= 1;
+			return true;
 		}
 
 		@Override
