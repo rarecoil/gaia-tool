@@ -28,19 +28,19 @@ public class ArpeggioCommonTest {
 	@Test
 	public void testGetArpeggioGrid() {
 		ArpeggioCommon pacp = getTestParameters();
-		assertEquals(ArpeggioGrid._16t, pacp.getArpeggioGrid());
+		assertEquals(ArpeggioGrid._16t, pacp.getArpeggioGrid().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioDuration() {
 		ArpeggioCommon pacp = getTestParameters();
-		assertEquals(ArpeggioDuration.FUL, pacp.getArpeggioDuration());
+		assertEquals(ArpeggioDuration.FUL, pacp.getArpeggioDuration().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioMotif() {
 		ArpeggioCommon pacp = getTestParameters();
-		assertEquals(ArpeggioMotif.PHRASE, pacp.getArpeggioMotif());
+		assertEquals(ArpeggioMotif.PHRASE, pacp.getArpeggioMotif().getValue());
 	}
 
 	@Test
