@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool.views;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -361,17 +362,27 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 			TableModel model = new ArpeggioModel(patch);
 			patternTable = new JTable(model);
 			patternTable.setFillsViewportHeight(true);
-			patternTable.setDefaultEditor(Object.class, new DefaultCellEditor(getEditField()));
+			patternTable.setDefaultEditor(Object.class, new DefaultCellEditor(getEditField()) {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Component getTableCellEditorComponent(JTable table,
+						Object value, boolean isSelected, int row, int column) {
+					// selects the text when starting to edit
+					JTextField editField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
+					editField.selectAll();
+					return editField;
+				}
+			});
 		}
 		return patternTable;
 	}
 	
 	private JTextField getEditField() {
 		if (editField == null) {
-			// edit field that selects its text on focus
 			editField = new JTextField() {
 				private static final long serialVersionUID = 1L;
 				@Override
+				// selects the text on focus
 				public void requestFocus() {
 					selectAll();
 					super.requestFocus();
