@@ -31,6 +31,9 @@ public class App implements Runnable {
 	}
 	
 	public App() throws MidiUnavailableException, InvalidMidiDataException {
+		// set up the Nimbus look and feel
+		GaiaView.installLookAndFeel();
+		
 		// instantiate model
 		gaia = new Gaia();
 		try {
@@ -43,7 +46,6 @@ public class App implements Runnable {
 		gaia.requestIdentity();
 		
 		// render view
-		GaiaView.installLookAndFeel();
 		SwingUtilities.invokeLater(this);
 	}
 	
