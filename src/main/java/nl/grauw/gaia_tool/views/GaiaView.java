@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -51,6 +52,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private static final long serialVersionUID = 1L;
 	private JMenuBar mainMenuBar;
 	private JMenu fileMenu;
+	private JMenuItem saveItem;
 	private JMenuItem exitItem;
 	private JMenu testMenu;
 	private JMenuItem playTestNotesItem;
@@ -164,6 +166,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			fileMenu = new JMenu();
 			fileMenu.setText("File");
 			fileMenu.setOpaque(false);
+			fileMenu.add(getSaveItem());
 			fileMenu.add(getExitItem());
 		}
 		return fileMenu;
@@ -182,6 +185,21 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			});
 		}
 		return exitItem;
+	}
+
+	private JMenuItem getSaveItem() {
+		if (saveItem == null) {
+			saveItem = new JMenuItem();
+			saveItem.setText("Save");
+			saveItem.setOpaque(false);
+			saveItem.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
+			saveItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					saveAsItemActionPerformed(event);
+				}
+			});
+		}
+		return saveItem;
 	}
 
 	private JMenu getTestMenu() {
@@ -317,16 +335,34 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			if ("System".equals(node1.getUserObject()) && tp.getPathCount() == 2) {
 				return new SystemView(gaia);
 			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() >= 3) {
-				return getPatchParameterByName(gaia.getTemporaryPatch(), tp, 2);
+				return getPatchParameterByName(getSelectedPatch(), tp, 2);
 			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 5) {
+				return getPatchParameterByName(getSelectedPatch(), tp, 4);
+			}
+		}
+		return new JPanel();
+	}
+	
+	/**
+	 * Return the patch that is currently selected in the tree.
+	 * @return
+	 */
+	public Patch getSelectedPatch() {
+		TreePath tp = contentSelectionTree.getSelectionPath();
+		if (tp != null && tp.getPathCount() >= 2) {
+			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
+			if ("Temporary patch".equals(node1.getUserObject())) {
+				return gaia.getTemporaryPatch();
+			}
+			if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 4) {
 				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(2);
 				DefaultMutableTreeNode node3 = (DefaultMutableTreeNode)tp.getPathComponent(3);
 				int bank = node1.getIndex(node2);
 				int patch = node2.getIndex(node3);
-				return getPatchParameterByName(gaia.getUserPatch(bank, patch), tp, 4);
+				return gaia.getUserPatch(bank, patch);
 			}
 		}
-		return new JPanel();
+		return null;
 	}
 	
 	public JPanel getPatchParameterByName(Patch ppg, TreePath tp, int startIndex) {
@@ -374,7 +410,22 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private void exitItemActionPerformed(ActionEvent event) {
 		exit();
 	}
-
+	
+	private void saveAsItemActionPerformed(ActionEvent event) {
+		Patch patch = getSelectedPatch();
+		if (patch != null) {
+			try {
+				gaia.savePatch(getSelectedPatch());
+			} catch (RuntimeException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(),
+						"Unable to save patch.", JOptionPane.ERROR_MESSAGE);
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "You must select a patch to save.",
+					"No patch selected.", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 	@Override
 	public void valueChanged(TreeSelectionEvent e) {
 		if (e.getSource() == contentSelectionTree) {

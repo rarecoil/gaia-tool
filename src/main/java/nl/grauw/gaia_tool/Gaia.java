@@ -15,6 +15,11 @@
  */
 package nl.grauw.gaia_tool;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
@@ -205,6 +210,63 @@ public class Gaia extends Observable {
 		if (patch < 0 || patch > 7)
 			throw new IllegalArgumentException("Invalid patch number.");
 		return userPatches[bank << 3 | patch];
+	}
+	
+	public void savePatch(Patch patch) {
+		if (patch.isComplete()) {
+			File settingsPath = getAndCreateSettingsPath();
+			String fileName;
+			if (patch.getBank() == -1) {
+				fileName = "patch-temporary.gaia";
+			} else {
+				fileName = String.format("patch-%s-%d.gaia", "ABCDEFGH".charAt(patch.getBank()), patch.getPatch() + 1);
+			}
+			File patchFile = new File(settingsPath, fileName);
+			FileOutputStream fos;
+			try {
+				patchFile.createNewFile();
+				fos = new FileOutputStream(patchFile);
+				fos.write(patch.getCommon().getData());
+				fos.write(patch.getTone(1).getData());
+				fos.write(patch.getTone(2).getData());
+				fos.write(patch.getTone(3).getData());
+				fos.write(patch.getDistortion().getData());
+				fos.write(patch.getFlanger().getData());
+				fos.write(patch.getDelay().getData());
+				fos.write(patch.getReverb().getData());
+				fos.write(patch.getArpeggioCommon().getData());
+				for (int note = 1; note <= 16; note++) {
+					fos.write(patch.getArpeggioPattern(note).getData());
+				}
+				fos.close();
+				log.log("Patch data saved to " + patchFile);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new RuntimeException("Can not save, because not all patch parameters are loaded.");
+		}
+	}
+	
+	private File getAndCreateSettingsPath() {
+		File path = getSettingsPath();
+		if (!path.exists()) {
+			path.mkdir();
+		}
+		return path;
+	}
+	
+	private File getSettingsPath() {
+		String appData = java.lang.System.getenv("APPDATA");
+		String home = java.lang.System.getenv("HOME");
+		if (appData != null) {
+			return new File(appData, "gaia-tool");
+		} else if (home != null) {
+			return new File(home, ".gaia-tool");
+		}
+		throw new RuntimeException("Home directory not found.");
 	}
 	
 	/**

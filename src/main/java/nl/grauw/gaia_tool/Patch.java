@@ -66,6 +66,14 @@ public class Patch extends Observable implements Observer {
 		return gaia;
 	}
 	
+	public int getBank() {
+		return bank;
+	}
+	
+	public int getPatch() {
+		return patch;
+	}
+	
 	public Address getAddress() {
 		return getAddress(0);
 	}
@@ -76,6 +84,18 @@ public class Patch extends Observable implements Observer {
 		} else {
 			return new Address(0x20, bank << 3 | patch, byte3, 0x00);
 		}
+	}
+	
+	public boolean isComplete() {
+		if (common == null || tones[0] == null || tones[1] == null || tones[2] == null ||
+				distortion == null || flanger == null || delay == null || reverb == null ||
+				arpeggioCommon == null)
+			return false;
+		for (int i = 0; i < 16; i++) {
+			if (arpeggioPatterns[i] == null)
+				return false;
+		}
+		return true;
 	}
 	
 	private void loadData(Address address, int length) {
