@@ -47,6 +47,10 @@ public class Address {
 		return (byte) (address & 0x7F);
 	}
 	
+	public Address add(int offset) {
+		return new Address(address + offset);
+	}
+	
 	public String getDescription() {
 		if (address >= 0x200000 && address < 0x20006E) {
 			return "System";

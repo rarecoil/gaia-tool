@@ -19,24 +19,14 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-/**
- * @author Grauw
- *
- */
 public class AddressTest {
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.Address#Address(int, int, int, int)}.
-	 */
 	@Test
 	public void testAddressIntIntIntInt() {
 		Address a = new Address(0x01, 0x23, 0x45, 0x67);
 		assertEquals(0x0028E2E7, a.getValue());
 	}
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.Address#Address(int)}.
-	 */
 	@Test
 	public void testAddressInt() {
 		Address a = new Address(0x0028E2E7);
@@ -46,9 +36,13 @@ public class AddressTest {
 		assertEquals(0x67, a.getByte4());
 	}
 	
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.Address#toHexString()}.
-	 */
+	@Test
+	public void testAddInt() {
+		Address a = new Address(0x0028E2E7);
+		Address b = a.add(-0x123456);
+		assertEquals(0x16AE91, b.getValue());
+	}
+	
 	@Test
 	public void testToHexString() {
 		Address a = new Address(0x0028E2E7);
