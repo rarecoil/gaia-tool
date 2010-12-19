@@ -46,7 +46,8 @@ public class ValueSpinner extends JPanel {
 		public void setValue(Object val) {
 			if (val instanceof Integer) {
 				Integer iVal = (Integer) val;
-				value.setValue(iVal);
+				if (value.getValue() != iVal)
+					value.setValue(iVal);
 			} else {
 				throw new IllegalArgumentException("");
 			}
