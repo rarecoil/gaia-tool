@@ -31,7 +31,8 @@ public class Value extends ValueBase {
 	}
 	
 	public void setValue(int value) {
-		checkRange(value);
+		if (!isValidValue(value))
+			throw new IllegalArgumentException("Value out of range.");
 		setValueNoCheck(value);
 	}
 	
@@ -39,9 +40,8 @@ public class Value extends ValueBase {
 		parameters.setValue(offset, value);
 	}
 	
-	protected void checkRange(int value) {
-		if (value < min || value > max)
-			throw new IllegalArgumentException("Value out of range.");
+	public boolean isValidValue(int value) {
+		return value >= min && value <= max;
 	}
 	
 	public int getMinimum() {
