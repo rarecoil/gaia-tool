@@ -68,4 +68,18 @@ public class DataRequest1 extends SysexMessage {
 		return (byte) (0x80 - sum & 0x7F);
 	}
 	
+	public Address getAddress() {
+		byte[] data = getData();
+		return new Address(data[6], data[7], data[8], data[9]);
+	}
+	
+	public int getSize() {
+		byte[] data = getData();
+		return data[10] << 21 | data[11] << 14 | data[12] << 7 | data[13];
+	}
+	
+	public String toString() {
+		return String.format("Data request 1. Address: %s. Size: %XH.", this.getAddress(), this.getSize());
+	}
+	
 }

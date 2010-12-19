@@ -82,6 +82,10 @@ public class DataSet1 extends SysexMessage {
 		return new Address(data[6], data[7], data[8], data[9]);
 	}
 	
+	public int getSize() {
+		return getData().length - 12;
+	}
+	
 	public byte[] getDataSet() {
 		byte[] data = getData();
 		byte[] dataSet = new byte[data.length - 12];
@@ -92,7 +96,7 @@ public class DataSet1 extends SysexMessage {
 	}
 	
 	public String toString() {
-		return "Data set 1. Address: " + this.getAddress();
+		return String.format("Data set 1. Address: %s. Size: %XH.", this.getAddress(), this.getSize());
 	}
 	
 }

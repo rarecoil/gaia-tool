@@ -41,4 +41,9 @@ public class IdentityRequest extends UniversalSysex {
 			throw new IllegalArgumentException("Invalid device ID.");
 	}
 	
+	public String toString() {
+		String device = getDeviceID() == UniversalSysex.BROADCAST_DEVICE ? "broadcast" : String.format("%02XH", getDeviceID());
+		return "Identity request message. Device ID: " + device + ".";
+	}
+	
 }

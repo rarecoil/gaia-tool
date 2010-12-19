@@ -52,4 +52,8 @@ public class UniversalSysex extends SysexMessage {
 		setMessage(SYSTEM_EXCLUSIVE, message, message.length);
 	}
 	
+	public int getDeviceID() {
+		return getData()[1];
+	}
+	
 }
