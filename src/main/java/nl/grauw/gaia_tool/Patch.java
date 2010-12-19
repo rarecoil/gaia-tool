@@ -126,7 +126,7 @@ public class Patch extends Observable {
 	}
 	
 	public void loadCommon() {
-		loadData(getAddress(0x00), 0x6E);
+		loadData(getAddress(0x00), 0x3D);
 	}
 	
 	/**
