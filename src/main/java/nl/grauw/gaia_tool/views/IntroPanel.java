@@ -42,7 +42,8 @@ public class IntroPanel extends JPanel {
 		introduction = new JLabel("<html>With this tool you can view your Roland GAIA’s settings, " +
 				"such as patch names, patch parameters, arpeggio patterns and system settings.</html>");
 		instructions = new JLabel("<html>Use the tree on the left to select the system or patch parameters " +
-				"that you want to view.</html>");
+				"that you want to view. E.g. by expanding Temporary Patch and then selecting Arpeggio, you " +
+				"can edit the patch arpeggio.</html>");
 		notice = new JLabel("<html>This is free software licensed under the Apache 2.0 license. " +
 				"For more information and downloads visit the GAIA tool project page at " +
 				"http://www.grauw.nl/projects/gaia-tool/.</html>");
@@ -67,7 +68,9 @@ public class IntroPanel extends JPanel {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(introduction)
 					.addComponent(instructions)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Integer.MAX_VALUE)
 					.addComponent(notice)
+					.addContainerGap()
 			);
 	}
 
