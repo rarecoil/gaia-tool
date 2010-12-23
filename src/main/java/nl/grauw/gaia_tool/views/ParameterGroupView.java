@@ -183,6 +183,9 @@ public abstract class ParameterGroupView extends JPanel implements AWTObserver, 
 		if (e.getSource() == reloadButton) {
 			loadParameters();
 		}
+		if (e.getSource() == saveButton) {
+			saveParameters();
+		}
 	}
 
 }
