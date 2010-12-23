@@ -29,6 +29,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
 import nl.grauw.gaia_tool.Note.NoteName;
+import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.messages.DataRequest1;
 import nl.grauw.gaia_tool.messages.DataSet1;
 import nl.grauw.gaia_tool.messages.GMSystemOn;
@@ -39,6 +40,7 @@ import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
 import nl.grauw.gaia_tool.messages.ProgramChangeMessage;
 import nl.grauw.gaia_tool.mvc.Observable;
+import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.System;
 
 /**
@@ -57,7 +59,7 @@ import nl.grauw.gaia_tool.parameters.System;
  * that case the 1st GM synth will move to channel 0 and the 2nd one
  * will also adjust accordingly.
  */
-public class Gaia extends Observable {
+public class Gaia extends Observable implements Observer {
 
 	private MidiDevice midi_in;
 	private MidiDevice midi_out;
@@ -100,6 +102,25 @@ public class Gaia extends Observable {
 	public void setSynchronize(boolean sync) {
 		synchronize = sync;
 		notifyObservers("synchronize");
+	}
+	
+	@Override
+	public void update(Observable source, Object arg) {
+		if (source instanceof Parameters && arg instanceof ParameterChange) {
+			update((Parameters) source, (ParameterChange) arg);
+		}
+	}
+	
+	private void update(Parameters source, ParameterChange arg) {
+		if (getSynchronize() && !arg.fromUpdate()) {
+			Address address = source.getAddress().add(arg.getOffset());
+			byte[] data = source.getData(arg.getOffset(), arg.getLength());
+			try {
+				sendDataTransmission(new Parameters(address, data));
+			} catch(InvalidMidiDataException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
