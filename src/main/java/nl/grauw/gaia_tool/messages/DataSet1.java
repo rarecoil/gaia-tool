@@ -31,7 +31,7 @@ public class DataSet1 extends SysexMessage {
 	final static int MODEL_SH01 = 0x41;
 	final static int COMMAND_DT1 = 0x12;
 	
-	public DataSet1(SysexMessage sem) throws InvalidMidiDataException {
+	public DataSet1(SysexMessage sem) {
 		super(sem.getMessage());
 		
 		byte[] data = getData();

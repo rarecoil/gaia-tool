@@ -15,7 +15,6 @@
  */
 package nl.grauw.gaia_tool.messages;
 
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 
 public class IdentityReply extends SysexMessage {
@@ -23,7 +22,7 @@ public class IdentityReply extends SysexMessage {
 	final static int GENERAL_INFORMATION = 0x06;
 	final static int IDENTITY_REPLY = 0x02;
 	
-	public IdentityReply(SysexMessage sem) throws InvalidMidiDataException {
+	public IdentityReply(SysexMessage sem) {
 		super(sem.getMessage());
 	}
 	
