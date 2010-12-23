@@ -9,7 +9,7 @@ import javax.swing.text.DefaultCaret;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.mvc.Observable;
 
-public abstract class SingleParametersView extends ParameterGroupView {
+public abstract class SingleParametersView extends ParametersView {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel parametersContainer;

@@ -33,7 +33,7 @@ import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 
-public abstract class ParameterGroupView extends JPanel implements AWTObserver, ActionListener {
+public abstract class ParametersView extends JPanel implements AWTObserver, ActionListener {
 	private static final long serialVersionUID = 123L;
 	
 	public class SynchronizeModel extends ToggleButtonModel implements Observer {

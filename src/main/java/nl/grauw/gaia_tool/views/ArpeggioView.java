@@ -40,7 +40,7 @@ import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 
-public class ArpeggioView extends ParameterGroupView implements AWTObserver, ActionListener {
+public class ArpeggioView extends ParametersView implements AWTObserver, ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	public class ArpeggioModel extends AbstractTableModel implements AWTObserver {
