@@ -116,39 +116,71 @@ public class Patch extends Observable implements Observer {
 		}
 	}
 	
-	public Parameters updateParameters(Address address, byte[] data) {
-		Parameters p;
+	public void updateParameters(Address address, byte[] data) {
+		Parameters p = null;
 		byte byte3 = address.getByte3();
+		byte byte4 = address.getByte4();
 		if (byte3 == 0x00) {
-			p = common = new PatchCommon(address, data);
-			notifyObservers("common");
+			if (byte4 == 0x00 && data.length >= 0x3D) {
+				p = common = new PatchCommon(address, data);
+				notifyObservers("common");
+			} else if (common != null) {
+				common.updateParameters(address, data);
+			}
 		} else if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
-			p = tones[byte3 - 0x01] = new Tone(address, data);
-			notifyObservers("tones");
-		} else if (byte3 == 0x04) {
-			p = distortion = new Distortion(address, data);
-			notifyObservers("distortion");
+			if (byte4 == 0x00 && data.length >= 0x3E) {
+				p = tones[byte3 - 0x01] = new Tone(address, data);
+				notifyObservers("tones");
+			} else if (tones[byte3 - 0x01] != null) {
+				tones[byte3 - 0x01].updateParameters(address, data);
+			}
+		} else if (byte3 == 0x04 || byte3 == 0x05) {
+			if (byte3 == 0x04 && byte4 == 0x00 && data.length >= 0x81) {
+				p = distortion = new Distortion(address, data);
+				notifyObservers("distortion");
+			} else if (distortion != null) {
+				distortion.updateParameters(address, data);
+			}
 		} else if (byte3 == 0x06) {
-			p = flanger = new Flanger(address, data);
-			notifyObservers("flanger");
+			if (byte4 == 0x00 && data.length >= 0x51) {
+				p = flanger = new Flanger(address, data);
+				notifyObservers("flanger");
+			} else if (flanger != null) {
+				flanger.updateParameters(address, data);
+			}
 		} else if (byte3 == 0x08) {
-			p = delay = new Delay(address, data);
-			notifyObservers("delay");
+			if (byte4 == 0x00 && data.length >= 0x51) {
+				p = delay = new Delay(address, data);
+				notifyObservers("delay");
+			} else if (delay != null) {
+				delay.updateParameters(address, data);
+			}
 		} else if (byte3 == 0x0A) {
-			p = reverb = new Reverb(address, data);
-			notifyObservers("reverb");
+			if (byte4 == 0x00 && data.length >= 0x51) {
+				p = reverb = new Reverb(address, data);
+				notifyObservers("reverb");
+			} else if (reverb != null) {
+				reverb.updateParameters(address, data);
+			}
 		} else if (byte3 == 0x0C) {
-			p = arpeggioCommon = new ArpeggioCommon(address, data);
-			notifyObservers("arpeggioCommon");
+			if (byte4 == 0x00 && data.length >= 0x08) {
+				p = arpeggioCommon = new ArpeggioCommon(address, data);
+				notifyObservers("arpeggioCommon");
+			} else if (arpeggioCommon != null) {
+				arpeggioCommon.updateParameters(address, data);
+			}
 		} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
-			p = arpeggioPatterns[byte3 - 0x0D] = new ArpeggioPattern(address, data);
-			notifyObservers("arpeggioPatterns");
+			if (byte4 == 0x00 && data.length >= 0x42) {
+				p = arpeggioPatterns[byte3 - 0x0D] = new ArpeggioPattern(address, data);
+				notifyObservers("arpeggioPatterns");
+			} else if (arpeggioPatterns[byte3 - 0x0D] != null) {
+				arpeggioPatterns[byte3 - 0x0D].updateParameters(address, data);
+			}
 		} else {
 			throw new IllegalArgumentException("Address not recognised.");
 		}
-		if (!p.hasObserver(this))
+		if (p != null && !p.hasObserver(this))
 			p.addObserver(this);
-		return p;
 	}
 	
 	@Override

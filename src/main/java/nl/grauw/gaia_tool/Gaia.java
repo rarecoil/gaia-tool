@@ -173,16 +173,20 @@ public class Gaia extends Observable {
 		updateParameters(mm.getAddress(), mm.getDataSet());
 	}
 	
-	public Parameters updateParameters(Address address, byte[] data) {
+	public void updateParameters(Address address, byte[] data) {
 		int byte1 = address.getByte1();
-		if (byte1 == 0x01) {
-			system = new System(address, data);
-			notifyObservers("system");
-			return system;
+		if (byte1 == 0x01 && address.getByte2() == 0x00 && address.getByte3() == 0x00) {
+			if (address.getByte4() == 0x00 && data.length >= 0x6E) {
+				system = new System(address, data);
+				system.addObserver(this);
+				notifyObservers("system");
+			} else if (system != null) {
+				system.updateParameters(address, data);
+			}
 		} else if (byte1 == 0x10) {
-			return temporaryPatch.updateParameters(address, data);
+			temporaryPatch.updateParameters(address, data);
 		} else if (byte1 == 0x20) {
-			return userPatches[address.getByte2()].updateParameters(address, data);
+			userPatches[address.getByte2()].updateParameters(address, data);
 		} else {
 			throw new IllegalArgumentException("Address not recognised.");
 		}

@@ -51,6 +51,10 @@ public class Address {
 		return new Address(address + offset);
 	}
 	
+	public int offsetOf(Address other) {
+		return other.getValue() - address;
+	}
+	
 	public String getDescription() {
 		if (address >= 0x200000 && address < 0x20006E) {
 			return "System";

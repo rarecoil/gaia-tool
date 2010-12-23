@@ -74,6 +74,17 @@ public class Parameters extends Observable {
 		return data.length;
 	}
 	
+	public void updateParameters(Address address, byte[] data) {
+		int offset = this.address.offsetOf(address);
+		if (offset < 0 || offset >= getLength() || offset + data.length > getLength())
+			throw new Error("Address or data out of range.");
+		
+		for (int i = 0; i < data.length; i++) {
+			this.data[offset + i] = data[i];
+		}
+		this.notifyObservers(new ParameterChange(offset, data.length));
+	}
+	
 	public int getValue(int offset) {
 		return this.data[offset];
 	}
