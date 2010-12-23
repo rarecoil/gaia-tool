@@ -15,8 +15,6 @@
  */
 package nl.grauw.gaia_tool;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
@@ -100,20 +98,12 @@ public class Patch extends Observable implements Observer {
 	
 	private void loadData(Address address, int length) {
 		if (!address.equals(lastRequestAddress)) {
-			try {
-				gaia.sendDataRequest(address, length);
-			} catch(InvalidMidiDataException e) {
-				e.printStackTrace();
-			}
+			gaia.sendDataRequest(address, length);
 		}
 	}
 	
 	private void saveData(Parameters parameters) {
-		try {
-			gaia.sendDataTransmission(parameters);
-		} catch(InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
+		gaia.sendDataTransmission(parameters);
 	}
 	
 	public void updateParameters(Address address, byte[] data) {

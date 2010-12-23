@@ -20,7 +20,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
@@ -391,19 +390,15 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		try {
-			if (e.getSource() == playTestNotesItem) {
-				gaia.playTestNote();
-				gaia.playGMTestNote();
-			} else if (e.getSource() == gmSystemOnItem) {
-				gaia.sendGM1SystemOn();
-			} else if (e.getSource() == gm2SystemOnItem) {
-				gaia.sendGM2SystemOn();
-			} else if (e.getSource() == gmSystemOffItem) {
-				gaia.sendGMSystemOff();
-			}
-		} catch (InvalidMidiDataException e1) {
-			e1.printStackTrace();
+		if (e.getSource() == playTestNotesItem) {
+			gaia.playTestNote();
+			gaia.playGMTestNote();
+		} else if (e.getSource() == gmSystemOnItem) {
+			gaia.sendGM1SystemOn();
+		} else if (e.getSource() == gm2SystemOnItem) {
+			gaia.sendGM2SystemOn();
+		} else if (e.getSource() == gmSystemOffItem) {
+			gaia.sendGMSystemOff();
 		}
 	}
 

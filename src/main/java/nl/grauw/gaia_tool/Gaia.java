@@ -115,11 +115,7 @@ public class Gaia extends Observable implements Observer {
 		if (getSynchronize() && !arg.fromUpdate()) {
 			Address address = source.getAddress().add(arg.getOffset());
 			byte[] data = source.getData(arg.getOffset(), arg.getLength());
-			try {
-				sendDataTransmission(new Parameters(address, data));
-			} catch(InvalidMidiDataException e) {
-				e.printStackTrace();
-			}
+			sendDataTransmission(new Parameters(address, data));
 		}
 	}
 	
@@ -218,11 +214,7 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	public void loadSystem() {
-		try {
-			sendDataRequest(new Address(0x01, 0x00, 0x00, 0x00), 0x6E);
-		} catch(InvalidMidiDataException ex) {
-			ex.printStackTrace();
-		}
+		sendDataRequest(new Address(0x01, 0x00, 0x00, 0x00), 0x6E);
 	}
 	
 	public Patch getTemporaryPatch() {
@@ -297,84 +289,110 @@ public class Gaia extends Observable implements Observer {
 	/**
 	 * Plays a C-4 note for one second.
 	 */
-	public void playTestNote() throws InvalidMidiDataException {
-		send(new ProgramChangeMessage(synth_channel, 0));
-		send(new NoteOnMessage(synth_channel, C_4, 127));
-		
+	public void playTestNote() {
 		try {
-			Thread.sleep(1000);
-		} catch(InterruptedException e) {
+			send(new ProgramChangeMessage(synth_channel, 0));
+			send(new NoteOnMessage(synth_channel, C_4, 127));
+			
+			try {
+				Thread.sleep(1000);
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			send(new NoteOffMessage(synth_channel, C_4, 127));
+		} catch (InvalidMidiDataException e) {
 			e.printStackTrace();
 		}
-		
-		send(new NoteOffMessage(synth_channel, C_4, 127));
 	}
 	
 	/**
 	 * Plays a C-4 note for one second on the GM channel.
 	 */
-	public void playGMTestNote() throws InvalidMidiDataException {
-		send(new ProgramChangeMessage(gm_channel, 0));
-		send(new NoteOnMessage(gm_channel, C_4, 127));
-		
+	public void playGMTestNote() {
 		try {
-			Thread.sleep(1000);
-		} catch(InterruptedException e) {
+			send(new ProgramChangeMessage(gm_channel, 0));
+			send(new NoteOnMessage(gm_channel, C_4, 127));
+			
+			try {
+				Thread.sleep(1000);
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			send(new NoteOffMessage(gm_channel, C_4, 127));
+		} catch (InvalidMidiDataException e) {
 			e.printStackTrace();
 		}
-		
-		send(new NoteOffMessage(gm_channel, C_4, 127));
 	}
 	
 	/**
 	 * Requests the device identity.
-	 * @throws InvalidMidiDataException 
 	 */
-	public void requestIdentity() throws InvalidMidiDataException {
-		send(new IdentityRequest());
+	public void requestIdentity() {
+		try {
+			send(new IdentityRequest());
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * Sends a GM system on directive.
-	 * @throws InvalidMidiDataException 
 	 */
-	public void sendGM1SystemOn() throws InvalidMidiDataException {
-		send(new GMSystemOn());
+	public void sendGM1SystemOn() {
+		try {
+			send(new GMSystemOn());
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * Sends a GM2 system on directive.
-	 * @throws InvalidMidiDataException 
 	 */
-	public void sendGM2SystemOn() throws InvalidMidiDataException {
-		send(new GM2SystemOn());
+	public void sendGM2SystemOn() {
+		try {
+			send(new GM2SystemOn());
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * Sends a GM system off directive.
-	 * @throws InvalidMidiDataException 
 	 */
-	public void sendGMSystemOff() throws InvalidMidiDataException {
-		send(new GMSystemOff());
+	public void sendGMSystemOff() {
+		try {
+			send(new GMSystemOff());
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * Sends a data request directive.
 	 * @param address The start address of the desired data.
 	 * @param length The length of the desired data.
-	 * @throws InvalidMidiDataException
 	 */
-	public void sendDataRequest(Address address, int length) throws InvalidMidiDataException {
-		send(new DataRequest1(address, length));
+	public void sendDataRequest(Address address, int length) {
+		try {
+			send(new DataRequest1(address, length));
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * Sends a data transmission.
 	 * @param parameters The Parameters object containing the address and data to send.
-	 * @throws InvalidMidiDataException
 	 */
-	public void sendDataTransmission(Parameters parameters) throws InvalidMidiDataException {
-		send(new DataSet1(parameters.getAddress(), parameters.getData()));
+	public void sendDataTransmission(Parameters parameters) {
+		try {
+			send(new DataSet1(parameters.getAddress(), parameters.getData()));
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
