@@ -17,24 +17,16 @@ package nl.grauw.gaia_tool.views;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
-import javax.swing.JToggleButton.ToggleButtonModel;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import nl.grauw.gaia_tool.Gaia;
@@ -45,12 +37,12 @@ import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.IntValue;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 
-public class ArpeggioView extends JPanel implements AWTObserver, ActionListener {
-	
+public class ArpeggioView extends ParameterGroupView implements AWTObserver, ActionListener {
+	private static final long serialVersionUID = 1L;
+
 	public class ArpeggioModel extends AbstractTableModel implements AWTObserver {
 		private static final long serialVersionUID = 1L;
 		
@@ -179,45 +171,11 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 		}
 	}
 	
-	public class SynchronizeModel extends ToggleButtonModel implements Observer {
-		private static final long serialVersionUID = 1L;
-		
-		private Gaia gaia;
-		
-		public SynchronizeModel(Gaia g) {
-			gaia = g;
-			gaia.addObserver(this);
-		}
-		
-		@Override
-		public boolean isSelected() {
-			return gaia.getSynchronize();
-		}
-		
-		@Override
-		public void setSelected(boolean b) {
-			gaia.setSynchronize(b);
-		}
-
-		@Override
-		public void update(Observable source, Object arg) {
-			if (source == gaia && "synchronize".equals(arg)) {
-				fireStateChanged();
-			}
-		}
-		
-	}
-	
-	private static final long serialVersionUID = 1L;
-
 	private Patch patch;
 	
-	private JLabel titleLabel;
-	private JButton reloadButton;
-	private JButton saveButton;
-	private JToggleButton syncButton;
 	private JPanel parametersContainer;
-	private ArpeggioCommonView parametersView;
+	private JPanel arpeggioCommonContainer;
+	private ArpeggioCommonView arpeggioCommonView;
 	private JScrollPane patternScrollPane;
 	private JTable patternTable;
 	private JTextField editField;
@@ -229,16 +187,24 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 			loadParameters();
 		initComponents();
 	}
+
+	@Override
+	public Gaia getGaia() {
+		return patch.getGaia();
+	}
 	
-	private void loadParameters() {
+	@Override
+	public void loadParameters() {
 		patch.loadArpeggioAll();
 	}
 	
-	private void saveParameters() {
+	@Override
+	public void saveParameters() {
 		patch.saveArpeggioAll();
 	}
 
-	private String getTitle() {
+	@Override
+	public String getTitle() {
 		return "Patch arpeggio";
 	}
 	
@@ -252,101 +218,55 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 	}
 	
 	private void updateParametersView() {
-		JPanel pc = getParametersContainer();
-		ArpeggioCommonView pv = getParametersView();
-		if (pc.getComponentCount() == 0 || pc.getComponent(0) != pv) {
-			pc.removeAll();
-			if (pv != null)
-				pc.add(pv);
-			pc.revalidate();
+		JPanel container = getArpeggioCommonContainer();
+		ArpeggioCommonView acv = getArpeggioCommonView();
+		if (container.getComponentCount() == 0 || container.getComponent(0) != acv) {
+			container.removeAll();
+			if (acv != null)
+				container.add(acv);
+			container.revalidate();
 		}
 	}
 	
-	private void initComponents() {
-		GroupLayout layout = new GroupLayout(this);
-		setLayout(layout);
-		layout.setAutoCreateGaps(true);
-		layout.setHorizontalGroup(
-				layout.createParallelGroup()
-					.addGroup(
-						layout.createSequentialGroup()
-							.addComponent(getTitleLabel())
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Integer.MAX_VALUE)
-							.addComponent(getSyncButton())
-							.addComponent(getSaveButton())
-							.addComponent(getReloadButton())
-					)
-					.addComponent(getParametersContainer())
-					.addComponent(getPatternScrollPane())
-			);
-		layout.setVerticalGroup(
-				layout.createSequentialGroup()
-					.addGroup(
-						layout.createParallelGroup(Alignment.CENTER)
-							.addComponent(getTitleLabel())
-							.addComponent(getSyncButton())
-							.addComponent(getSaveButton())
-							.addComponent(getReloadButton())
-					)
-					.addComponent(getParametersContainer(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(getPatternScrollPane())
-			);
-	}
-	
-	private JPanel getParametersContainer() {
+	@Override
+	protected JPanel getParametersContainer() {
 		if (parametersContainer == null) {
 			parametersContainer = new JPanel();
-			parametersContainer.setLayout(new BoxLayout(parametersContainer, BoxLayout.X_AXIS));
-			ArpeggioCommonView pv = getParametersView();
-			if (pv != null)
-				parametersContainer.add(pv);
+			GroupLayout layout = new GroupLayout(parametersContainer);
+			parametersContainer.setLayout(layout);
+			layout.setAutoCreateGaps(true);
+			layout.setHorizontalGroup(
+					layout.createParallelGroup()
+						.addComponent(getArpeggioCommonContainer())
+						.addComponent(getPatternScrollPane())
+				);
+			layout.setVerticalGroup(
+					layout.createSequentialGroup()
+						.addComponent(getArpeggioCommonContainer(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(getPatternScrollPane())
+				);
 		}
 		return parametersContainer;
 	}
 	
-	private ArpeggioCommonView getParametersView() {
+	private JPanel getArpeggioCommonContainer() {
+		if (arpeggioCommonContainer == null) {
+			arpeggioCommonContainer = new JPanel();
+			arpeggioCommonContainer.setLayout(new BoxLayout(arpeggioCommonContainer, BoxLayout.Y_AXIS));
+			ArpeggioCommonView pv = getArpeggioCommonView();
+			if (pv != null)
+				arpeggioCommonContainer.add(pv);
+		}
+		return arpeggioCommonContainer;
+	}
+	
+	private ArpeggioCommonView getArpeggioCommonView() {
 		ArpeggioCommon pacp = patch.getArpeggioCommon();
-		if (parametersView == null || parametersView.getModel() != pacp) {
+		if (arpeggioCommonView == null || arpeggioCommonView.getModel() != pacp) {
 			if (pacp != null)
-				parametersView = new ArpeggioCommonView(pacp);
+				arpeggioCommonView = new ArpeggioCommonView(pacp);
 		}
-		return parametersView;
-	}
-	
-	private JLabel getTitleLabel() {
-		if (titleLabel == null) {
-			titleLabel = new JLabel();
-			titleLabel.setFont(titleLabel.getFont().deriveFont(24f).deriveFont(Font.BOLD));
-			titleLabel.setText(getTitle());
-		}
-		return titleLabel;
-	}
-	
-	private JButton getReloadButton() {
-		if (reloadButton == null) {
-			reloadButton = new JButton();
-			reloadButton.setText("Reload");
-			reloadButton.addActionListener(this);
-		}
-		return reloadButton;
-	}
-	
-	private JButton getSaveButton() {
-		if (saveButton == null) {
-			saveButton = new JButton();
-			saveButton.setText("Save");
-			saveButton.addActionListener(this);
-		}
-		return saveButton;
-	}
-	
-	private JToggleButton getSyncButton() {
-		if (syncButton == null) {
-			syncButton = new JToggleButton();
-			syncButton.setText("Sync");
-			syncButton.setModel(new SynchronizeModel(patch.getGaia()));
-		}
-		return syncButton;
+		return arpeggioCommonView;
 	}
 	
 	private JScrollPane getPatternScrollPane() {
@@ -391,16 +311,6 @@ public class ArpeggioView extends JPanel implements AWTObserver, ActionListener 
 			editField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		}
 		return editField;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == reloadButton) {
-			loadParameters();
-		}
-		if (e.getSource() == saveButton) {
-			saveParameters();
-		}
 	}
 
 }

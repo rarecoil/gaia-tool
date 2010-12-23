@@ -19,7 +19,7 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 
-public class DistortionView extends ParameterGroupView {
+public class DistortionView extends SingleParametersView {
 
 	private static final long serialVersionUID = 1L;
 

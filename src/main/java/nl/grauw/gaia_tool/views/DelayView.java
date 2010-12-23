@@ -19,7 +19,7 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 
-public class DelayView extends ParameterGroupView {
+public class DelayView extends SingleParametersView {
 
 	private static final long serialVersionUID = 1L;
 	

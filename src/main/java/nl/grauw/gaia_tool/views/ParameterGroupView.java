@@ -19,7 +19,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -30,7 +29,6 @@ import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import nl.grauw.gaia_tool.Gaia;
-import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
@@ -71,10 +69,6 @@ public abstract class ParameterGroupView extends JPanel implements AWTObserver, 
 	private JButton reloadButton;
 	private JButton saveButton;
 	private JToggleButton syncButton;
-	private JPanel parametersContainer;
-	private ParametersView parametersView;
-	
-	public abstract Parameters getParameters();
 	
 	public abstract Gaia getGaia();
 	
@@ -84,16 +78,7 @@ public abstract class ParameterGroupView extends JPanel implements AWTObserver, 
 	
 	public abstract String getTitle();
 	
-	@Override
-	public void update(Observable o, Object arg) {
-		JPanel pc = getParametersContainer();
-		ParametersView pv = getParametersView();
-		if (pc.getComponent(0) != pv) {
-			pc.removeAll();
-			pc.add(pv);
-			pc.revalidate();
-		}
-	}
+	protected abstract JPanel getParametersContainer();
 	
 	protected void initComponents() {
 		GroupLayout layout = new GroupLayout(this);
@@ -122,24 +107,6 @@ public abstract class ParameterGroupView extends JPanel implements AWTObserver, 
 					)
 					.addComponent(getParametersContainer())
 			);
-	}
-	
-	private JPanel getParametersContainer() {
-		if (parametersContainer == null) {
-			parametersContainer = new JPanel();
-			parametersContainer.setLayout(new BoxLayout(parametersContainer, BoxLayout.X_AXIS));
-			parametersContainer.add(getParametersView());
-		}
-		return parametersContainer;
-	}
-	
-	private ParametersView getParametersView() {
-		if (parametersView == null || parametersView.getModel() != getParameters()) {
-			if (getParameters() == null)
-				loadParameters();
-			parametersView = new ParametersView(getParameters());
-		}
-		return parametersView;
 	}
 	
 	private JLabel getTitleLabel() {

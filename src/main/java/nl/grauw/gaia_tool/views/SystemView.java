@@ -18,7 +18,7 @@ package nl.grauw.gaia_tool.views;
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 
-public class SystemView extends ParameterGroupView {
+public class SystemView extends SingleParametersView {
 
 	private static final long serialVersionUID = 1L;
 	

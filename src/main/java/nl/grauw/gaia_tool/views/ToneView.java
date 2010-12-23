@@ -19,7 +19,7 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 
-public class ToneView extends ParameterGroupView {
+public class ToneView extends SingleParametersView {
 	
 	private static final long serialVersionUID = 1L;
 	
