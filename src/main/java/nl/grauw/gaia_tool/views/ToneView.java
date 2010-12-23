@@ -15,6 +15,7 @@
  */
 package nl.grauw.gaia_tool.views;
 
+import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 
@@ -36,10 +37,19 @@ public class ToneView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return patch.getTone(toneNumber);
 	}
+
+	@Override
+	public Gaia getGaia() {
+		return patch.getGaia();
+	}
 	
 	@Override
 	public void loadParameters() {
 		patch.loadTone(toneNumber);
+	}
+
+	@Override
+	public void saveParameters() {
 	}
 
 	@Override

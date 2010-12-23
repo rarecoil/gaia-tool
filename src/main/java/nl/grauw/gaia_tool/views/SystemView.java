@@ -34,10 +34,19 @@ public class SystemView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return gaia.getSystem();
 	}
+
+	@Override
+	public Gaia getGaia() {
+		return gaia;
+	}
 	
 	@Override
 	public void loadParameters() {
 		gaia.loadSystem();
+	}
+
+	@Override
+	public void saveParameters() {
 	}
 
 	@Override

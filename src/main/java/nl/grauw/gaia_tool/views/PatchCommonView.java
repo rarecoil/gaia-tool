@@ -15,6 +15,7 @@
  */
 package nl.grauw.gaia_tool.views;
 
+import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 
@@ -34,10 +35,19 @@ public class PatchCommonView extends ParameterGroupView {
 	public Parameters getParameters() {
 		return patch.getCommon();
 	}
+
+	@Override
+	public Gaia getGaia() {
+		return patch.getGaia();
+	}
 	
 	@Override
 	public void loadParameters() {
 		patch.loadCommon();
+	}
+
+	@Override
+	public void saveParameters() {
 	}
 
 	@Override

@@ -25,23 +25,62 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
+import nl.grauw.gaia_tool.mvc.Observer;
 
 public abstract class ParameterGroupView extends JPanel implements AWTObserver, ActionListener {
-	
 	private static final long serialVersionUID = 123L;
+	
+	public class SynchronizeModel extends ToggleButtonModel implements Observer {
+		private static final long serialVersionUID = 1L;
+		
+		private Gaia gaia;
+		
+		public SynchronizeModel(Gaia g) {
+			gaia = g;
+			gaia.addObserver(this);
+		}
+		
+		@Override
+		public boolean isSelected() {
+			return gaia.getSynchronize();
+		}
+		
+		@Override
+		public void setSelected(boolean b) {
+			gaia.setSynchronize(b);
+		}
+
+		@Override
+		public void update(Observable source, Object arg) {
+			if (source == gaia && "synchronize".equals(arg)) {
+				fireStateChanged();
+			}
+		}
+		
+	}
+	
 	private JLabel titleLabel;
 	private JButton reloadButton;
+	private JButton saveButton;
+	private JToggleButton syncButton;
 	private JPanel parametersContainer;
 	private ParametersView parametersView;
 	
 	public abstract Parameters getParameters();
 	
+	public abstract Gaia getGaia();
+	
 	public abstract void loadParameters();
+	
+	public abstract void saveParameters();
 	
 	public abstract String getTitle();
 	
@@ -66,6 +105,8 @@ public abstract class ParameterGroupView extends JPanel implements AWTObserver, 
 						layout.createSequentialGroup()
 							.addComponent(getTitleLabel())
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Integer.MAX_VALUE)
+							.addComponent(getSyncButton())
+							.addComponent(getSaveButton())
 							.addComponent(getReloadButton())
 					)
 					.addComponent(getParametersContainer())
@@ -75,6 +116,8 @@ public abstract class ParameterGroupView extends JPanel implements AWTObserver, 
 					.addGroup(
 						layout.createParallelGroup(Alignment.CENTER)
 							.addComponent(getTitleLabel())
+							.addComponent(getSyncButton())
+							.addComponent(getSaveButton())
 							.addComponent(getReloadButton())
 					)
 					.addComponent(getParametersContainer())
@@ -115,6 +158,24 @@ public abstract class ParameterGroupView extends JPanel implements AWTObserver, 
 			reloadButton.addActionListener(this);
 		}
 		return reloadButton;
+	}
+	
+	private JButton getSaveButton() {
+		if (saveButton == null) {
+			saveButton = new JButton();
+			saveButton.setText("Save");
+			saveButton.addActionListener(this);
+		}
+		return saveButton;
+	}
+	
+	private JToggleButton getSyncButton() {
+		if (syncButton == null) {
+			syncButton = new JToggleButton();
+			syncButton.setText("Sync");
+			syncButton.setModel(new SynchronizeModel(getGaia()));
+		}
+		return syncButton;
 	}
 	
 	@Override
