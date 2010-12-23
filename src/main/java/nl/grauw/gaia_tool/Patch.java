@@ -191,7 +191,7 @@ public class Patch extends Observable implements Observer {
 	}
 	
 	private void update(Parameters source, ParameterChange arg) {
-		if (gaia.getSynchronize()) {
+		if (gaia.getSynchronize() && !arg.fromUpdate()) {
 			Address address = source.getAddress().add(arg.getOffset());
 			byte[] data = source.getData(arg.getOffset(), arg.getLength());
 			saveData(new Parameters(address, data));

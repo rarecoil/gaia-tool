@@ -20,12 +20,21 @@ import nl.grauw.gaia_tool.mvc.Observable;
 public class Parameters extends Observable {
 	
 	public class ParameterChange {
+		
 		private int offset;
 		private int length;
+		private boolean fromUpdate;
 		
 		public ParameterChange(int offset, int length) {
 			this.offset = offset;
 			this.length = length;
+			this.fromUpdate = false;
+		}
+		
+		public ParameterChange(int offset, int length, boolean fromUpdate) {
+			this.offset = offset;
+			this.length = length;
+			this.fromUpdate = fromUpdate;
 		}
 		
 		public int getOffset() {
@@ -34,6 +43,15 @@ public class Parameters extends Observable {
 		
 		public int getLength() {
 			return length;
+		}
+		
+		/**
+		 * Returns whether the parameter change is an update originating from an edit data
+		 * transmission by the GAIA, in which case they should not be synced.
+		 * @return True if the change was done by an update.
+		 */
+		public boolean fromUpdate() {
+			return fromUpdate;
 		}
 		
 		/**
@@ -82,7 +100,7 @@ public class Parameters extends Observable {
 		for (int i = 0; i < data.length; i++) {
 			this.data[offset + i] = data[i];
 		}
-		this.notifyObservers(new ParameterChange(offset, data.length));
+		this.notifyObservers(new ParameterChange(offset, data.length, true));
 	}
 	
 	public int getValue(int offset) {
