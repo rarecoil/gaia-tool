@@ -129,6 +129,9 @@ public class Gaia extends Observable implements Observer {
 		receiver = midi_in.getReceiver();
 		transmitter = midi_out.getTransmitter();
 		transmitter.setReceiver(responseReceiver);
+		
+		requestIdentity();
+		loadSystem();
 	}
 	
 	/**

@@ -43,7 +43,6 @@ public class App implements Runnable {
 					"Error connecting to Roland GAIA SH-01.", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
-		gaia.requestIdentity();
 		
 		// render view
 		SwingUtilities.invokeLater(this);
