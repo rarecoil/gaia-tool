@@ -49,15 +49,13 @@ import nl.grauw.gaia_tool.parameters.System;
  * Before use, the object should be initialised by calling open().
  * When you are done, you must invoke close() to clean up.
  * 
- * The GAIA actually has three synthesizers:
+ * The GAIA actually has two synthesizers:
  * - The polyphonic virtual analog synthesizer (default: channel 0)
- * - A general midi synthesizer (default: channel 1)
- * - A second general midi synthesizer (default: channel 2 and higher (!))
+ * - A general midi synthesizer (default: channel 1 and higher)
  * 
  * The virtual analog synth channel can actually be configured with the
- * RX/TX channel setting so this value can be changed, I’m assuming in
- * that case the 1st GM synth will move to channel 0 and the 2nd one
- * will also adjust accordingly.
+ * RX/TX channel setting so this value can be changed, and then the
+ * GM synth will occupy the rest.
  */
 public class Gaia extends Observable implements Observer {
 
