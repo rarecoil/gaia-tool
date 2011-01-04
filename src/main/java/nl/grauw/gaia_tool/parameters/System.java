@@ -71,6 +71,19 @@ public class System extends Parameters {
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
+	public IntValue getBankSelect() {
+		return new IntValue(this, 0x00, 0, 16384) {
+			@Override
+			public int getValue() {
+				return parameters.getValue(offset) << 7 | parameters.getValue(offset + 1);
+			}
+			@Override
+			public void setValue(int value) {
+				parameters.setValues(offset, value >> 7 & 0x7F, value & 0x7F);
+			}
+		};
+	}
+	
 	public IntValue getBankSelectMSB() {
 		return new IntValue(this, 0x00, 0, 127);
 	}
@@ -262,8 +275,7 @@ public class System extends Parameters {
 	
 	public String toString() {
 		return "System parameters:\n" +
-				String.format("Bank select MSB: %s\n", getBankSelectMSB()) +
-				String.format("Bank select LSB: %s\n", getBankSelectLSB()) +
+				String.format("Bank select: %s (MSB: %s, LSB: %s)\n", getBankSelect(), getBankSelectMSB(), getBankSelectLSB()) +
 				String.format("Program number: %s\n", getProgramNumber()) +
 				String.format("Master level: %s\n", getMasterLevel()) +
 				String.format("Master tune: %.1f cent\n", getMasterTune().getValue() / 10.0) +

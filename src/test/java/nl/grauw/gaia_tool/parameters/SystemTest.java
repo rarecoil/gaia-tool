@@ -50,6 +50,12 @@ public class SystemTest {
 	}
 
 	@Test
+	public void testGetBankSelect() {
+		System sp = getTestParameters();
+		assertEquals(11200, sp.getBankSelect().getValue());
+	}
+
+	@Test
 	public void testGetBankSelectMSB() {
 		System sp = getTestParameters();
 		assertEquals(87, sp.getBankSelectMSB().getValue());

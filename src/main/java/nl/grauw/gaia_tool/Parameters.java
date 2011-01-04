@@ -158,6 +158,22 @@ public class Parameters extends Observable {
 		this.notifyObservers(new ParameterChange(offset, 4));
 	}
 	
+	/**
+	 * Set a range of values, passed either as an array or varargs.
+	 * @param offset The offset to start setting.
+	 * @param values The values to set. They must be between 0 and 128.
+	 */
+	public void setValues(int offset, int... values) {
+		for (int i = 0; i < values.length; i++) {
+			if (values[i] < 0 || values[i] >= 128)
+				throw new IllegalArgumentException("Value out of range.");
+		}
+		for (int i = 0; i < values.length; i++) {
+			this.data[offset + i] = (byte) values[i];
+		}
+		this.notifyObservers(new ParameterChange(offset, values.length));
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder parameterData = new StringBuilder(128);
