@@ -17,10 +17,10 @@ package nl.grauw.gaia_tool.views;
 
 import java.awt.Dimension;
 
-import javax.swing.AbstractSpinnerModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import nl.grauw.gaia_tool.IntValue;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
@@ -28,7 +28,8 @@ import nl.grauw.gaia_tool.mvc.Observable;
 
 public class ValueSpinner extends JPanel {
 	
-	public class ValueSpinnerModel extends AbstractSpinnerModel implements AWTObserver {
+	public class ValueSpinnerModel extends SpinnerNumberModel implements AWTObserver {
+		private static final long serialVersionUID = 1L;
 		
 		private IntValue value;
 
@@ -67,6 +68,45 @@ public class ValueSpinner extends JPanel {
 			if (v <= value.getMinimum())
 				return null;
 			return v - 1;
+		}
+		
+		@Override
+		@SuppressWarnings("rawtypes")
+		public Comparable getMaximum() {
+			return value.getMaximum();
+		}
+		
+		@Override
+		@SuppressWarnings("rawtypes")
+		public Comparable getMinimum() {
+			return value.getMinimum();
+		}
+		
+		@Override
+		public Number getStepSize() {
+			return 1;
+		}
+		
+		@Override
+		public Number getNumber() {
+			return value.getValue();
+		}
+		
+		@Override
+		@SuppressWarnings("rawtypes")
+		public void setMaximum(Comparable maximum) {
+			throw new RuntimeException("Changing maximum is not allowed.");
+		}
+		
+		@Override
+		@SuppressWarnings("rawtypes")
+		public void setMinimum(Comparable minimum) {
+			throw new RuntimeException("Changing minimum is not allowed.");
+		}
+		
+		@Override
+		public void setStepSize(Number stepSize) {
+			throw new RuntimeException("Setting step size is not allowed.");
 		}
 
 		@Override
