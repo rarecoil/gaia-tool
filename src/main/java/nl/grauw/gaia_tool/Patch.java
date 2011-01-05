@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool;
 
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
@@ -171,6 +172,33 @@ public class Patch extends Observable implements Observer {
 		}
 		if (p != null && !p.hasObserver(this))
 			p.addObserver(this);
+	}
+	
+	public void updateParameters(ControlChangeMessage message) {
+		if (message.getController() != null) {
+			Parameters currentEffect = null;
+			switch (message.getController()) {
+			case DISTORTION_CONTROL_1:
+			case DISTORTION_LEVEL:
+				currentEffect = distortion;
+				break;
+			case FLANGER_CONTROL_1:
+			case FLANGER_LEVEL:
+				currentEffect = flanger;
+				break;
+			case DELAY_CONTROL_1:
+			case DELAY_LEVEL:
+				currentEffect = delay;
+				break;
+			case REVERB_CONTROL_1:
+			case REVERB_LEVEL:
+				currentEffect = reverb;
+				break;
+			}
+			if (currentEffect != null) {
+				loadData(currentEffect.getAddress().add(0x01), 0x08);
+			}
+		}
 	}
 	
 	@Override

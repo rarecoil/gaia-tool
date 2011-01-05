@@ -186,46 +186,25 @@ public class Gaia extends Observable implements Observer {
 	
 	/**
 	 * Receives an incoming MidiMessage object from the ResponseReceiver.
-	 * @param mm
+	 * @param message
 	 */
-	public void receive(MidiMessage mm) {
-		log.log("Received: " + mm);
+	public void receive(MidiMessage message) {
+		log.log("Received: " + message);
 		
-		if (mm instanceof DataSet1) {
-			receive((DataSet1) mm);
-		} else if (mm instanceof ControlChangeMessage) {
-			receive((ControlChangeMessage) mm);
+		if (message instanceof DataSet1) {
+			updateParameters((DataSet1) message);
+		} else if (message instanceof ControlChangeMessage) {
+			updateParameters((ControlChangeMessage) message);
 		}
 	}
 	
-	private void receive(DataSet1 mm) {
-		updateParameters(mm.getAddress(), mm.getDataSet());
+	private void updateParameters(DataSet1 message) {
+		updateParameters(message.getAddress(), message.getDataSet());
 	}
 	
-	private void receive(ControlChangeMessage mm) {
-		if (getSynchronize() && mm.getController() != null) {
-			Parameters currentEffect = null;
-			switch (mm.getController()) {
-			case DISTORTION_CONTROL_1:
-			case DISTORTION_LEVEL:
-				currentEffect = temporaryPatch.getDistortion();
-				break;
-			case FLANGER_CONTROL_1:
-			case FLANGER_LEVEL:
-				currentEffect = temporaryPatch.getFlanger();
-				break;
-			case DELAY_CONTROL_1:
-			case DELAY_LEVEL:
-				currentEffect = temporaryPatch.getDelay();
-				break;
-			case REVERB_CONTROL_1:
-			case REVERB_LEVEL:
-				currentEffect = temporaryPatch.getReverb();
-				break;
-			}
-			if (currentEffect != null) {
-				sendDataRequest(currentEffect.getAddress().add(0x01), 0x08);
-			}
+	private void updateParameters(ControlChangeMessage message) {
+		if (getSynchronize()) {
+			temporaryPatch.updateParameters(message);
 		}
 	}
 	
