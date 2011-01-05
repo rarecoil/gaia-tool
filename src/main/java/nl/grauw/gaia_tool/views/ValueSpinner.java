@@ -153,4 +153,9 @@ public class ValueSpinner extends JPanel {
 		return labelLabel;
 	}
 	
+	@Override
+	public void setToolTipText(String text) {
+		getLabel().setToolTipText(text);
+	}
+	
 }

@@ -99,4 +99,9 @@ public class EnumComboBox extends JPanel {
 		return labelLabel;
 	}
 	
+	@Override
+	public void setToolTipText(String text) {
+		getLabel().setToolTipText(text);
+	}
+	
 }
