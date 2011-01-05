@@ -31,10 +31,7 @@ public class ValueSpinner extends JPanel {
 	public class ValueSpinnerModel extends SpinnerNumberModel implements AWTObserver {
 		private static final long serialVersionUID = 1L;
 		
-		private IntValue value;
-
-		public ValueSpinnerModel(IntValue value) {
-			this.value = value;
+		public ValueSpinnerModel() {
 			value.getParameters().addObserver(this);
 		}
 		
@@ -139,7 +136,7 @@ public class ValueSpinner extends JPanel {
 	
 	private JSpinner getSpinner() {
 		if (valueSpinner == null) {
-			valueSpinner = new JSpinner(new ValueSpinnerModel(value));
+			valueSpinner = new JSpinner(new ValueSpinnerModel());
 			Dimension preferredSize = new Dimension(60, valueSpinner.getPreferredSize().height);
 			valueSpinner.setPreferredSize(preferredSize);
 		}

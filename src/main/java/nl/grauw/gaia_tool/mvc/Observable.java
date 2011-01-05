@@ -34,18 +34,16 @@ public class Observable {
 	public class UpdateRunnable implements Runnable {
 		
 		Observer target;
-		Observable source;
 		Object arg;
 		
-		public UpdateRunnable(Observer target, Observable source, Object arg) {
+		public UpdateRunnable(Observer target, Object arg) {
 			this.target = target;
-			this.source = source;
 			this.arg = arg;
 		}
 		
 		@Override
 		public void run() {
-			target.update(source, arg);
+			target.update(Observable.this, arg);
 		}
 		
 	}
@@ -84,7 +82,7 @@ public class Observable {
 		Vector<Observer> observers = getObservers();
 		for (Observer o : observers) {
 			if (o instanceof AWTObserver && !SwingUtilities.isEventDispatchThread()) {
-				SwingUtilities.invokeLater(new UpdateRunnable(o, this, arg));
+				SwingUtilities.invokeLater(new UpdateRunnable(o, arg));
 			} else {
 				o.update(this, arg);
 			}

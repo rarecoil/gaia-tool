@@ -19,7 +19,7 @@ import nl.grauw.gaia_tool.mvc.Observable;
 
 public class Parameters extends Observable {
 	
-	public class ParameterChange {
+	public static class ParameterChange {
 		
 		private int offset;
 		private int length;

@@ -31,10 +31,7 @@ public class EnumComboBox extends JPanel {
 	public class EnumComboBoxModel extends AbstractListModel implements ComboBoxModel, AWTObserver {
 		private static final long serialVersionUID = 1L;
 		
-		EnumValue<?> value;
-		
-		public EnumComboBoxModel(EnumValue<?> value) {
-			this.value = value;
+		public EnumComboBoxModel() {
 			value.getParameters().addObserver(this);
 		}
 		
@@ -87,7 +84,7 @@ public class EnumComboBox extends JPanel {
 	
 	private JComboBox getComboBox() {
 		if (valueComboBox == null) {
-			valueComboBox = new JComboBox(new EnumComboBoxModel(value));
+			valueComboBox = new JComboBox(new EnumComboBoxModel());
 		}
 		return valueComboBox;
 	}

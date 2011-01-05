@@ -39,26 +39,23 @@ public abstract class ParametersView extends JPanel implements AWTObserver, Acti
 	public class SynchronizeModel extends ToggleButtonModel implements Observer {
 		private static final long serialVersionUID = 1L;
 		
-		private Gaia gaia;
-		
-		public SynchronizeModel(Gaia g) {
-			gaia = g;
-			gaia.addObserver(this);
+		public SynchronizeModel() {
+			getGaia().addObserver(this);
 		}
 		
 		@Override
 		public boolean isSelected() {
-			return gaia.getSynchronize();
+			return getGaia().getSynchronize();
 		}
 		
 		@Override
 		public void setSelected(boolean b) {
-			gaia.setSynchronize(b);
+			getGaia().setSynchronize(b);
 		}
 
 		@Override
 		public void update(Observable source, Object arg) {
-			if (source == gaia && "synchronize".equals(arg)) {
+			if (source == getGaia() && "synchronize".equals(arg)) {
 				fireStateChanged();
 			}
 		}
@@ -140,7 +137,7 @@ public abstract class ParametersView extends JPanel implements AWTObserver, Acti
 		if (syncButton == null) {
 			syncButton = new JToggleButton();
 			syncButton.setText("Sync");
-			syncButton.setModel(new SynchronizeModel(getGaia()));
+			syncButton.setModel(new SynchronizeModel());
 		}
 		return syncButton;
 	}

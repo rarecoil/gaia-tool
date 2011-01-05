@@ -47,10 +47,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	public class ArpeggioModel extends AbstractTableModel implements AWTObserver {
 		private static final long serialVersionUID = 1L;
 		
-		Patch patch;
-		
-		public ArpeggioModel(Patch patch) {
-			this.patch = patch;
+		public ArpeggioModel() {
 			patch.addObserver(this);
 			addCommonObserver();
 			addPatternObservers();
@@ -280,7 +277,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	
 	private JTable getPatternTable() {
 		if (patternTable == null) {
-			TableModel model = new ArpeggioModel(patch);
+			TableModel model = new ArpeggioModel();
 			patternTable = new JTable(model);
 			patternTable.setFillsViewportHeight(true);
 			patternTable.setDefaultEditor(Object.class, new DefaultCellEditor(getEditField()) {
