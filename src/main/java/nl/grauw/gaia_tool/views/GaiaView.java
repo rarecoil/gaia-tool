@@ -31,9 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -78,23 +75,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		gaia = g;
 		logView.setModel(g.getLog());
 		updateContentPanel();
-	}
-
-	public static void installLookAndFeel() {
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// also make tooltips stick around longer and behave nicer
-		ToolTipManager ttm = ToolTipManager.sharedInstance();
-		ttm.setDismissDelay(30000);
-		ttm.setReshowDelay(0);
 	}
 	
 	public void exit() {

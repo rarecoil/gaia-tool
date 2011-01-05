@@ -15,26 +15,47 @@
  */
 package nl.grauw.gaia_tool;
 
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import nl.grauw.gaia_tool.views.GaiaView;
 
-public class App implements Runnable {
+public class App {
+	
+	static App app;
 	
 	Gaia gaia;
+	GaiaView gaiaView;
 	
-	public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException {
-		new App();
+	public static void main(String[] args) {
+		installLookAndFeel();
+		app = new App();
+		app.initialiseModel();
+		app.initialiseView();
 	}
 	
-	public App() throws MidiUnavailableException, InvalidMidiDataException {
-		// set up the Nimbus look and feel
-		GaiaView.installLookAndFeel();
-		
-		// instantiate model
+	public static void installLookAndFeel() {
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// also make tooltips stick around longer and behave nicer
+		ToolTipManager ttm = ToolTipManager.sharedInstance();
+		ttm.setDismissDelay(30000);
+		ttm.setReshowDelay(0);
+	}
+	
+	public void initialiseModel() {
 		gaia = new Gaia();
 		try {
 			gaia.open();
@@ -43,15 +64,16 @@ public class App implements Runnable {
 					"Error connecting to Roland GAIA SH-01.", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
-		
-		// render view
-		SwingUtilities.invokeLater(this);
 	}
 	
-	@Override
-	public void run() {
-		GaiaView view2 = new GaiaView(gaia);
-		view2.setVisible(true);
+	public void initialiseView() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				gaiaView = new GaiaView(gaia);
+				gaiaView.setVisible(true);
+			}
+		});
 	}
 	
 }
