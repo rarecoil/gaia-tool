@@ -186,7 +186,9 @@ public class Patch extends Observable implements Observer {
 				break;
 			case FLANGER_CONTROL_1:
 			case FLANGER_LEVEL:
-				currentEffect = flanger;
+				if (flanger != null) {
+					flanger.updateParameters(message);
+				}
 				break;
 			case DELAY_CONTROL_1:
 			case DELAY_LEVEL:

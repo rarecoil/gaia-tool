@@ -19,6 +19,7 @@ import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 
 /**
  * Retrieves the flanger parameters.
@@ -37,6 +38,30 @@ public class Flanger extends Parameters {
 		
 		if (data.length < 0x51)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
+	}
+	
+	public void updateParameters(ControlChangeMessage message) {
+		FlangerType type = getFlangerType();
+		if (message.getController() != null && type != FlangerType.OFF) {
+			switch (message.getController()) {
+			case FLANGER_CONTROL_1:
+				int value = message.getValue();
+				if (type == FlangerType.PITCH_SHIFTER) {
+					if (value < 56) {
+						value = (value + 4) / 5;
+					} else if (value > 71) {
+						value = (value - 7) / 5;
+					} else {
+						value = 12;
+					}
+				}
+				set16BitValue(0x05, value + 32768, true);
+				break;
+			case FLANGER_LEVEL:
+				set16BitValue(0x01, message.getValue() + 32768, true);
+				break;
+			}
+		}
 	}
 	
 	public FlangerType getFlangerType() {
