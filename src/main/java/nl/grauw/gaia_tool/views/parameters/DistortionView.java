@@ -87,9 +87,9 @@ public class DistortionView extends JPanel implements AWTObserver {
 					.addGroup(
 						layout.createSequentialGroup()
 							.addComponent(getDriveControl())
+							.addComponent(getLevelControl())
 							.addComponent(getTypeControl())
 							.addComponent(getPresenceControl())
-							.addComponent(getLevelControl())
 						)
 					.addGroup(
 						layout.createSequentialGroup()
@@ -105,9 +105,9 @@ public class DistortionView extends JPanel implements AWTObserver {
 					.addGroup(
 						layout.createParallelGroup(Alignment.LEADING)
 							.addComponent(getDriveControl())
+							.addComponent(getLevelControl())
 							.addComponent(getTypeControl())
 							.addComponent(getPresenceControl())
-							.addComponent(getLevelControl())
 						)
 					.addGroup(
 						layout.createParallelGroup(Alignment.LEADING)
@@ -130,6 +130,13 @@ public class DistortionView extends JPanel implements AWTObserver {
 		return driveControl;
 	}
 	
+	private ValueSpinner getLevelControl() {
+		if (levelControl == null) {
+			levelControl = new ValueSpinner(parameters.getLevel(), "Level");
+		}
+		return levelControl;
+	}
+	
 	private ValueSpinner getTypeControl() {
 		if (typeControl == null) {
 			typeControl = new ValueSpinner(parameters.getType(), "Type");
@@ -142,13 +149,6 @@ public class DistortionView extends JPanel implements AWTObserver {
 			presenceControl = new ValueSpinner(parameters.getPresence(), "Presence");
 		}
 		return presenceControl;
-	}
-	
-	private ValueSpinner getLevelControl() {
-		if (levelControl == null) {
-			levelControl = new ValueSpinner(parameters.getLevel(), "Level");
-		}
-		return levelControl;
 	}
 	
 	private MFXParametersInfo getMFXParametersInfo() {
