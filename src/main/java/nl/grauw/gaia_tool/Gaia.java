@@ -76,8 +76,6 @@ public class Gaia extends Observable implements Observer {
 	private Patch temporaryPatch;
 	private Patch[] userPatches = new Patch[64];
 	
-	private boolean synchronize = false;
-	
 	public Gaia() {
 		temporaryPatch = new Patch(this);
 		for (int bank = 0; bank < 8; bank++) {
@@ -94,11 +92,21 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	public boolean getSynchronize() {
-		return synchronize;
+		if (system != null)
+			return system.getTxEditData();
+		return false;
 	}
 	
 	public void setSynchronize(boolean sync) {
-		synchronize = sync;
+		if (system == null) {
+			throw new RuntimeException("Can’t set synchronization mode before system data is loaded.");
+		}
+		system.setTxEditData(sync);
+		if (sync == false) {
+			// manually send sync parameter
+			sendDataTransmission(new Parameters(system.getAddress().add(0x19),
+							new byte[] {(byte) system.getValue(0x19)}));
+		}
 		notifyObservers("synchronize");
 	}
 	

@@ -187,6 +187,10 @@ public class System extends Parameters {
 		return getValue(0x19) == 1;
 	}
 	
+	public void setTxEditData(boolean value) {
+		setValue(0x19, value ? 1 : 0);
+	}
+	
 	public boolean getRecorderSyncOutput() {
 		return getValue(0x1A) == 1;
 	}
