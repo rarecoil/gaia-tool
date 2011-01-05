@@ -2,9 +2,8 @@ package nl.grauw.gaia_tool;
 
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 
-public class Value extends Observable implements Observer {
+public class Value extends Observable {
 	
 	protected Parameters parameters;
 	protected int offset;
@@ -12,18 +11,37 @@ public class Value extends Observable implements Observer {
 	public Value(Parameters parameters, int offset) {
 		this.parameters = parameters;
 		this.offset = offset;
-		parameters.addObserver(this);
 	}
 	
-	public int getOffset() {
-		return offset;
+	public Parameters getParameters() {
+		return parameters;
 	}
 	
-	@Override
-	public void update(Observable o, Object arg) {
-		if (o == parameters && arg instanceof ParameterChange && ((ParameterChange) arg).includes(offset)) {
-			notifyObservers();
-		}
+	/**
+	 * Determine whether the value has changed based on information received from
+	 * a Parameter observable update notification.
+	 * 
+	 * @param source The source of the update.
+	 * @param pc The update’s event object.
+	 * @return True if the value has changed.
+	 */
+	public boolean testChanged(Parameters source, ParameterChange pc) {
+		return source == parameters && pc.includes(offset);
+	}
+	
+	/**
+	 * Determine whether the value has changed based on information received from
+	 * a Parameter observable update notification.
+	 * 
+	 * This takes plain objects so that the user doesn’t need to cast.
+	 * 
+	 * @param source The source of the update.
+	 * @param pc The update’s event object.
+	 * @return True if the value has changed.
+	 */
+	public boolean testChanged(Object source, Object pc) {
+		return source == parameters && pc instanceof ParameterChange &&
+				((ParameterChange)pc).includes(offset);
 	}
 	
 }

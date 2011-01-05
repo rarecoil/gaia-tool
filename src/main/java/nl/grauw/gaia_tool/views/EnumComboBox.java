@@ -35,7 +35,7 @@ public class EnumComboBox extends JPanel {
 		
 		public EnumComboBoxModel(EnumValue<?> value) {
 			this.value = value;
-			value.addObserver(this);
+			value.getParameters().addObserver(this);
 		}
 		
 		@Override
@@ -60,7 +60,7 @@ public class EnumComboBox extends JPanel {
 		
 		@Override
 		public void update(Observable source, Object arg) {
-			if (source == value) {
+			if (value.testChanged(source, arg)) {
 				int ordinal = value.getValue().ordinal();
 				fireContentsChanged(this, ordinal, ordinal);
 			}

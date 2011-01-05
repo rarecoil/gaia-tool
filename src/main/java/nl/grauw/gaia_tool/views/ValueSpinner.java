@@ -35,7 +35,7 @@ public class ValueSpinner extends JPanel {
 
 		public ValueSpinnerModel(IntValue value) {
 			this.value = value;
-			value.addObserver(this);
+			value.getParameters().addObserver(this);
 		}
 		
 		@Override
@@ -110,8 +110,8 @@ public class ValueSpinner extends JPanel {
 		}
 
 		@Override
-		public void update(Observable o, Object arg) {
-			if (o == value) {
+		public void update(Observable source, Object arg) {
+			if (value.testChanged(source, arg)) {
 				fireStateChanged();
 			}
 		}
