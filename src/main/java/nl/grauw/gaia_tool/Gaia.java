@@ -206,20 +206,20 @@ public class Gaia extends Observable implements Observer {
 		if (getSynchronize() && mm.getController() != null) {
 			Parameters currentEffect = null;
 			switch (mm.getController()) {
-			case EFFECTS_DISTORTION_CONTROL_1:
-			case EFFECTS_DISTORTION_LEVEL:
+			case DISTORTION_CONTROL_1:
+			case DISTORTION_LEVEL:
 				currentEffect = temporaryPatch.getDistortion();
 				break;
-			case EFFECTS_FLANGER_CONTROL_1:
-			case EFFECTS_FLANGER_LEVEL:
+			case FLANGER_CONTROL_1:
+			case FLANGER_LEVEL:
 				currentEffect = temporaryPatch.getFlanger();
 				break;
-			case EFFECTS_DELAY_CONTROL_1:
-			case EFFECTS_DELAY_LEVEL:
+			case DELAY_CONTROL_1:
+			case DELAY_LEVEL:
 				currentEffect = temporaryPatch.getDelay();
 				break;
-			case EFFECTS_REVERB_CONTROL_1:
-			case EFFECTS_REVERB_LEVEL:
+			case REVERB_CONTROL_1:
+			case REVERB_LEVEL:
 				currentEffect = temporaryPatch.getReverb();
 				break;
 			}
