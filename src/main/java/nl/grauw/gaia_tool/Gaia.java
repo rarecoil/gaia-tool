@@ -30,6 +30,7 @@ import javax.sound.midi.Transmitter;
 
 import nl.grauw.gaia_tool.Note.NoteName;
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.messages.DataRequest1;
 import nl.grauw.gaia_tool.messages.DataSet1;
 import nl.grauw.gaia_tool.messages.GMSystemOn;
@@ -192,11 +193,40 @@ public class Gaia extends Observable implements Observer {
 		
 		if (mm instanceof DataSet1) {
 			receive((DataSet1) mm);
+		} else if (mm instanceof ControlChangeMessage) {
+			receive((ControlChangeMessage) mm);
 		}
 	}
 	
 	private void receive(DataSet1 mm) {
 		updateParameters(mm.getAddress(), mm.getDataSet());
+	}
+	
+	private void receive(ControlChangeMessage mm) {
+		if (getSynchronize()) {
+			Parameters currentEffect = null;
+			switch (mm.getController()) {
+			case EFFECTS_DISTORTION_CONTROL_1:
+			case EFFECTS_DISTORTION_LEVEL:
+				currentEffect = temporaryPatch.getDistortion();
+				break;
+			case EFFECTS_FLANGER_CONTROL_1:
+			case EFFECTS_FLANGER_LEVEL:
+				currentEffect = temporaryPatch.getFlanger();
+				break;
+			case EFFECTS_DELAY_CONTROL_1:
+			case EFFECTS_DELAY_LEVEL:
+				currentEffect = temporaryPatch.getDelay();
+				break;
+			case EFFECTS_REVERB_CONTROL_1:
+			case EFFECTS_REVERB_LEVEL:
+				currentEffect = temporaryPatch.getReverb();
+				break;
+			}
+			if (currentEffect != null) {
+				sendDataRequest(currentEffect.getAddress().add(0x01), 0x08);
+			}
+		}
 	}
 	
 	public void updateParameters(Address address, byte[] data) {
