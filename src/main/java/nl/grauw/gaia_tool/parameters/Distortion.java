@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.EnumValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
@@ -29,7 +30,17 @@ import nl.grauw.gaia_tool.IntValue;
 public class Distortion extends Parameters {
 	
 	public enum DistortionType {
-		OFF, DIST, FUZZ, BIT_CRASH
+		OFF("Off"), DIST("Distortion"), FUZZ("Fuzz"), BIT_CRASH("Bit crash");
+		
+		String label;
+		
+		private DistortionType(String label) {
+			this.label = label;
+		}
+		
+		public String toString() {
+			return label;
+		}
 	}
 	
 	public Distortion(Address address, byte[] data) {
@@ -39,16 +50,51 @@ public class Distortion extends Parameters {
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
-	public DistortionType getDistortionType() {
-		return DistortionType.values()[getValue(0x00)];
+	public EnumValue<DistortionType> getDistortionType() {
+		return new EnumValue<DistortionType>(this, 0x00, DistortionType.values());
 	}
 	
 	public IntValue getMFXParameter(int number) {
 		if (number < 1 || number > 32)
-			throw new IllegalArgumentException("Invalid parameter number.");
+			throw new IllegalArgumentException("Invalid MFX parameter number.");
 		
 		int index = (number - 1) * 4;
 		return new SignedInt16BitValue(this, 0x01 + index, -20000, 20000);
+	}
+	
+	// only applies for types Distortion and Fuzz
+	public IntValue getDrive() {
+		return new SignedInt16BitValue(this, 0x05, 0, 127);
+	}
+	
+	// only applies for types Distortion and Fuzz
+	public IntValue getType() {
+		//return new SignedInt16BitValue(this, 0x09, 1, 6);
+		return new SignedInt16BitValue(this, 0x09, 0, 127);
+	}
+	
+	// only applies for types Distortion and Fuzz
+	public IntValue getPresence() {
+		return new SignedInt16BitValue(this, 0x0D, 0, 127);
+	}
+	
+	// only applies for type Bit Crash
+	public IntValue getSampleRate() {
+		return new SignedInt16BitValue(this, 0x05, 0, 127);
+	}
+	
+	// only applies for type Bit Crash
+	public IntValue getBitDown() {
+		return new SignedInt16BitValue(this, 0x09, 0, 127);
+	}
+	
+	// only applies for type Bit Crash
+	public IntValue getFilter() {
+		return new SignedInt16BitValue(this, 0x0D, 0, 127);
+	}
+	
+	public IntValue getLevel() {
+		return new SignedInt16BitValue(this, 0x01, 0, 127);
 	}
 	
 	public String toString() {
