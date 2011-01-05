@@ -176,7 +176,6 @@ public class Patch extends Observable implements Observer {
 	
 	public void updateParameters(ControlChangeMessage message) {
 		if (message.getController() != null) {
-			Parameters currentEffect = null;
 			switch (message.getController()) {
 			case DISTORTION_CONTROL_1:
 			case DISTORTION_LEVEL:
@@ -192,7 +191,9 @@ public class Patch extends Observable implements Observer {
 				break;
 			case DELAY_CONTROL_1:
 			case DELAY_LEVEL:
-				currentEffect = delay;
+				if (delay != null) {
+					loadData(delay.getAddress().add(0x01), 0x0C);
+				}
 				break;
 			case REVERB_CONTROL_1:
 			case REVERB_LEVEL:
@@ -200,9 +201,6 @@ public class Patch extends Observable implements Observer {
 					reverb.updateParameters(message);
 				}
 				break;
-			}
-			if (currentEffect != null) {
-				loadData(currentEffect.getAddress().add(0x01), 0x08);
 			}
 		}
 	}
