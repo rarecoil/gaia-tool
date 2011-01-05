@@ -196,7 +196,9 @@ public class Patch extends Observable implements Observer {
 				break;
 			case REVERB_CONTROL_1:
 			case REVERB_LEVEL:
-				currentEffect = reverb;
+				if (reverb != null) {
+					reverb.updateParameters(message);
+				}
 				break;
 			}
 			if (currentEffect != null) {

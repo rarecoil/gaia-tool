@@ -19,6 +19,7 @@ import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 
 /**
  * Retrieves the reverb parameters.
@@ -37,6 +38,19 @@ public class Reverb extends Parameters {
 		
 		if (data.length < 0x51)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
+	}
+	
+	public void updateParameters(ControlChangeMessage message) {
+		if (message.getController() != null && getReverbType() != ReverbType.OFF) {
+			switch (message.getController()) {
+			case REVERB_CONTROL_1:
+				set16BitValue(0x05, message.getValue() + 32768, true);
+				break;
+			case REVERB_LEVEL:
+				set16BitValue(0x01, message.getValue() + 32768, true);
+				break;
+			}
+		}
 	}
 	
 	public ReverbType getReverbType() {
