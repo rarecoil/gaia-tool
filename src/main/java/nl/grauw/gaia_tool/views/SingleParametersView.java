@@ -43,6 +43,8 @@ public abstract class SingleParametersView extends ParametersView {
 				if (!getParameters().hasObserver(this))
 					getParameters().addObserver(this);
 				update(getParameters(), null);
+			} else {
+				parameterArea.setText("");
 			}
 		}
 	}
