@@ -150,7 +150,7 @@ public class System extends Parameters {
 			}
 			@Override
 			public void setValueNoCheck(int value) {
-				super.setValueNoCheck(value + 1);
+				super.setValueNoCheck(value - 1);
 			}
 		};
 	}
