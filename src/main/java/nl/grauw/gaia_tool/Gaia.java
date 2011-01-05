@@ -203,7 +203,7 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	private void receive(ControlChangeMessage mm) {
-		if (getSynchronize()) {
+		if (getSynchronize() && mm.getController() != null) {
 			Parameters currentEffect = null;
 			switch (mm.getController()) {
 			case EFFECTS_DISTORTION_CONTROL_1:
