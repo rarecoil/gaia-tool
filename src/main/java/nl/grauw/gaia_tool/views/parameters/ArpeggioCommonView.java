@@ -62,37 +62,37 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 				layout.createParallelGroup()
 					.addGroup(
 						layout.createSequentialGroup()
-							.addComponent(getArpeggioGridComboBox())
-							.addComponent(getArpeggioDurationComboBox())
-							.addComponent(getArpeggioMotifComboBox())
+							.addComponent(getArpeggioGridControl())
+							.addComponent(getArpeggioDurationControl())
+							.addComponent(getArpeggioMotifControl())
 						)
 					.addGroup(
 						layout.createSequentialGroup()
-							.addComponent(getArpeggioOctaveRangeSpinner())
-							.addComponent(getArpeggioAccentRateSpinner())
-							.addComponent(getArpeggioVelocitySpinner())
-							.addComponent(getEndStepSpinner())
+							.addComponent(getArpeggioOctaveRangeControl())
+							.addComponent(getArpeggioAccentRateControl())
+							.addComponent(getArpeggioVelocityControl())
+							.addComponent(getEndStepControl())
 						)
 			);
 		layout.setVerticalGroup(
 				layout.createSequentialGroup()
 					.addGroup(
 						layout.createParallelGroup()
-							.addComponent(getArpeggioGridComboBox())
-							.addComponent(getArpeggioDurationComboBox())
-							.addComponent(getArpeggioMotifComboBox())
+							.addComponent(getArpeggioGridControl())
+							.addComponent(getArpeggioDurationControl())
+							.addComponent(getArpeggioMotifControl())
 						)
 					.addGroup(
 						layout.createParallelGroup()
-							.addComponent(getArpeggioOctaveRangeSpinner())
-							.addComponent(getArpeggioAccentRateSpinner())
-							.addComponent(getArpeggioVelocitySpinner())
-							.addComponent(getEndStepSpinner())
+							.addComponent(getArpeggioOctaveRangeControl())
+							.addComponent(getArpeggioAccentRateControl())
+							.addComponent(getArpeggioVelocityControl())
+							.addComponent(getEndStepControl())
 						)
 			);
 	}
 	
-	private EnumComboBox getArpeggioGridComboBox() {
+	private EnumComboBox getArpeggioGridControl() {
 		if (gridComboBox == null) {
 			gridComboBox = new EnumComboBox(parameters.getArpeggioGrid(), "Grid");
 			gridComboBox.setToolTipText("<html>Sets the note division and resolution in a " +
@@ -101,7 +101,7 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 		return gridComboBox;
 	}
 	
-	private EnumComboBox getArpeggioDurationComboBox() {
+	private EnumComboBox getArpeggioDurationControl() {
 		if (durationComboBox == null) {
 			durationComboBox = new EnumComboBox(parameters.getArpeggioDuration(), "Duration");
 			durationComboBox.setToolTipText("<html>Determines whether the sounds are played staccato " +
@@ -115,7 +115,7 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 		return durationComboBox;
 	}
 	
-	private EnumComboBox getArpeggioMotifComboBox() {
+	private EnumComboBox getArpeggioMotifControl() {
 		if (motifComboBox == null) {
 			motifComboBox = new EnumComboBox(parameters.getArpeggioMotif(), "Motif");
 			motifComboBox.setToolTipText("<html>The method used to play sounds (motif) when you have a greater " +
@@ -139,7 +139,7 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 		return motifComboBox;
 	}
 	
-	private ValueSpinner getArpeggioOctaveRangeSpinner() {
+	private ValueSpinner getArpeggioOctaveRangeControl() {
 		if (octaveRangeSpinner == null) {
 			octaveRangeSpinner = new ValueSpinner(parameters.getArpeggioOctaveRange(), "Octave range");
 			octaveRangeSpinner.setToolTipText("<html>The range of the arpeggio.<br> " +
@@ -149,7 +149,7 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 		return octaveRangeSpinner;
 	}
 	
-	private ValueSpinner getArpeggioAccentRateSpinner() {
+	private ValueSpinner getArpeggioAccentRateControl() {
 		if (accentRateSpinner == null) {
 			accentRateSpinner = new ValueSpinner(parameters.getArpeggioAccentRate(), "Accent rate");
 			accentRateSpinner.setToolTipText("<html>The accent strength of the arpeggio.<br> " +
@@ -160,7 +160,7 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 		return accentRateSpinner;
 	}
 	
-	private ValueSpinner getArpeggioVelocitySpinner() {
+	private ValueSpinner getArpeggioVelocityControl() {
 		if (velocitySpinner == null) {
 			velocitySpinner = new ValueSpinner(parameters.getArpeggioVelocity(), "Velocity");
 			velocitySpinner.setToolTipText("<html>The loudness of the notes that you play.<br><br> " +
@@ -170,7 +170,7 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 		return velocitySpinner;
 	}
 	
-	private ValueSpinner getEndStepSpinner() {
+	private ValueSpinner getEndStepControl() {
 		if (endStepSpinner == null) {
 			endStepSpinner = new ValueSpinner(parameters.getEndStep(), "End step");
 			endStepSpinner.setToolTipText("The number of steps for the arpeggio style.");
