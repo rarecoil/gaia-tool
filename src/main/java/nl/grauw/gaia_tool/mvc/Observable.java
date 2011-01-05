@@ -31,23 +31,6 @@ import javax.swing.SwingUtilities;
  */
 public class Observable {
 	
-	public class UpdateRunnable implements Runnable {
-		
-		Observer target;
-		Object arg;
-		
-		public UpdateRunnable(Observer target, Object arg) {
-			this.target = target;
-			this.arg = arg;
-		}
-		
-		@Override
-		public void run() {
-			target.update(Observable.this, arg);
-		}
-		
-	}
-	
 	private Vector<WeakReference<Observer>> observers = new Vector<WeakReference<Observer>>();
 	private int lastGCLimit = 100;
 	
@@ -78,14 +61,29 @@ public class Observable {
 		return getObservers().contains(o);
 	}
 	
-	public void notifyObservers(Object arg) {
-		Vector<Observer> observers = getObservers();
+	public void notifyObservers(final Object arg) {
+		final Vector<Observer> observers = getObservers();
+		boolean awtObservers = false;
 		for (Observer o : observers) {
 			if (o instanceof AWTObserver && !SwingUtilities.isEventDispatchThread()) {
-				SwingUtilities.invokeLater(new UpdateRunnable(o, arg));
+				awtObservers = true;
 			} else {
 				o.update(this, arg);
 			}
+		}
+		
+		// also schedule notifications on the AWT event thread if necessary
+		if (awtObservers) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					for (Observer o : observers) {
+						if (o instanceof AWTObserver) {
+							o.update(Observable.this, arg);
+						}
+					}
+				}
+			});
 		}
 	}
 	
