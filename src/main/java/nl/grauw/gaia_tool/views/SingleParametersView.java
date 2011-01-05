@@ -45,7 +45,6 @@ public abstract class SingleParametersView extends ParametersView {
 				update(getParameters(), null);
 			}
 		}
-		
 	}
 	
 	protected JPanel getParametersContainer() {
@@ -76,6 +75,8 @@ public abstract class SingleParametersView extends ParametersView {
 			if (getParameters() == null) {
 				loadParameters();
 			} else {
+				if (!getParameters().hasObserver(this))
+					getParameters().addObserver(this);
 				parameterArea.setText(getParameters().toString());
 			}
 		}
