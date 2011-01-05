@@ -15,6 +15,10 @@ public class Value extends Observable implements Observer {
 		parameters.addObserver(this);
 	}
 	
+	public int getOffset() {
+		return offset;
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o == parameters && arg instanceof ParameterChange && ((ParameterChange) arg).includes(offset)) {

@@ -17,13 +17,17 @@ package nl.grauw.gaia_tool.views.parameters;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.Distortion;
+import nl.grauw.gaia_tool.parameters.Distortion.DistortionType;
 import nl.grauw.gaia_tool.views.EnumComboBox;
 import nl.grauw.gaia_tool.views.ValueSpinner;
 
@@ -61,6 +65,9 @@ public class DistortionView extends JPanel implements AWTObserver {
 	private ValueSpinner driveControl;
 	private ValueSpinner typeControl;
 	private ValueSpinner presenceControl;
+	private ValueSpinner sampleRateControl;
+	private ValueSpinner bitDownControl;
+	private ValueSpinner filterControl;
 	private ValueSpinner levelControl;
 	private MFXParametersInfo mfxParametersInfo;
 	
@@ -78,19 +85,34 @@ public class DistortionView extends JPanel implements AWTObserver {
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
+		SequentialGroup controlsX = layout.createSequentialGroup();
+		ParallelGroup controlsY = layout.createParallelGroup();
+		if (parameters.getDistortionType() == DistortionType.BIT_CRASH) {
+			controlsX.addComponent(getSampleRateControl());
+			controlsX.addComponent(getLevelControl());
+			controlsX.addComponent(getBitDownControl());
+			controlsX.addComponent(getFilterControl());
+			controlsY.addComponent(getSampleRateControl());
+			controlsY.addComponent(getLevelControl());
+			controlsY.addComponent(getBitDownControl());
+			controlsY.addComponent(getFilterControl());
+		} else if (parameters.getDistortionType() != DistortionType.OFF) {
+			controlsX.addComponent(getDriveControl());
+			controlsX.addComponent(getLevelControl());
+			controlsX.addComponent(getTypeControl());
+			controlsX.addComponent(getPresenceControl());
+			controlsY.addComponent(getDriveControl());
+			controlsY.addComponent(getLevelControl());
+			controlsY.addComponent(getTypeControl());
+			controlsY.addComponent(getPresenceControl());
+		}
 		layout.setHorizontalGroup(
 				layout.createParallelGroup()
 					.addGroup(
 						layout.createSequentialGroup()
 							.addComponent(getDistortionTypeControl())
 						)
-					.addGroup(
-						layout.createSequentialGroup()
-							.addComponent(getDriveControl())
-							.addComponent(getLevelControl())
-							.addComponent(getTypeControl())
-							.addComponent(getPresenceControl())
-						)
+					.addGroup(controlsX)
 					.addGroup(
 						layout.createSequentialGroup()
 							.addComponent(getMFXParametersInfo())
@@ -99,26 +121,34 @@ public class DistortionView extends JPanel implements AWTObserver {
 		layout.setVerticalGroup(
 				layout.createSequentialGroup()
 					.addGroup(
-						layout.createParallelGroup(Alignment.LEADING)
+						layout.createParallelGroup()
 							.addComponent(getDistortionTypeControl())
 						)
+					.addGroup(controlsY)
 					.addGroup(
-						layout.createParallelGroup(Alignment.LEADING)
-							.addComponent(getDriveControl())
-							.addComponent(getLevelControl())
-							.addComponent(getTypeControl())
-							.addComponent(getPresenceControl())
-						)
-					.addGroup(
-						layout.createParallelGroup(Alignment.LEADING)
+						layout.createParallelGroup()
 							.addComponent(getMFXParametersInfo())
 						)
 			);
 	}
 	
+	private void reinitComponents() {
+		driveControl = null;
+		typeControl = null;
+		presenceControl = null;
+		levelControl = null;
+		sampleRateControl = null;
+		bitDownControl = null;
+		filterControl = null;
+		mfxParametersInfo = null;
+		removeAll();
+		initComponents();
+		revalidate();
+	}
+	
 	private EnumComboBox getDistortionTypeControl() {
 		if (distortionTypeControl == null) {
-			distortionTypeControl = new EnumComboBox(parameters.getDistortionType(), "Distortion type");
+			distortionTypeControl = new EnumComboBox(parameters.getDistortionTypeValue(), "Distortion type");
 		}
 		return distortionTypeControl;
 	}
@@ -151,6 +181,27 @@ public class DistortionView extends JPanel implements AWTObserver {
 		return presenceControl;
 	}
 	
+	private ValueSpinner getSampleRateControl() {
+		if (sampleRateControl == null) {
+			sampleRateControl = new ValueSpinner(parameters.getSampleRate(), "Sample rate");
+		}
+		return sampleRateControl;
+	}
+	
+	private ValueSpinner getBitDownControl() {
+		if (bitDownControl == null) {
+			bitDownControl = new ValueSpinner(parameters.getBitDown(), "Bit down");
+		}
+		return bitDownControl;
+	}
+	
+	private ValueSpinner getFilterControl() {
+		if (filterControl == null) {
+			filterControl = new ValueSpinner(parameters.getFilter(), "Filter");
+		}
+		return filterControl;
+	}
+	
 	private MFXParametersInfo getMFXParametersInfo() {
 		if (mfxParametersInfo == null) {
 			mfxParametersInfo = new MFXParametersInfo();
@@ -160,7 +211,15 @@ public class DistortionView extends JPanel implements AWTObserver {
 	
 	@Override
 	public void update(Observable source, Object arg) {
-		// TODO Auto-generated method stub
+		if (source instanceof Distortion && arg instanceof ParameterChange) {
+			update((Distortion) source, (ParameterChange) arg);
+		}
+	}
+	
+	private void update(Distortion source, ParameterChange arg) {
+		if (arg.includes(parameters.getDistortionTypeValue().getOffset())) {
+			reinitComponents();
+		}
 	}
 
 }
