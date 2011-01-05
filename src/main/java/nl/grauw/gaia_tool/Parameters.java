@@ -25,12 +25,6 @@ public class Parameters extends Observable {
 		private int length;
 		private boolean fromUpdate;
 		
-		public ParameterChange(int offset, int length) {
-			this.offset = offset;
-			this.length = length;
-			this.fromUpdate = false;
-		}
-		
 		public ParameterChange(int offset, int length, boolean fromUpdate) {
 			this.offset = offset;
 			this.length = length;
@@ -125,37 +119,53 @@ public class Parameters extends Observable {
 	}
 	
 	public void setValue(int offset, int value) {
+		setValue(offset, value, false);
+	}
+	
+	protected void setValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 128)
 			throw new IllegalArgumentException("Value out of range.");
 		this.data[offset] = (byte)value;
-		this.notifyObservers(new ParameterChange(offset, 1));
+		this.notifyObservers(new ParameterChange(offset, 1, fromUpdate));
 	}
 	
 	public void set8BitValue(int offset, int value) {
+		set8BitValue(offset, value, false);
+	}
+	
+	protected void set8BitValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 256)
 			throw new IllegalArgumentException("Value out of range.");
 		this.data[offset] = (byte) (value >> 4 & 0x0F);
 		this.data[offset + 1] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 2));
+		this.notifyObservers(new ParameterChange(offset, 2, fromUpdate));
 	}
 	
 	public void set12BitValue(int offset, int value) {
+		set12BitValue(offset, value, false);
+	}
+	
+	protected void set12BitValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 4096)
 			throw new IllegalArgumentException("Value out of range.");
 		this.data[offset] = (byte) (value >> 8 & 0x0F);
 		this.data[offset + 1] = (byte) (value >> 4 & 0x0F);
 		this.data[offset + 2] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 3));
+		this.notifyObservers(new ParameterChange(offset, 3, fromUpdate));
 	}
 	
 	public void set16BitValue(int offset, int value) {
+		set16BitValue(offset, value, false);
+	}
+	
+	protected void set16BitValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 65536)
 			throw new IllegalArgumentException("Value out of range.");
 		this.data[offset] = (byte) (value >> 12 & 0x0F);
 		this.data[offset + 1] = (byte) (value >> 8 & 0x0F);
 		this.data[offset + 2] = (byte) (value >> 4 & 0x0F);
 		this.data[offset + 3] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 4));
+		this.notifyObservers(new ParameterChange(offset, 4, fromUpdate));
 	}
 	
 	/**
@@ -171,7 +181,7 @@ public class Parameters extends Observable {
 		for (int i = 0; i < values.length; i++) {
 			this.data[offset + i] = (byte) values[i];
 		}
-		this.notifyObservers(new ParameterChange(offset, values.length));
+		this.notifyObservers(new ParameterChange(offset, values.length, false));
 	}
 	
 	@Override

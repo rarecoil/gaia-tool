@@ -180,7 +180,9 @@ public class Patch extends Observable implements Observer {
 			switch (message.getController()) {
 			case DISTORTION_CONTROL_1:
 			case DISTORTION_LEVEL:
-				currentEffect = distortion;
+				if (distortion != null) {
+					distortion.updateParameters(message);
+				}
 				break;
 			case FLANGER_CONTROL_1:
 			case FLANGER_LEVEL:

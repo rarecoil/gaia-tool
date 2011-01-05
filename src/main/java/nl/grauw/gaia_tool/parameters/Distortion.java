@@ -20,6 +20,7 @@ import nl.grauw.gaia_tool.EnumValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 
 /**
  * Retrieves the distortion parameters.
@@ -48,6 +49,19 @@ public class Distortion extends Parameters {
 		
 		if (data.length < 0x81)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
+	}
+	
+	public void updateParameters(ControlChangeMessage message) {
+		if (message.getController() != null && getDistortionType().getValue() != DistortionType.OFF) {
+			switch (message.getController()) {
+			case DISTORTION_CONTROL_1:
+				set16BitValue(0x05, message.getValue() + 32768, true);
+				break;
+			case DISTORTION_LEVEL:
+				set16BitValue(0x01, message.getValue() + 32768, true);
+				break;
+			}
+		}
 	}
 	
 	public EnumValue<DistortionType> getDistortionType() {
