@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.grauw.gaia_tool.views;
+package nl.grauw.gaia_tool.views.parameters;
 
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
@@ -21,6 +21,8 @@ import javax.swing.JPanel;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
+import nl.grauw.gaia_tool.views.EnumComboBox;
+import nl.grauw.gaia_tool.views.ValueSpinner;
 
 public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	

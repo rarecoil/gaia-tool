@@ -39,6 +39,7 @@ import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
+import nl.grauw.gaia_tool.views.parameters.ArpeggioCommonView;
 
 public class ArpeggioView extends ParametersView implements AWTObserver, ActionListener {
 	private static final long serialVersionUID = 1L;
