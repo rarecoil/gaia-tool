@@ -82,10 +82,10 @@ public class EnumComboBox extends JPanel {
 	
 	private void initComponents() {
 		add(getLabel());
-		add(getSpinner());
+		add(getComboBox());
 	}
 	
-	private JComboBox getSpinner() {
+	private JComboBox getComboBox() {
 		if (valueComboBox == null) {
 			valueComboBox = new JComboBox(new EnumComboBoxModel(value));
 		}
