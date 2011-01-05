@@ -51,10 +51,17 @@ public class Observable {
 	}
 	
 	private Vector<WeakReference<Observer>> observers = new Vector<WeakReference<Observer>>();
+	private int lastGCLimit = 100;
 	
 	public void addObserver(Observer o) {
 		if (o instanceof JComponent && !(o instanceof AWTObserver))
 			throw new IllegalArgumentException("Swing components and all observers that directly interact with them must implement AWTObserver.");
+		if (observers.size() > lastGCLimit) {
+			System.gc();
+			getObservers();	// clean up the no longer available weak references
+			lastGCLimit = observers.size() + 100;
+			System.out.println("Observer limit exceeded. Size after manual garbage collection: " + observers.size());
+		}
 		observers.add(new WeakReference<Observer>(o));
 	}
 	
