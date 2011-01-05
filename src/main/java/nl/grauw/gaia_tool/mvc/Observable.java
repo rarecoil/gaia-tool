@@ -58,7 +58,7 @@ public class Observable {
 			throw new IllegalArgumentException("Swing components and all observers that directly interact with them must implement AWTObserver.");
 		if (observers.size() > lastGCLimit) {
 			System.gc();
-			getObservers();	// clean up the no longer available weak references
+			Vector<Observer> observers = getObservers();	// clean up the no longer available weak references
 			lastGCLimit = observers.size() + 100;
 			System.out.println("Observer limit exceeded. Size after manual garbage collection: " + observers.size());
 		}
