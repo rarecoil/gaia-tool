@@ -16,10 +16,8 @@
 package nl.grauw.gaia_tool.views.parameters;
 
 import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import nl.grauw.gaia_tool.Parameters;
@@ -33,31 +31,6 @@ import nl.grauw.gaia_tool.views.ValueSpinner;
 
 public class DistortionView extends JPanel implements AWTObserver {
 	private static final long serialVersionUID = 1L;
-	
-	public class MFXParametersInfo extends JLabel implements AWTObserver {
-		private static final long serialVersionUID = 1L;
-		
-		public MFXParametersInfo() {
-			super();
-			setText(getMFXParametersText());
-			parameters.addObserver(this);
-		}
-		
-		private String getMFXParametersText() {
-			StringBuilder mfxParameters = new StringBuilder(128);
-			for (int i = 1; i <= 32; i++) {
-				mfxParameters.append(parameters.getMFXParameter(i));
-				mfxParameters.append(" ");
-			}
-			return "MFX parameters: " + mfxParameters.toString();
-		}
-		
-		@Override
-		public void update(Observable source, Object arg) {
-			setText(getMFXParametersText());
-		}
-		
-	}
 
 	private Distortion parameters;
 
@@ -69,7 +42,6 @@ public class DistortionView extends JPanel implements AWTObserver {
 	private ValueSpinner bitDownControl;
 	private ValueSpinner filterControl;
 	private ValueSpinner levelControl;
-	private MFXParametersInfo mfxParametersInfo;
 	
 	public DistortionView(Distortion parameters) {
 		this.parameters = parameters;
@@ -113,10 +85,6 @@ public class DistortionView extends JPanel implements AWTObserver {
 							.addComponent(getDistortionTypeControl())
 						)
 					.addGroup(controlsX)
-					.addGroup(
-						layout.createSequentialGroup()
-							.addComponent(getMFXParametersInfo())
-						)
 			);
 		layout.setVerticalGroup(
 				layout.createSequentialGroup()
@@ -125,10 +93,6 @@ public class DistortionView extends JPanel implements AWTObserver {
 							.addComponent(getDistortionTypeControl())
 						)
 					.addGroup(controlsY)
-					.addGroup(
-						layout.createParallelGroup()
-							.addComponent(getMFXParametersInfo())
-						)
 			);
 	}
 	
@@ -140,7 +104,6 @@ public class DistortionView extends JPanel implements AWTObserver {
 		sampleRateControl = null;
 		bitDownControl = null;
 		filterControl = null;
-		mfxParametersInfo = null;
 		removeAll();
 		initComponents();
 		revalidate();
@@ -200,13 +163,6 @@ public class DistortionView extends JPanel implements AWTObserver {
 			filterControl = new ValueSpinner(parameters.getFilter(), "Filter");
 		}
 		return filterControl;
-	}
-	
-	private MFXParametersInfo getMFXParametersInfo() {
-		if (mfxParametersInfo == null) {
-			mfxParametersInfo = new MFXParametersInfo();
-		}
-		return mfxParametersInfo;
 	}
 	
 	@Override
