@@ -195,6 +195,10 @@ public class Gaia extends Observable implements Observer {
 			updateParameters((DataSet1) message);
 		} else if (message instanceof ControlChangeMessage) {
 			updateParameters((ControlChangeMessage) message);
+		} else if (message instanceof ProgramChangeMessage) {
+			if (getSynchronize()) {
+				temporaryPatch.clearParameters();
+			}
 		}
 	}
 	

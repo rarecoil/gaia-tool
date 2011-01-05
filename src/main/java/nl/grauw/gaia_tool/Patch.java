@@ -205,6 +205,27 @@ public class Patch extends Observable implements Observer {
 		}
 	}
 	
+	public void clearParameters() {
+		common = null;
+		for (int i = 0; i < 3; i++)
+			tones[i] = null;
+		distortion = null;
+		flanger = null;
+		delay = null;
+		reverb = null;
+		arpeggioCommon = null;
+		for (int i = 0; i < 16; i++)
+			arpeggioPatterns[i] = null;
+		notifyObservers("common");
+		notifyObservers("tones");
+		notifyObservers("distortion");
+		notifyObservers("flanger");
+		notifyObservers("delay");
+		notifyObservers("reverb");
+		notifyObservers("arpeggioCommon");
+		notifyObservers("arpeggioPatterns");
+	}
+	
 	@Override
 	public void update(Observable source, Object arg) {
 		if (source instanceof Parameters && arg instanceof ParameterChange) {
