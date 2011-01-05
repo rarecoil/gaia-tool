@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
@@ -90,6 +91,10 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		// also make tooltips stick around longer and behave nicer
+		ToolTipManager ttm = ToolTipManager.sharedInstance();
+		ttm.setDismissDelay(30000);
+		ttm.setReshowDelay(0);
 	}
 	
 	public void exit() {
