@@ -22,6 +22,12 @@ import nl.grauw.gaia_tool.IntValue;
 
 public class Delay extends Parameters {
 	
+	/**
+	 * Retrieves the delay parameters.
+	 * 
+	 * Note that there are actually three banks of data, one for each delay type.
+	 * All are persisted, but only one is visible at a time.
+	 */
 	public enum DelayType {
 		OFF, DELAY, PANNING_DELAY
 	}

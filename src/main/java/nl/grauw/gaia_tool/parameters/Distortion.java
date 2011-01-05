@@ -20,6 +20,12 @@ import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
 
+/**
+ * Retrieves the distortion parameters.
+ * 
+ * Note that there are actually four banks of data, one for each distortion type.
+ * All are persisted, but only one is visible at a time.
+ */
 public class Distortion extends Parameters {
 	
 	public enum DistortionType {

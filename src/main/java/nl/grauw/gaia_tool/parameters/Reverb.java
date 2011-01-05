@@ -20,6 +20,12 @@ import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
 
+/**
+ * Retrieves the reverb parameters.
+ * 
+ * Note that there are actually two banks of data, one for each reverb type.
+ * All are persisted, but only one is visible at a time.
+ */
 public class Reverb extends Parameters {
 	
 	public enum ReverbType {
