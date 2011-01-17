@@ -61,8 +61,12 @@ public class Observable {
 		return getObservers().contains(o);
 	}
 	
-	public void notifyObservers(final Object arg) {
-		final Vector<Observer> observers = getObservers();
+	/**
+	 * Notify observers of a change in the observable state.
+	 * @param arg Object providing details on the state change.
+	 */
+	public void notifyObservers(Object arg) {
+		Vector<Observer> observers = getObservers();
 		boolean awtObservers = false;
 		for (Observer o : observers) {
 			if (o instanceof AWTObserver && !SwingUtilities.isEventDispatchThread()) {
@@ -74,17 +78,27 @@ public class Observable {
 		
 		// also schedule notifications on the AWT event thread if necessary
 		if (awtObservers) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					for (Observer o : observers) {
-						if (o instanceof AWTObserver) {
-							o.update(Observable.this, arg);
-						}
+			SwingUtilities.invokeLater(createAWTNotifier(observers, arg));
+		}
+	}
+	
+	/**
+	 * Create runnable that for notifying objects on the AWT event thread.
+	 * @param observers The observers to notify.
+	 * @param arg Object providing details on the state change.
+	 * @return A runnable to invoke later.
+	 */
+	private Runnable createAWTNotifier(final Iterable<Observer> observers, final Object arg) {
+		return new Runnable() {
+			@Override
+			public void run() {
+				for (Observer o : observers) {
+					if (o instanceof AWTObserver) {
+						o.update(Observable.this, arg);
 					}
 				}
-			});
-		}
+			}
+		};
 	}
 	
 	/**
