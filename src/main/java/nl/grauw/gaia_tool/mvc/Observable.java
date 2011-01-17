@@ -65,7 +65,7 @@ public class Observable {
 	 * Notify observers of a change in the observable state.
 	 * Uses null for the detail argument.
 	 */
-	public void notifyObservers() {
+	protected void notifyObservers() {
 		notifyObservers(null);
 	}
 	
@@ -73,7 +73,7 @@ public class Observable {
 	 * Notify observers of a change in the observable state.
 	 * @param detail Object providing details on the state change.
 	 */
-	public void notifyObservers(Object detail) {
+	protected void notifyObservers(Object detail) {
 		Vector<Observer> observers = getObservers();
 		boolean awtObservers = false;
 		for (Observer o : observers) {
