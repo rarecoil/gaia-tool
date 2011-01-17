@@ -34,8 +34,13 @@ public class Observable {
 	private Vector<WeakReference<Observer>> observers = new Vector<WeakReference<Observer>>();
 	private int lastGCLimit = 100;
 	
-	public void addObserver(Observer o) {
-		if (o instanceof JComponent && !(o instanceof AWTObserver))
+	/**
+	 * Add an observer to this object.
+	 * If it needs to be notified on the AWT event thread, it should implement AWTObserver.
+	 * @param observer The observer to add.
+	 */
+	public void addObserver(Observer observer) {
+		if (observer instanceof JComponent && !(observer instanceof AWTObserver))
 			throw new IllegalArgumentException("Swing components and all observers that directly interact with them must implement AWTObserver.");
 		if (observers.size() > lastGCLimit) {
 			System.gc();
@@ -43,13 +48,17 @@ public class Observable {
 			lastGCLimit = observers.size() + 100;
 			System.out.println("Observer limit exceeded. Size after manual garbage collection: " + observers.size());
 		}
-		observers.add(new WeakReference<Observer>(o));
+		observers.add(new WeakReference<Observer>(observer));
 	}
 	
-	public void removeObserver(Observer o) {
+	/**
+	 * Remove an observer from this object.
+	 * @param observer The observer to remove.
+	 */
+	public void removeObserver(Observer observer) {
 		for (int i = 0, len = observers.size(); i < len; i++) {
 			WeakReference<Observer> wro = observers.get(i);
-			if (wro.get() == o) {
+			if (wro.get() == observer) {
 				observers.remove(i);
 				wro.clear();
 				break;
@@ -57,8 +66,13 @@ public class Observable {
 		}
 	}
 	
-	public boolean hasObserver(Observer o) {
-		return getObservers().contains(o);
+	/**
+	 * Returns whether an observer was already added.
+	 * @param observer The observer whose presence to test.
+	 * @return True if the observer is already observing.
+	 */
+	public boolean hasObserver(Observer observer) {
+		return getObservers().contains(observer);
 	}
 	
 	/**
