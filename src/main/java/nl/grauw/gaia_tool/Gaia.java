@@ -60,6 +60,8 @@ import nl.grauw.gaia_tool.parameters.System;
  */
 public class Gaia extends Observable implements Observer {
 
+	private boolean opened = false;
+	
 	private MidiDevice midi_in;
 	private MidiDevice midi_out;
 	private Receiver receiver;
@@ -127,15 +129,32 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	/**
+	 * Test whether the gaia device is currently opened.
+	 * @return True if it is opened.
+	 */
+	public boolean isOpened() {
+		return opened;
+	}
+	
+	/**
 	 * Initialises the system.
 	 */
 	public void open() throws MidiUnavailableException {
-		discoverGaiaDevices();
+		if (midi_in == null || midi_out == null)
+			throw new RuntimeException("MIDI devices not configured.");
+		
+		log.log("Midi IN: " + midi_in.getDeviceInfo());
+		log.log("Midi OUT: " + midi_in.getDeviceInfo());
+		log.log("");
+		
 		midi_in.open();
 		midi_out.open();
 		receiver = midi_in.getReceiver();
 		transmitter = midi_out.getTransmitter();
 		transmitter.setReceiver(responseReceiver);
+		
+		opened = true;
+		notifyObservers("opened");
 		
 		requestIdentity();
 		loadSystem();
@@ -150,29 +169,67 @@ public class Gaia extends Observable implements Observer {
 		receiver.close();
 		transmitter.close();
 		responseReceiver.close();
+		
+		opened = false;
+		notifyObservers("opened");
 	}
 	
-	private void discoverGaiaDevices() throws MidiUnavailableException {
-		MidiDevice.Info[] mdi_arr = MidiSystem.getMidiDeviceInfo();
+	public MidiDevice getMidiInput() {
+		return midi_in;
+	}
+	
+	public MidiDevice getMidiOutput() {
+		return midi_out;
+	}
+	
+	public void autoDetectMIDIDevices() throws MidiUnavailableException {
+		setMIDIDevices(null, null);
+	}
+	
+	public void setMIDIDevices(MidiDevice input, MidiDevice output) {
+		if (opened)
+			throw new RuntimeException("GAIA device already opened.");
 		
-		for (MidiDevice.Info mdi : mdi_arr) {
+		if (input == null)
+			input = discoverInputMIDIDevice();
+		if (output == null)
+			output = discoverOutputMIDIDevice();
+		
+		midi_in = input;
+		midi_out = output;
+	}
+	
+	private MidiDevice discoverInputMIDIDevice() {
+		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
+		
+		for (MidiDevice.Info mdi : devicesInfo) {
 			if (mdi.getName().contains("SH-01")) {
-				MidiDevice md = MidiSystem.getMidiDevice(mdi);
-				if (md.getMaxTransmitters() == 0) {
-					midi_in = md;
-					log.log("Found (IN): " + mdi);
-				} else {
-					midi_out = md;
-					log.log("Found (OUT): " + mdi);
+				try {
+					MidiDevice md = MidiSystem.getMidiDevice(mdi);
+					if (md.getMaxReceivers() != 0)
+						return md;
+				} catch (MidiUnavailableException e) {
 				}
 			}
 		}
-
-		if (midi_in == null || midi_out == null) {
-			throw new MidiUnavailableException("GAIA MIDI devices not found.");
-		}
+		return null;
+	}
+	
+	private MidiDevice discoverOutputMIDIDevice() {
+		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
 		
-		log.log("");
+		for (MidiDevice.Info mdi : devicesInfo) {
+			if (mdi.getName().contains("SH-01")) {
+				try {
+					MidiDevice md = MidiSystem.getMidiDevice(mdi);
+					if (md.getMaxTransmitters() != 0) {
+						return md;
+					}
+				} catch (MidiUnavailableException e) {
+				}
+			}
+		}
+		return null;
 	}
 	
 	/**

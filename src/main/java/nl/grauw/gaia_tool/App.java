@@ -58,10 +58,11 @@ public class App {
 	public void initialiseModel() {
 		gaia = new Gaia();
 		try {
-			gaia.open();
+			gaia.autoDetectMIDIDevices();
+			if (gaia.getMidiInput() != null && gaia.getMidiOutput() != null)
+				gaia.open();
 		} catch(MidiUnavailableException e) {
-			JOptionPane.showMessageDialog(null, e + "\n\nVerify that the GAIA is connected by USB, and turned on.",
-					"Error connecting to Roland GAIA SH-01.", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e, "Error connecting to Roland GAIA SH-01.", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 	}

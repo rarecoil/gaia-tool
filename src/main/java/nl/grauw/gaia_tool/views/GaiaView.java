@@ -19,7 +19,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Vector;
 
+import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
@@ -61,6 +65,10 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JPanel contentPanel;
 	private LogView logView;
 	private IntroPanel introPanel;
+
+	private JMenu toolsMenu;
+
+	private JMenuItem configureMidiItem;
 
 	public GaiaView() {
 		initComponents();
@@ -141,6 +149,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			mainMenuBar = new JMenuBar();
 			mainMenuBar.add(getFileMenu());
 			mainMenuBar.add(getTestMenu());
+			mainMenuBar.add(getToolsMenu());
 		}
 		return mainMenuBar;
 	}
@@ -229,6 +238,28 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			gmSystemOffItem.addActionListener(this);
 		}
 		return gmSystemOffItem;
+	}
+
+	private JMenu getToolsMenu() {
+		if (toolsMenu == null) {
+			toolsMenu = new JMenu();
+			toolsMenu.setText("Tools");
+			toolsMenu.add(getConfigureMIDIItem());
+		}
+		return toolsMenu;
+	}
+
+	private JMenuItem getConfigureMIDIItem() {
+		if (configureMidiItem == null) {
+			configureMidiItem = new JMenuItem();
+			configureMidiItem.setText("Configure MIDI");
+			configureMidiItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					configureMIDIActionPerformed(event);
+				}
+			});
+		}
+		return configureMidiItem;
 	}
 
 	private JScrollPane getContentSelectionScrollPane() {
@@ -396,6 +427,73 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			JOptionPane.showMessageDialog(this, "You must select a patch to save.",
 					"No patch selected.", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	private void configureMIDIActionPerformed(ActionEvent event) {
+		MidiDevice input = selectMIDIInputDevice();
+		MidiDevice output = selectMIDIOutputDevice();
+		
+		if (gaia.isOpened())
+			gaia.close();
+		
+		try {
+			gaia.setMIDIDevices(input, output);
+			gaia.open();
+		} catch (MidiUnavailableException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private MidiDevice selectMIDIInputDevice() {
+		Vector<Object> inputDevices = new Vector<Object>();
+		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
+		for (MidiDevice.Info mdi : devicesInfo) {
+			try {
+				MidiDevice md = MidiSystem.getMidiDevice(mdi);
+				if (md.getMaxReceivers() != 0)
+					inputDevices.add(mdi);
+			} catch (MidiUnavailableException e) {
+			}
+		}
+		
+		Object selection = JOptionPane.showInputDialog(this, "Please select a MIDI input device",
+				"Select MIDI input device", JOptionPane.QUESTION_MESSAGE, null, inputDevices.toArray(),
+				gaia.getMidiInput().getDeviceInfo());
+		
+		if (selection instanceof MidiDevice.Info) {
+			try {
+				return MidiSystem.getMidiDevice((MidiDevice.Info) selection);
+			} catch (MidiUnavailableException e) {
+				e.printStackTrace();
+			}
+		}
+		return gaia.getMidiInput();
+	}
+	
+	private MidiDevice selectMIDIOutputDevice() {
+		Vector<Object> outputDevices = new Vector<Object>();
+		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
+		for (MidiDevice.Info mdi : devicesInfo) {
+			try {
+				MidiDevice md = MidiSystem.getMidiDevice(mdi);
+				if (md.getMaxTransmitters() != 0)
+					outputDevices.add(mdi);
+			} catch (MidiUnavailableException e) {
+			}
+		}
+		
+		Object selection = JOptionPane.showInputDialog(this, "Please select a MIDI output device",
+				"Select MIDI output device", JOptionPane.QUESTION_MESSAGE, null, outputDevices.toArray(),
+				gaia.getMidiOutput().getDeviceInfo());
+		
+		if (selection instanceof MidiDevice.Info) {
+			try {
+				return MidiSystem.getMidiDevice((MidiDevice.Info) selection);
+			} catch (MidiUnavailableException e) {
+				e.printStackTrace();
+			}
+		}
+		return gaia.getMidiOutput();
 	}
 	
 	@Override
