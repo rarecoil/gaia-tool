@@ -149,7 +149,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (fileMenu == null) {
 			fileMenu = new JMenu();
 			fileMenu.setText("File");
-			fileMenu.setOpaque(false);
 			fileMenu.add(getSaveItem());
 			fileMenu.add(getExitItem());
 		}
@@ -160,7 +159,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (exitItem == null) {
 			exitItem = new JMenuItem();
 			exitItem.setText("Exit");
-			exitItem.setOpaque(false);
 			exitItem.setAccelerator(KeyStroke.getKeyStroke("ctrl Q"));
 			exitItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
@@ -175,7 +173,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (saveItem == null) {
 			saveItem = new JMenuItem();
 			saveItem.setText("Save");
-			saveItem.setOpaque(false);
 			saveItem.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
 			saveItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
@@ -190,7 +187,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (testMenu == null) {
 			testMenu = new JMenu();
 			testMenu.setText("Test");
-			testMenu.setOpaque(false);
 			testMenu.add(getPlayTestNotesItem());
 			testMenu.add(getGMSystemOnItem());
 			testMenu.add(getGM2SystemOnItem());
@@ -203,7 +199,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (playTestNotesItem == null) {
 			playTestNotesItem = new JMenuItem();
 			playTestNotesItem.setText("Play test notes");
-			playTestNotesItem.setOpaque(false);
 			playTestNotesItem.addActionListener(this);
 		}
 		return playTestNotesItem;
@@ -213,7 +208,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (gmSystemOnItem == null) {
 			gmSystemOnItem = new JMenuItem();
 			gmSystemOnItem.setText("GM system on");
-			gmSystemOnItem.setOpaque(false);
 			gmSystemOnItem.addActionListener(this);
 		}
 		return gmSystemOnItem;
@@ -223,7 +217,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (gm2SystemOnItem == null) {
 			gm2SystemOnItem = new JMenuItem();
 			gm2SystemOnItem.setText("GM2 system on");
-			gm2SystemOnItem.setOpaque(false);
 			gm2SystemOnItem.addActionListener(this);
 		}
 		return gm2SystemOnItem;
@@ -233,7 +226,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (gmSystemOffItem == null) {
 			gmSystemOffItem = new JMenuItem();
 			gmSystemOffItem.setText("GM system off");
-			gmSystemOffItem.setOpaque(false);
 			gmSystemOffItem.addActionListener(this);
 		}
 		return gmSystemOffItem;
