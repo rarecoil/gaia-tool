@@ -19,11 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Vector;
 
-import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
@@ -45,8 +41,10 @@ import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.mvc.AWTObserver;
+import nl.grauw.gaia_tool.mvc.Observable;
 
-public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, WindowListener {
+public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, WindowListener, AWTObserver {
 	
 	private Gaia gaia;
 	
@@ -67,9 +65,11 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JPanel contentPanel;
 	private LogView logView;
 	private IntroPanel introPanel;
+	private NotConnectedPanel notConnectedPanel;
 
 	public GaiaView(Gaia gaia) {
 		this.gaia = gaia;
+		gaia.addObserver(this);
 		
 		initComponents();
 		updateContentPanel();
@@ -134,6 +134,13 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		return introPanel;
 	}
 
+	private NotConnectedPanel getNotConnectedPanel() {
+		if (notConnectedPanel == null) {
+			notConnectedPanel = new NotConnectedPanel(gaia);
+		}
+		return notConnectedPanel;
+	}
+
 	private JMenuBar getMainMenuBar() {
 		if (mainMenuBar == null) {
 			mainMenuBar = new JMenuBar();
@@ -190,6 +197,8 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			testMenu.add(getGMSystemOnItem());
 			testMenu.add(getGM2SystemOnItem());
 			testMenu.add(getGMSystemOffItem());
+			
+			testMenu.setEnabled(gaia.isOpened());
 		}
 		return testMenu;
 	}
@@ -327,6 +336,8 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		TreePath tp = contentSelectionTree.getSelectionPath();
 		if (tp == null) {
 			return getIntroPanel();
+		} else if (!gaia.isOpened()) {
+			return getNotConnectedPanel();
 		} else if (tp.getPathCount() >= 2) {
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
 			if ("System".equals(node1.getUserObject()) && tp.getPathCount() == 2) {
@@ -387,6 +398,14 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		throw new RuntimeException("Parameters not found.");
 	}
 
+	@Override
+	public void update(Observable source, Object detail) {
+		if ("opened".equals(detail)) {
+			updateContentPanel();
+			getTestMenu().setEnabled(gaia.isOpened());
+		}
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == playTestNotesItem) {
 			gaia.playTestNote();
@@ -420,70 +439,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	}
 
 	private void configureMIDIActionPerformed(ActionEvent event) {
-		MidiDevice input = selectMIDIInputDevice();
-		MidiDevice output = selectMIDIOutputDevice();
-		
-		if (gaia.isOpened())
-			gaia.close();
-		
-		try {
-			gaia.setMIDIDevices(input, output);
-			gaia.open();
-		} catch (MidiUnavailableException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private MidiDevice selectMIDIInputDevice() {
-		Vector<Object> inputDevices = new Vector<Object>();
-		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
-		for (MidiDevice.Info mdi : devicesInfo) {
-			try {
-				MidiDevice md = MidiSystem.getMidiDevice(mdi);
-				if (md.getMaxReceivers() != 0)
-					inputDevices.add(mdi);
-			} catch (MidiUnavailableException e) {
-			}
-		}
-		
-		Object selection = JOptionPane.showInputDialog(this, "Please select a MIDI input device",
-				"Select MIDI input device", JOptionPane.QUESTION_MESSAGE, null, inputDevices.toArray(),
-				gaia.getMidiInput() != null ? gaia.getMidiInput().getDeviceInfo() : null);
-		
-		if (selection instanceof MidiDevice.Info) {
-			try {
-				return MidiSystem.getMidiDevice((MidiDevice.Info) selection);
-			} catch (MidiUnavailableException e) {
-				e.printStackTrace();
-			}
-		}
-		return gaia.getMidiInput();
-	}
-	
-	private MidiDevice selectMIDIOutputDevice() {
-		Vector<Object> outputDevices = new Vector<Object>();
-		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
-		for (MidiDevice.Info mdi : devicesInfo) {
-			try {
-				MidiDevice md = MidiSystem.getMidiDevice(mdi);
-				if (md.getMaxTransmitters() != 0)
-					outputDevices.add(mdi);
-			} catch (MidiUnavailableException e) {
-			}
-		}
-		
-		Object selection = JOptionPane.showInputDialog(this, "Please select a MIDI output device",
-				"Select MIDI output device", JOptionPane.QUESTION_MESSAGE, null, outputDevices.toArray(),
-				gaia.getMidiOutput() != null ? gaia.getMidiOutput().getDeviceInfo() : null);
-		
-		if (selection instanceof MidiDevice.Info) {
-			try {
-				return MidiSystem.getMidiDevice((MidiDevice.Info) selection);
-			} catch (MidiUnavailableException e) {
-				e.printStackTrace();
-			}
-		}
-		return gaia.getMidiOutput();
+		new MIDIDeviceSelector(gaia, this).show();
 	}
 	
 	@Override

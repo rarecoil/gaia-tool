@@ -62,8 +62,8 @@ public class Gaia extends Observable implements Observer {
 
 	private boolean opened = false;
 	
-	private MidiDevice midi_in;
-	private MidiDevice midi_out;
+	private MidiDevice midi_in;	// input of the GAIA, receives messages
+	private MidiDevice midi_out;	// output of the GAIA, sends messages
 	private Receiver receiver;
 	private Transmitter transmitter;
 	private ResponseReceiver responseReceiver;
@@ -129,7 +129,16 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	/**
-	 * Test whether the gaia device is currently opened.
+	 * Return whether the gaia device can be opened.
+	 * This tests whether the MIDI devices have been properly configured.
+	 * @return True if it can be opened.
+	 */
+	public boolean canOpen() {
+		return midi_in != null && midi_out != null;
+	}
+	
+	/**
+	 * Return whether the gaia device is currently opened.
 	 * @return True if it is opened.
 	 */
 	public boolean isOpened() {
@@ -140,7 +149,7 @@ public class Gaia extends Observable implements Observer {
 	 * Initialises the system.
 	 */
 	public void open() throws MidiUnavailableException {
-		if (midi_in == null || midi_out == null)
+		if (!canOpen())
 			throw new RuntimeException("MIDI devices not configured.");
 		
 		log.log("Midi IN: " + midi_in.getDeviceInfo());
@@ -187,7 +196,7 @@ public class Gaia extends Observable implements Observer {
 		return midi_out;
 	}
 	
-	public void autoDetectMIDIDevices() throws MidiUnavailableException {
+	public void autoDetectMIDIDevices() {
 		setMIDIDevices(null, null);
 	}
 	
