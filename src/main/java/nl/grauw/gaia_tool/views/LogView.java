@@ -33,11 +33,9 @@ public class LogView extends JPanel implements AWTObserver {
 	private JTextArea logArea;
 	private JScrollPane logScrollPane;
 
-	public LogView() {
+	public LogView(Log l) {
 		initComponents();
-	}
-	
-	public void setModel(Log l) {
+		
 		if (log != null)
 			log.removeObserver(this);
 		log = l;

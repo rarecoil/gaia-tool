@@ -60,28 +60,18 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JMenuItem gmSystemOnItem;
 	private JMenuItem gm2SystemOnItem;
 	private JMenuItem gmSystemOffItem;
+	private JMenu toolsMenu;
+	private JMenuItem configureMidiItem;
 	private JScrollPane contentSelectionScrollPane;
 	private JTree contentSelectionTree;
 	private JPanel contentPanel;
 	private LogView logView;
 	private IntroPanel introPanel;
 
-	private JMenu toolsMenu;
-
-	private JMenuItem configureMidiItem;
-
-	public GaiaView() {
+	public GaiaView(Gaia gaia) {
+		this.gaia = gaia;
+		
 		initComponents();
-	}
-	
-	public GaiaView(Gaia g) {
-		this();
-		setModel(g);
-	}
-	
-	public void setModel(Gaia g) {
-		gaia = g;
-		logView.setModel(g.getLog());
 		updateContentPanel();
 	}
 	
@@ -123,7 +113,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private LogView getLogView() {
 		if (logView == null) {
-			logView = new LogView();
+			logView = new LogView(gaia.getLog());
 		}
 		return logView;
 	}
