@@ -448,7 +448,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		
 		Object selection = JOptionPane.showInputDialog(this, "Please select a MIDI input device",
 				"Select MIDI input device", JOptionPane.QUESTION_MESSAGE, null, inputDevices.toArray(),
-				gaia.getMidiInput().getDeviceInfo());
+				gaia.getMidiInput() != null ? gaia.getMidiInput().getDeviceInfo() : null);
 		
 		if (selection instanceof MidiDevice.Info) {
 			try {
@@ -474,7 +474,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		
 		Object selection = JOptionPane.showInputDialog(this, "Please select a MIDI output device",
 				"Select MIDI output device", JOptionPane.QUESTION_MESSAGE, null, outputDevices.toArray(),
-				gaia.getMidiOutput().getDeviceInfo());
+				gaia.getMidiOutput() != null ? gaia.getMidiOutput().getDeviceInfo() : null);
 		
 		if (selection instanceof MidiDevice.Info) {
 			try {
