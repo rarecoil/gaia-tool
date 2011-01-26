@@ -164,11 +164,16 @@ public class Gaia extends Observable implements Observer {
 	 * Cleans up the system.
 	 */
 	public void close() {
-		midi_in.close();
-		midi_out.close();
-		receiver.close();
-		transmitter.close();
-		responseReceiver.close();
+		if (midi_in != null)
+			midi_in.close();
+		if (midi_out != null)
+			midi_out.close();
+		if (receiver != null)
+			receiver.close();
+		if (transmitter != null)
+			transmitter.close();
+		if (responseReceiver != null)
+			responseReceiver.close();
 		
 		opened = false;
 		notifyObservers("opened");
