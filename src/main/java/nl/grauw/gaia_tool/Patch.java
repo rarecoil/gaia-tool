@@ -234,10 +234,25 @@ public class Patch extends Observable implements Observer {
 	}
 	
 	private void update(Parameters source, ParameterChange arg) {
-		if (gaia.getSynchronize() && !arg.fromUpdate()) {
-			Address address = source.getAddress().add(arg.getOffset());
-			byte[] data = source.getData(arg.getOffset(), arg.getLength());
-			saveData(new Parameters(address, data));
+		if (!arg.fromUpdate()) {
+			if (gaia.getSynchronize()) {
+				Address address = source.getAddress().add(arg.getOffset());
+				byte[] data = source.getData(arg.getOffset(), arg.getLength());
+				saveData(new Parameters(address, data));
+			}
+			// reload effect parameters when effect type changes
+			if (source == distortion && arg.getOffset() == 0x00 && arg.getLength() < 0x11) {
+				loadData(distortion.getAddress().add(0x01), 0x10);
+			}
+			if (source == flanger && arg.getOffset() == 0x00 && arg.getLength() < 0x11) {
+				loadData(flanger.getAddress().add(0x01), 0x10);
+			}
+			if (source == delay && arg.getOffset() == 0x00 && arg.getLength() < 0x15) {
+				loadData(delay.getAddress().add(0x01), 0x14);
+			}
+			if (source == reverb && arg.getOffset() == 0x00 && arg.getLength() < 0x10) {
+				loadData(reverb.getAddress().add(0x01), 0x10);
+			}
 		}
 	}
 	
