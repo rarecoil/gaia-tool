@@ -62,8 +62,8 @@ public class Gaia extends Observable implements Observer {
 
 	private boolean opened = false;
 	
-	private MidiDevice midi_in;	// input of the GAIA, receives messages
-	private MidiDevice midi_out;	// output of the GAIA, sends messages
+	private MidiDevice midi_in;	// port where messages are received from the GAIA
+	private MidiDevice midi_out;	// port where messages are sent to the GAIA
 	private Receiver receiver;
 	private Transmitter transmitter;
 	private ResponseReceiver responseReceiver;
@@ -158,9 +158,9 @@ public class Gaia extends Observable implements Observer {
 		
 		midi_in.open();
 		midi_out.open();
-		receiver = midi_in.getReceiver();
-		transmitter = midi_out.getTransmitter();
+		transmitter = midi_in.getTransmitter();
 		transmitter.setReceiver(responseReceiver);
+		receiver = midi_out.getReceiver();
 		
 		opened = true;
 		notifyObservers("opened");
@@ -220,7 +220,7 @@ public class Gaia extends Observable implements Observer {
 			if (mdi.getName().contains("SH-01")) {
 				try {
 					MidiDevice md = MidiSystem.getMidiDevice(mdi);
-					if (md.getMaxReceivers() != 0)
+					if (md.getMaxTransmitters() != 0)
 						return md;
 				} catch (MidiUnavailableException e) {
 				}
@@ -236,7 +236,7 @@ public class Gaia extends Observable implements Observer {
 			if (mdi.getName().contains("SH-01")) {
 				try {
 					MidiDevice md = MidiSystem.getMidiDevice(mdi);
-					if (md.getMaxTransmitters() != 0) {
+					if (md.getMaxReceivers() != 0) {
 						return md;
 					}
 				} catch (MidiUnavailableException e) {

@@ -42,7 +42,7 @@ public class MIDIDeviceSelector {
 		for (MidiDevice.Info mdi : devicesInfo) {
 			try {
 				MidiDevice md = MidiSystem.getMidiDevice(mdi);
-				if (md.getMaxReceivers() != 0)
+				if (md.getMaxTransmitters() != 0)
 					inputDevices.add(mdi);
 			} catch (MidiUnavailableException e) {
 			}
@@ -68,7 +68,7 @@ public class MIDIDeviceSelector {
 		for (MidiDevice.Info mdi : devicesInfo) {
 			try {
 				MidiDevice md = MidiSystem.getMidiDevice(mdi);
-				if (md.getMaxTransmitters() != 0)
+				if (md.getMaxReceivers() != 0)
 					outputDevices.add(mdi);
 			} catch (MidiUnavailableException e) {
 			}
