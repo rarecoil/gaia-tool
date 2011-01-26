@@ -153,8 +153,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private JMenu getFileMenu() {
 		if (fileMenu == null) {
-			fileMenu = new JMenu();
-			fileMenu.setText("File");
+			fileMenu = new JMenu("File");
 			fileMenu.add(getSaveItem());
 			fileMenu.add(getExitItem());
 		}
@@ -163,36 +162,25 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private JMenuItem getExitItem() {
 		if (exitItem == null) {
-			exitItem = new JMenuItem();
-			exitItem.setText("Exit");
+			exitItem = new JMenuItem("Exit");
 			exitItem.setAccelerator(KeyStroke.getKeyStroke("ctrl Q"));
-			exitItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent event) {
-					exitItemActionPerformed(event);
-				}
-			});
+			exitItem.addActionListener(this);
 		}
 		return exitItem;
 	}
 
 	private JMenuItem getSaveItem() {
 		if (saveItem == null) {
-			saveItem = new JMenuItem();
-			saveItem.setText("Save");
+			saveItem = new JMenuItem("Save");
 			saveItem.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
-			saveItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent event) {
-					saveAsItemActionPerformed(event);
-				}
-			});
+			saveItem.addActionListener(this);
 		}
 		return saveItem;
 	}
 
 	private JMenu getTestMenu() {
 		if (testMenu == null) {
-			testMenu = new JMenu();
-			testMenu.setText("Test");
+			testMenu = new JMenu("Test");
 			testMenu.add(getPlayTestNotesItem());
 			testMenu.add(getGMSystemOnItem());
 			testMenu.add(getGM2SystemOnItem());
@@ -205,8 +193,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private JMenuItem getPlayTestNotesItem() {
 		if (playTestNotesItem == null) {
-			playTestNotesItem = new JMenuItem();
-			playTestNotesItem.setText("Play test notes");
+			playTestNotesItem = new JMenuItem("Play test notes");
 			playTestNotesItem.addActionListener(this);
 		}
 		return playTestNotesItem;
@@ -214,8 +201,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private JMenuItem getGMSystemOnItem() {
 		if (gmSystemOnItem == null) {
-			gmSystemOnItem = new JMenuItem();
-			gmSystemOnItem.setText("GM system on");
+			gmSystemOnItem = new JMenuItem("GM system on");
 			gmSystemOnItem.addActionListener(this);
 		}
 		return gmSystemOnItem;
@@ -223,8 +209,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private JMenuItem getGM2SystemOnItem() {
 		if (gm2SystemOnItem == null) {
-			gm2SystemOnItem = new JMenuItem();
-			gm2SystemOnItem.setText("GM2 system on");
+			gm2SystemOnItem = new JMenuItem("GM2 system on");
 			gm2SystemOnItem.addActionListener(this);
 		}
 		return gm2SystemOnItem;
@@ -232,8 +217,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private JMenuItem getGMSystemOffItem() {
 		if (gmSystemOffItem == null) {
-			gmSystemOffItem = new JMenuItem();
-			gmSystemOffItem.setText("GM system off");
+			gmSystemOffItem = new JMenuItem("GM system off");
 			gmSystemOffItem.addActionListener(this);
 		}
 		return gmSystemOffItem;
@@ -241,8 +225,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private JMenu getToolsMenu() {
 		if (toolsMenu == null) {
-			toolsMenu = new JMenu();
-			toolsMenu.setText("Tools");
+			toolsMenu = new JMenu("Tools");
 			toolsMenu.add(getConfigureMIDIItem());
 		}
 		return toolsMenu;
@@ -250,8 +233,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private JMenuItem getConfigureMIDIItem() {
 		if (configureMidiItem == null) {
-			configureMidiItem = new JMenuItem();
-			configureMidiItem.setText("Configure MIDI");
+			configureMidiItem = new JMenuItem("Configure MIDI");
 			configureMidiItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
 					configureMIDIActionPerformed(event);
@@ -416,14 +398,16 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			gaia.sendGM2SystemOn();
 		} else if (e.getSource() == gmSystemOffItem) {
 			gaia.sendGMSystemOff();
+		} else if (e.getSource() == exitItem) {
+			exit();
+		} else if (e.getSource() == saveItem) {
+			save();
+		} else if (e.getSource() == configureMidiItem) {
+			new MIDIDeviceSelector(gaia, this).show();
 		}
 	}
-
-	private void exitItemActionPerformed(ActionEvent event) {
-		exit();
-	}
 	
-	private void saveAsItemActionPerformed(ActionEvent event) {
+	private void save() {
 		Patch patch = getSelectedPatch();
 		if (patch != null) {
 			try {
