@@ -20,6 +20,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 
+import nl.grauw.gaia_tool.messages.ActiveSensingMessage;
 import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.messages.DataSet1;
 import nl.grauw.gaia_tool.messages.GenericMessage;
@@ -88,6 +89,8 @@ public class ResponseReceiver implements Receiver {
 			return new ControlChangeMessage(message);
 		} else if (message.getCommand() == ShortMessage.PITCH_BEND) {
 			return new PitchBendChangeMessage(message);
+		} else if (message.getStatus() == ShortMessage.ACTIVE_SENSING) {
+			return new ActiveSensingMessage(message);
 		}
 		return new GenericMessage(message);
 	}

@@ -30,6 +30,7 @@ import javax.sound.midi.Transmitter;
 
 import nl.grauw.gaia_tool.Note.NoteName;
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
+import nl.grauw.gaia_tool.messages.ActiveSensingMessage;
 import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.messages.DataRequest1;
 import nl.grauw.gaia_tool.messages.DataSet1;
@@ -260,7 +261,9 @@ public class Gaia extends Observable implements Observer {
 	 * @param message
 	 */
 	public void receive(MidiMessage message) {
-		log.log("Received: " + message);
+		if (!(message instanceof ActiveSensingMessage)) {
+			log.log("Received: " + message);
+		}
 		
 		if (message instanceof DataSet1) {
 			updateParameters((DataSet1) message);
