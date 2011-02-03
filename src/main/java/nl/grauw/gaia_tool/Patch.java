@@ -15,10 +15,8 @@
  */
 package nl.grauw.gaia_tool;
 
-import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 import nl.grauw.gaia_tool.parameters.PatchCommon;
@@ -28,11 +26,9 @@ import nl.grauw.gaia_tool.parameters.Flanger;
 import nl.grauw.gaia_tool.parameters.Reverb;
 import nl.grauw.gaia_tool.parameters.Tone;
 
-public class Patch extends Observable implements Observer {
+public abstract class Patch extends Observable {
 	
 	private Gaia gaia;
-	private int bank;
-	private int patch;
 	
 	private Address lastRequestAddress;
 	
@@ -46,44 +42,18 @@ public class Patch extends Observable implements Observer {
 	private ArpeggioPattern[] arpeggioPatterns = new ArpeggioPattern[16];
 	
 	public Patch(Gaia gaia) {
-		this(gaia, -1, -1);
-	}
-	
-	public Patch(Gaia gaia, int bank, int patch) {
-		if (bank < -1 || bank > 7)
-			throw new IllegalArgumentException("Invalid bank number.");
-		if (patch < -1 || patch > 7)
-			throw new IllegalArgumentException("Invalid patch number.");
-		if (bank == -1 && patch != -1)
-			throw new IllegalArgumentException("Bank and patch number must both be -1.");
 		this.gaia = gaia;
-		this.bank = bank;
-		this.patch = patch;
 	}
 	
 	public Gaia getGaia() {
 		return gaia;
 	}
 	
-	public int getBank() {
-		return bank;
-	}
-	
-	public int getPatch() {
-		return patch;
-	}
-	
 	public Address getAddress() {
 		return getAddress(0);
 	}
 	
-	public Address getAddress(int byte3) {
-		if (this.bank == -1) {
-			return new Address(0x10, 0x00, byte3, 0x00);
-		} else {
-			return new Address(0x20, bank << 3 | patch, byte3, 0x00);
-		}
-	}
+	public abstract Address getAddress(int byte3);
 	
 	public boolean isComplete() {
 		if (common == null || tones[0] == null || tones[1] == null || tones[2] == null ||
@@ -97,81 +67,70 @@ public class Patch extends Observable implements Observer {
 		return true;
 	}
 	
-	private void loadData(Address address, int length) {
+	protected void loadData(Address address, int length) {
 		if (!address.equals(lastRequestAddress)) {
 			gaia.sendDataRequest(address, length);
 		}
 	}
 	
-	private void saveData(Parameters parameters) {
+	protected void saveData(Parameters parameters) {
 		gaia.sendDataTransmission(parameters);
 	}
 	
 	public void updateParameters(Address address, byte[] data) {
-		Parameters p = null;
 		byte byte3 = address.getByte3();
 		byte byte4 = address.getByte4();
 		if (byte3 == 0x00) {
 			if (byte4 == 0x00 && data.length >= 0x3D) {
-				p = common = new PatchCommon(address, data);
-				notifyObservers("common");
+				setCommon(new PatchCommon(address, data));
 			} else if (common != null) {
 				common.updateParameters(address, data);
 			}
 		} else if (byte3 == 0x01 || byte3 == 0x02 || byte3 == 0x03) {
 			if (byte4 == 0x00 && data.length >= 0x3E) {
-				p = tones[byte3 - 0x01] = new Tone(address, data);
-				notifyObservers("tones");
+				setTone(byte3, new Tone(address, data));
 			} else if (tones[byte3 - 0x01] != null) {
 				tones[byte3 - 0x01].updateParameters(address, data);
 			}
 		} else if (byte3 == 0x04 || byte3 == 0x05) {
 			if (byte3 == 0x04 && byte4 == 0x00 && data.length >= 0x81) {
-				p = distortion = new Distortion(address, data);
-				notifyObservers("distortion");
+				setDistortion(new Distortion(address, data));
 			} else if (distortion != null) {
 				distortion.updateParameters(address, data);
 			}
 		} else if (byte3 == 0x06) {
 			if (byte4 == 0x00 && data.length >= 0x51) {
-				p = flanger = new Flanger(address, data);
-				notifyObservers("flanger");
+				setFlanger(new Flanger(address, data));
 			} else if (flanger != null) {
 				flanger.updateParameters(address, data);
 			}
 		} else if (byte3 == 0x08) {
 			if (byte4 == 0x00 && data.length >= 0x51) {
-				p = delay = new Delay(address, data);
-				notifyObservers("delay");
+				setDelay(new Delay(address, data));
 			} else if (delay != null) {
 				delay.updateParameters(address, data);
 			}
 		} else if (byte3 == 0x0A) {
 			if (byte4 == 0x00 && data.length >= 0x51) {
-				p = reverb = new Reverb(address, data);
-				notifyObservers("reverb");
+				setReverb(new Reverb(address, data));
 			} else if (reverb != null) {
 				reverb.updateParameters(address, data);
 			}
 		} else if (byte3 == 0x0C) {
 			if (byte4 == 0x00 && data.length >= 0x08) {
-				p = arpeggioCommon = new ArpeggioCommon(address, data);
-				notifyObservers("arpeggioCommon");
+				setArpeggioCommon(new ArpeggioCommon(address, data));
 			} else if (arpeggioCommon != null) {
 				arpeggioCommon.updateParameters(address, data);
 			}
 		} else if (byte3 >= 0x0D && byte3 <= 0x1C) {
 			if (byte4 == 0x00 && data.length >= 0x42) {
-				p = arpeggioPatterns[byte3 - 0x0D] = new ArpeggioPattern(address, data);
-				notifyObservers("arpeggioPatterns");
+				setArpeggioPattern(byte3 - 0x0C, new ArpeggioPattern(address, data));
 			} else if (arpeggioPatterns[byte3 - 0x0D] != null) {
 				arpeggioPatterns[byte3 - 0x0D].updateParameters(address, data);
 			}
 		} else {
 			throw new IllegalArgumentException("Address not recognised.");
 		}
-		if (p != null && !p.hasObserver(this))
-			p.addObserver(this);
 	}
 	
 	public void updateParameters(ControlChangeMessage message) {
@@ -226,38 +185,13 @@ public class Patch extends Observable implements Observer {
 		notifyObservers("arpeggioPatterns");
 	}
 	
-	@Override
-	public void update(Observable source, Object arg) {
-		if (source instanceof Parameters && arg instanceof ParameterChange) {
-			update((Parameters) source, (ParameterChange) arg);
-		}
-	}
-	
-	private void update(Parameters source, ParameterChange arg) {
-		if (!arg.fromUpdate()) {
-			if (gaia.getSynchronize()) {
-				Address address = source.getAddress().add(arg.getOffset());
-				byte[] data = source.getData(arg.getOffset(), arg.getLength());
-				saveData(new Parameters(address, data));
-			}
-			// reload effect parameters when effect type changes
-			if (source == distortion && arg.getOffset() == 0x00 && arg.getLength() < 0x11) {
-				loadData(distortion.getAddress().add(0x01), 0x10);
-			}
-			if (source == flanger && arg.getOffset() == 0x00 && arg.getLength() < 0x11) {
-				loadData(flanger.getAddress().add(0x01), 0x10);
-			}
-			if (source == delay && arg.getOffset() == 0x00 && arg.getLength() < 0x15) {
-				loadData(delay.getAddress().add(0x01), 0x14);
-			}
-			if (source == reverb && arg.getOffset() == 0x00 && arg.getLength() < 0x10) {
-				loadData(reverb.getAddress().add(0x01), 0x10);
-			}
-		}
-	}
-	
 	public PatchCommon getCommon() {
 		return common;
+	}
+
+	protected void setCommon(PatchCommon common) {
+		this.common = common;
+		notifyObservers("common");
 	}
 	
 	public void loadCommon() {
@@ -272,6 +206,11 @@ public class Patch extends Observable implements Observer {
 	public Tone getTone(int number) {
 		return tones[number - 1];
 	}
+
+	protected void setTone(int number, Tone tone) {
+		this.tones[number - 1] = tone;
+		notifyObservers("tones");
+	}
 	
 	public void loadTone(int number) {
 		loadData(getAddress(0x01 + number - 1), 0x3E);
@@ -279,6 +218,11 @@ public class Patch extends Observable implements Observer {
 	
 	public Distortion getDistortion() {
 		return distortion;
+	}
+
+	protected void setDistortion(Distortion distortion) {
+		this.distortion = distortion;
+		notifyObservers("distortion");
 	}
 	
 	public void loadDistortion() {
@@ -288,6 +232,11 @@ public class Patch extends Observable implements Observer {
 	public Flanger getFlanger() {
 		return flanger;
 	}
+
+	protected void setFlanger(Flanger flanger) {
+		this.flanger = flanger;
+		notifyObservers("flanger");
+	}
 	
 	public void loadFlanger() {
 		loadData(getAddress(0x06), 0x51);
@@ -295,6 +244,11 @@ public class Patch extends Observable implements Observer {
 	
 	public Delay getDelay() {
 		return delay;
+	}
+
+	protected void setDelay(Delay delay) {
+		this.delay = delay;
+		notifyObservers("delay");
 	}
 	
 	public void loadDelay() {
@@ -304,6 +258,11 @@ public class Patch extends Observable implements Observer {
 	public Reverb getReverb() {
 		return reverb;
 	}
+
+	protected void setReverb(Reverb reverb) {
+		this.reverb = reverb;
+		notifyObservers("reverb");
+	}
 	
 	public void loadReverb() {
 		loadData(getAddress(0x0A), 0x51);
@@ -311,6 +270,11 @@ public class Patch extends Observable implements Observer {
 	
 	public ArpeggioCommon getArpeggioCommon() {
 		return arpeggioCommon;
+	}
+
+	protected void setArpeggioCommon(ArpeggioCommon arpeggioCommon) {
+		this.arpeggioCommon = arpeggioCommon;
+		notifyObservers("arpeggioCommon");
 	}
 	
 	public void loadArpeggioCommon() {
@@ -324,6 +288,11 @@ public class Patch extends Observable implements Observer {
 	 */
 	public ArpeggioPattern getArpeggioPattern(int note) {
 		return arpeggioPatterns[note - 1];
+	}
+
+	protected void setArpeggioPattern(int note, ArpeggioPattern arpeggioPattern) {
+		this.arpeggioPatterns[note - 1] = arpeggioPattern;
+		notifyObservers("arpeggioPatterns");
 	}
 	
 	public void loadArpeggioPattern(int note) {

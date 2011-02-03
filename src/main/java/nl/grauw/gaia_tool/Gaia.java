@@ -77,14 +77,14 @@ public class Gaia extends Observable implements Observer {
 	private Log log;
 	
 	private System system;
-	private Patch temporaryPatch;
-	private Patch[] userPatches = new Patch[64];
+	private TemporaryPatch temporaryPatch;
+	private UserPatch[] userPatches = new UserPatch[64];
 	
 	public Gaia() {
-		temporaryPatch = new Patch(this);
+		temporaryPatch = new TemporaryPatch(this);
 		for (int bank = 0; bank < 8; bank++) {
 			for (int patch = 0; patch < 8; patch++) {
-				userPatches[bank << 3 | patch] = new Patch(this, bank, patch);
+				userPatches[bank << 3 | patch] = new UserPatch(this, bank, patch);
 			}
 		}
 		log = new Log();
@@ -327,18 +327,13 @@ public class Gaia extends Observable implements Observer {
 	
 	public void savePatch(Patch patch) {
 		if (patch.isComplete()) {
-			File settingsPath = getAndCreateSettingsPath();
-			String fileName;
-			if (patch.getBank() == -1) {
-				fileName = "patch-temporary.gaia";
-			} else {
-				fileName = String.format("patch-%s-%d.gaia", "ABCDEFGH".charAt(patch.getBank()), patch.getPatch() + 1);
-			}
-			File patchFile = new File(settingsPath, fileName);
+			File patchFile = getPatchPath(patch);
 			FileOutputStream fos;
 			try {
 				patchFile.createNewFile();
 				fos = new FileOutputStream(patchFile);
+//				fos.write("GAIATOOL".getBytes());
+//				fos.write(1);
 				fos.write(patch.getCommon().getData());
 				fos.write(patch.getTone(1).getData());
 				fos.write(patch.getTone(2).getData());
@@ -363,6 +358,30 @@ public class Gaia extends Observable implements Observer {
 		}
 	}
 	
+	private File getPatchPath(Patch patch) {
+		if (patch instanceof TemporaryPatch) {
+			return getPatchPath((TemporaryPatch) patch);
+		} else if (patch instanceof UserPatch) {
+			return getPatchPath((UserPatch) patch);
+		} else {
+			throw new Error("Unrecognised patch type.");
+		}
+	}
+	
+	private File getPatchPath(TemporaryPatch patch) {
+		return new File(getAndCreateSettingsPath(), "patch-temporary.gaia");
+	}
+	
+	private File getPatchPath(UserPatch patch) {
+		return new File(getAndCreateSettingsPath(),
+				String.format("patch-%s-%d.gaia", "ABCDEFGH".charAt(patch.getBank()), patch.getPatch() - 1));
+	}
+	
+	/**
+	 * Returns a File object for the settings path.
+	 * Note: also creates the settings directory if it does not exist.
+	 * @return The settings path.
+	 */
 	private File getAndCreateSettingsPath() {
 		File path = getSettingsPath();
 		if (!path.exists()) {
