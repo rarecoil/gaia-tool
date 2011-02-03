@@ -366,9 +366,9 @@ public class Gaia extends Observable implements Observer {
 	 * Format:
 	 * 
 	 *   0x00: Address, 7-bit notation
-	 *         (3 bytes little endian, remainder is ignored)
+	 *         (3 bytes little endian, last byte is ignored)
 	 *   0x04: Length, 7-bit notation
-	 *         (2 bytes little endian, remainder is ignored)
+	 *         (2 bytes little endian)
 	 *   0x08: Data, 7-bit notation
 	 *         (length bytes)
 	 * 
