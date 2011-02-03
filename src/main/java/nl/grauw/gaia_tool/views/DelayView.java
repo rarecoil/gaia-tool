@@ -18,6 +18,7 @@ package nl.grauw.gaia_tool.views;
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.TemporaryPatch;
 
 public class DelayView extends SingleParametersView {
 
@@ -53,6 +54,11 @@ public class DelayView extends SingleParametersView {
 	@Override
 	public String getTitle() {
 		return "Patch delay";
+	}
+	
+	@Override
+	protected boolean isSyncShown() {
+		return patch instanceof TemporaryPatch;
 	}
 
 }

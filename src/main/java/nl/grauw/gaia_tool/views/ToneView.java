@@ -18,6 +18,7 @@ package nl.grauw.gaia_tool.views;
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.TemporaryPatch;
 
 public class ToneView extends SingleParametersView {
 	
@@ -55,6 +56,11 @@ public class ToneView extends SingleParametersView {
 	@Override
 	public String getTitle() {
 		return "Patch tone " + toneNumber;
+	}
+	
+	@Override
+	protected boolean isSyncShown() {
+		return patch instanceof TemporaryPatch;
 	}
 
 }

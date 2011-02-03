@@ -75,6 +75,8 @@ public abstract class ParametersView extends JPanel implements AWTObserver, Acti
 	
 	public abstract String getTitle();
 	
+	protected abstract boolean isSyncShown();
+	
 	protected abstract JPanel getParametersContainer();
 	
 	protected void initComponents() {
@@ -138,6 +140,7 @@ public abstract class ParametersView extends JPanel implements AWTObserver, Acti
 			syncButton = new JToggleButton();
 			syncButton.setText("Sync");
 			syncButton.setModel(new SynchronizeModel());
+			syncButton.setVisible(isSyncShown());
 		}
 		return syncButton;
 	}

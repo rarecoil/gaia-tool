@@ -35,6 +35,7 @@ import nl.grauw.gaia_tool.NoteValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
@@ -309,6 +310,11 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 			editField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		}
 		return editField;
+	}
+	
+	@Override
+	protected boolean isSyncShown() {
+		return patch instanceof TemporaryPatch;
 	}
 
 }

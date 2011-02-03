@@ -53,5 +53,10 @@ public class SystemView extends SingleParametersView {
 	public String getTitle() {
 		return "System parameters";
 	}
+	
+	@Override
+	protected boolean isSyncShown() {
+		return true;
+	}
 
 }

@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.views.parameters.DistortionView;
 
@@ -86,6 +87,11 @@ public class DistortionPanel extends ParametersView {
 				distortionView = new DistortionView(patch.getDistortion());
 		}
 		return distortionView;
+	}
+	
+	@Override
+	protected boolean isSyncShown() {
+		return patch instanceof TemporaryPatch;
 	}
 
 }
