@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
@@ -73,6 +75,7 @@ public class Gaia extends Observable implements Observer {
 	final static int gm_channel = 1;
 	
 	final static Note C_4 = new Note(NoteName.C, 4);
+	final static Charset UTF8 = Charset.forName("UTF-8");
 	
 	private Log log;
 	
@@ -332,19 +335,19 @@ public class Gaia extends Observable implements Observer {
 			try {
 				patchFile.createNewFile();
 				fos = new FileOutputStream(patchFile);
-//				fos.write("GAIATOOL".getBytes());
-//				fos.write(1);
-				fos.write(patch.getCommon().getData());
-				fos.write(patch.getTone(1).getData());
-				fos.write(patch.getTone(2).getData());
-				fos.write(patch.getTone(3).getData());
-				fos.write(patch.getDistortion().getData());
-				fos.write(patch.getFlanger().getData());
-				fos.write(patch.getDelay().getData());
-				fos.write(patch.getReverb().getData());
-				fos.write(patch.getArpeggioCommon().getData());
+				fos.write("GAIATOOL".getBytes(UTF8));
+				fos.write("v1".getBytes(UTF8));
+				writeParameterData(fos, patch.getCommon());
+				writeParameterData(fos, patch.getTone(1));
+				writeParameterData(fos, patch.getTone(2));
+				writeParameterData(fos, patch.getTone(3));
+				writeParameterData(fos, patch.getDistortion());
+				writeParameterData(fos, patch.getFlanger());
+				writeParameterData(fos, patch.getDelay());
+				writeParameterData(fos, patch.getReverb());
+				writeParameterData(fos, patch.getArpeggioCommon());
 				for (int note = 1; note <= 16; note++) {
-					fos.write(patch.getArpeggioPattern(note).getData());
+					writeParameterData(fos, patch.getArpeggioPattern(note));
 				}
 				fos.close();
 				log.log("Patch data saved to " + patchFile);
@@ -356,6 +359,33 @@ public class Gaia extends Observable implements Observer {
 		} else {
 			throw new RuntimeException("Can not save, because not all patch parameters are loaded.");
 		}
+	}
+	
+	/**
+	 * Writes a parameter chunk to the output stream.
+	 * Format:
+	 * 
+	 *   0x00: Address, 7-bit notation
+	 *         (3 bytes little endian, remainder is ignored)
+	 *   0x04: Length, 7-bit notation
+	 *         (2 bytes little endian, remainder is ignored)
+	 *   0x08: Data, 7-bit notation
+	 *         (length bytes)
+	 * 
+	 * @param os
+	 * @param p
+	 * @throws IOException
+	 */
+	private void writeParameterData(OutputStream os, Parameters p) throws IOException {
+		os.write(p.getAddress().getByte4());
+		os.write(p.getAddress().getByte3());
+		os.write(p.getAddress().getByte2());
+		os.write(0);
+		os.write(p.getLength() & 0x7F);
+		os.write(p.getLength() >> 7 & 0x7F);
+		os.write(p.getLength() >> 14 & 0x7F);
+		os.write(p.getLength() >> 21 & 0x7F);
+		os.write(p.getData());
 	}
 	
 	private File getPatchPath(Patch patch) {
