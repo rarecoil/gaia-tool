@@ -73,7 +73,7 @@ public class Gaia extends Observable implements Observer {
 	private Transmitter transmitter;
 	private ResponseReceiver responseReceiver;
 	
-	private int device_id;
+	private int device_id = 0;
 	
 	final static int synth_channel = 0;
 	final static int gm_channel = 1;
@@ -154,6 +154,24 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	/**
+	 * Return whether an identity request response has been received,
+	 * identifying the GAIA’s presence. The device_id will also be initialised.
+	 * @return True if the GAIA’s identity has been confirmed.
+	 */
+	public boolean isIdentityConfirmed() {
+		return identityConfirmed;
+	}
+	
+	/**
+	 * Return the device ID of the GAIA.
+	 * Will be 0 if the GAIA’s identity has not been confirmed yet.
+	 * @return The GAIA’s device ID, or 0.
+	 */
+	public int getDeviceID() {
+		return device_id;
+	}
+	
+	/**
 	 * Initialises the system.
 	 */
 	public void open() throws MidiUnavailableException {
@@ -196,6 +214,8 @@ public class Gaia extends Observable implements Observer {
 		identityConfirmed = false;
 		device_id = 0;
 		notifyObservers("opened");
+		notifyObservers("identityConfirmed");
+		notifyObservers("device_id");
 	}
 	
 	public MidiDevice getMidiInput() {
@@ -298,6 +318,8 @@ public class Gaia extends Observable implements Observer {
 				familyNumberCode[0] == 0x00 && familyNumberCode[1] == 0x00) {
 			device_id = ir.getDeviceId();
 			identityConfirmed = true;
+			notifyObservers("identityConfirmed");
+			notifyObservers("device_id");
 		}
 	}
 	

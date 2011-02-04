@@ -318,7 +318,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		TreePath tp = contentSelectionTree.getSelectionPath();
 		if (tp == null) {
 			return getIntroPanel();
-		} else if (!gaia.isOpened()) {
+		} else if (!gaia.isOpened() || !gaia.isIdentityConfirmed()) {
 			return getNotConnectedPanel();
 		} else if (tp.getPathCount() >= 2) {
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
@@ -382,7 +382,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	@Override
 	public void update(Observable source, Object detail) {
-		if ("opened".equals(detail)) {
+		if ("opened".equals(detail) || "identityConfirmed".equals(detail)) {
 			updateContentPanel();
 			getTestMenu().setEnabled(gaia.isOpened());
 		}
