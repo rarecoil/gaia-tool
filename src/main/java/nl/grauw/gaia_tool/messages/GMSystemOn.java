@@ -26,4 +26,8 @@ public class GMSystemOn extends UniversalSysex {
 		super(GENERAL_MIDI_MESSAGE, GENERAL_MIDI_ON);
 	}
 	
+	public GMSystemOn(int device_id) throws InvalidMidiDataException {
+		super(device_id, GENERAL_MIDI_MESSAGE, GENERAL_MIDI_ON);
+	}
+	
 }
