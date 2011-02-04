@@ -255,6 +255,9 @@ public class Gaia extends Observable implements Observer {
 	 * @param message
 	 */
 	public void send(MidiMessage message) {
+		if (!opened)
+			throw new RuntimeException("MIDI connection not open.");
+		
 		receiver.send(message, -1);
 		log.log("Sent: " + message);
 	}
