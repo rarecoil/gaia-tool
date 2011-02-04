@@ -39,6 +39,7 @@ import nl.grauw.gaia_tool.messages.DataSet1;
 import nl.grauw.gaia_tool.messages.GMSystemOn;
 import nl.grauw.gaia_tool.messages.GM2SystemOn;
 import nl.grauw.gaia_tool.messages.GMSystemOff;
+import nl.grauw.gaia_tool.messages.IdentityReply;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
 import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
@@ -64,12 +65,15 @@ import nl.grauw.gaia_tool.parameters.System;
 public class Gaia extends Observable implements Observer {
 
 	private boolean opened = false;
+	private boolean identityConfirmed = false;
 	
 	private MidiDevice midi_in;	// port where messages are received from the GAIA
 	private MidiDevice midi_out;	// port where messages are sent to the GAIA
 	private Receiver receiver;
 	private Transmitter transmitter;
 	private ResponseReceiver responseReceiver;
+	
+	private int device_id;
 	
 	final static int synth_channel = 0;
 	final static int gm_channel = 1;
@@ -189,6 +193,8 @@ public class Gaia extends Observable implements Observer {
 			responseReceiver.close();
 		
 		opened = false;
+		identityConfirmed = false;
+		device_id = 0;
 		notifyObservers("opened");
 	}
 	
@@ -271,7 +277,9 @@ public class Gaia extends Observable implements Observer {
 			log.log("Received: " + message);
 		}
 		
-		if (message instanceof DataSet1) {
+		if (message instanceof IdentityReply) {
+			confirmIdentity((IdentityReply) message);
+		} else if (message instanceof DataSet1) {
 			updateParameters((DataSet1) message);
 		} else if (message instanceof ControlChangeMessage) {
 			updateParameters((ControlChangeMessage) message);
@@ -279,6 +287,17 @@ public class Gaia extends Observable implements Observer {
 			if (getSynchronize()) {
 				temporaryPatch.clearParameters();
 			}
+		}
+	}
+	
+	private void confirmIdentity(IdentityReply ir) {
+		int[] familyCode = ir.getDeviceFamilyCode();
+		int[] familyNumberCode = ir.getDeviceFamilyNumberCode();
+		if (ir.getIdNumber() == 0x41 &&	// Roland ID
+				familyCode[0] == 0x41 && familyCode[1] == 0x02 &&
+				familyNumberCode[0] == 0x00 && familyNumberCode[1] == 0x00) {
+			device_id = ir.getDeviceId();
+			identityConfirmed = true;
 		}
 	}
 	
