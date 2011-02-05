@@ -16,15 +16,10 @@
 package nl.grauw.gaia_tool;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Properties;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -93,7 +88,6 @@ public class Gaia extends Observable implements Observer {
 	final static int gm_channel = 1;
 	
 	final static Note C_4 = new Note(NoteName.C, 4);
-	final static Charset UTF8 = Charset.forName("UTF-8");
 	
 	private Log log;
 	
@@ -460,124 +454,20 @@ public class Gaia extends Observable implements Observer {
 	
 	/**
 	 * Saves a patch to the specified file.
-	 * 
-	 * File format:
-	 * 
-	 * 0x00: "GAIATOOL" fingerprint
-	 * 0x08: 0...n Chunks
-	 * 
-	 * Chunks:
-	 * 
-	 * 0x00: Chunk name
-	 * 0x04: Length (little endian)
-	 * 0x08: Data (length bytes)
-	 * 
 	 * @param patchFile
 	 * @param patch
 	 */
 	public void savePatch(File patchFile, Patch patch) {
-		if (!patch.isComplete()) {
-			throw new RuntimeException("Can not save, because not all patch parameters are loaded.");
-		}
-		
-		FileOutputStream fos;
-		try {
-			patchFile.createNewFile();
-			fos = new FileOutputStream(patchFile);
-			fos.write("GAIATOOL".getBytes(UTF8));
-			writeParameterData(fos, patch.getCommon());
-			writeParameterData(fos, patch.getTone(1));
-			writeParameterData(fos, patch.getTone(2));
-			writeParameterData(fos, patch.getTone(3));
-			writeParameterData(fos, patch.getDistortion());
-			writeParameterData(fos, patch.getFlanger());
-			writeParameterData(fos, patch.getDelay());
-			writeParameterData(fos, patch.getReverb());
-			writeParameterData(fos, patch.getArpeggioCommon());
-			for (int note = 1; note <= 16; note++) {
-				writeParameterData(fos, patch.getArpeggioPattern(note));
-			}
-			fos.close();
-			log.log("Patch data saved to " + patchFile);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		new PatchSaver(this).savePatch(patchFile, patch);
 	}
 	
 	/**
-	 * Writes a parameter chunk to the output stream.
-	 * 
-	 * Chunk format:
-	 * 
-	 *   0x00: 'P' + address bytes 2, 3 and 4 (chunk name)
-	 *   0x04: Length
-	 *   0x08: Parameters data
-	 * 
-	 * @param os
-	 * @param p
-	 * @throws IOException
-	 */
-	private void writeParameterData(OutputStream os, Parameters p) throws IOException {
-		os.write('P');
-		os.write(p.getAddress().getByte2());
-		os.write(p.getAddress().getByte3());
-		os.write(p.getAddress().getByte4());
-		os.write(p.getLength() & 0x7F);
-		os.write(p.getLength() >> 8 & 0x7F);
-		os.write(p.getLength() >> 16 & 0x7F);
-		os.write(p.getLength() >> 24 & 0x7F);
-		os.write(p.getData());
-	}
-	
-	/**
-	 * Loads a patch file into the given patch.
+	 * Loads a patch from a file into the given patch object.
 	 * @param patchFile
 	 * @param patch
 	 */
 	public void loadPatch(File patchFile, Patch patch) {
-		log.log("Loading " + patchFile);
-		
-		FileInputStream fis;
-		try {
-			patchFile.createNewFile();
-			fis = new FileInputStream(patchFile);
-			byte[] header = new byte[8];
-			if (fis.read(header) == -1) {
-				throw new RuntimeException("Read error: Unexpected end of file.");
-			}
-			if (!Arrays.equals(header, "GAIATOOL".getBytes(UTF8))) {
-				throw new RuntimeException("Read error: Fingerprint mismatch.");
-			}
-			
-			byte[] chunk = new byte[8];
-			while (fis.read(chunk) != -1) {
-				int length = chunk[4] | chunk[5] << 8 | chunk[6] << 16 | chunk[7] << 24;
-				if (chunk[0] == 'P') {
-					byte[] data = new byte[length];
-					if (fis.read(data) == -1) {
-						throw new RuntimeException("Read error: Unexpected end of file.");
-					}
-					Address address = new Address(0x10, chunk[1], chunk[2], chunk[3]);
-					try {
-						send(new DataSet1(address, data));
-						patch.updateParameters(address, data);
-					} catch (InvalidMidiDataException e) {
-						e.printStackTrace();
-					}
-				} else {
-					if (fis.skip(length) != length) {
-						throw new RuntimeException("Read error: Unexpected end of file.");
-					}
-				}
-			}
-			fis.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		new PatchLoader(this).loadPatch(patchFile, patch);
 	}
 	
 	/**
