@@ -138,9 +138,9 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	@Override
-	public void update(Observable source, Object arg) {
-		if (source instanceof Parameters && arg instanceof ParameterChange) {
-			update((Parameters) source, (ParameterChange) arg);
+	public void update(Observable source, Object detail) {
+		if (source instanceof Parameters && detail instanceof ParameterChange) {
+			update((Parameters) source, (ParameterChange) detail);
 		}
 	}
 	

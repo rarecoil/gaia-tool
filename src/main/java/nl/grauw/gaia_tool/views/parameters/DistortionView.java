@@ -166,14 +166,14 @@ public class DistortionView extends JPanel implements AWTObserver {
 	}
 	
 	@Override
-	public void update(Observable source, Object arg) {
-		if (source instanceof Distortion && arg instanceof ParameterChange) {
-			update((Distortion) source, (ParameterChange) arg);
+	public void update(Observable source, Object detail) {
+		if (source instanceof Distortion && detail instanceof ParameterChange) {
+			update((Distortion) source, (ParameterChange) detail);
 		}
 	}
 	
-	private void update(Distortion source, ParameterChange arg) {
-		if (parameters.getDistortionTypeValue().testChanged(source, arg)) {
+	private void update(Distortion source, ParameterChange detail) {
+		if (parameters.getDistortionTypeValue().testChanged(source, detail)) {
 			reinitComponents();
 		}
 	}

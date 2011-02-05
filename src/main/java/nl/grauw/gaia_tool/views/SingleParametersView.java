@@ -34,7 +34,7 @@ public abstract class SingleParametersView extends ParametersView {
 	public abstract Parameters getParameters();
 	
 	@Override
-	public void update(Observable source, Object arg) {
+	public void update(Observable source, Object detail) {
 		if (source == getParameters()) {
 			parameterArea.setText(getParameters().toString());
 		} else {

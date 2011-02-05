@@ -148,20 +148,20 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 		}
 
 		@Override
-		public void update(Observable o, Object arg) {
-			if (o == patch) {
-				if ("arpeggioCommon".equals(arg)) {
+		public void update(Observable source, Object detail) {
+			if (source == patch) {
+				if ("arpeggioCommon".equals(detail)) {
 					addCommonObserver();
 					fireTableStructureChanged();
-				} else if ("arpeggioPatterns".equals(arg)) {
+				} else if ("arpeggioPatterns".equals(detail)) {
 					addPatternObservers();
 					fireTableDataChanged();
 				}
-			} else if (o == patch.getArpeggioCommon()) {
+			} else if (source == patch.getArpeggioCommon()) {
 				fireTableStructureChanged();
-			} else if (o instanceof ArpeggioPattern) {
+			} else if (source instanceof ArpeggioPattern) {
 				for (int note = 1; note <= 16; note++) {
-					if (o == patch.getArpeggioPattern(note)) {
+					if (source == patch.getArpeggioPattern(note)) {
 						fireTableRowsUpdated(note - 1, note - 1);
 						break;
 					}
@@ -208,9 +208,9 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	}
 	
 	@Override
-	public void update(Observable o, Object arg) {
-		if (o == patch) {
-			if ("arpeggioCommon".equals(arg)) {
+	public void update(Observable source, Object detail) {
+		if (source == patch) {
+			if ("arpeggioCommon".equals(detail)) {
 				updateParametersView();
 			}
 		}

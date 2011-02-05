@@ -48,8 +48,8 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	}
 	
 	@Override
-	public void update(Observable o, Object arg) {
-		if (o == parameters) {
+	public void update(Observable source, Object detail) {
+		if (source == parameters) {
 			//
 		}
 	}

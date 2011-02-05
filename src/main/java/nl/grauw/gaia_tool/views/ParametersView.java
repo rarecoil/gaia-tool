@@ -54,8 +54,8 @@ public abstract class ParametersView extends JPanel implements AWTObserver, Acti
 		}
 
 		@Override
-		public void update(Observable source, Object arg) {
-			if (source == getGaia() && "synchronize".equals(arg)) {
+		public void update(Observable source, Object detail) {
+			if (source == getGaia() && "synchronize".equals(detail)) {
 				fireStateChanged();
 			}
 		}

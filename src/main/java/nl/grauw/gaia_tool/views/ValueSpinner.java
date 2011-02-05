@@ -107,8 +107,8 @@ public class ValueSpinner extends JPanel {
 		}
 
 		@Override
-		public void update(Observable source, Object arg) {
-			if (value.testChanged(source, arg)) {
+		public void update(Observable source, Object detail) {
+			if (value.testChanged(source, detail)) {
 				fireStateChanged();
 			}
 		}

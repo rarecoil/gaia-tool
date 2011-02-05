@@ -44,8 +44,8 @@ public class LogView extends JPanel implements AWTObserver {
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
-		if (o == log) {
+	public void update(Observable source, Object detail) {
+		if (source == log) {
 			int logTextLength = log.getLog().length();
 			int logAreaLength = logArea.getText().length();
 			if (logTextLength > logAreaLength) {

@@ -15,16 +15,16 @@ public class ObservableTest {
 		public Observable lastSource;
 		public Object lastArgument;
 
-		public void update(Observable source, Object arg) {
+		public void update(Observable source, Object detail) {
 			updateCount++;
 			lastSource = source;
-			lastArgument = arg;
+			lastArgument = detail;
 		}
 	}
 	
 	public class RemoveSelfObserver extends TestObserver implements Observer {
-		public void update(Observable source, Object arg) {
-			super.update(source, arg);
+		public void update(Observable source, Object detail) {
+			super.update(source, detail);
 			source.removeObserver(this);
 		}
 	}
@@ -35,12 +35,12 @@ public class ObservableTest {
 	
 	public class TestAWTObserver2 extends JPanel implements AWTObserver {
 		private static final long serialVersionUID = 1L;
-		public void update(Observable source, Object arg) {}
+		public void update(Observable source, Object detail) {}
 	}
 	
 	public class TestNoAWTObserver extends JPanel implements Observer {
 		private static final long serialVersionUID = 1L;
-		public void update(Observable source, Object arg) {}
+		public void update(Observable source, Object detail) {}
 	}
 	
 	public class TestObservable extends Observable {

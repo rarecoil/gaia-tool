@@ -56,8 +56,8 @@ public class EnumComboBox extends JPanel {
 		}
 		
 		@Override
-		public void update(Observable source, Object arg) {
-			if (value.testChanged(source, arg)) {
+		public void update(Observable source, Object detail) {
+			if (value.testChanged(source, detail)) {
 				int ordinal = value.getValue().ordinal();
 				fireContentsChanged(this, ordinal, ordinal);
 			}
