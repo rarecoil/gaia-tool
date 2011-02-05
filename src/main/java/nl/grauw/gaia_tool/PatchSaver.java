@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import nl.grauw.gaia_tool.PatchDataRequester.PatchCompleteListener;
+
 /**
  * Class that can save a patch to a specified file.
  * 
@@ -36,25 +38,36 @@ import java.nio.charset.Charset;
  * 0x04: Length (little endian)
  * 0x08: Data (length bytes)
  */
-public class PatchSaver {
+public class PatchSaver implements PatchCompleteListener {
 	
+	File patchFile;
+	Patch patch;
 	Gaia gaia;
+	
 	final static Charset UTF8 = Charset.forName("UTF-8");
 	
-	public PatchSaver(Gaia gaia) {
+	public PatchSaver(File patchFile, Patch patch, Gaia gaia) {
+		this.patchFile = patchFile;
+		this.patch = patch;
 		this.gaia = gaia;
 	}
 	
 	/**
-	 * Saves a patch to the specified file.
+	 * Saves the patch.
 	 * @param patchFile
 	 * @param patch
 	 */
-	public void savePatch(File patchFile, Patch patch) {
-		if (!patch.isComplete()) {
-			throw new RuntimeException("Can not save, because not all patch parameters are loaded.");
-		}
-		
+	public void save() {
+		new PatchDataRequester(patch, this).requestMissingParameters();
+		// continues in patchComplete once all patch data is loaded
+	}
+
+	@Override
+	public void patchComplete(Patch patch) {
+		doSave();
+	}
+	
+	private void doSave() {
 		FileOutputStream fos;
 		try {
 			patchFile.createNewFile();

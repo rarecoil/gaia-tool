@@ -55,18 +55,6 @@ public abstract class Patch extends Observable {
 	
 	public abstract Address getAddress(int byte3);
 	
-	public boolean isComplete() {
-		if (common == null || tones[0] == null || tones[1] == null || tones[2] == null ||
-				distortion == null || flanger == null || delay == null || reverb == null ||
-				arpeggioCommon == null)
-			return false;
-		for (int i = 0; i < 16; i++) {
-			if (arpeggioPatterns[i] == null)
-				return false;
-		}
-		return true;
-	}
-	
 	protected void loadData(Address address, int length) {
 		if (!address.equals(lastRequestAddress)) {
 			gaia.sendDataRequest(address, length);

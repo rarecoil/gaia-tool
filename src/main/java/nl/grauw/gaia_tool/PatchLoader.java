@@ -31,10 +31,15 @@ import nl.grauw.gaia_tool.messages.DataSet1;
  */
 public class PatchLoader {
 	
+	File patchFile;
+	Patch patch;
 	Gaia gaia;
+	
 	final static Charset UTF8 = Charset.forName("UTF-8");
 	
-	public PatchLoader(Gaia gaia) {
+	public PatchLoader(File patchFile, Patch patch, Gaia gaia) {
+		this.patchFile = patchFile;
+		this.patch = patch;
 		this.gaia = gaia;
 	}
 	
@@ -43,7 +48,7 @@ public class PatchLoader {
 	 * @param patchFile
 	 * @param patch
 	 */
-	public void loadPatch(File patchFile, Patch patch) {
+	public void loadPatch() {
 		gaia.getLog().log("Loading " + patchFile);
 		
 		FileInputStream fis;

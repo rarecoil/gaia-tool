@@ -458,7 +458,7 @@ public class Gaia extends Observable implements Observer {
 	 * @param patch
 	 */
 	public void savePatch(File patchFile, Patch patch) {
-		new PatchSaver(this).savePatch(patchFile, patch);
+		new PatchSaver(patchFile, patch, this).save();
 	}
 	
 	/**
@@ -467,7 +467,7 @@ public class Gaia extends Observable implements Observer {
 	 * @param patch
 	 */
 	public void loadPatch(File patchFile, Patch patch) {
-		new PatchLoader(this).loadPatch(patchFile, patch);
+		new PatchLoader(patchFile, patch, this).loadPatch();
 	}
 	
 	/**
