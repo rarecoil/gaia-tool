@@ -32,7 +32,7 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
-public abstract class ParametersView extends JPanel implements AWTObserver, ActionListener {
+public abstract class ParametersView extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 123L;
 	
 	public class SynchronizeModel extends ToggleButtonModel implements AWTObserver {

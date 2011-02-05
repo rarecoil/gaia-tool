@@ -22,9 +22,10 @@ import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 
 import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
-public abstract class SingleParametersView extends ParametersView {
+public abstract class SingleParametersView extends ParametersView implements AWTObserver {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel parametersContainer;
