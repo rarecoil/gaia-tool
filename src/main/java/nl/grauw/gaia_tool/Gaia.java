@@ -543,7 +543,7 @@ public class Gaia extends Observable implements Observer {
 	private File getAndCreateSettingsPath() {
 		File path = getSettingsPath();
 		if (!path.exists()) {
-			path.mkdir();
+			path.mkdirs();
 		}
 		return path;
 	}
