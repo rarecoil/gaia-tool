@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -35,6 +36,7 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -42,6 +44,8 @@ import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.TemporaryPatch;
+import nl.grauw.gaia_tool.UserPatch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
@@ -430,12 +434,25 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			JOptionPane.showMessageDialog(this, "Can not save, because not all patch parameters are loaded.",
 					"Unable to save patch.", JOptionPane.ERROR_MESSAGE);
 		} else {
-			gaia.savePatch(getSelectedPatch());
+			JFileChooser fc = new JFileChooser();
+			fc.addChoosableFileFilter(new FileNameExtensionFilter("GAIA patch file", "gaia"));
+			if (patch instanceof TemporaryPatch) {
+				fc.setSelectedFile(new File(fc.getCurrentDirectory(), "patch-temporary.gaia"));
+			} else if (patch instanceof UserPatch) {
+				fc.setSelectedFile(new File(fc.getCurrentDirectory(), String.format("patch-%s-%d.gaia",
+						"ABCDEFGH".charAt(((UserPatch)patch).getBank()), ((UserPatch)patch).getPatch() + 1)));
+			}
+			int result = fc.showSaveDialog(this);
+			if (result == JFileChooser.APPROVE_OPTION) {
+				//gaia.savePatch(fc.getSelectedFile(), getSelectedPatch());
+				gaia.savePatch(fc.getSelectedFile(), getSelectedPatch());
+			}
 		}
 	}
 	
 	private void load() {
 		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("GAIA patch file", "gaia"));
 		int result = fc.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			gaia.loadPatch(fc.getSelectedFile(), gaia.getTemporaryPatch());

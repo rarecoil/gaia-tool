@@ -506,10 +506,6 @@ public class Gaia extends Observable implements Observer {
 		}
 	}
 	
-	public void savePatch(Patch patch) {
-		savePatch(getPatchPath(patch), patch);
-	}
-	
 	/**
 	 * Writes a parameter chunk to the output stream.
 	 * 
@@ -582,25 +578,6 @@ public class Gaia extends Observable implements Observer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private File getPatchPath(Patch patch) {
-		if (patch instanceof TemporaryPatch) {
-			return getPatchPath((TemporaryPatch) patch);
-		} else if (patch instanceof UserPatch) {
-			return getPatchPath((UserPatch) patch);
-		} else {
-			throw new Error("Unrecognised patch type.");
-		}
-	}
-	
-	private File getPatchPath(TemporaryPatch patch) {
-		return new File(getAndCreateSettingsPath(), "patch-temporary.gaia");
-	}
-	
-	private File getPatchPath(UserPatch patch) {
-		return new File(getAndCreateSettingsPath(),
-				String.format("patch-%s-%d.gaia", "ABCDEFGH".charAt(patch.getBank()), patch.getPatch() - 1));
 	}
 	
 	/**
