@@ -31,12 +31,11 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 
 public abstract class ParametersView extends JPanel implements AWTObserver, ActionListener {
 	private static final long serialVersionUID = 123L;
 	
-	public class SynchronizeModel extends ToggleButtonModel implements Observer {
+	public class SynchronizeModel extends ToggleButtonModel implements AWTObserver {
 		private static final long serialVersionUID = 1L;
 		
 		public SynchronizeModel() {
