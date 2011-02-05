@@ -65,14 +65,16 @@ public class ResponseReceiver implements Receiver {
 	}
 	
 	public MidiMessage processMidiMessage(SysexMessage message) {
-		byte[] data = message.getData();
-		if (data[0] == UNIVERSAL_NONREALTIME_SYSEX) {
-			if (data[2] == GENERAL_INFORMATION && message.getData()[3] == IDENTITY_REPLY) {
-				return new IdentityReply(message);
-			}
-		} else if (data[0] == ROLAND_ID && data[2] == 0 && data[3] == 0 && data[4] == MODEL_SH01) {
-			if (data[5] == COMMAND_DT1) {
-				return new DataSet1(message);
+		if (message.getStatus() == SysexMessage.SYSTEM_EXCLUSIVE) {
+			byte[] data = message.getData();
+			if (data.length > 0 && data[0] == UNIVERSAL_NONREALTIME_SYSEX) {
+				if (data.length > 3 && data[2] == GENERAL_INFORMATION && data[3] == IDENTITY_REPLY) {
+					return new IdentityReply(message);
+				}
+			} else if (data.length > 4 && data[0] == ROLAND_ID && data[2] == 0 && data[3] == 0 && data[4] == MODEL_SH01) {
+				if (data.length > 5 && data[5] == COMMAND_DT1) {
+					return new DataSet1(message);
+				}
 			}
 		}
 		return new GenericMessage(message);
