@@ -22,6 +22,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -51,6 +52,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private static final long serialVersionUID = 1L;
 	private JMenuBar mainMenuBar;
 	private JMenu fileMenu;
+	private JMenuItem loadItem;
 	private JMenuItem saveItem;
 	private JMenuItem exitItem;
 	private JMenu testMenu;
@@ -153,6 +155,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JMenu getFileMenu() {
 		if (fileMenu == null) {
 			fileMenu = new JMenu("File");
+			fileMenu.add(getLoadItem());
 			fileMenu.add(getSaveItem());
 			fileMenu.add(getExitItem());
 		}
@@ -168,9 +171,18 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		return exitItem;
 	}
 
+	private JMenuItem getLoadItem() {
+		if (loadItem == null) {
+			loadItem = new JMenuItem("Load patch...");
+			loadItem.setAccelerator(KeyStroke.getKeyStroke("ctrl L"));
+			loadItem.addActionListener(this);
+		}
+		return loadItem;
+	}
+
 	private JMenuItem getSaveItem() {
 		if (saveItem == null) {
-			saveItem = new JMenuItem("Save");
+			saveItem = new JMenuItem("Save selected patch");
 			saveItem.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
 			saveItem.addActionListener(this);
 		}
@@ -401,6 +413,8 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			exit();
 		} else if (e.getSource() == saveItem) {
 			save();
+		} else if (e.getSource() == loadItem) {
+			load();
 		} else if (e.getSource() == configureMidiItem) {
 			new MIDIDeviceSelector(gaia, this).show();
 		}
@@ -418,6 +432,14 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		} else {
 			JOptionPane.showMessageDialog(this, "You must select a patch to save.",
 					"No patch selected.", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void load() {
+		JFileChooser fc = new JFileChooser();
+		int result = fc.showOpenDialog(this);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			gaia.loadPatch(fc.getSelectedFile(), gaia.getTemporaryPatch());
 		}
 	}
 

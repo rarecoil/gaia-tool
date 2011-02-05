@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -23,6 +24,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Properties;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -456,15 +458,30 @@ public class Gaia extends Observable implements Observer {
 		}
 	}
 	
-	public void savePatch(Patch patch) {
+	/**
+	 * Saves a patch to the specified file.
+	 * 
+	 * File format:
+	 * 
+	 * 0x00: "GAIATOOL" fingerprint
+	 * 0x08: 0...n Chunks
+	 * 
+	 * Chunks:
+	 * 
+	 * 0x00: Chunk name
+	 * 0x04: Length (little endian)
+	 * 0x08: Data (length bytes)
+	 * 
+	 * @param patchFile
+	 * @param patch
+	 */
+	public void savePatch(File patchFile, Patch patch) {
 		if (patch.isComplete()) {
-			File patchFile = getPatchPath(patch);
 			FileOutputStream fos;
 			try {
 				patchFile.createNewFile();
 				fos = new FileOutputStream(patchFile);
 				fos.write("GAIATOOL".getBytes(UTF8));
-				fos.write("v1".getBytes(UTF8));
 				writeParameterData(fos, patch.getCommon());
 				writeParameterData(fos, patch.getTone(1));
 				writeParameterData(fos, patch.getTone(2));
@@ -489,31 +506,82 @@ public class Gaia extends Observable implements Observer {
 		}
 	}
 	
+	public void savePatch(Patch patch) {
+		savePatch(getPatchPath(patch), patch);
+	}
+	
 	/**
 	 * Writes a parameter chunk to the output stream.
-	 * Format:
 	 * 
-	 *   0x00: Address, 7-bit notation
-	 *         (3 bytes little endian, last byte is ignored)
-	 *   0x04: Length, 7-bit notation
-	 *         (2 bytes little endian)
-	 *   0x08: Data, 7-bit notation
-	 *         (length bytes)
+	 * Chunk format:
+	 * 
+	 *   0x00: 'P' + address bytes 2, 3 and 4 (chunk name)
+	 *   0x04: Length
+	 *   0x08: Parameters data
 	 * 
 	 * @param os
 	 * @param p
 	 * @throws IOException
 	 */
 	private void writeParameterData(OutputStream os, Parameters p) throws IOException {
-		os.write(p.getAddress().getByte4());
-		os.write(p.getAddress().getByte3());
+		os.write('P');
 		os.write(p.getAddress().getByte2());
-		os.write(0);
+		os.write(p.getAddress().getByte3());
+		os.write(p.getAddress().getByte4());
 		os.write(p.getLength() & 0x7F);
-		os.write(p.getLength() >> 7 & 0x7F);
-		os.write(p.getLength() >> 14 & 0x7F);
-		os.write(p.getLength() >> 21 & 0x7F);
+		os.write(p.getLength() >> 8 & 0x7F);
+		os.write(p.getLength() >> 16 & 0x7F);
+		os.write(p.getLength() >> 24 & 0x7F);
 		os.write(p.getData());
+	}
+	
+	/**
+	 * Loads a patch file into the given patch.
+	 * @param patchFile
+	 * @param patch
+	 */
+	public void loadPatch(File patchFile, Patch patch) {
+		log.log("Loading " + patchFile);
+		
+		FileInputStream fis;
+		try {
+			patchFile.createNewFile();
+			fis = new FileInputStream(patchFile);
+			byte[] header = new byte[8];
+			if (fis.read(header) == -1) {
+				throw new RuntimeException("Read error: Unexpected end of file.");
+			}
+			if (!Arrays.equals(header, "GAIATOOL".getBytes(UTF8))) {
+				throw new RuntimeException("Read error: Fingerprint mismatch.");
+			}
+			
+			byte[] chunk = new byte[8];
+			while (fis.read(chunk) != -1) {
+				int length = chunk[4] | chunk[5] << 8 | chunk[6] << 16 | chunk[7] << 24;
+				if (chunk[0] == 'P') {
+					byte[] data = new byte[length];
+					if (fis.read(data) == -1) {
+						throw new RuntimeException("Read error: Unexpected end of file.");
+					}
+					Address address = new Address(0x10, chunk[1], chunk[2], chunk[3]);
+					try {
+						send(new DataSet1(address, data));
+						patch.updateParameters(address, data);
+					} catch (InvalidMidiDataException e) {
+						e.printStackTrace();
+					}
+				} else {
+					if (fis.skip(length) != length) {
+						throw new RuntimeException("Read error: Unexpected end of file.");
+					}
+				}
+			}
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private File getPatchPath(Patch patch) {
