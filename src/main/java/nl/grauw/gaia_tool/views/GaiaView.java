@@ -422,16 +422,14 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	
 	private void save() {
 		Patch patch = getSelectedPatch();
-		if (patch != null) {
-			try {
-				gaia.savePatch(getSelectedPatch());
-			} catch (RuntimeException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage(),
-						"Unable to save patch.", JOptionPane.ERROR_MESSAGE);
-			}
-		} else {
+		if (patch == null) {
 			JOptionPane.showMessageDialog(this, "You must select a patch to save.",
 					"No patch selected.", JOptionPane.ERROR_MESSAGE);
+		} else if (!patch.isComplete()) {
+			JOptionPane.showMessageDialog(this, "Can not save, because not all patch parameters are loaded.",
+					"Unable to save patch.", JOptionPane.ERROR_MESSAGE);
+		} else {
+			gaia.savePatch(getSelectedPatch());
 		}
 	}
 	
