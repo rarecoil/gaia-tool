@@ -29,8 +29,17 @@ public class ObservableTest {
 		}
 	}
 	
-	public class TestAWTObserver1 extends TestObserver implements AWTObserver {
+	public class TestAWTObserver implements AWTObserver {
 		private static final long serialVersionUID = 1L;
+		public int updateCount;
+		public Observable lastSource;
+		public Object lastArgument;
+
+		public void update(Observable source, Object detail) {
+			updateCount++;
+			lastSource = source;
+			lastArgument = detail;
+		}
 	}
 	
 	public class TestAWTObserver2 extends JPanel implements AWTObserver {
@@ -44,8 +53,8 @@ public class ObservableTest {
 	}
 	
 	public class TestObservable extends Observable {
-		public Vector<Observer> getObservers() {
-			return super.getObservers();
+		public Vector<AWTObserver> getAWTObservers() {
+			return super.getAWTObservers();
 		}
 	}
 
@@ -53,6 +62,13 @@ public class ObservableTest {
 	public void testHasObserver() {
 		Observable o = new Observable();
 		TestObserver observer = new TestObserver();
+		assertFalse(o.hasObserver(observer));
+	}
+
+	@Test
+	public void testHasObserver_AWTObserver() {
+		Observable o = new Observable();
+		TestAWTObserver observer = new TestAWTObserver();
 		assertFalse(o.hasObserver(observer));
 	}
 
@@ -67,7 +83,7 @@ public class ObservableTest {
 	@Test
 	public void testAddObserver_AWTObserver() {
 		Observable o = new Observable();
-		TestAWTObserver1 observer1 = new TestAWTObserver1();
+		TestAWTObserver observer1 = new TestAWTObserver();
 		o.addObserver(observer1);
 		TestAWTObserver2 observer2 = new TestAWTObserver2();
 		o.addObserver(observer2);
@@ -92,44 +108,53 @@ public class ObservableTest {
 	}
 
 	@Test
-	public void testGetObservers() {
-		TestObservable o = new TestObservable();
-		TestObserver observer = new TestObserver();
+	public void testRemoveObserver_AWTObserver() {
+		Observable o = new Observable();
+		TestAWTObserver observer = new TestAWTObserver();
 		o.addObserver(observer);
-		assertEquals(1, o.getObservers().size());
-		assertEquals(observer, o.getObservers().get(0));
+		o.removeObserver(observer);
+		assertFalse(o.hasObserver(observer));
 	}
 
 	@Test
-	public void testGetObservers_Multiple() {
+	public void testGetAWTObservers() {
 		TestObservable o = new TestObservable();
-		TestObserver observer1 = new TestObserver();
+		TestAWTObserver observer = new TestAWTObserver();
+		o.addObserver(observer);
+		assertEquals(1, o.getAWTObservers().size());
+		assertEquals(observer, o.getAWTObservers().get(0));
+	}
+
+	@Test
+	public void testGetAWTObservers_Multiple() {
+		TestObservable o = new TestObservable();
+		TestAWTObserver observer1 = new TestAWTObserver();
 		o.addObserver(observer1);
-		TestObserver observer2 = new TestObserver();
+		TestAWTObserver observer2 = new TestAWTObserver();
 		o.addObserver(observer2);
-		TestObserver observer3 = new TestObserver();
+		TestAWTObserver observer3 = new TestAWTObserver();
 		o.addObserver(observer3);
-		TestObserver observer4 = new TestObserver();
+		TestAWTObserver observer4 = new TestAWTObserver();
 		o.addObserver(observer4);
 		o.removeObserver(observer2);
-		assertEquals(3, o.getObservers().size());
-		assertEquals(observer1, o.getObservers().get(0));
-		assertEquals(observer3, o.getObservers().get(1));
-		assertEquals(observer4, o.getObservers().get(2));
+		assertEquals(3, o.getAWTObservers().size());
+		assertEquals(observer1, o.getAWTObservers().get(0));
+		assertEquals(observer3, o.getAWTObservers().get(1));
+		assertEquals(observer4, o.getAWTObservers().get(2));
 	}
 
 	@Test
-	public void testGetObservers_GarbageCollected() {
+	public void testGetAWTObservers_GarbageCollected() {
 		TestObservable o = new TestObservable();
-		TestObserver observer1 = new TestObserver();
+		TestAWTObserver observer1 = new TestAWTObserver();
 		o.addObserver(observer1);
-		TestObserver observer2 = new TestObserver();
+		TestAWTObserver observer2 = new TestAWTObserver();
 		o.addObserver(observer2);
-		TestObserver observer3 = new TestObserver();
+		TestAWTObserver observer3 = new TestAWTObserver();
 		o.addObserver(observer3);
 		observer2 = null;
 		System.gc();
-		assertEquals(2, o.getObservers().size());
+		assertEquals(2, o.getAWTObservers().size());
 	}
 
 	@Test

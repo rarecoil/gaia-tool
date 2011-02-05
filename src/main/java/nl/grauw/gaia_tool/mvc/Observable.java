@@ -22,57 +22,95 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 /**
- * Class that implements observer pattern using weak references.
- * This allows observing views to get garbage collected if they
- * are no longer referenced elsewhere.
+ * Class that implements the observer pattern.
+ * It supports two types of observers: regular observers, and AWT observers.
  * 
- * Also as compared to java.util.Observable it does not require
- * any annoying calls to setChanged().
+ * The AWT observers are run on the AWT event thread, and use weak references which allows them to
+ * get garbage collected if they are no longer referenced elsewhere, making un-registering unnecessary.
+ * 
+ * Also as compared to java.util.Observable it does not require any annoying calls to setChanged().
  */
 public class Observable {
 	
-	private Vector<WeakReference<Observer>> observers = new Vector<WeakReference<Observer>>();
+	private Vector<Observer> observers = new Vector<Observer>();
+	private Vector<WeakReference<AWTObserver>> awtObservers = new Vector<WeakReference<AWTObserver>>();
 	private int lastGCLimit = 100;
 	
 	/**
 	 * Add an observer to this object.
-	 * If it needs to be notified on the AWT event thread, it should implement AWTObserver.
+	 * 
 	 * @param observer The observer to add.
 	 */
 	public void addObserver(Observer observer) {
-		if (observer instanceof JComponent && !(observer instanceof AWTObserver))
-			throw new IllegalArgumentException("Swing components and all observers that directly interact with them must implement AWTObserver.");
-		if (observers.size() > lastGCLimit) {
+		if (observer instanceof JComponent)
+			throw new IllegalArgumentException("Swing components and all observers " +
+					"that directly interact with them must implement AWTObserver.");
+		observers.add(observer);
+	}
+	
+	/**
+	 * Add an AWT observer to this object.
+	 * 
+	 * @param observer The observer to add.
+	 */
+	public void addObserver(AWTObserver observer) {
+		if (awtObservers.size() > lastGCLimit) {
 			System.gc();
-			Vector<Observer> observers = getObservers();	// clean up the no longer available weak references
+			Vector<AWTObserver> observers = getAWTObservers();	// clean up the no longer available weak references
 			lastGCLimit = observers.size() + 100;
 			System.out.println("Observer limit exceeded. Size after manual garbage collection: " + observers.size());
 		}
-		observers.add(new WeakReference<Observer>(observer));
+		awtObservers.add(new WeakReference<AWTObserver>(observer));
 	}
 	
 	/**
 	 * Remove an observer from this object.
+	 * 
 	 * @param observer The observer to remove.
 	 */
 	public void removeObserver(Observer observer) {
 		for (int i = 0, len = observers.size(); i < len; i++) {
-			WeakReference<Observer> wro = observers.get(i);
-			if (wro.get() == observer) {
+			if (observers.get(i) == observer) {
 				observers.remove(i);
+				return;
+			}
+		}
+	}
+	
+	/**
+	 * Remove an AWT observer from this object.
+	 * 
+	 * @param observer The observer to remove.
+	 */
+	public void removeObserver(AWTObserver observer) {
+		for (int i = 0, len = awtObservers.size(); i < len; i++) {
+			WeakReference<AWTObserver> wro = awtObservers.get(i);
+			if (wro.get() == observer) {
+				awtObservers.remove(i);
 				wro.clear();
-				break;
+				return;
 			}
 		}
 	}
 	
 	/**
 	 * Returns whether an observer was already added.
+	 * 
 	 * @param observer The observer whose presence to test.
 	 * @return True if the observer is already observing.
 	 */
 	public boolean hasObserver(Observer observer) {
-		return getObservers().contains(observer);
+		return observers.contains(observer);
+	}
+
+	/**
+	 * Returns whether an AWT observer was already added.
+	 * 
+	 * @param observer The observer whose presence to test.
+	 * @return True if the observer is already observing.
+	 */
+	public boolean hasObserver(AWTObserver observer) {
+		return getAWTObservers().contains(observer);
 	}
 	
 	/**
@@ -88,36 +126,30 @@ public class Observable {
 	 * @param detail Object providing details on the state change.
 	 */
 	protected void notifyObservers(Object detail) {
-		Vector<Observer> observers = getObservers();
-		boolean awtObservers = false;
+		Vector<Observer> observers = new Vector<Observer>(this.observers);
 		for (Observer o : observers) {
-			if (o instanceof AWTObserver && !SwingUtilities.isEventDispatchThread()) {
-				awtObservers = true;
-			} else {
-				o.update(this, detail);
-			}
+			o.update(this, detail);
 		}
 		
 		// also schedule notifications on the AWT event thread if necessary
-		if (awtObservers) {
-			SwingUtilities.invokeLater(createAWTNotifier(observers, detail));
+		if (!awtObservers.isEmpty()) {
+			SwingUtilities.invokeLater(createAWTNotifier(getAWTObservers(), detail));
 		}
 	}
 	
 	/**
-	 * Create runnable that for notifying objects on the AWT event thread.
+	 * Create runnable for notifying objects on the AWT event thread.
+	 * 
 	 * @param observers The observers to notify.
 	 * @param detail Object providing details on the state change.
 	 * @return A runnable to invoke later.
 	 */
-	private Runnable createAWTNotifier(final Iterable<Observer> observers, final Object detail) {
+	private Runnable createAWTNotifier(final Iterable<AWTObserver> awtObservers, final Object detail) {
 		return new Runnable() {
 			@Override
 			public void run() {
-				for (Observer o : observers) {
-					if (o instanceof AWTObserver) {
-						o.update(Observable.this, detail);
-					}
+				for (AWTObserver o : awtObservers) {
+					o.update(Observable.this, detail);
 				}
 			}
 		};
@@ -126,17 +158,18 @@ public class Observable {
 	/**
 	 * Returns a copy of the observers registered on this observable.
 	 * Any weakly referenced observers that no longer exist will be cleaned up and not in the list.
+	 * 
 	 * @return The observers registered on this object.
 	 */
-	protected Vector<Observer> getObservers() {
-		Vector<Observer> observersCopy = new Vector<Observer>(observers.size());
-		for (int i = 0, len = observers.size(); i < len; i++) {
-			WeakReference<Observer> wro = observers.get(i);
-			Observer observer = wro.get();
+	protected Vector<AWTObserver> getAWTObservers() {
+		Vector<AWTObserver> observersCopy = new Vector<AWTObserver>(awtObservers.size());
+		for (int i = 0, len = awtObservers.size(); i < len; i++) {
+			WeakReference<AWTObserver> wro = awtObservers.get(i);
+			AWTObserver observer = wro.get();
 			if (observer != null) {
 				observersCopy.add(observer);
 			} else {
-				observers.remove(i);
+				awtObservers.remove(i);
 				len--;
 				i--;
 			}
