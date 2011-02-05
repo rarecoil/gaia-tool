@@ -466,7 +466,7 @@ public class Gaia extends Observable implements Observer {
 	
 	private File getSettingsPath() {
 		String appData = java.lang.System.getenv("APPDATA");
-		String home = java.lang.System.getenv("HOME");
+		String home = java.lang.System.getProperty("user.home");
 		if (appData != null) {
 			return new File(appData, "gaia-tool");
 		} else if (home != null) {
