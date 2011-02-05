@@ -181,6 +181,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			loadItem = new JMenuItem("Load Patch…");
 			loadItem.setAccelerator(KeyStroke.getKeyStroke("ctrl L"));
 			loadItem.addActionListener(this);
+			getLoadItem().setEnabled(gaia.isIdentityConfirmed());
 		}
 		return loadItem;
 	}
@@ -190,6 +191,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			saveItem = new JMenuItem("Save Patch As…");
 			saveItem.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
 			saveItem.addActionListener(this);
+			getSaveItem().setEnabled(gaia.isIdentityConfirmed());
 		}
 		return saveItem;
 	}
@@ -398,9 +400,12 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	@Override
 	public void update(Observable source, Object detail) {
-		if ("opened".equals(detail) || "identityConfirmed".equals(detail)) {
-			updateContentPanel();
+		if ("opened".equals(detail)) {
 			getTestMenu().setEnabled(gaia.isOpened());
+		} else if ("identityConfirmed".equals(detail)) {
+			updateContentPanel();
+			getLoadItem().setEnabled(gaia.isIdentityConfirmed());
+			getSaveItem().setEnabled(gaia.isIdentityConfirmed());
 		}
 	}
 
