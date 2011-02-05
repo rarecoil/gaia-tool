@@ -476,33 +476,33 @@ public class Gaia extends Observable implements Observer {
 	 * @param patch
 	 */
 	public void savePatch(File patchFile, Patch patch) {
-		if (patch.isComplete()) {
-			FileOutputStream fos;
-			try {
-				patchFile.createNewFile();
-				fos = new FileOutputStream(patchFile);
-				fos.write("GAIATOOL".getBytes(UTF8));
-				writeParameterData(fos, patch.getCommon());
-				writeParameterData(fos, patch.getTone(1));
-				writeParameterData(fos, patch.getTone(2));
-				writeParameterData(fos, patch.getTone(3));
-				writeParameterData(fos, patch.getDistortion());
-				writeParameterData(fos, patch.getFlanger());
-				writeParameterData(fos, patch.getDelay());
-				writeParameterData(fos, patch.getReverb());
-				writeParameterData(fos, patch.getArpeggioCommon());
-				for (int note = 1; note <= 16; note++) {
-					writeParameterData(fos, patch.getArpeggioPattern(note));
-				}
-				fos.close();
-				log.log("Patch data saved to " + patchFile);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
+		if (!patch.isComplete()) {
 			throw new RuntimeException("Can not save, because not all patch parameters are loaded.");
+		}
+		
+		FileOutputStream fos;
+		try {
+			patchFile.createNewFile();
+			fos = new FileOutputStream(patchFile);
+			fos.write("GAIATOOL".getBytes(UTF8));
+			writeParameterData(fos, patch.getCommon());
+			writeParameterData(fos, patch.getTone(1));
+			writeParameterData(fos, patch.getTone(2));
+			writeParameterData(fos, patch.getTone(3));
+			writeParameterData(fos, patch.getDistortion());
+			writeParameterData(fos, patch.getFlanger());
+			writeParameterData(fos, patch.getDelay());
+			writeParameterData(fos, patch.getReverb());
+			writeParameterData(fos, patch.getArpeggioCommon());
+			for (int note = 1; note <= 16; note++) {
+				writeParameterData(fos, patch.getArpeggioPattern(note));
+			}
+			fos.close();
+			log.log("Patch data saved to " + patchFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
