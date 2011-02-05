@@ -22,6 +22,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
 import nl.grauw.gaia_tool.views.GaiaView;
 
 public class App {
@@ -58,9 +59,9 @@ public class App {
 	public void initialiseModel() {
 		gaia = new Gaia();
 		try {
-			gaia.autoDetectMIDIDevices();
-			if (gaia.getMidiInput() != null && gaia.getMidiOutput() != null)
-				gaia.open();
+			gaia.open();
+		} catch (GaiaNotFoundException e) {
+			// that’s fine
 		} catch(MidiUnavailableException e) {
 			JOptionPane.showMessageDialog(null, e, "Error connecting to Roland GAIA SH-01.", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);

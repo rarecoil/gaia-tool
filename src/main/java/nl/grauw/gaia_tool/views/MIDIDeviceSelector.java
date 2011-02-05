@@ -11,11 +11,13 @@ import javax.sound.midi.Synthesizer;
 import javax.swing.JOptionPane;
 
 import nl.grauw.gaia_tool.Gaia;
+import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
 
 public class MIDIDeviceSelector {
 	
 	Gaia gaia;
 	Component parent;
+	static final String AUTODETECT = "Auto-detect";
 	
 	public MIDIDeviceSelector(Gaia gaia, Component parent) {
 		this.gaia = gaia;
@@ -23,25 +25,25 @@ public class MIDIDeviceSelector {
 	}
 	
 	public void show() {
-		MidiDevice input = selectMIDIInputDevice();
-		MidiDevice output = selectMIDIOutputDevice();
+		selectMIDIInputDevice();
+		selectMIDIOutputDevice();
 		
 		if (gaia.isOpened())
 			gaia.close();
 		
 		try {
-			gaia.setMIDIDevices(input, output);
-			if (gaia.canOpen())
-				gaia.open();
+			gaia.open();
+		} catch (GaiaNotFoundException e) {
+			// that’s fine
 		} catch (MidiUnavailableException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private MidiDevice selectMIDIInputDevice() {
+	private void selectMIDIInputDevice() {
 		Vector<Object> inputDevices = new Vector<Object>();
-		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
-		for (MidiDevice.Info mdi : devicesInfo) {
+		inputDevices.add(AUTODETECT);
+		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
 			try {
 				MidiDevice md = MidiSystem.getMidiDevice(mdi);
 				if (md.getMaxTransmitters() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer))
@@ -50,24 +52,23 @@ public class MIDIDeviceSelector {
 			}
 		}
 		
+		MidiDevice currentDevice = gaia.getMidiInput();
+		
 		Object selection = JOptionPane.showInputDialog(parent, "Please select a MIDI input device",
 				"Select MIDI input device", JOptionPane.QUESTION_MESSAGE, null, inputDevices.toArray(),
-				gaia.getMidiInput() != null ? gaia.getMidiInput().getDeviceInfo() : null);
+				currentDevice != null ? currentDevice.getDeviceInfo() : null);
 		
 		if (selection instanceof MidiDevice.Info) {
-			try {
-				return MidiSystem.getMidiDevice((MidiDevice.Info) selection);
-			} catch (MidiUnavailableException e) {
-				e.printStackTrace();
-			}
+			gaia.setDefaultMidiInput(((MidiDevice.Info) selection).getName());
+		} else if (selection == AUTODETECT) {
+			gaia.setDefaultMidiInput(null);
 		}
-		return gaia.getMidiInput();
 	}
 	
-	private MidiDevice selectMIDIOutputDevice() {
+	private void selectMIDIOutputDevice() {
 		Vector<Object> outputDevices = new Vector<Object>();
-		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
-		for (MidiDevice.Info mdi : devicesInfo) {
+		outputDevices.add(AUTODETECT);
+		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
 			try {
 				MidiDevice md = MidiSystem.getMidiDevice(mdi);
 				if (md.getMaxReceivers() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer))
@@ -76,18 +77,17 @@ public class MIDIDeviceSelector {
 			}
 		}
 		
+		MidiDevice currentDevice = gaia.getMidiOutput();
+		
 		Object selection = JOptionPane.showInputDialog(parent, "Please select a MIDI output device",
 				"Select MIDI output device", JOptionPane.QUESTION_MESSAGE, null, outputDevices.toArray(),
-				gaia.getMidiOutput() != null ? gaia.getMidiOutput().getDeviceInfo() : null);
+				currentDevice != null ? currentDevice.getDeviceInfo() : null);
 		
 		if (selection instanceof MidiDevice.Info) {
-			try {
-				return MidiSystem.getMidiDevice((MidiDevice.Info) selection);
-			} catch (MidiUnavailableException e) {
-				e.printStackTrace();
-			}
+			gaia.setDefaultMidiOutput(((MidiDevice.Info) selection).getName());
+		} else if (selection == AUTODETECT) {
+			gaia.setDefaultMidiOutput(null);
 		}
-		return gaia.getMidiOutput();
 	}
 	
 }

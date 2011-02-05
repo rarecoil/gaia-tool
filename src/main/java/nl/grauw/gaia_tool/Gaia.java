@@ -18,9 +18,12 @@ package nl.grauw.gaia_tool;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Properties;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
@@ -28,6 +31,8 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 
 import nl.grauw.gaia_tool.Note.NoteName;
@@ -63,12 +68,19 @@ import nl.grauw.gaia_tool.parameters.System;
  * GM synth will occupy the rest.
  */
 public class Gaia extends Observable implements Observer {
+	
+	public static class GaiaNotFoundException extends Exception {
+		private static final long serialVersionUID = 1L;
+		
+		public GaiaNotFoundException() {
+			super("Gaia MIDI device(s) not found.");
+		}
+	}
 
 	private boolean opened = false;
 	private boolean identityConfirmed = false;
+	private Properties settings = new Properties();
 	
-	private MidiDevice midi_in;	// port where messages are received from the GAIA
-	private MidiDevice midi_out;	// port where messages are sent to the GAIA
 	private Receiver receiver;
 	private Transmitter transmitter;
 	private ResponseReceiver responseReceiver;
@@ -96,8 +108,16 @@ public class Gaia extends Observable implements Observer {
 		}
 		log = new Log();
 		responseReceiver = new ResponseReceiver(this);
+		
+		loadSettings();
 	}
-
+	
+	public void exit() {
+		close();
+		saveSettings();
+		java.lang.System.exit(0);
+	}
+	
 	public Log getLog() {
 		return log;
 	}
@@ -137,15 +157,6 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	/**
-	 * Return whether the gaia device can be opened.
-	 * This tests whether the MIDI devices have been properly configured.
-	 * @return True if it can be opened.
-	 */
-	public boolean canOpen() {
-		return midi_in != null && midi_out != null;
-	}
-	
-	/**
 	 * Return whether the gaia device is currently opened.
 	 * @return True if it is opened.
 	 */
@@ -173,20 +184,27 @@ public class Gaia extends Observable implements Observer {
 	
 	/**
 	 * Initialises the system.
+	 * @throws GaiaNotFoundException 
 	 */
-	public void open() throws MidiUnavailableException {
-		if (!canOpen())
-			throw new RuntimeException("MIDI devices not configured.");
+	public void open() throws MidiUnavailableException, GaiaNotFoundException {
+		if (opened)
+			throw new RuntimeException("GAIA is already opened.");
 		
-		log.log("Midi IN: " + midi_in.getDeviceInfo());
-		log.log("Midi OUT: " + midi_in.getDeviceInfo());
+		MidiDevice input = getMidiInput();
+		MidiDevice output = getMidiOutput();
+		
+		if (input == null || output == null)
+			throw new GaiaNotFoundException();
+		
+		log.log("Midi IN: " + input.getDeviceInfo());
+		log.log("Midi OUT: " + output.getDeviceInfo());
 		log.log("");
 		
-		midi_in.open();
-		midi_out.open();
-		transmitter = midi_in.getTransmitter();
+		input.open();
+		output.open();
+		transmitter = input.getTransmitter();
 		transmitter.setReceiver(responseReceiver);
-		receiver = midi_out.getReceiver();
+		receiver = output.getReceiver();
 		
 		opened = true;
 		notifyObservers("opened");
@@ -199,10 +217,12 @@ public class Gaia extends Observable implements Observer {
 	 * Cleans up the system.
 	 */
 	public void close() {
-		if (midi_in != null)
-			midi_in.close();
-		if (midi_out != null)
-			midi_out.close();
+		MidiDevice input = getMidiInput();
+		MidiDevice output = getMidiOutput();
+		if (input != null)
+			input.close();
+		if (output != null)
+			output.close();
 		if (receiver != null)
 			receiver.close();
 		if (transmitter != null)
@@ -218,39 +238,45 @@ public class Gaia extends Observable implements Observer {
 		notifyObservers("device_id");
 	}
 	
+	public String getDefaultMidiInput() {
+		return settings.getProperty("midi.input");
+	}
+	
+	public void setDefaultMidiInput(String inputName) {
+		if (inputName != null) {
+			settings.setProperty("midi.input", inputName);
+		} else {
+			settings.remove("midi.input");
+		}
+	}
+	
+	public String getDefaultMidiOutput() {
+		return settings.getProperty("midi.output");
+	}
+	
+	public void setDefaultMidiOutput(String outputName) {
+		if (outputName != null) {
+			settings.setProperty("midi.output", outputName);
+		} else {
+			settings.remove("midi.output");
+		}
+	}
+	
+	/**
+	 * MIDI input port that receives messages from the GAIA.
+	 * @return
+	 */
 	public MidiDevice getMidiInput() {
-		return midi_in;
-	}
-	
-	public MidiDevice getMidiOutput() {
-		return midi_out;
-	}
-	
-	public void autoDetectMIDIDevices() {
-		setMIDIDevices(null, null);
-	}
-	
-	public void setMIDIDevices(MidiDevice input, MidiDevice output) {
-		if (opened)
-			throw new RuntimeException("GAIA device already opened.");
+		String name = settings.getProperty("midi.input");
+		if (name == null) {
+			return autoDetectMidiInput();
+		}
 		
-		if (input == null)
-			input = discoverInputMIDIDevice();
-		if (output == null)
-			output = discoverOutputMIDIDevice();
-		
-		midi_in = input;
-		midi_out = output;
-	}
-	
-	private MidiDevice discoverInputMIDIDevice() {
-		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
-		
-		for (MidiDevice.Info mdi : devicesInfo) {
-			if (mdi.getName().contains("SH-01")) {
+		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
+			if (mdi.getName().contains(name)) {
 				try {
 					MidiDevice md = MidiSystem.getMidiDevice(mdi);
-					if (md.getMaxTransmitters() != 0)
+					if (md.getMaxTransmitters() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer))
 						return md;
 				} catch (MidiUnavailableException e) {
 				}
@@ -259,14 +285,50 @@ public class Gaia extends Observable implements Observer {
 		return null;
 	}
 	
-	private MidiDevice discoverOutputMIDIDevice() {
-		MidiDevice.Info[] devicesInfo = MidiSystem.getMidiDeviceInfo();
-		
-		for (MidiDevice.Info mdi : devicesInfo) {
+	private MidiDevice autoDetectMidiInput() {
+		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
 			if (mdi.getName().contains("SH-01")) {
 				try {
 					MidiDevice md = MidiSystem.getMidiDevice(mdi);
-					if (md.getMaxReceivers() != 0) {
+					if (md.getMaxTransmitters() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer))
+						return md;
+				} catch (MidiUnavailableException e) {
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * MIDI output port that sends messages to the GAIA.
+	 * @return
+	 */
+	public MidiDevice getMidiOutput() {
+		String name = settings.getProperty("midi.output");
+		if (name == null) {
+			return autoDetectMidiOutput();
+		}
+		
+		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
+			if (mdi.getName().contains(name)) {
+				try {
+					MidiDevice md = MidiSystem.getMidiDevice(mdi);
+					if (md.getMaxReceivers() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer)) {
+						return md;
+					}
+				} catch (MidiUnavailableException e) {
+				}
+			}
+		}
+		return null;
+	}
+	
+	public MidiDevice autoDetectMidiOutput() {
+		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
+			if (mdi.getName().contains("SH-01")) {
+				try {
+					MidiDevice md = MidiSystem.getMidiDevice(mdi);
+					if (md.getMaxReceivers() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer)) {
 						return md;
 					}
 				} catch (MidiUnavailableException e) {
@@ -370,6 +432,28 @@ public class Gaia extends Observable implements Observer {
 		if (patch < 0 || patch > 7)
 			throw new IllegalArgumentException("Invalid patch number.");
 		return userPatches[bank << 3 | patch];
+	}
+	
+	private void loadSettings() {
+		FileReader fr;
+		try {
+			fr = new FileReader(new File(getAndCreateSettingsPath(), "settings.properties"));
+			settings.load(fr);
+		} catch (FileNotFoundException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void saveSettings() {
+		FileWriter fw;
+		try {
+			fw = new FileWriter(new File(getAndCreateSettingsPath(), "settings.properties"));
+			settings.store(fw, "GAIA tool settings file");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void savePatch(Patch patch) {

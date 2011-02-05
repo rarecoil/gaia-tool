@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import nl.grauw.gaia_tool.Gaia;
+import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
 
 public class NotConnectedPanel extends JPanel implements ActionListener {
 	
@@ -96,18 +97,14 @@ public class NotConnectedPanel extends JPanel implements ActionListener {
 	}
 	
 	private void reconnectGaia() {
-		if (!gaia.canOpen()) {
-			gaia.autoDetectMIDIDevices();
-		}
-		if (gaia.canOpen()) {
-			try {
-				gaia.open();
-			} catch (MidiUnavailableException ex) {
-				JOptionPane.showMessageDialog(this, "MIDI port unavailable",
-						"Problem connecting to Roland GAIA", JOptionPane.ERROR_MESSAGE);
-			}
-		} else {
+		try {
+			gaia.close();
+			gaia.open();
+		} catch (GaiaNotFoundException e) {
 			JOptionPane.showMessageDialog(this, "The GAIA MIDI ports could not be found. Is your GAIA turned on?",
+					"Problem connecting to Roland GAIA", JOptionPane.ERROR_MESSAGE);
+		} catch (MidiUnavailableException ex) {
+			JOptionPane.showMessageDialog(this, "MIDI port unavailable",
 					"Problem connecting to Roland GAIA", JOptionPane.ERROR_MESSAGE);
 		}
 	}
