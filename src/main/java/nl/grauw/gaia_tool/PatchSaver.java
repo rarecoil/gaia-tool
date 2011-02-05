@@ -94,10 +94,10 @@ public class PatchSaver {
 		os.write(p.getAddress().getByte2());
 		os.write(p.getAddress().getByte3());
 		os.write(p.getAddress().getByte4());
-		os.write(p.getLength() & 0x7F);
-		os.write(p.getLength() >> 8 & 0x7F);
-		os.write(p.getLength() >> 16 & 0x7F);
-		os.write(p.getLength() >> 24 & 0x7F);
+		os.write(p.getLength() & 0xFF);
+		os.write(p.getLength() >> 8 & 0xFF);
+		os.write(p.getLength() >> 16 & 0xFF);
+		os.write(p.getLength() >> 24 & 0xFF);
 		os.write(p.getData());
 	}
 	
