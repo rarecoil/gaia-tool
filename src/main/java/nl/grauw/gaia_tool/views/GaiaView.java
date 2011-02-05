@@ -441,7 +441,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			}
 			int result = fc.showSaveDialog(this);
 			if (result == JFileChooser.APPROVE_OPTION) {
-				//gaia.savePatch(fc.getSelectedFile(), getSelectedPatch());
 				gaia.savePatch(fc.getSelectedFile(), getSelectedPatch());
 			}
 		}
