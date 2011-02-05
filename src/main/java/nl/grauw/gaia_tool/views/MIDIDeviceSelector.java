@@ -6,6 +6,8 @@ import java.util.Vector;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.Synthesizer;
 import javax.swing.JOptionPane;
 
 import nl.grauw.gaia_tool.Gaia;
@@ -42,7 +44,7 @@ public class MIDIDeviceSelector {
 		for (MidiDevice.Info mdi : devicesInfo) {
 			try {
 				MidiDevice md = MidiSystem.getMidiDevice(mdi);
-				if (md.getMaxTransmitters() != 0)
+				if (md.getMaxTransmitters() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer))
 					inputDevices.add(mdi);
 			} catch (MidiUnavailableException e) {
 			}
@@ -68,7 +70,7 @@ public class MIDIDeviceSelector {
 		for (MidiDevice.Info mdi : devicesInfo) {
 			try {
 				MidiDevice md = MidiSystem.getMidiDevice(mdi);
-				if (md.getMaxReceivers() != 0)
+				if (md.getMaxReceivers() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer))
 					outputDevices.add(mdi);
 			} catch (MidiUnavailableException e) {
 			}
