@@ -60,8 +60,8 @@ public class DistortionPanel extends ParametersView {
 	}
 
 	@Override
-	public void update(Observable source, Object arg) {
-		if (arg == "distortion") {
+	public void update(Observable source, Object detail) {
+		if ("distortion".equals(detail)) {
 			getParametersContainer().removeAll();
 			if (getDistortionView() != null)
 				parametersContainer.add(getDistortionView());
