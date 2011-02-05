@@ -60,7 +60,8 @@ public class PatchLoader {
 			
 			byte[] chunk = new byte[8];
 			while (fis.read(chunk) != -1) {
-				int length = chunk[4] | chunk[5] << 8 | chunk[6] << 16 | chunk[7] << 24;
+				int length = (chunk[4] & 0xFF) | (chunk[5] & 0xFF) << 8 |
+						(chunk[6] & 0xFF) << 16 | (chunk[7] & 0xFF) << 24;
 				if (chunk[0] == 'P' && chunk[1] == 'A' && chunk[2] == 'T') {
 					byte[] data = new byte[length];
 					if (fis.read(data) == -1) {
