@@ -52,10 +52,9 @@ public class NotConnectedPanel extends JPanel implements ActionListener {
 		title = new JLabel("<html>GAIA not connected</html>");
 		problem = new JLabel("<html>The Roland GAIA is currently not connected.</html>");
 		firstHint = new JLabel("<html><b>Is your GAIA turned on?</b> If not, then turn it on and " +
-				"press the connect button below.</html>");
+				"press the connect button.</html>");
 		secondHint = new JLabel("<html>Otherwise, the MIDI port auto-detection might have been " +
-				"unsuccessful. Press the “Configure MIDI” button to manually select the MIDI " +
-				"ports.</html>");
+				"unsuccessful. Press the “Configure MIDI” button to manually select them.</html>");
 		connect = new JButton("Connect");
 		connect.addActionListener(this);
 		configure = new JButton("Configure MIDI");
