@@ -61,12 +61,12 @@ public class PatchLoader {
 			byte[] chunk = new byte[8];
 			while (fis.read(chunk) != -1) {
 				int length = chunk[4] | chunk[5] << 8 | chunk[6] << 16 | chunk[7] << 24;
-				if (chunk[0] == 'P') {
+				if (chunk[0] == 'P' && chunk[1] == 'A' && chunk[2] == 'T') {
 					byte[] data = new byte[length];
 					if (fis.read(data) == -1) {
 						throw new RuntimeException("Read error: Unexpected end of file.");
 					}
-					Address address = new Address(0x10, chunk[1], chunk[2], chunk[3]);
+					Address address = new Address(0x10, 0x00, chunk[3], 0x00);
 					try {
 						gaia.send(new DataSet1(address, data));
 						patch.updateParameters(address, data);

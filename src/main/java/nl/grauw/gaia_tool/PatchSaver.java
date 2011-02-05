@@ -83,7 +83,7 @@ public class PatchSaver {
 	
 	/**
 	 * Writes a parameter chunk to the output stream.
-	 * Chunk name: 'P' + address bytes 2, 3 and 4
+	 * Chunk name: 'PAT' + address byte 3
 	 * 
 	 * @param os
 	 * @param p
@@ -91,9 +91,9 @@ public class PatchSaver {
 	 */
 	private void writeParameterData(OutputStream os, Parameters p) throws IOException {
 		os.write('P');
-		os.write(p.getAddress().getByte2());
+		os.write('A');
+		os.write('T');
 		os.write(p.getAddress().getByte3());
-		os.write(p.getAddress().getByte4());
 		os.write(p.getLength() & 0xFF);
 		os.write(p.getLength() >> 8 & 0xFF);
 		os.write(p.getLength() >> 16 & 0xFF);
