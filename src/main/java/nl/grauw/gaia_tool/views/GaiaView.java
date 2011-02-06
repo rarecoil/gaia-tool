@@ -385,7 +385,8 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			} else if ("Tone 3".equals(desc)) {
 				return new ToneView(ppg, 3);
 			} else if ("Distortion".equals(desc)) {
-				return new DistortionPanel(ppg);
+//				return new DistortionPanel(ppg);
+				return new DistortionView(ppg);
 			} else if ("Flanger".equals(desc)) {
 				return new FlangerView(ppg);
 			} else if ("Delay".equals(desc)) {
