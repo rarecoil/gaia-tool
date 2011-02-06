@@ -23,6 +23,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToggleButton.ToggleButtonModel;
@@ -150,6 +151,12 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 			loadParameters();
 		}
 		if (e.getSource() == saveButton) {
+			if (!isSyncShown()) {
+				JOptionPane.showMessageDialog(this, "Sending changes to the GAIA…\n\n" +
+						"Please note: changes saved in this manner are not persisted when the GAIA reboots.\n" +
+						"To persist changes, you need to make them in the temporary patch and save them using the " +
+						"GAIA front panel.", "Saving changes to GAIA.", JOptionPane.INFORMATION_MESSAGE);
+			}
 			saveParameters();
 		}
 	}
