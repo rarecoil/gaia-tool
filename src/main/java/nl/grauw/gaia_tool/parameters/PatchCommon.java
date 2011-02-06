@@ -15,6 +15,8 @@
  */
 package nl.grauw.gaia_tool.parameters;
 
+import java.nio.charset.Charset;
+
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedIntValue;
@@ -40,6 +42,8 @@ public class PatchCommon extends Parameters {
 		NORMAL, REVERSE
 	}
 	
+	private Charset US_ASCII = Charset.forName("US-ASCII");
+	
 	public PatchCommon(Address address, byte[] data) {
 		super(address, data);
 		
@@ -49,6 +53,10 @@ public class PatchCommon extends Parameters {
 	
 	public String getPatchName() {
 		return getString(0x00, 12);
+	}
+	
+	public void setPatchName(String name) {
+		setValues(0x00, (name + "            ").substring(0, 12).getBytes(US_ASCII));
 	}
 	
 	public IntValue getPatchLevel() {

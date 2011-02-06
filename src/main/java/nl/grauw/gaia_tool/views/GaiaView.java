@@ -306,7 +306,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	}
 	
 	private void addPatchTreeNodesTo(DefaultMutableTreeNode patchNode) {
-		patchNode.add(new DefaultMutableTreeNode("Common"));
 		patchNode.add(new DefaultMutableTreeNode("Tone 1"));
 		patchNode.add(new DefaultMutableTreeNode("Tone 2"));
 		patchNode.add(new DefaultMutableTreeNode("Tone 3"));
@@ -342,9 +341,9 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
 			if ("System".equals(node1.getUserObject()) && tp.getPathCount() == 2) {
 				return new SystemView(gaia);
-			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() >= 3) {
+			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() >= 2) {
 				return getPatchParameterByName(getSelectedPatch(), tp, 2);
-			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 5) {
+			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 4) {
 				return getPatchParameterByName(getSelectedPatch(), tp, 4);
 			}
 		}
@@ -374,26 +373,28 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	}
 	
 	public JPanel getPatchParameterByName(Patch ppg, TreePath tp, int startIndex) {
-		DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex);
-		String desc = (String)node1.getUserObject();
-		if ("Common".equals(desc)) {
-			return new PatchCommonView(ppg);
-		} else if ("Tone 1".equals(desc)) {
-			return new ToneView(ppg, 1);
-		} else if ("Tone 2".equals(desc)) {
-			return new ToneView(ppg, 2);
-		} else if ("Tone 3".equals(desc)) {
-			return new ToneView(ppg, 3);
-		} else if ("Distortion".equals(desc)) {
-			return new DistortionPanel(ppg);
-		} else if ("Flanger".equals(desc)) {
-			return new FlangerView(ppg);
-		} else if ("Delay".equals(desc)) {
-			return new DelayView(ppg);
-		} else if ("Reverb".equals(desc)) {
-			return new ReverbView(ppg);
-		} else if ("Arpeggio".equals(desc)) {
-			return new ArpeggioView(ppg);
+		if (tp.getPathCount() == startIndex) {
+			return new PatchView(ppg);
+		} else if (tp.getPathCount() > startIndex) {
+			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex);
+			String desc = (String)node1.getUserObject();
+			if ("Tone 1".equals(desc)) {
+				return new ToneView(ppg, 1);
+			} else if ("Tone 2".equals(desc)) {
+				return new ToneView(ppg, 2);
+			} else if ("Tone 3".equals(desc)) {
+				return new ToneView(ppg, 3);
+			} else if ("Distortion".equals(desc)) {
+				return new DistortionPanel(ppg);
+			} else if ("Flanger".equals(desc)) {
+				return new FlangerView(ppg);
+			} else if ("Delay".equals(desc)) {
+				return new DelayView(ppg);
+			} else if ("Reverb".equals(desc)) {
+				return new ReverbView(ppg);
+			} else if ("Arpeggio".equals(desc)) {
+				return new ArpeggioView(ppg);
+			}
 		}
 		throw new RuntimeException("Parameters not found.");
 	}
