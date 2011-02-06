@@ -186,6 +186,11 @@ public abstract class Patch extends Observable {
 		loadData(getAddress(0x00), 0x3D);
 	}
 	
+	public void saveCommon() {
+		if (common != null)
+			saveData(common);
+	}
+	
 	/**
 	 * Return one of the patch’s tone parameters.
 	 * @param number The tone number (1 - 3).

@@ -58,6 +58,7 @@ public class PatchView extends ParametersView implements AWTObserver {
 
 	@Override
 	public void saveParameters() {
+		patch.saveCommon();
 	}
 
 	@Override
