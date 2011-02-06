@@ -21,6 +21,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JFileChooser;
@@ -46,6 +47,7 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.UserPatch;
+import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
@@ -65,6 +67,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JMenuItem gm2SystemOnItem;
 	private JMenuItem gmSystemOffItem;
 	private JMenu toolsMenu;
+	private JMenuItem reconnectItem;
 	private JMenuItem configureMidiItem;
 	private JScrollPane contentSelectionScrollPane;
 	private JTree contentSelectionTree;
@@ -244,19 +247,24 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JMenu getToolsMenu() {
 		if (toolsMenu == null) {
 			toolsMenu = new JMenu("Tools");
-			toolsMenu.add(getConfigureMIDIItem());
+			toolsMenu.add(getReconnectItem());
+			toolsMenu.add(getConfigureMidiItem());
 		}
 		return toolsMenu;
 	}
 
-	private JMenuItem getConfigureMIDIItem() {
+	private JMenuItem getReconnectItem() {
+		if (reconnectItem == null) {
+			reconnectItem = new JMenuItem("Reconnect");
+			reconnectItem.addActionListener(this);
+		}
+		return reconnectItem;
+	}
+
+	private JMenuItem getConfigureMidiItem() {
 		if (configureMidiItem == null) {
 			configureMidiItem = new JMenuItem("Configure MIDI");
-			configureMidiItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent event) {
-					configureMIDIActionPerformed(event);
-				}
-			});
+			configureMidiItem.addActionListener(this);
 		}
 		return configureMidiItem;
 	}
@@ -427,6 +435,8 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			save();
 		} else if (e.getSource() == loadItem) {
 			load();
+		} else if (e.getSource() == reconnectItem) {
+			reconnect();
 		} else if (e.getSource() == configureMidiItem) {
 			new MIDIDeviceSelector(gaia, this).show();
 		}
@@ -461,9 +471,18 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			gaia.loadPatch(fc.getSelectedFile(), gaia.getTemporaryPatch());
 		}
 	}
-
-	private void configureMIDIActionPerformed(ActionEvent event) {
-		new MIDIDeviceSelector(gaia, this).show();
+	
+	private void reconnect() {
+		try {
+			gaia.close();
+			gaia.open();
+		} catch (GaiaNotFoundException e) {
+			JOptionPane.showMessageDialog(this, "The GAIA MIDI ports could not be found. Is your GAIA turned on?",
+					"Problem connecting to Roland GAIA", JOptionPane.ERROR_MESSAGE);
+		} catch (MidiUnavailableException ex) {
+			JOptionPane.showMessageDialog(this, "MIDI port unavailable",
+					"Problem connecting to Roland GAIA", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	@Override
