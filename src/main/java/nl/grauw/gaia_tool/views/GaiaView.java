@@ -449,6 +449,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 					"No patch selected.", JOptionPane.ERROR_MESSAGE);
 		} else {
 			JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(gaia.getCurrentDirectory());
 			fc.addChoosableFileFilter(new FileNameExtensionFilter("GAIA patch file", "gaia"));
 			if (patch instanceof TemporaryPatch) {
 				fc.setSelectedFile(new File(fc.getCurrentDirectory(), "patch-temporary.gaia"));
@@ -457,6 +458,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 						"ABCDEFGH".charAt(((UserPatch)patch).getBank()), ((UserPatch)patch).getPatch() + 1)));
 			}
 			int result = fc.showSaveDialog(this);
+			gaia.setCurrentDirectory(fc.getCurrentDirectory());
 			if (result == JFileChooser.APPROVE_OPTION) {
 				gaia.savePatch(fc.getSelectedFile(), getSelectedPatch());
 			}
@@ -465,8 +467,10 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	
 	private void load() {
 		JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(gaia.getCurrentDirectory());
 		fc.addChoosableFileFilter(new FileNameExtensionFilter("GAIA patch file", "gaia"));
 		int result = fc.showOpenDialog(this);
+		gaia.setCurrentDirectory(fc.getCurrentDirectory());
 		if (result == JFileChooser.APPROVE_OPTION) {
 			gaia.loadPatch(fc.getSelectedFile(), gaia.getTemporaryPatch());
 		}

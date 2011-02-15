@@ -77,6 +77,7 @@ public class Gaia extends Observable implements Observer {
 	private boolean opened = false;
 	private boolean identityConfirmed = false;
 	private Properties settings = new Properties();
+	private File currentDirectory = null;
 	
 	private Receiver receiver;
 	private Transmitter transmitter;
@@ -492,6 +493,22 @@ public class Gaia extends Observable implements Observer {
 			return new File(home, ".gaia-tool");
 		}
 		throw new RuntimeException("Home directory not found.");
+	}
+	
+	/**
+	 * Returns the current directory for the file open/close dialogs.
+	 * @return The directory to load/save in.
+	 */
+	public File getCurrentDirectory() {
+		return currentDirectory;
+	}
+	
+	/**
+	 * Sets the current directory for the file open/close dialogs.
+	 * @param directory The directory to load/save in.
+	 */
+	public void setCurrentDirectory(File directory) {
+		currentDirectory = directory;
 	}
 	
 	/**
