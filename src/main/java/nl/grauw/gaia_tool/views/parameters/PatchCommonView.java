@@ -31,6 +31,7 @@ import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.PatchCommon;
+import nl.grauw.gaia_tool.views.ValueSpinner;
 
 public class PatchCommonView extends JPanel implements AWTObserver {
 	private static final long serialVersionUID = 1L;
@@ -85,6 +86,7 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 	private JPanel editPanel;
 	private JLabel patchNameLabel;
 	private JTextField patchNameField;
+	private ValueSpinner tempoSpinner;
 	
 	public PatchCommonView(PatchCommon pc) {
 		parameters = pc;
@@ -103,13 +105,19 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 		layout.setAutoCreateGaps(true);
 		layout.setHorizontalGroup(
 				layout.createParallelGroup()
-					.addComponent(getEditPanel())
+					.addGroup(layout.createSequentialGroup()
+						.addComponent(getEditPanel())
+						.addComponent(getTempoSpinner(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					)
 					.addComponent(getParameterScrollPane())
 			);
 		layout.setVerticalGroup(
 				layout.createSequentialGroup()
-				.addComponent(getEditPanel(), GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addComponent(getParameterScrollPane())
+					.addGroup(layout.createParallelGroup()
+						.addComponent(getEditPanel(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(getTempoSpinner(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					)
+					.addComponent(getParameterScrollPane())
 			);
 	}
 	
@@ -155,6 +163,14 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 			patchNameField = new NameField();
 		}
 		return patchNameField;
+	}
+	
+	private ValueSpinner getTempoSpinner() {
+		if (tempoSpinner == null) {
+			tempoSpinner = new ValueSpinner(parameters.getPatchTempo(), "Tempo");
+			tempoSpinner.setToolTipText("Tempo in BPM, range 5-300.");
+		}
+		return tempoSpinner;
 	}
 	
 	@Override
