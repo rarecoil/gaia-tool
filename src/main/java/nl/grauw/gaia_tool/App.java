@@ -41,8 +41,9 @@ public class App {
 	
 	public static void installLookAndFeel() {
 		try {
+			String preferredPLAF = "Mac OS X".equals(System.getProperty("os.name")) ? "Aqua" : "Nimbus";
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
+		        if (preferredPLAF.equals(info.getName())) {
 		            UIManager.setLookAndFeel(info.getClassName());
 		            break;
 		        }
