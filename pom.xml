@@ -7,18 +7,35 @@
 	<version>0.2.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
-	<name>gaia-tool</name>
-	<url>http://www.grauw.nl</url>
+	<name>GAIA tool</name>
+	<description>With this free tool for the Roland GAIA SH-01 synthesizer, you can view and edit your GAIA’s settings on your PC/Mac.</description>
+	<url>http://www.grauw.nl/projects/gaia-tool/</url>
+	<inceptionYear>2010</inceptionYear>
 	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<licenses>
+		<license>
+			<name>Apache 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+			<comments>This is a free software license.</comments>
+		</license>
+	</licenses>
+	
+	<organization>
+		<name>Laurens Holst</name>
+		<url>http://www.grauw.nl/</url>
+	</organization>
 	
 	<scm>
 		<connection>scm:hg:http://hg.grauw.nl/gaia-tool/</connection>
 		<developerConnection>scm:hg:http://hg.grauw.nl/gaia-tool/</developerConnection>
 		<url>http://hg.grauw.nl/gaia-tool/</url>
 	</scm>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -47,7 +64,7 @@
 				<artifactId>osxappbundle-maven-plugin</artifactId>
 				<version>1.0-alpha-1</version>
 				<configuration>
-					<bundleName>GAIA tool</bundleName>
+					<bundleName>${project.name}</bundleName>
 					<mainClass>nl.grauw.gaia_tool.App</mainClass>
 					<jvmVersion>1.6+</jvmVersion>
 					<dictionaryFile>src/main/app-resources/Info.plist</dictionaryFile>
