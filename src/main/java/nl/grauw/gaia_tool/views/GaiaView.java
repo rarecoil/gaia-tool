@@ -166,8 +166,10 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			fileMenu = new JMenu("File");
 			fileMenu.add(getLoadItem());
 			fileMenu.add(getSaveItem());
-			fileMenu.addSeparator();
-			fileMenu.add(getExitItem());
+			if (!"Mac OS X".equals(System.getProperty("os.name"))) {
+				fileMenu.addSeparator();
+				fileMenu.add(getExitItem());
+			}
 		}
 		return fileMenu;
 	}
