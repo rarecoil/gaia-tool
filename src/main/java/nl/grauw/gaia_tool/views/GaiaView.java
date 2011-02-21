@@ -15,8 +15,10 @@
  */
 package nl.grauw.gaia_tool.views;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -173,7 +175,6 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JMenuItem getExitItem() {
 		if (exitItem == null) {
 			exitItem = new JMenuItem("Exit");
-			exitItem.setAccelerator(KeyStroke.getKeyStroke("ctrl Q"));
 			exitItem.addActionListener(this);
 		}
 		return exitItem;
@@ -182,7 +183,8 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JMenuItem getLoadItem() {
 		if (loadItem == null) {
 			loadItem = new JMenuItem("Load Patch…");
-			loadItem.setAccelerator(KeyStroke.getKeyStroke("ctrl L"));
+			loadItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
+					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 			loadItem.addActionListener(this);
 			getLoadItem().setEnabled(gaia.isIdentityConfirmed());
 		}
@@ -192,7 +194,8 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private JMenuItem getSaveItem() {
 		if (saveItem == null) {
 			saveItem = new JMenuItem("Save Patch As…");
-			saveItem.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
+			saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 			saveItem.addActionListener(this);
 			getSaveItem().setEnabled(gaia.isIdentityConfirmed());
 		}
