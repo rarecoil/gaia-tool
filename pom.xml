@@ -81,6 +81,40 @@
 					</execution>
 				</executions>-->
 			</plugin>
+			<plugin>
+				<groupId>org.bluestemsoftware.open.maven.plugin</groupId>
+				<artifactId>launch4j-plugin</artifactId>
+				<version>1.5.0.0</version>
+				<configuration>
+					<headerType>gui</headerType>
+					<outfile>target/${project.artifactId}-${project.version}.exe</outfile>
+					<errTitle>${project.name}</errTitle>
+					<downloadUrl>${project.url}</downloadUrl>
+					<jre>
+						<minVersion>1.6.0</minVersion>
+					</jre>
+					<versionInfo>
+						<productName>${project.name}</productName>
+						<copyright>${project.inceptionYear} ${project.organization.name}</copyright>
+						<fileDescription>${project.description}</fileDescription>
+						<fileVersion>0.0.0.0</fileVersion>
+						<txtFileVersion>${project.version}</txtFileVersion>
+						<productVersion>0.0.0.0</productVersion>
+						<txtProductVersion>${project.version}</txtProductVersion>
+						<internalName>${project.artifactId}</internalName>
+						<originalFilename>${project.artifactId}-${project.version}.exe</originalFilename>
+					</versionInfo>
+				</configuration>
+				<executions>
+					<execution>
+						<id>launch4j</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
