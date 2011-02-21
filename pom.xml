@@ -42,6 +42,28 @@
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>osxappbundle-maven-plugin</artifactId>
+				<version>1.0-alpha-1</version>
+				<configuration>
+					<bundleName>GAIA tool</bundleName>
+					<mainClass>nl.grauw.gaia_tool.App</mainClass>
+					<jvmVersion>1.6+</jvmVersion>
+					<dictionaryFile>src/main/app-resources/Info.plist</dictionaryFile>
+					<!-- To create Mac OS X packages on Windows, un-comment the following section -->
+					<!--<javaApplicationStub>src/main/app-resources/JavaApplicationStub</javaApplicationStub>-->
+				</configuration>
+				<!-- To create Mac OS X packages, un-comment the following section -->
+				<!--<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>-->
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
