@@ -167,6 +167,21 @@
 		</profile>
 	</profiles>
 	
+	<repositories>
+		<repository>
+			<id>grauw-repository</id>
+			<name>Grauw Repository</name>
+			<url>http://grauw.nl:8081/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>grauw-repository</id>
+			<name>Grauw Repository</name>
+			<url>http://grauw.nl:8081/nexus/content/groups/public</url>
+		</pluginRepository>
+	</pluginRepositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
