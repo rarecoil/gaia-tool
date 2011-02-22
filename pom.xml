@@ -60,28 +60,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>osxappbundle-maven-plugin</artifactId>
-				<version>1.0-alpha-1</version>
-				<configuration>
-					<bundleName>${project.name}</bundleName>
-					<mainClass>nl.grauw.gaia_tool.App</mainClass>
-					<jvmVersion>1.6+</jvmVersion>
-					<dictionaryFile>src/main/app-resources/Info.plist</dictionaryFile>
-					<!-- To create Mac OS X packages on Windows, un-comment the following section -->
-					<!--<javaApplicationStub>src/main/app-resources/JavaApplicationStub</javaApplicationStub>-->
-				</configuration>
-				<!-- To create Mac OS X packages, un-comment the following section -->
-				<!--<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>bundle</goal>
-						</goals>
-					</execution>
-				</executions>-->
-			</plugin>
-			<plugin>
 				<groupId>org.bluestemsoftware.open.maven.plugin</groupId>
 				<artifactId>launch4j-plugin</artifactId>
 				<version>1.5.0.0</version>
@@ -117,6 +95,78 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>mac</id>
+			<activation>
+				<os>
+					<name>Mac OS X</name>
+				</os>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>osxappbundle-maven-plugin</artifactId>
+						<version>1.0-alpha-1</version>
+						<configuration>
+							<bundleName>${project.name}</bundleName>
+							<mainClass>nl.grauw.gaia_tool.App</mainClass>
+							<jvmVersion>1.6+</jvmVersion>
+							<dictionaryFile>src/main/app-resources/Info.plist</dictionaryFile>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>bundle</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<!--
+				To build Mac distributions on non-Mac platforms, you need to place a copy of the
+				JavaApplicationStub file in src/main/app-resources/. You can find this file on a
+				Mac OS X computer in /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/.
+			-->
+			<id>x-platform-mac</id>
+			<activation>
+				<file>
+					<exists>src/main/app-resources/JavaApplicationStub</exists>
+				</file>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>osxappbundle-maven-plugin</artifactId>
+						<version>1.0-alpha-1</version>
+						<configuration>
+							<bundleName>${project.name}</bundleName>
+							<mainClass>nl.grauw.gaia_tool.App</mainClass>
+							<jvmVersion>1.6+</jvmVersion>
+							<dictionaryFile>src/main/app-resources/Info.plist</dictionaryFile>
+							<javaApplicationStub>src/main/app-resources/JavaApplicationStub</javaApplicationStub>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>bundle</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
