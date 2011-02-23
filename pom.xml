@@ -99,11 +99,18 @@
 	
 	<profiles>
 		<profile>
+			<!--
+				To build Mac distributions on the Mac, you need to have the Apple developer tools installed.
+				See http://www.askdavetaylor.com/how_to_install_apple_developer_tools_cc_gcc_mac_os_x.html
+			-->
 			<id>mac</id>
 			<activation>
 				<os>
 					<name>Mac OS X</name>
 				</os>
+				<file>
+					<exists>/Developer/Tools/SetFile</exists>
+				</file>
 			</activation>
 			<build>
 				<plugins>
