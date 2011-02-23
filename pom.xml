@@ -61,6 +61,7 @@
 			</plugin>
 			<plugin>
 				<!-- See: http://alakai.org/reference/plugins/launch4j-plugin-usage.html -->
+				<!-- See: http://launch4j.sourceforge.net/ -->
 				<groupId>org.bluestemsoftware.open.maven.plugin</groupId>
 				<artifactId>launch4j-plugin</artifactId>
 				<version>1.5.0.0</version>
