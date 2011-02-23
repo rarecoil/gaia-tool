@@ -60,6 +60,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<!-- See: http://alakai.org/reference/plugins/launch4j-plugin-usage.html -->
 				<groupId>org.bluestemsoftware.open.maven.plugin</groupId>
 				<artifactId>launch4j-plugin</artifactId>
 				<version>1.5.0.0</version>
@@ -107,6 +108,7 @@
 			<build>
 				<plugins>
 					<plugin>
+						<!-- See: http://mojo.codehaus.org/osxappbundle-maven-plugin/ -->
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>osxappbundle-maven-plugin</artifactId>
 						<version>1.0-alpha-1</version>
@@ -143,6 +145,7 @@
 			<build>
 				<plugins>
 					<plugin>
+						<!-- See: http://mojo.codehaus.org/osxappbundle-maven-plugin/ -->
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>osxappbundle-maven-plugin</artifactId>
 						<version>1.0-alpha-1</version>
