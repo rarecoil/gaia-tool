@@ -158,8 +158,8 @@ public class Flanger extends Parameters {
 				) +
 				(
 					getFlangerType() == FlangerType.PITCH_SHIFTER ?
-					String.format("Pitch: %s\n", getPitch()) +
-					String.format("Detune: %s\n", getDetune()) : ""
+					String.format("Pitch: %s semitones\n", getPitch()) +
+					String.format("Detune: %s cent\n", getDetune()) : ""
 				) +
 				(
 					getFlangerType() != FlangerType.OFF ?

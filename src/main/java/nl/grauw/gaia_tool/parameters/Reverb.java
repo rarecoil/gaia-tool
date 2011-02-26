@@ -108,8 +108,8 @@ public class Reverb extends Parameters {
 				(
 					getReverbType() != ReverbType.OFF ?
 					String.format("Time: %s\n", getTime()) +
-					String.format("Type: %s\n", getType()) +
-					String.format("High damp: %s\n", getHighDamp()) +
+					String.format("Type: %s\n", (new String[] {"Room", "Plate", "Hall"})[getType().getValue()]) +
+					String.format("High damp: %.1f%%\n", getHighDamp().getValue() / 127.0 * 100) +
 					String.format("Level: %s\n", getLevel()) : ""
 				) +
 				String.format("\nReverb parameters: %s\n", reverbParameters);

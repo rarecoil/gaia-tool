@@ -129,7 +129,7 @@ public class Delay extends Parameters {
 					String.format("Time: %s\n", getTime()) +
 					String.format("Synced time: %s\n", getSyncedTime()) +
 					String.format("Feedback: %s\n", getFeedback()) +
-					String.format("High damp: %s\n", getHighDamp()) +
+					String.format("High damp: %s dB\n", getHighDamp()) +
 					String.format("Level: %s\n", getLevel()) : ""
 				) +
 				String.format("\nDelay parameters: %s\n", delayParameters);
