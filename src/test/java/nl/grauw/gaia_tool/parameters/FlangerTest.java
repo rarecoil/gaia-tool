@@ -36,71 +36,6 @@ public class FlangerTest {
 	public void testPatchFlangerParameters() {
 		new Flanger(testAddress, new byte[80]);
 	}
-	
-	@Test
-	public void testUpdateParameters_Control_1() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
-		parameters.setValue(0x00, 1);
-		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 47);
-		parameters.updateParameters(cc);
-		assertEquals(47, parameters.getFlangerParameter(2).getValue());
-	}
-	
-	@Test
-	public void testUpdateParameters_Control_1_PitchShift_0() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
-		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 0);
-		parameters.updateParameters(cc);
-		assertEquals(0, parameters.getFlangerParameter(2).getValue());
-	}
-	
-	@Test
-	public void testUpdateParameters_Control_1_PitchShift_45() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
-		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 45);
-		parameters.updateParameters(cc);
-		assertEquals(9, parameters.getFlangerParameter(2).getValue());
-	}
-	
-	@Test
-	public void testUpdateParameters_Control_1_PitchShift_56() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
-		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 56);
-		parameters.updateParameters(cc);
-		assertEquals(12, parameters.getFlangerParameter(2).getValue());
-	}
-	
-	@Test
-	public void testUpdateParameters_Control_1_PitchShift_71() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
-		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 71);
-		parameters.updateParameters(cc);
-		assertEquals(12, parameters.getFlangerParameter(2).getValue());
-	}
-	
-	@Test
-	public void testUpdateParameters_Control_1_PitchShift_111() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
-		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 111);
-		parameters.updateParameters(cc);
-		assertEquals(20, parameters.getFlangerParameter(2).getValue());
-	}
-	
-	@Test
-	public void testUpdateParameters_Control_1_PitchShift_127() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
-		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 127);
-		parameters.updateParameters(cc);
-		assertEquals(24, parameters.getFlangerParameter(2).getValue());
-	}
-	
-	@Test
-	public void testUpdateParameters_Level() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
-		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_LEVEL, 47);
-		parameters.updateParameters(cc);
-		assertEquals(47, parameters.getFlangerParameter(1).getValue());
-	}
 
 	@Test
 	public void testGetFlangerType() {
@@ -131,6 +66,89 @@ public class FlangerTest {
 	public void testGetFlangerParameterInvalidHigh() {
 		Flanger pfp = getTestParameters();
 		pfp.getFlangerParameter(21);
+	}
+	
+	@Test
+	public void testUpdateParameters_Level() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_LEVEL, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getLevel().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1_Flanger() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		parameters.getFlangerTypeValue().setValue(FlangerType.FLANGER);
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getFeedback().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1_Phaser() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		parameters.getFlangerTypeValue().setValue(FlangerType.PHASER);
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getResonance().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1_Pitch_Shifter() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		parameters.getFlangerTypeValue().setValue(FlangerType.PITCH_SHIFTER);
+		int[] expected = {
+				-12, -11, -11, -11, -11, -11, -10, -10, -10, -10, -10,  -9,  -9,  -9,  -9,  -9,
+				 -8,  -8,  -8,  -8,  -8,  -7,  -7,  -7,  -7,  -7,  -6,  -6,  -6,  -6,  -6,  -5,
+				 -5,  -5,  -5,  -5,  -4,  -4,  -4,  -4,  -4,  -3,  -3,  -3,  -3,  -3,  -2,  -2,
+				 -2,  -2,  -2,  -1,  -1,  -1,  -1,  -1,   0,   0,   0,   0,   0,   0,   0,   0,
+				  0,   0,   0,   0,   0,   0,   0,   0,   1,   1,   1,   1,   1,   2,   2,   2,
+				  2,   2,   3,   3,   3,   3,   3,   4,   4,   4,   4,   4,   5,   5,   5,   5,
+				  5,   6,   6,   6,   6,   6,   7,   7,   7,   7,   7,   8,   8,   8,   8,   8,
+				  9,   9,   9,   9,   9,  10,  10,  10,  10,  10,  11,  11,  11,  11,  11,  12
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getPitch().getValue());
+		}
 	}
 
 }
