@@ -73,8 +73,7 @@ public class ReverbView extends SingleParametersView {
 			reverbParameters.append(" ");
 		}
 		
-		return "Patch reverb parameters:\n" +
-				String.format("Reverb type: %s\n", r.getReverbType()) +
+		return String.format("Reverb type: %s\n", r.getReverbType()) +
 				(
 					r.getReverbType() != ReverbType.OFF ?
 					String.format("Time: %s\n", r.getTime()) +
