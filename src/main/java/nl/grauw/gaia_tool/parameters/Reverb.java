@@ -49,6 +49,8 @@ public class Reverb extends Parameters {
 			case REVERB_LEVEL:
 				set16BitValue(0x01, message.getValue() + 32768, true);
 				break;
+			default:
+				throw new RuntimeException("Control change message not recognised: " + message);
 			}
 		}
 	}
