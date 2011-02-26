@@ -137,7 +137,7 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 			parameterArea.setWrapStyleWord(true);
 			DefaultCaret caret = (DefaultCaret)parameterArea.getCaret();
 			caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-			parameterArea.setText(parameters.toString());
+			parameterArea.setText(getParametersText());
 		}
 		return parameterArea;
 	}
@@ -173,9 +173,36 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 		return tempoSpinner;
 	}
 	
+	private String getParametersText() {
+		return String.format("Patch level: %s\n", parameters.getPatchLevel()) +
+				String.format("Arpeggio switch: %s\n", parameters.getArpeggioSwitch()) +
+				String.format("Portamento switch: %s\n", parameters.getPortamentoSwitch()) +
+				String.format("Portamento time: %s\n", parameters.getPortamentoTime()) +
+				String.format("Mono switch: %s\n", parameters.getMonoSwitch()) +
+				String.format("Octave shift: %s\n", parameters.getOctaveShift()) +
+				String.format("Pitch bend range up: %s\n", parameters.getPitchBendRangeUp()) +
+				String.format("Pitch bend range down: %s\n", parameters.getPitchBendRangeDown()) +
+				String.format("Tone 1 switch: %s\n", parameters.getTone1Switch()) +
+				String.format("Tone 1 select: %s\n", parameters.getTone1Select()) +
+				String.format("Tone 2 switch: %s\n", parameters.getTone2Switch()) +
+				String.format("Tone 2 select: %s\n", parameters.getTone2Select()) +
+				String.format("Tone 3 switch: %s\n", parameters.getTone3Switch()) +
+				String.format("Tone 3 select: %s\n", parameters.getTone3Select()) +
+				String.format("SYNC/RING select: %s\n", parameters.getSyncRingSelect()) +
+				String.format("Effects master switch: %s\n", parameters.getEffectsMasterSwitch()) +
+				String.format("Delay tempo sync switch: %s\n", parameters.getDelayTempoSyncSwitch()) +
+				String.format("Low boost switch: %s\n", parameters.getLowBoostSwitch()) +
+				String.format("D-Beam assign: %s\n", parameters.getDBeamAssign()) +
+				String.format("D-Beam polarity: %s\n", parameters.getDBeamPolarity()) +
+				String.format("Effects distortion select: %s\n", parameters.getEffectsDistortionSelect()) +
+				String.format("Effects flanger select: %s\n", parameters.getEffectsFlangerSelect()) +
+				String.format("Effects delay select: %s\n", parameters.getEffectsDelaySelect()) +
+				String.format("Effects reverb select: %s\n", parameters.getEffectsReverbSelect());
+	}
+	
 	@Override
 	public void update(Observable source, Object detail) {
-		parameterArea.setText(parameters.toString());
+		parameterArea.setText(getParametersText());
 	}
 	
 }

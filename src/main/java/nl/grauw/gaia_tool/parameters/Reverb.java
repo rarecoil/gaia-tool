@@ -96,23 +96,4 @@ public class Reverb extends Parameters {
 		return new SignedInt16BitValue(this, 0x0D, 0, 127);
 	}
 	
-	public String toString() {
-		StringBuilder reverbParameters = new StringBuilder(128);
-		for (int i = 1; i <= 20; i++) {
-			reverbParameters.append(getReverbParameter(i));
-			reverbParameters.append(" ");
-		}
-		
-		return "Patch reverb parameters:\n" +
-				String.format("Reverb type: %s\n", getReverbType()) +
-				(
-					getReverbType() != ReverbType.OFF ?
-					String.format("Time: %s\n", getTime()) +
-					String.format("Type: %s\n", (new String[] {"Room", "Plate", "Hall"})[getType().getValue()]) +
-					String.format("High damp: %.1f%%\n", getHighDamp().getValue() / 127.0 * 100) +
-					String.format("Level: %s\n", getLevel()) : ""
-				) +
-				String.format("\nReverb parameters: %s\n", reverbParameters);
-	}
-	
 }

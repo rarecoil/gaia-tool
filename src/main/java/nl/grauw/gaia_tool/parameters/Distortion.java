@@ -133,32 +133,4 @@ public class Distortion extends Parameters {
 		return new SignedInt16BitValue(this, 0x0D, 0, 127);
 	}
 	
-	public String toString() {
-		StringBuilder mfxParameters = new StringBuilder(128);
-		for (int i = 1; i <= 32; i++) {
-			mfxParameters.append(getMFXParameter(i));
-			mfxParameters.append(" ");
-		}
-		
-		return "Patch distortion parameters:\n" +
-				String.format("Distortion type: %s\n", getDistortionType()) +
-				(
-					getDistortionType() == DistortionType.DIST || getDistortionType() == DistortionType.FUZZ ?
-					String.format("Drive: %s\n", getDrive()) +
-					String.format("Type: %s\n", getType()) +
-					String.format("Presence: %s\n", getPresence()) : ""
-				) +
-				(
-					getDistortionType() == DistortionType.BIT_CRASH ?
-					String.format("Sample rate: %s\n", getSampleRate()) +
-					String.format("Bit down: %s\n", getBitDown()) +
-					String.format("Filter: %s\n", getFilter()) : ""
-				) +
-				(
-					getDistortionType() != DistortionType.OFF ?
-					String.format("Level: %s\n", getLevel()) : ""
-				) +
-				String.format("\nMFX parameters: %s\n", mfxParameters);
-	}
-	
 }

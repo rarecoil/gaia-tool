@@ -34,10 +34,12 @@ public abstract class SingleParametersView extends ParametersView implements AWT
 	
 	public abstract Parameters getParameters();
 	
+	protected abstract String getParametersText();
+	
 	@Override
 	public void update(Observable source, Object detail) {
 		if (source == getParameters()) {
-			parameterArea.setText(getParameters().toString());
+			parameterArea.setText(getParametersText());
 		} else {
 			// register self as observer on parameters
 			if (getParameters() != null) {
@@ -80,7 +82,7 @@ public abstract class SingleParametersView extends ParametersView implements AWT
 			} else {
 				if (!getParameters().hasObserver(this))
 					getParameters().addObserver(this);
-				parameterArea.setText(getParameters().toString());
+				parameterArea.setText(getParametersText());
 			}
 		}
 		return parameterArea;

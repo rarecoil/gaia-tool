@@ -19,6 +19,8 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
+import nl.grauw.gaia_tool.parameters.Delay;
+import nl.grauw.gaia_tool.parameters.Delay.DelayType;
 
 public class DelayView extends SingleParametersView {
 
@@ -59,6 +61,28 @@ public class DelayView extends SingleParametersView {
 	@Override
 	protected boolean isSyncShown() {
 		return patch instanceof TemporaryPatch;
+	}
+
+	@Override
+	protected String getParametersText() {
+		Delay d = patch.getDelay();
+		
+		StringBuilder delayParameters = new StringBuilder(128);
+		for (int i = 1; i <= 20; i++) {
+			delayParameters.append(d.getDelayParameter(i));
+			delayParameters.append(" ");
+		}
+		
+		return String.format("Delay type: %s\n", d.getDelayType()) +
+				(
+					d.getDelayType() != DelayType.OFF ?
+					String.format("Time: %s\n", d.getTime()) +
+					String.format("Synced time: %s\n", d.getSyncedTime()) +
+					String.format("Feedback: %s\n", d.getFeedback()) +
+					String.format("High damp: %s dB\n", d.getHighDamp()) +
+					String.format("Level: %s\n", d.getLevel()) : ""
+				) +
+				String.format("\nDelay parameters: %s\n", delayParameters);
 	}
 
 }

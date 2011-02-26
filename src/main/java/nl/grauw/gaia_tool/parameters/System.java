@@ -277,32 +277,4 @@ public class System extends Parameters {
 		return new IntValue(this, 0x6D, 0, 16);
 	}
 	
-	public String toString() {
-		return "System parameters:\n" +
-				String.format("Bank select: %s (MSB: %s, LSB: %s)\n", getBankSelect(), getBankSelectMSB(), getBankSelectLSB()) +
-				String.format("Program number: %s\n", getProgramNumber()) +
-				String.format("Master level: %s\n", getMasterLevel()) +
-				String.format("Master tune: %.1f cent\n", getMasterTune().getValue() / 10.0) +
-				String.format("Patch remain: %s\n", getPatchRemain() ? "On" : "Off") +
-				String.format("Clock source: %s\n", getClockSource()) +
-				String.format("System tempo: %s bpm\n", getSystemTempo()) +
-				String.format("Keyboard velocity: %s\n", getKeyboardVelocity()) +
-				String.format("Pedal polarity: %s\n", getPedalPolarity()) +
-				String.format("Pedal assign: %s\n", getPedalAssign()) +
-				String.format("D-Beam sens: %s\n", getDBeamSens()) +
-				String.format("Rx/Tx channel: %s\n", getRxTxChannel()) +
-				String.format("MIDI-USB thru: %s\n", getMidiUSBThru() ? "On" : "Off") +
-				String.format("Soft thru: %s\n", getSoftThru() ? "On" : "Off") +
-				String.format("Rx program change: %s\n", getRxProgramChange() ? "On" : "Off") +
-				String.format("Rx bank select: %s\n", getRxBankSelect() ? "On" : "Off") +
-				String.format("Remote keyboard: %s\n", getRemoteKeyboard() ? "On" : "Off") +
-				String.format("Tx program change: %s\n", getTxProgramChange() ? "On" : "Off") +
-				String.format("Tx bank select: %s\n", getTxBankSelect() ? "On" : "Off") +
-				String.format("Tx edit data: %s\n", getTxEditData() ? "On" : "Off") +
-				String.format("Recorder sync output: %s\n", getRecorderSyncOutput() ? "On" : "Off") +
-				String.format("Recorder metronome mode: %s\n", getRecorderMetronomeMode()) +
-				String.format("Recorder metronome level: %s\n", getRecorderMetronomeLevel()) +
-				String.format("Power save mode: %s\n", getPowerSaveMode());
-	}
-	
 }

@@ -106,15 +106,4 @@ public class ArpeggioCommon extends Parameters {
 		return new Int8BitValue(this, 0x06, 1, 32);
 	}
 	
-	public String toString() {
-		return "Patch arpeggio common parameters:\n" +
-				String.format("Arpeggio grid: %s\n", getArpeggioGrid()) +
-				String.format("Arpeggio duration: %s\n", getArpeggioDuration()) +
-				String.format("Arpeggio motif: %s\n", getArpeggioMotif()) +
-				String.format("Arpeggio octave range: %s\n", getArpeggioOctaveRange()) +
-				String.format("Arpeggio accent rate: %s\n", getArpeggioAccentRate()) +
-				String.format("Arpeggio velocity: %s\n", getArpeggioVelocity()) +
-				String.format("End step: %s\n", getEndStep());
-	}
-	
 }

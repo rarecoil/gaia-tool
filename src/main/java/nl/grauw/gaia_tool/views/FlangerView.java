@@ -19,6 +19,8 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
+import nl.grauw.gaia_tool.parameters.Flanger;
+import nl.grauw.gaia_tool.parameters.Flanger.FlangerType;
 
 public class FlangerView extends SingleParametersView {
 
@@ -59,6 +61,42 @@ public class FlangerView extends SingleParametersView {
 	@Override
 	protected boolean isSyncShown() {
 		return patch instanceof TemporaryPatch;
+	}
+
+	@Override
+	protected String getParametersText() {
+		Flanger f = patch.getFlanger();
+		
+		StringBuilder flangerParameters = new StringBuilder(128);
+		for (int i = 1; i <= 20; i++) {
+			flangerParameters.append(f.getFlangerParameter(i));
+			flangerParameters.append(" ");
+		}
+		
+		return String.format("Flanger type: %s\n", f.getFlangerType()) +
+				(
+					f.getFlangerType() == FlangerType.FLANGER ?
+					String.format("Feedback: %s\n", f.getFeedback()) : ""
+				) +
+				(
+					f.getFlangerType() == FlangerType.PHASER ?
+					String.format("Resonance: %s\n", f.getResonance()) : ""
+				) +
+				(
+					f.getFlangerType() == FlangerType.FLANGER || f.getFlangerType() == FlangerType.PHASER ?
+					String.format("Rate: %s\n", f.getRate()) +
+					String.format("Depth: %s\n", f.getDepth()) : ""
+				) +
+				(
+					f.getFlangerType() == FlangerType.PITCH_SHIFTER ?
+					String.format("Pitch: %s semitones\n", f.getPitch()) +
+					String.format("Detune: %s cent\n", f.getDetune()) : ""
+				) +
+				(
+					f.getFlangerType() != FlangerType.OFF ?
+					String.format("Level: %s\n", f.getLevel()) : ""
+				) +
+				String.format("\nFlanger parameters: %s\n", flangerParameters);
 	}
 
 }

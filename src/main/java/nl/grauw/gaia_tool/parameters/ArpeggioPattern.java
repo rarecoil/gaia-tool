@@ -18,7 +18,6 @@ package nl.grauw.gaia_tool.parameters;
 import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.NoteValue;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.IntValue;
 import nl.grauw.gaia_tool.Int8BitValue;
 
@@ -45,19 +44,6 @@ public class ArpeggioPattern extends Parameters {
 			throw new IllegalArgumentException("Invalid step number.");
 		
 		return new Int8BitValue(this, step * 2, 0, 128);
-	}
-	
-	public String toString() {
-		StringBuilder stepData = new StringBuilder(128);
-		for (int i = 1; i <= 32; i++) {
-			stepData.append(getStepData(i));
-			stepData.append(" ");
-		}
-		
-		Note originalNote = getOriginalNote().getValue();
-		return "Patch arpeggio pattern parameters:\n" +
-				String.format("Original note: %s\n", originalNote.getNoteNumber() != 128 ? originalNote : "OFF") +
-				String.format("Step data: %s\n", stepData);
 	}
 	
 }

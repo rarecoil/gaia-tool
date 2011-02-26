@@ -19,6 +19,8 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
+import nl.grauw.gaia_tool.parameters.Reverb;
+import nl.grauw.gaia_tool.parameters.Reverb.ReverbType;
 
 public class ReverbView extends SingleParametersView {
 
@@ -59,6 +61,28 @@ public class ReverbView extends SingleParametersView {
 	@Override
 	protected boolean isSyncShown() {
 		return patch instanceof TemporaryPatch;
+	}
+
+	@Override
+	protected String getParametersText() {
+		Reverb r = patch.getReverb();
+		
+		StringBuilder reverbParameters = new StringBuilder(128);
+		for (int i = 1; i <= 20; i++) {
+			reverbParameters.append(r.getReverbParameter(i));
+			reverbParameters.append(" ");
+		}
+		
+		return "Patch reverb parameters:\n" +
+				String.format("Reverb type: %s\n", r.getReverbType()) +
+				(
+					r.getReverbType() != ReverbType.OFF ?
+					String.format("Time: %s\n", r.getTime()) +
+					String.format("Type: %s\n", (new String[] {"Room", "Plate", "Hall"})[r.getType().getValue()]) +
+					String.format("High damp: %.1f%%\n", r.getHighDamp().getValue() / 127.0 * 100) +
+					String.format("Level: %s\n", r.getLevel()) : ""
+				) +
+				String.format("\nReverb parameters: %s\n", reverbParameters);
 	}
 
 }

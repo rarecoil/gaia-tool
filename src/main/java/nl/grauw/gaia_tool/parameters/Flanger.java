@@ -134,38 +134,4 @@ public class Flanger extends Parameters {
 		return new SignedInt16BitValue(this, 0x0D, 0, 127);
 	}
 	
-	public String toString() {
-		StringBuilder flangerParameters = new StringBuilder(128);
-		for (int i = 1; i <= 20; i++) {
-			flangerParameters.append(getFlangerParameter(i));
-			flangerParameters.append(" ");
-		}
-		
-		return "Patch flanger parameters:\n" +
-				String.format("Flanger type: %s\n", getFlangerType()) +
-				(
-					getFlangerType() == FlangerType.FLANGER ?
-					String.format("Feedback: %s\n", getFeedback()) : ""
-				) +
-				(
-					getFlangerType() == FlangerType.PHASER ?
-					String.format("Resonance: %s\n", getResonance()) : ""
-				) +
-				(
-					getFlangerType() == FlangerType.FLANGER || getFlangerType() == FlangerType.PHASER ?
-					String.format("Rate: %s\n", getRate()) +
-					String.format("Depth: %s\n", getDepth()) : ""
-				) +
-				(
-					getFlangerType() == FlangerType.PITCH_SHIFTER ?
-					String.format("Pitch: %s semitones\n", getPitch()) +
-					String.format("Detune: %s cent\n", getDetune()) : ""
-				) +
-				(
-					getFlangerType() != FlangerType.OFF ?
-					String.format("Level: %s\n", getLevel()) : ""
-				) +
-				String.format("\nFlanger parameters: %s\n", flangerParameters);
-	}
-	
 }

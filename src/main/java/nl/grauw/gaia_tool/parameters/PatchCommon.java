@@ -247,34 +247,4 @@ public class PatchCommon extends Parameters {
 		return new SignedIntValue(this, 0x3C, -63, 63);
 	}
 	
-	public String toString() {
-		return "Patch common parameters:\n" +
-				String.format("Patch name: %s\n", getPatchName()) +
-				String.format("Patch level: %s\n", getPatchLevel()) +
-				String.format("Patch tempo: %s\n", getPatchTempo()) +
-				String.format("Arpeggio switch: %s\n", getArpeggioSwitch()) +
-				String.format("Portamento switch: %s\n", getPortamentoSwitch()) +
-				String.format("Portamento time: %s\n", getPortamentoTime()) +
-				String.format("Mono switch: %s\n", getMonoSwitch()) +
-				String.format("Octave shift: %s\n", getOctaveShift()) +
-				String.format("Pitch bend range up: %s\n", getPitchBendRangeUp()) +
-				String.format("Pitch bend range down: %s\n", getPitchBendRangeDown()) +
-				String.format("Tone 1 switch: %s\n", getTone1Switch()) +
-				String.format("Tone 1 select: %s\n", getTone1Select()) +
-				String.format("Tone 2 switch: %s\n", getTone2Switch()) +
-				String.format("Tone 2 select: %s\n", getTone2Select()) +
-				String.format("Tone 3 switch: %s\n", getTone3Switch()) +
-				String.format("Tone 3 select: %s\n", getTone3Select()) +
-				String.format("SYNC/RING select: %s\n", getSyncRingSelect()) +
-				String.format("Effects master switch: %s\n", getEffectsMasterSwitch()) +
-				String.format("Delay tempo sync switch: %s\n", getDelayTempoSyncSwitch()) +
-				String.format("Low boost switch: %s\n", getLowBoostSwitch()) +
-				String.format("D-Beam assign: %s\n", getDBeamAssign()) +
-				String.format("D-Beam polarity: %s\n", getDBeamPolarity()) +
-				String.format("Effects distortion select: %s\n", getEffectsDistortionSelect()) +
-				String.format("Effects flanger select: %s\n", getEffectsFlangerSelect()) +
-				String.format("Effects delay select: %s\n", getEffectsDelaySelect()) +
-				String.format("Effects reverb select: %s\n", getEffectsReverbSelect());
-	}
-	
 }

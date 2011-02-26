@@ -115,24 +115,4 @@ public class Delay extends Parameters {
 		};
 	}
 	
-	public String toString() {
-		StringBuilder delayParameters = new StringBuilder(128);
-		for (int i = 1; i <= 20; i++) {
-			delayParameters.append(getDelayParameter(i));
-			delayParameters.append(" ");
-		}
-		
-		return "Patch delay parameters:\n" +
-				String.format("Delay type: %s\n", getDelayType()) +
-				(
-					getDelayType() != DelayType.OFF ?
-					String.format("Time: %s\n", getTime()) +
-					String.format("Synced time: %s\n", getSyncedTime()) +
-					String.format("Feedback: %s\n", getFeedback()) +
-					String.format("High damp: %s dB\n", getHighDamp()) +
-					String.format("Level: %s\n", getLevel()) : ""
-				) +
-				String.format("\nDelay parameters: %s\n", delayParameters);
-	}
-	
 }
