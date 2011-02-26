@@ -51,6 +51,36 @@ public class Delay extends Parameters {
 		return new SignedInt16BitValue(this, 0x01 + index, -20000, 20000);
 	}
 	
+	public IntValue getLevel() {
+		if (getDelayType() == DelayType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x01, 0, 127);
+	}
+	
+	public IntValue getTime() {
+		if (getDelayType() == DelayType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x05, 0, 127);
+	}
+	
+	public IntValue getSyncedTime() {
+		if (getDelayType() == DelayType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x09, 0, 15);
+	}
+	
+	public IntValue getFeedback() {
+		if (getDelayType() == DelayType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x0D, 0, 127);
+	}
+	
+	public IntValue getHighDamp() {
+		if (getDelayType() == DelayType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x11, 0, 36);
+	}
+	
 	public String toString() {
 		StringBuilder delayParameters = new StringBuilder(128);
 		for (int i = 1; i <= 20; i++) {
@@ -60,7 +90,15 @@ public class Delay extends Parameters {
 		
 		return "Patch delay parameters:\n" +
 				String.format("Delay type: %s\n", getDelayType()) +
-				String.format("Delay parameters: %s\n", delayParameters);
+				(
+					getDelayType() != DelayType.OFF ?
+					String.format("Time: %s\n", getTime()) +
+					String.format("Synced time: %s\n", getSyncedTime()) +
+					String.format("Feedback: %s\n", getFeedback()) +
+					String.format("High damp: %s\n", getHighDamp()) +
+					String.format("Level: %s\n", getLevel()) : ""
+				) +
+				String.format("\nDelay parameters: %s\n", delayParameters);
 	}
 	
 }
