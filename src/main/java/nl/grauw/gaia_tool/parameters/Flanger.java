@@ -120,12 +120,6 @@ public class Flanger extends Parameters {
 		return new SignedInt16BitValue(this, 0x0D, 0, 127);
 	}
 	
-	public IntValue getSemitonePitch() {
-		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
-			throw new IllegalArgumentException("Only applies to pitch shifter type.");
-		return new SignedInt16BitValue(this, 0x0D, 0, 127);
-	}
-	
 	public String toString() {
 		StringBuilder flangerParameters = new StringBuilder(128);
 		for (int i = 1; i <= 20; i++) {
@@ -151,8 +145,7 @@ public class Flanger extends Parameters {
 				(
 					getFlangerType() == FlangerType.PITCH_SHIFTER ?
 					String.format("Pitch: %s\n", getPitch()) +
-					String.format("Detune: %s\n", getDetune()) +
-					String.format("Semitone pitch: %s\n", getSemitonePitch()) : ""
+					String.format("Detune: %s\n", getDetune()) : ""
 				) +
 				(
 					getFlangerType() != FlangerType.OFF ?
