@@ -2,7 +2,11 @@ package nl.grauw.gaia_tool.parameters;
 
 import static org.junit.Assert.*;
 
+import javax.sound.midi.InvalidMidiDataException;
+
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage.Controller;
 import nl.grauw.gaia_tool.parameters.Reverb.ReverbType;
 
 import org.junit.Test;
@@ -31,6 +35,22 @@ public class ReverbTest {
 	@Test (expected = RuntimeException.class)
 	public void testPatchReverbParameters() {
 		new Reverb(testAddress, new byte[80]);
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1() throws InvalidMidiDataException {
+		Reverb parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.REVERB_CONTROL_1, 47);
+		parameters.updateParameters(cc);
+		assertEquals(47, parameters.getReverbParameter(2).getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_Level() throws InvalidMidiDataException {
+		Reverb parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.REVERB_LEVEL, 47);
+		parameters.updateParameters(cc);
+		assertEquals(47, parameters.getReverbParameter(1).getValue());
 	}
 
 	@Test
