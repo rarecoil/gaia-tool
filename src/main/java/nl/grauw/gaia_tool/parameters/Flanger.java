@@ -78,6 +78,54 @@ public class Flanger extends Parameters {
 		return new SignedInt16BitValue(this, 0x01 + index, -20000, 20000);
 	}
 	
+	public IntValue getFeedback() {
+		if (getFlangerType() != FlangerType.FLANGER)
+			throw new IllegalArgumentException("Only applies to flanger type.");
+		return new SignedInt16BitValue(this, 0x05, 0, 127);
+	}
+	
+	public IntValue getResonance() {
+		if (getFlangerType() != FlangerType.PHASER)
+			throw new IllegalArgumentException("Only applies to phaser type.");
+		return new SignedInt16BitValue(this, 0x05, 0, 127);
+	}
+	
+	public IntValue getDepth() {
+		if (getFlangerType() != FlangerType.FLANGER && getFlangerType() != FlangerType.PHASER)
+			throw new IllegalArgumentException("Only applies to flanger or phaser types.");
+		return new SignedInt16BitValue(this, 0x09, 0, 127);
+	}
+	
+	public IntValue getRate() {
+		if (getFlangerType() != FlangerType.FLANGER && getFlangerType() != FlangerType.PHASER)
+			throw new IllegalArgumentException("Only applies to flanger or phaser types.");
+		return new SignedInt16BitValue(this, 0x0D, 0, 127);
+	}
+	
+	public IntValue getPitch() {
+		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
+			throw new IllegalArgumentException("Only applies to pitch shifter type.");
+		return new SignedInt16BitValue(this, 0x05, 0, 127);
+	}
+	
+	public IntValue getDetune() {
+		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
+			throw new IllegalArgumentException("Only applies to pitch shifter type.");
+		return new SignedInt16BitValue(this, 0x09, 0, 127);
+	}
+	
+	public IntValue getSemitonePitch() {
+		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
+			throw new IllegalArgumentException("Only applies to pitch shifter type.");
+		return new SignedInt16BitValue(this, 0x0D, 0, 127);
+	}
+	
+	public IntValue getLevel() {
+		if (getFlangerType() == FlangerType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x01, 0, 127);
+	}
+	
 	public String toString() {
 		StringBuilder flangerParameters = new StringBuilder(128);
 		for (int i = 1; i <= 20; i++) {
@@ -87,7 +135,30 @@ public class Flanger extends Parameters {
 		
 		return "Patch flanger parameters:\n" +
 				String.format("Flanger type: %s\n", getFlangerType()) +
-				String.format("Flanger parameters: %s\n", flangerParameters);
+				(
+					getFlangerType() == FlangerType.FLANGER ?
+					String.format("Feedback: %s\n", getFeedback()) : ""
+				) +
+				(
+					getFlangerType() == FlangerType.PHASER ?
+					String.format("Resonance: %s\n", getResonance()) : ""
+				) +
+				(
+					getFlangerType() == FlangerType.FLANGER || getFlangerType() == FlangerType.PHASER ?
+					String.format("Rate: %s\n", getRate()) +
+					String.format("Depth: %s\n", getDepth()) : ""
+				) +
+				(
+					getFlangerType() == FlangerType.PITCH_SHIFTER ?
+					String.format("Pitch: %s\n", getPitch()) +
+					String.format("Detune: %s\n", getDetune()) +
+					String.format("Semitone pitch: %s\n", getSemitonePitch()) : ""
+				) +
+				(
+					getFlangerType() != FlangerType.OFF ?
+					String.format("Level: %s\n", getLevel()) : ""
+				) +
+				String.format("\nFlanger parameters: %s\n", flangerParameters);
 	}
 	
 }
