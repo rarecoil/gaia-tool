@@ -78,7 +78,16 @@ public class Delay extends Parameters {
 	public IntValue getHighDamp() {
 		if (getDelayType() == DelayType.OFF)
 			throw new IllegalArgumentException("Only applies to active effect.");
-		return new SignedInt16BitValue(this, 0x11, 0, 36);
+		return new SignedInt16BitValue(this, 0x11, -36, 0) {
+			@Override
+			public int getValue() {
+				return super.getValue() - 36;
+			}
+			@Override
+			public void setValueNoCheck(int value) {
+				super.setValueNoCheck(value + 36);
+			}
+		};
 	}
 	
 	public String toString() {

@@ -99,7 +99,16 @@ public class Flanger extends Parameters {
 	public IntValue getPitch() {
 		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
 			throw new IllegalArgumentException("Only applies to pitch shifter type.");
-		return new SignedInt16BitValue(this, 0x05, 0, 127);
+		return new SignedInt16BitValue(this, 0x05, -12, 12) {
+			@Override
+			public int getValue() {
+				return super.getValue() - 12;
+			}
+			@Override
+			public void setValueNoCheck(int value) {
+				super.setValueNoCheck(value + 12);
+			}
+		};
 	}
 	
 	public IntValue getDepth() {
@@ -111,7 +120,7 @@ public class Flanger extends Parameters {
 	public IntValue getDetune() {
 		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
 			throw new IllegalArgumentException("Only applies to pitch shifter type.");
-		return new SignedInt16BitValue(this, 0x09, 0, 127);
+		return new SignedInt16BitValue(this, 0x09, 0, 50);
 	}
 	
 	public IntValue getRate() {
