@@ -67,6 +67,30 @@ public class Reverb extends Parameters {
 		return new SignedInt16BitValue(this, 0x01 + index, -20000, 20000);
 	}
 	
+	public IntValue getLevel() {
+		if (getReverbType() == ReverbType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x01, 0, 127);
+	}
+	
+	public IntValue getTime() {
+		if (getReverbType() == ReverbType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x05, 0, 127);
+	}
+	
+	public IntValue getType() {
+		if (getReverbType() == ReverbType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x09, 0, 127);
+	}
+	
+	public IntValue getHighDamp() {
+		if (getReverbType() == ReverbType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x0D, 0, 127);
+	}
+	
 	public String toString() {
 		StringBuilder reverbParameters = new StringBuilder(128);
 		for (int i = 1; i <= 20; i++) {
@@ -76,7 +100,14 @@ public class Reverb extends Parameters {
 		
 		return "Patch reverb parameters:\n" +
 				String.format("Reverb type: %s\n", getReverbType()) +
-				String.format("Reverb parameters: %s\n", reverbParameters);
+				(
+					getReverbType() != ReverbType.OFF ?
+					String.format("Time: %s\n", getTime()) +
+					String.format("Type: %s\n", getType()) +
+					String.format("High damp: %s\n", getHighDamp()) +
+					String.format("Level: %s\n", getLevel()) : ""
+				) +
+				String.format("\nReverb parameters: %s\n", reverbParameters);
 	}
 	
 }
