@@ -2,7 +2,11 @@ package nl.grauw.gaia_tool.parameters;
 
 import static org.junit.Assert.*;
 
+import javax.sound.midi.InvalidMidiDataException;
+
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage.Controller;
 import nl.grauw.gaia_tool.parameters.Tone.FilterMode;
 import nl.grauw.gaia_tool.parameters.Tone.FilterSlope;
 import nl.grauw.gaia_tool.parameters.Tone.LFOShape;
@@ -405,6 +409,306 @@ public class ToneTest {
 	public void testGetReserved17() {
 		Tone ptp = getTestParameters();
 		assertEquals(-18, ptp.getReserved17().getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_LFO_Rate() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_LFO_RATE, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getLFORate().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_LFO_Fade_Time() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_LFO_FADE_TIME, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getLFOFadeTime().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_LFO_Pitch_Depth() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
+				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
+				-32, -31, -30, -29, -28, -27, -26, -25, -24, -23, -22, -21, -20, -19, -18, -17,
+				-16, -15, -14, -13, -12, -11, -10,  -9,  -8,  -7,  -6,  -5,  -4,  -3,  -2,  -1,
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_LFO_PITCH_DEPTH, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getLFOPitchDepth().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_LFO_Filter_Depth() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
+				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
+				-32, -31, -30, -29, -28, -27, -26, -25, -24, -23, -22, -21, -20, -19, -18, -17,
+				-16, -15, -14, -13, -12, -11, -10,  -9,  -8,  -7,  -6,  -5,  -4,  -3,  -2,  -1,
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_LFO_FILTER_DEPTH, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getLFOFilterDepth().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_LFO_Amp_Depth() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
+				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
+				-32, -31, -30, -29, -28, -27, -26, -25, -24, -23, -22, -21, -20, -19, -18, -17,
+				-16, -15, -14, -13, -12, -11, -10,  -9,  -8,  -7,  -6,  -5,  -4,  -3,  -2,  -1,
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_LFO_AMP_DEPTH, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getLFOAmpDepth().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_OSC_Pitch() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				-24, -24, -23, -23, -23, -22, -22, -22, -21, -21, -20, -20, -20, -19, -19, -19,
+				-18, -18, -17, -17, -17, -16, -16, -15, -15, -14, -14, -14, -13, -13, -13, -12,
+				-12, -12, -11, -11, -11, -10, -10, -10,  -9,  -9,  -8,  -8,  -8,  -7,  -7,  -7,
+				 -6,  -6,  -5,  -5,  -5,  -4,  -4,  -3,  -3,  -2,  -2,  -2,  -1,  -1,  -1,   0,
+				  0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   4,   4,   5,   5,   5,   6,
+				  6,   7,   7,   7,   8,   8,   8,   9,   9,  10,  10,  10,  11,  11,  11,  12,
+				 12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  16,  16,  17,  17,  17,  18,
+				 18,  19,  19,  19,  20,  20,  20,  21,  21,  22,  22,  22,  23,  23,  23,  24
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_OSC_PITCH, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getOSCPitch().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_OSC_Detune() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				-50, -50, -50, -49, -48, -47, -46, -45, -45, -44, -43, -42, -41, -40, -40, -39,
+				-38, -37, -36, -35, -35, -34, -33, -32, -31, -30, -30, -29, -28, -27, -26, -25,
+				-25, -24, -23, -22, -21, -20, -20, -19, -18, -17, -16, -15, -15, -14, -13, -12,
+				-11, -10, -10,  -9,  -8,  -7,  -6,  -6,  -5,  -4,  -4,  -3,  -2,  -2,  -1,   0,
+				  0,   0,   1,   2,   2,   3,   4,   4,   5,   6,   6,   7,   8,   9,  10,  10,
+				 11,  12,  13,  14,  15,  15,  16,  17,  18,  19,  20,  20,  21,  22,  23,  24,
+				 25,  25,  26,  27,  28,  29,  30,  30,  31,  32,  33,  34,  35,  35,  36,  37,
+				 38,  39,  40,  40,  41,  42,  43,  44,  45,  45,  46,  47,  48,  49,  50,  50
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_OSC_DETUNE, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getOSCDetune().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_OSC_Pulse_Width_Modulation() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_OSC_PULSE_WIDTH_MODULATION, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getOSCPulseWidthModDepth().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_OSC_Pulse_Width() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_OSC_PULSE_WIDTH, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getOSCPulseWidth().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_OSC_Env_Depth() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
+				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
+				-32, -31, -30, -29, -28, -27, -26, -25, -24, -23, -22, -21, -20, -19, -18, -17,
+				-16, -15, -14, -13, -12, -11, -10,  -9,  -8,  -7,  -6,  -5,  -4,  -3,  -2,  -1,
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_OSC_ENV_DEPTH, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getOSCPitchEnvDepth().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_Filter_Cutoff() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_FILTER_CUTOFF, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getFilterCutoff().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_Filter_Resonance() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_FILTER_RESONANCE, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getFilterResonance().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_Filter_Env_Depth() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
+				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
+				-32, -31, -30, -29, -28, -27, -26, -25, -24, -23, -22, -21, -20, -19, -18, -17,
+				-16, -15, -14, -13, -12, -11, -10,  -9,  -8,  -7,  -6,  -5,  -4,  -3,  -2,  -1,
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_FILTER_ENV_DEPTH, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getFilterEnvDepth().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_Filter_Key_Follow() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				-10, -10, -10, -10, -10, -10, -10,  -9,  -9,  -9,  -9,  -9,  -9,  -8,  -8,  -8,
+				 -8,  -8,  -8,  -7,  -7,  -7,  -7,  -7,  -7,  -6,  -6,  -6,  -6,  -6,  -6,  -5,
+				 -5,  -5,  -5,  -5,  -5,  -4,  -4,  -4,  -4,  -4,  -4,  -3,  -3,  -3,  -3,  -3,
+				 -3,  -2,  -2,  -2,  -2,  -2,  -2,  -1,  -1,  -1,  -1,  -1,  -1,   0,   0,   0,
+				  0,   0,   0,   0,   1,   1,   1,   1,   1,   1,   2,   2,   2,   2,   2,   2,
+				  3,   3,   3,   3,   3,   3,   4,   4,   4,   4,   4,   4,   5,   5,   5,   5,
+				  5,   5,   6,   6,   6,   6,   6,   6,   7,   7,   7,   7,   7,   7,   8,   8,
+				  8,   8,   8,   8,   9,   9,   9,   9,   9,   9,  10,  10,  10,  10,  10,  10
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_FILTER_KEY_FOLLOW, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getFilterCutoffKeyfollow().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_Amp_Level() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		int[] expected = {
+				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
+				 32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
+				 48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,
+				 64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,
+				 80,  81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
+				 96,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+				112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_AMP_LEVEL, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getAmpLevel().getValue());
+		}
 	}
 
 }

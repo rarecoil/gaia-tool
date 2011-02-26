@@ -19,6 +19,7 @@ import nl.grauw.gaia_tool.Address;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedIntValue;
 import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 
 public class Tone extends Parameters {
 	
@@ -48,11 +49,121 @@ public class Tone extends Parameters {
 		_1_12TH, _1_16TH, _1_24TH, _1_32ND
 	}
 	
+	// mapping for pitch control change message values to pitch parameter values
+	private final static int[] oscPitchControlMapping = {
+		 40,  40,  41,  41,  41,  42,  42,  42,  43,  43,  44,  44,  44,  45,  45,  45,
+		 46,  46,  47,  47,  47,  48,  48,  49,  49,  50,  50,  50,  51,  51,  51,  52,
+		 52,  52,  53,  53,  53,  54,  54,  54,  55,  55,  56,  56,  56,  57,  57,  57,
+		 58,  58,  59,  59,  59,  60,  60,  61,  61,  62,  62,  62,  63,  63,  63,  64,
+		 64,  64,  65,  65,  65,  66,  66,  66,  67,  67,  68,  68,  69,  69,  69,  70,
+		 70,  71,  71,  71,  72,  72,  72,  73,  73,  74,  74,  74,  75,  75,  75,  76,
+		 76,  76,  77,  77,  77,  78,  78,  78,  79,  79,  80,  80,  81,  81,  81,  82,
+		 82,  83,  83,  83,  84,  84,  84,  85,  85,  86,  86,  86,  87,  87,  87,  88
+	};
+	
+	// mapping for detune control change message values to pitch parameter values
+	private final static int[] oscDetuneControlMapping = {
+		 14,  14,  14,  15,  16,  17,  18,  19,  19,  20,  21,  22,  23,  24,  24,  25,
+		 26,  27,  28,  29,  29,  30,  31,  32,  33,  34,  34,  35,  36,  37,  38,  39,
+		 39,  40,  41,  42,  43,  44,  44,  45,  46,  47,  48,  49,  49,  50,  51,  52,
+		 53,  54,  54,  55,  56,  57,  58,  58,  59,  60,  60,  61,  62,  62,  63,  64,
+		 64,  64,  65,  66,  66,  67,  68,  68,  69,  70,  70,  71,  72,  73,  74,  74,
+		 75,  76,  77,  78,  79,  79,  80,  81,  82,  83,  84,  84,  85,  86,  87,  88,
+		 89,  89,  90,  91,  92,  93,  94,  94,  95,  96,  97,  98,  99,  99, 100, 101,
+		102, 103, 104, 104, 105, 106, 107, 108, 109, 109, 110, 111, 112, 113, 114, 114
+	};
+	
 	public Tone(Address address, byte[] data) {
 		super(address, data);
 		
 		if (data.length < 0x3E)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
+	}
+	
+	public void updateParameters(ControlChangeMessage message) {
+		if (message.getController() != null) {
+			switch (message.getController()) {
+			case TONE_1_LFO_RATE:
+			case TONE_2_LFO_RATE:
+			case TONE_3_LFO_RATE:
+				setValue(0x1D, message.getValue(), true);
+				break;
+			case TONE_1_LFO_FADE_TIME:
+			case TONE_2_LFO_FADE_TIME:
+			case TONE_3_LFO_FADE_TIME:
+				setValue(0x20, message.getValue(), true);
+				break;
+			case TONE_1_LFO_PITCH_DEPTH:
+			case TONE_2_LFO_PITCH_DEPTH:
+			case TONE_3_LFO_PITCH_DEPTH:
+				setValue(0x22, Math.max(message.getValue(), 1), true);
+				break;
+			case TONE_1_LFO_FILTER_DEPTH:
+			case TONE_2_LFO_FILTER_DEPTH:
+			case TONE_3_LFO_FILTER_DEPTH:
+				setValue(0x23, Math.max(message.getValue(), 1), true);
+				break;
+			case TONE_1_LFO_AMP_DEPTH:
+			case TONE_2_LFO_AMP_DEPTH:
+			case TONE_3_LFO_AMP_DEPTH:
+				setValue(0x24, Math.max(message.getValue(), 1), true);
+				break;
+			case TONE_1_OSC_PITCH:
+			case TONE_2_OSC_PITCH:
+			case TONE_3_OSC_PITCH:
+				// need to use a mapping because the values don’t change on a linear scale
+				setValue(0x03, oscPitchControlMapping[message.getValue()], true);
+				break;
+			case TONE_1_OSC_DETUNE:
+			case TONE_2_OSC_DETUNE:
+			case TONE_3_OSC_DETUNE:
+				// need to use a mapping because the values don’t change on a linear scale
+				setValue(0x04, oscDetuneControlMapping[message.getValue()], true);
+				break;
+			case TONE_1_OSC_PULSE_WIDTH_MODULATION:
+			case TONE_2_OSC_PULSE_WIDTH_MODULATION:
+			case TONE_3_OSC_PULSE_WIDTH_MODULATION:
+				setValue(0x05, message.getValue(), true);
+				break;
+			case TONE_1_OSC_PULSE_WIDTH:
+			case TONE_2_OSC_PULSE_WIDTH:
+			case TONE_3_OSC_PULSE_WIDTH:
+				setValue(0x06, message.getValue(), true);
+				break;
+			case TONE_1_OSC_ENV_DEPTH:
+			case TONE_2_OSC_ENV_DEPTH:
+			case TONE_3_OSC_ENV_DEPTH:
+				setValue(0x09, Math.max(message.getValue(), 1), true);
+				break;
+			case TONE_1_FILTER_CUTOFF:
+			case TONE_2_FILTER_CUTOFF:
+			case TONE_3_FILTER_CUTOFF:
+				setValue(0x0C, message.getValue(), true);
+				break;
+			case TONE_1_FILTER_RESONANCE:
+			case TONE_2_FILTER_RESONANCE:
+			case TONE_3_FILTER_RESONANCE:
+				setValue(0x0F, message.getValue(), true);
+				break;
+			case TONE_1_FILTER_ENV_DEPTH:
+			case TONE_2_FILTER_ENV_DEPTH:
+			case TONE_3_FILTER_ENV_DEPTH:
+				setValue(0x14, Math.max(message.getValue(), 1), true);
+				break;
+			case TONE_1_FILTER_KEY_FOLLOW:
+			case TONE_2_FILTER_KEY_FOLLOW:
+			case TONE_3_FILTER_KEY_FOLLOW:
+				setValue(0x0D, (int) (message.getValue() / 6.1) + 54, true);
+				break;
+			case TONE_1_AMP_LEVEL:
+			case TONE_2_AMP_LEVEL:
+			case TONE_3_AMP_LEVEL:
+				setValue(0x15, message.getValue(), true);
+				break;
+			default:
+				throw new RuntimeException("Control change message not recognised: " + message);
+			}
+		}
 	}
 	
 	public OSCWave getOSCWave() {

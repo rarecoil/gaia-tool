@@ -100,6 +100,63 @@ public class TemporaryPatch extends Patch implements Observer {
 					getReverb().updateParameters(message);
 				}
 				break;
+			case TONE_1_LFO_RATE:
+			case TONE_1_LFO_FADE_TIME:
+			case TONE_1_LFO_PITCH_DEPTH:
+			case TONE_1_LFO_FILTER_DEPTH:
+			case TONE_1_LFO_AMP_DEPTH:
+			case TONE_1_OSC_PITCH:
+			case TONE_1_OSC_DETUNE:
+			case TONE_1_OSC_PULSE_WIDTH_MODULATION:
+			case TONE_1_OSC_PULSE_WIDTH:
+			case TONE_1_OSC_ENV_DEPTH:
+			case TONE_1_FILTER_CUTOFF:
+			case TONE_1_FILTER_RESONANCE:
+			case TONE_1_FILTER_ENV_DEPTH:
+			case TONE_1_FILTER_KEY_FOLLOW:
+			case TONE_1_AMP_LEVEL:
+				if (getTone(1) != null) {
+					getTone(1).updateParameters(message);
+				}
+				break;
+			case TONE_2_LFO_RATE:
+			case TONE_2_LFO_FADE_TIME:
+			case TONE_2_LFO_PITCH_DEPTH:
+			case TONE_2_LFO_FILTER_DEPTH:
+			case TONE_2_LFO_AMP_DEPTH:
+			case TONE_2_OSC_PITCH:
+			case TONE_2_OSC_DETUNE:
+			case TONE_2_OSC_PULSE_WIDTH_MODULATION:
+			case TONE_2_OSC_PULSE_WIDTH:
+			case TONE_2_OSC_ENV_DEPTH:
+			case TONE_2_FILTER_CUTOFF:
+			case TONE_2_FILTER_RESONANCE:
+			case TONE_2_FILTER_ENV_DEPTH:
+			case TONE_2_FILTER_KEY_FOLLOW:
+			case TONE_2_AMP_LEVEL:
+				if (getTone(2) != null) {
+					getTone(2).updateParameters(message);
+				}
+				break;
+			case TONE_3_LFO_RATE:
+			case TONE_3_LFO_FADE_TIME:
+			case TONE_3_LFO_PITCH_DEPTH:
+			case TONE_3_LFO_FILTER_DEPTH:
+			case TONE_3_LFO_AMP_DEPTH:
+			case TONE_3_OSC_PITCH:
+			case TONE_3_OSC_DETUNE:
+			case TONE_3_OSC_PULSE_WIDTH_MODULATION:
+			case TONE_3_OSC_PULSE_WIDTH:
+			case TONE_3_OSC_ENV_DEPTH:
+			case TONE_3_FILTER_CUTOFF:
+			case TONE_3_FILTER_RESONANCE:
+			case TONE_3_FILTER_ENV_DEPTH:
+			case TONE_3_FILTER_KEY_FOLLOW:
+			case TONE_3_AMP_LEVEL:
+				if (getTone(3) != null) {
+					getTone(3).updateParameters(message);
+				}
+				break;
 			}
 		}
 	}
