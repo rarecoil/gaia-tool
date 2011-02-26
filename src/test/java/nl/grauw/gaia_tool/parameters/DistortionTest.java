@@ -2,7 +2,11 @@ package nl.grauw.gaia_tool.parameters;
 
 import static org.junit.Assert.*;
 
+import javax.sound.midi.InvalidMidiDataException;
+
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage.Controller;
 import nl.grauw.gaia_tool.parameters.Distortion.DistortionType;
 
 import org.junit.Test;
@@ -38,7 +42,23 @@ public class DistortionTest {
 	public void testPatchDistortionParameters() {
 		new Distortion(testAddress, new byte[128]);
 	}
-
+	
+	@Test
+	public void testUpdateParameters_Control_1() throws InvalidMidiDataException {
+		Distortion parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.DISTORTION_CONTROL_1, 47);
+		parameters.updateParameters(cc);
+		assertEquals(47, parameters.getMFXParameter(2).getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_Level() throws InvalidMidiDataException {
+		Distortion parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.DISTORTION_LEVEL, 47);
+		parameters.updateParameters(cc);
+		assertEquals(47, parameters.getMFXParameter(1).getValue());
+	}
+	
 	@Test
 	public void testGetDistortionType() {
 		Distortion pdp = getTestParameters();
