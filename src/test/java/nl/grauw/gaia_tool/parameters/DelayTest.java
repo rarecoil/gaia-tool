@@ -25,7 +25,7 @@ public class DelayTest {
 	};
 	
 	public static Delay getTestParameters() {
-		return new Delay(testAddress, testParameterData);
+		return new Delay(testAddress, testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)

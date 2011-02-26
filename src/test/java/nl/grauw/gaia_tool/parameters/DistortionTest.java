@@ -31,7 +31,7 @@ public class DistortionTest {
 	};
 	
 	public static Distortion getTestParameters() {
-		return new Distortion(testAddress, testParameterData);
+		return new Distortion(testAddress, testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)

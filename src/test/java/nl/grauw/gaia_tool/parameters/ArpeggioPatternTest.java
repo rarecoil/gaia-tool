@@ -23,7 +23,7 @@ public class ArpeggioPatternTest {
 	};
 	
 	public static ArpeggioPattern getTestParameters() {
-		return new ArpeggioPattern(testAddress, testParameterData);
+		return new ArpeggioPattern(testAddress, testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)

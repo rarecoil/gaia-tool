@@ -25,7 +25,7 @@ public class ReverbTest {
 	};
 	
 	public static Reverb getTestParameters() {
-		return new Reverb(testAddress, testParameterData);
+		return new Reverb(testAddress, testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)

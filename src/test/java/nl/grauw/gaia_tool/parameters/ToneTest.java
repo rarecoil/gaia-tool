@@ -27,7 +27,7 @@ public class ToneTest {
 	};
 	
 	public static Tone getTestParameters() {
-		return new Tone(testAddress, testParameterData);
+		return new Tone(testAddress, testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)

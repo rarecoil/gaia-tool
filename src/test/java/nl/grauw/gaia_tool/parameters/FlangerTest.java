@@ -25,7 +25,7 @@ public class FlangerTest {
 	};
 	
 	public static Flanger getTestParameters() {
-		return new Flanger(testAddress, testParameterData);
+		return new Flanger(testAddress, testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)

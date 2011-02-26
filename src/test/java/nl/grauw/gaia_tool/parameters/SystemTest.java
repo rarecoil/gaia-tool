@@ -41,7 +41,7 @@ public class SystemTest {
 	};
 	
 	public static System getTestParameters() {
-		return new System(testAddress, testParameterData);
+		return new System(testAddress, testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)

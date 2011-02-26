@@ -31,7 +31,7 @@ public class PatchCommonTest {
 	};
 	
 	public static PatchCommon getTestParameters() {
-		return new PatchCommon(testAddress, testParameterData);
+		return new PatchCommon(testAddress, testParameterData.clone());
 	}
 	
 	@Test (expected = RuntimeException.class)

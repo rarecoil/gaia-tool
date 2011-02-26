@@ -17,7 +17,7 @@ public class ArpeggioCommonTest {
 	};
 	
 	public static ArpeggioCommon getTestParameters() {
-		return new ArpeggioCommon(testAddress, testParameterData);
+		return new ArpeggioCommon(testAddress, testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)
