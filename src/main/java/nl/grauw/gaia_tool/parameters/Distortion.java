@@ -142,7 +142,23 @@ public class Distortion extends Parameters {
 		
 		return "Patch distortion parameters:\n" +
 				String.format("Distortion type: %s\n", getDistortionType()) +
-				String.format("MFX parameters: %s\n", mfxParameters);
+				(
+					getDistortionType() == DistortionType.DIST || getDistortionType() == DistortionType.FUZZ ?
+					String.format("Drive: %s\n", getDrive()) +
+					String.format("Type: %s\n", getType()) +
+					String.format("Presence: %s\n", getPresence()) : ""
+				) +
+				(
+					getDistortionType() == DistortionType.BIT_CRASH ?
+					String.format("Sample rate: %s\n", getSampleRate()) +
+					String.format("Bit down: %s\n", getBitDown()) +
+					String.format("Filter: %s\n", getFilter()) : ""
+				) +
+				(
+					getDistortionType() != DistortionType.OFF ?
+					String.format("Level: %s\n", getLevel()) : ""
+				) +
+				String.format("\nMFX parameters: %s\n", mfxParameters);
 	}
 	
 }
