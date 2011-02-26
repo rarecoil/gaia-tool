@@ -85,9 +85,13 @@ public class TemporaryPatch extends Patch implements Observer {
 				}
 				break;
 			case DELAY_CONTROL_1:
+				if (getDelay() != null) {
+					loadData(getDelay().getAddress().add(0x05), 0x08);
+				}
+				break;
 			case DELAY_LEVEL:
 				if (getDelay() != null) {
-					loadData(getDelay().getAddress().add(0x01), 0x0C);
+					getDelay().updateParameters(message);
 				}
 				break;
 			case REVERB_CONTROL_1:

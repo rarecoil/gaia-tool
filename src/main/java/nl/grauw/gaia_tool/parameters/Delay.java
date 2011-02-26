@@ -20,6 +20,7 @@ import nl.grauw.gaia_tool.EnumValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 
 public class Delay extends Parameters {
 	
@@ -38,6 +39,25 @@ public class Delay extends Parameters {
 		
 		if (data.length < 0x51)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
+	}
+	
+	public void updateParameters(ControlChangeMessage message) {
+		if (message.getController() != null && getDelayType() != DelayType.OFF) {
+			switch (message.getController()) {
+			case DELAY_LEVEL:
+				set16BitValue(0x01, message.getValue() + 32768, true);
+				break;
+			// Commented out because functionality depends on non-local tempo sync parameter
+//			case DELAY_CONTROL_1:
+// 				if (!tempo_sync)
+//					set16BitValue(0x05, message.getValue() + 32768, true);
+//				else
+//					set16BitValue(0x09, (message.getValue() + 8) / 9 + 32768, true);
+//				break;
+			default:
+				throw new RuntimeException("Control change message not recognised: " + message);
+			}
+		}
 	}
 	
 	public DelayType getDelayType() {
