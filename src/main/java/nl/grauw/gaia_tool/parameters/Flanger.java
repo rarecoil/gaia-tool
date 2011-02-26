@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.EnumValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
@@ -68,6 +69,10 @@ public class Flanger extends Parameters {
 	
 	public FlangerType getFlangerType() {
 		return FlangerType.values()[getValue(0x00)];
+	}
+	
+	public EnumValue<FlangerType> getFlangerTypeValue() {
+		return new EnumValue<FlangerType>(this, 0x00, FlangerType.values());
 	}
 	
 	public IntValue getFlangerParameter(int number) {

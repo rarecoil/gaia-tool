@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.EnumValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
@@ -57,6 +58,10 @@ public class Reverb extends Parameters {
 	
 	public ReverbType getReverbType() {
 		return ReverbType.values()[getValue(0x00)];
+	}
+	
+	public EnumValue<ReverbType> getReverbTypeValue() {
+		return new EnumValue<ReverbType>(this, 0x00, ReverbType.values());
 	}
 	
 	public IntValue getReverbParameter(int number) {

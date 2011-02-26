@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool.parameters;
 
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.EnumValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedInt16BitValue;
 import nl.grauw.gaia_tool.IntValue;
@@ -41,6 +42,10 @@ public class Delay extends Parameters {
 	
 	public DelayType getDelayType() {
 		return DelayType.values()[getValue(0x00)];
+	}
+	
+	public EnumValue<DelayType> getDelayTypeValue() {
+		return new EnumValue<DelayType>(this, 0x00, DelayType.values());
 	}
 	
 	public IntValue getDelayParameter(int number) {
