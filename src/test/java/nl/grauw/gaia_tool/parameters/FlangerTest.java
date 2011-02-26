@@ -2,7 +2,11 @@ package nl.grauw.gaia_tool.parameters;
 
 import static org.junit.Assert.*;
 
+import javax.sound.midi.InvalidMidiDataException;
+
 import nl.grauw.gaia_tool.Address;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage.Controller;
 import nl.grauw.gaia_tool.parameters.Flanger.FlangerType;
 
 import org.junit.Test;
@@ -31,6 +35,71 @@ public class FlangerTest {
 	@Test (expected = RuntimeException.class)
 	public void testPatchFlangerParameters() {
 		new Flanger(testAddress, new byte[80]);
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		parameters.setValue(0x00, 1);
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 47);
+		parameters.updateParameters(cc);
+		assertEquals(47, parameters.getFlangerParameter(2).getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1_PitchShift_0() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 0);
+		parameters.updateParameters(cc);
+		assertEquals(0, parameters.getFlangerParameter(2).getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1_PitchShift_45() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 45);
+		parameters.updateParameters(cc);
+		assertEquals(9, parameters.getFlangerParameter(2).getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1_PitchShift_56() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 56);
+		parameters.updateParameters(cc);
+		assertEquals(12, parameters.getFlangerParameter(2).getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1_PitchShift_71() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 71);
+		parameters.updateParameters(cc);
+		assertEquals(12, parameters.getFlangerParameter(2).getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1_PitchShift_111() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 111);
+		parameters.updateParameters(cc);
+		assertEquals(20, parameters.getFlangerParameter(2).getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_Control_1_PitchShift_127() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_CONTROL_1, 127);
+		parameters.updateParameters(cc);
+		assertEquals(24, parameters.getFlangerParameter(2).getValue());
+	}
+	
+	@Test
+	public void testUpdateParameters_Level() throws InvalidMidiDataException {
+		Flanger parameters = getTestParameters();
+		ControlChangeMessage cc = new ControlChangeMessage(0, Controller.FLANGER_LEVEL, 47);
+		parameters.updateParameters(cc);
+		assertEquals(47, parameters.getFlangerParameter(1).getValue());
 	}
 
 	@Test
