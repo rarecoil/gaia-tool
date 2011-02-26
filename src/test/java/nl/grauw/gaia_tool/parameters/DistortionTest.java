@@ -90,4 +90,60 @@ public class DistortionTest {
 		pdp.getMFXParameter(33);
 	}
 
+	@Test
+	public void testGetLevel() {
+		Distortion pdp = getTestParameters();
+		pdp.getDistortionTypeValue().setValue(DistortionType.DIST);
+		pdp.getMFXParameter(1).setValue(47);
+		assertEquals(47, pdp.getLevel().getValue());
+	}
+
+	@Test
+	public void testGetDrive() {
+		Distortion pdp = getTestParameters();
+		pdp.getDistortionTypeValue().setValue(DistortionType.DIST);
+		pdp.getMFXParameter(2).setValue(47);
+		assertEquals(47, pdp.getDrive().getValue());
+	}
+
+	@Test
+	public void testGetType() {
+		Distortion pdp = getTestParameters();
+		pdp.getDistortionTypeValue().setValue(DistortionType.FUZZ);
+		pdp.getMFXParameter(3).setValue(5);
+		assertEquals(6, pdp.getType().getValue());
+	}
+
+	@Test
+	public void testGetPresence() {
+		Distortion pdp = getTestParameters();
+		pdp.getDistortionTypeValue().setValue(DistortionType.FUZZ);
+		pdp.getMFXParameter(4).setValue(47);
+		assertEquals(47, pdp.getPresence().getValue());
+	}
+
+	@Test
+	public void testGetSampleRate() {
+		Distortion pdp = getTestParameters();
+		pdp.getDistortionTypeValue().setValue(DistortionType.BIT_CRASH);
+		pdp.getMFXParameter(2).setValue(47);
+		assertEquals(47, pdp.getSampleRate().getValue());
+	}
+
+	@Test
+	public void testGetBitDown() {
+		Distortion pdp = getTestParameters();
+		pdp.getDistortionTypeValue().setValue(DistortionType.BIT_CRASH);
+		pdp.getMFXParameter(3).setValue(47);
+		assertEquals(47, pdp.getBitDown().getValue());
+	}
+
+	@Test
+	public void testGetFilter() {
+		Distortion pdp = getTestParameters();
+		pdp.getDistortionTypeValue().setValue(DistortionType.BIT_CRASH);
+		pdp.getMFXParameter(4).setValue(47);
+		assertEquals(47, pdp.getFilter().getValue());
+	}
+
 }
