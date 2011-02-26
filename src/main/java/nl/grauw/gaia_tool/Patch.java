@@ -15,7 +15,6 @@
  */
 package nl.grauw.gaia_tool;
 
-import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
@@ -118,37 +117,6 @@ public abstract class Patch extends Observable {
 			}
 		} else {
 			throw new IllegalArgumentException("Address not recognised.");
-		}
-	}
-	
-	public void updateParameters(ControlChangeMessage message) {
-		if (message.getController() != null) {
-			switch (message.getController()) {
-			case DISTORTION_CONTROL_1:
-			case DISTORTION_LEVEL:
-				if (distortion != null) {
-					distortion.updateParameters(message);
-				}
-				break;
-			case FLANGER_CONTROL_1:
-			case FLANGER_LEVEL:
-				if (flanger != null) {
-					flanger.updateParameters(message);
-				}
-				break;
-			case DELAY_CONTROL_1:
-			case DELAY_LEVEL:
-				if (delay != null) {
-					loadData(delay.getAddress().add(0x01), 0x0C);
-				}
-				break;
-			case REVERB_CONTROL_1:
-			case REVERB_LEVEL:
-				if (reverb != null) {
-					reverb.updateParameters(message);
-				}
-				break;
-			}
 		}
 	}
 	
