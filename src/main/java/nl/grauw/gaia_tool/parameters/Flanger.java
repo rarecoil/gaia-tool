@@ -78,6 +78,12 @@ public class Flanger extends Parameters {
 		return new SignedInt16BitValue(this, 0x01 + index, -20000, 20000);
 	}
 	
+	public IntValue getLevel() {
+		if (getFlangerType() == FlangerType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x01, 0, 127);
+	}
+	
 	public IntValue getFeedback() {
 		if (getFlangerType() != FlangerType.FLANGER)
 			throw new IllegalArgumentException("Only applies to flanger type.");
@@ -90,9 +96,21 @@ public class Flanger extends Parameters {
 		return new SignedInt16BitValue(this, 0x05, 0, 127);
 	}
 	
+	public IntValue getPitch() {
+		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
+			throw new IllegalArgumentException("Only applies to pitch shifter type.");
+		return new SignedInt16BitValue(this, 0x05, 0, 127);
+	}
+	
 	public IntValue getDepth() {
 		if (getFlangerType() != FlangerType.FLANGER && getFlangerType() != FlangerType.PHASER)
 			throw new IllegalArgumentException("Only applies to flanger or phaser types.");
+		return new SignedInt16BitValue(this, 0x09, 0, 127);
+	}
+	
+	public IntValue getDetune() {
+		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
+			throw new IllegalArgumentException("Only applies to pitch shifter type.");
 		return new SignedInt16BitValue(this, 0x09, 0, 127);
 	}
 	
@@ -102,28 +120,10 @@ public class Flanger extends Parameters {
 		return new SignedInt16BitValue(this, 0x0D, 0, 127);
 	}
 	
-	public IntValue getPitch() {
-		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
-			throw new IllegalArgumentException("Only applies to pitch shifter type.");
-		return new SignedInt16BitValue(this, 0x05, 0, 127);
-	}
-	
-	public IntValue getDetune() {
-		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
-			throw new IllegalArgumentException("Only applies to pitch shifter type.");
-		return new SignedInt16BitValue(this, 0x09, 0, 127);
-	}
-	
 	public IntValue getSemitonePitch() {
 		if (getFlangerType() != FlangerType.PITCH_SHIFTER)
 			throw new IllegalArgumentException("Only applies to pitch shifter type.");
 		return new SignedInt16BitValue(this, 0x0D, 0, 127);
-	}
-	
-	public IntValue getLevel() {
-		if (getFlangerType() == FlangerType.OFF)
-			throw new IllegalArgumentException("Only applies to active effect.");
-		return new SignedInt16BitValue(this, 0x01, 0, 127);
 	}
 	
 	public String toString() {

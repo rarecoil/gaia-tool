@@ -82,9 +82,21 @@ public class Distortion extends Parameters {
 		return new SignedInt16BitValue(this, 0x01 + index, -20000, 20000);
 	}
 	
+	public IntValue getLevel() {
+		if (getDistortionType() == DistortionType.OFF)
+			throw new IllegalArgumentException("Only applies to active effect.");
+		return new SignedInt16BitValue(this, 0x01, 0, 127);
+	}
+	
 	public IntValue getDrive() {
 		if (getDistortionType() != DistortionType.DIST && getDistortionType() != DistortionType.FUZZ)
 			throw new IllegalArgumentException("Only applies to distortion or fuzz types.");
+		return new SignedInt16BitValue(this, 0x05, 0, 127);
+	}
+	
+	public IntValue getSampleRate() {
+		if (getDistortionType() != DistortionType.BIT_CRASH)
+			throw new IllegalArgumentException("Only applies to bit crash type.");
 		return new SignedInt16BitValue(this, 0x05, 0, 127);
 	}
 	
@@ -103,18 +115,6 @@ public class Distortion extends Parameters {
 		};
 	}
 	
-	public IntValue getPresence() {
-		if (getDistortionType() != DistortionType.DIST && getDistortionType() != DistortionType.FUZZ)
-			throw new IllegalArgumentException("Only applies to distortion or fuzz types.");
-		return new SignedInt16BitValue(this, 0x0D, 0, 127);
-	}
-	
-	public IntValue getSampleRate() {
-		if (getDistortionType() != DistortionType.BIT_CRASH)
-			throw new IllegalArgumentException("Only applies to bit crash type.");
-		return new SignedInt16BitValue(this, 0x05, 0, 127);
-	}
-	
 	public IntValue getBitDown() {
 		if (getDistortionType() != DistortionType.BIT_CRASH)
 			throw new IllegalArgumentException("Only applies to bit crash type.");
@@ -127,10 +127,10 @@ public class Distortion extends Parameters {
 		return new SignedInt16BitValue(this, 0x0D, 0, 127);
 	}
 	
-	public IntValue getLevel() {
-		if (getDistortionType() == DistortionType.OFF)
-			throw new IllegalArgumentException("Only applies to active effect.");
-		return new SignedInt16BitValue(this, 0x01, 0, 127);
+	public IntValue getPresence() {
+		if (getDistortionType() != DistortionType.DIST && getDistortionType() != DistortionType.FUZZ)
+			throw new IllegalArgumentException("Only applies to distortion or fuzz types.");
+		return new SignedInt16BitValue(this, 0x0D, 0, 127);
 	}
 	
 	public String toString() {
