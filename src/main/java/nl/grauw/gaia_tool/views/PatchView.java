@@ -39,6 +39,8 @@ public class PatchView extends ParametersView implements AWTObserver {
 	public PatchView(Patch patch) {
 		this.patch = patch;
 		patch.addObserver(this);
+		if (patch.getCommon() == null)
+			loadParameters();
 		initComponents();
 	}
 
@@ -91,9 +93,7 @@ public class PatchView extends ParametersView implements AWTObserver {
 	
 	private PatchCommonView getPatchCommonView() {
 		if (patchCommonView == null || patchCommonView.getParameters() != patch.getCommon()) {
-			if (getParameters() == null) {
-				loadParameters();
-			} else {
+			if (getParameters() != null) {
 				patchCommonView = new PatchCommonView(patch.getCommon());
 			}
 		}
@@ -108,6 +108,9 @@ public class PatchView extends ParametersView implements AWTObserver {
 			if (pcv != null)
 				parametersContainer.add(pcv);
 			parametersContainer.revalidate();
+			if (patch.getCommon() == null && isShowing()) {
+				loadParameters();
+			}
 		}
 	}
 

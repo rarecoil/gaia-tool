@@ -209,21 +209,18 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	
 	@Override
 	public void update(Observable source, Object detail) {
-		if (source == patch) {
-			if ("arpeggioCommon".equals(detail)) {
-				updateParametersView();
+		if ("arpeggioCommon".equals(detail) && source == patch) {
+			JPanel container = getArpeggioCommonContainer();
+			ArpeggioCommonView acv = getArpeggioCommonView();
+			if (container.getComponentCount() == 0 || container.getComponent(0) != acv) {
+				container.removeAll();
+				if (acv != null)
+					container.add(acv);
+				container.revalidate();
 			}
-		}
-	}
-	
-	private void updateParametersView() {
-		JPanel container = getArpeggioCommonContainer();
-		ArpeggioCommonView acv = getArpeggioCommonView();
-		if (container.getComponentCount() == 0 || container.getComponent(0) != acv) {
-			container.removeAll();
-			if (acv != null)
-				container.add(acv);
-			container.revalidate();
+			if (patch.getArpeggioCommon() == null && isShowing()) {
+				loadParameters();
+			}
 		}
 	}
 	

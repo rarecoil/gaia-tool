@@ -32,9 +32,21 @@ public abstract class SingleParametersView extends ParametersView implements AWT
 	private JTextArea parameterArea;
 	private JScrollPane parameterScrollPane;
 	
+	private boolean loading = false;
+	
 	public abstract Parameters getParameters();
 	
 	protected abstract String getParametersText();
+	
+	@Override
+	protected void initComponents() {
+		if (getParameters() == null) {
+			loadParameters();
+		} else if (!getParameters().hasObserver(this)) {
+			getParameters().addObserver(this);
+		}
+		super.initComponents();
+	}
 	
 	@Override
 	public void update(Observable source, Object detail) {
@@ -43,11 +55,16 @@ public abstract class SingleParametersView extends ParametersView implements AWT
 		} else {
 			// register self as observer on parameters
 			if (getParameters() != null) {
+				loading = false;
 				if (!getParameters().hasObserver(this))
 					getParameters().addObserver(this);
 				update(getParameters(), null);
 			} else {
 				parameterArea.setText("");
+				if (!loading && isShowing()) {
+					loadParameters();
+					loading = true;
+				}
 			}
 		}
 	}
@@ -77,11 +94,7 @@ public abstract class SingleParametersView extends ParametersView implements AWT
 			parameterArea.setWrapStyleWord(true);
 			DefaultCaret caret = (DefaultCaret)parameterArea.getCaret();
 			caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-			if (getParameters() == null) {
-				loadParameters();
-			} else {
-				if (!getParameters().hasObserver(this))
-					getParameters().addObserver(this);
+			if (getParameters() != null) {
 				parameterArea.setText(getParametersText());
 			}
 		}
