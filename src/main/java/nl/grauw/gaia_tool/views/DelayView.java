@@ -73,16 +73,18 @@ public class DelayView extends SingleParametersView {
 			delayParameters.append(" ");
 		}
 		
-		return String.format("Delay type: %s\n", d.getDelayType()) +
-				(
-					d.getDelayType() != DelayType.OFF ?
-					String.format("Time: %s\n", d.getTime()) +
-					String.format("Synced time: %s\n", d.getSyncedTime()) +
-					String.format("Feedback: %s\n", d.getFeedback()) +
-					String.format("High damp: %s dB\n", d.getHighDamp()) +
-					String.format("Level: %s\n", d.getLevel()) : ""
-				) +
-				String.format("\nDelay parameters: %s\n", delayParameters);
+		StringBuilder text = new StringBuilder();
+		text.append(String.format("Delay type: %s\n", d.getDelayType()));
+		if (d.getDelayType() != DelayType.OFF) {
+			text.append(String.format("Time: %s\n", d.getTime()));
+			text.append(String.format("Synced time: %s\n", d.getSyncedTime()));
+			text.append(String.format("Feedback: %s\n", d.getFeedback()));
+			text.append(String.format("High damp: %s dB\n", d.getHighDamp()));
+			text.append(String.format("Level: %s\n", d.getLevel()));
+		}
+		text.append(String.format("\nDelay parameters: %s\n", delayParameters));
+		
+		return text.toString();
 	}
 
 }

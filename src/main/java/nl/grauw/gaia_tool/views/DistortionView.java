@@ -73,24 +73,24 @@ public class DistortionView extends SingleParametersView {
 			mfxParameters.append(" ");
 		}
 		
-		return String.format("Distortion type: %s\n", d.getDistortionType()) +
-				(
-					d.getDistortionType() == DistortionType.DIST || d.getDistortionType() == DistortionType.FUZZ ?
-					String.format("Drive: %s\n", d.getDrive()) +
-					String.format("Type: %s\n", d.getType()) +
-					String.format("Presence: %s\n", d.getPresence()) : ""
-				) +
-				(
-					d.getDistortionType() == DistortionType.BIT_CRASH ?
-					String.format("Sample rate: %s\n", d.getSampleRate()) +
-					String.format("Bit down: %s\n", d.getBitDown()) +
-					String.format("Filter: %s\n", d.getFilter()) : ""
-				) +
-				(
-					d.getDistortionType() != DistortionType.OFF ?
-					String.format("Level: %s\n", d.getLevel()) : ""
-				) +
-				String.format("\nMFX parameters: %s\n", mfxParameters);
+		StringBuilder text = new StringBuilder();
+		text.append(String.format("Distortion type: %s\n", d.getDistortionType()));
+		if (d.getDistortionType() == DistortionType.DIST || d.getDistortionType() == DistortionType.FUZZ) {
+			text.append(String.format("Drive: %s\n", d.getDrive()));
+			text.append(String.format("Type: %s\n", d.getType()));
+			text.append(String.format("Presence: %s\n", d.getPresence()));
+		}
+		if (d.getDistortionType() == DistortionType.BIT_CRASH) {
+			text.append(String.format("Sample rate: %s\n", d.getSampleRate()));
+			text.append(String.format("Bit down: %s\n", d.getBitDown()));
+			text.append(String.format("Filter: %s\n", d.getFilter()));
+		}
+		if (d.getDistortionType() != DistortionType.OFF) {
+			text.append(String.format("Level: %s\n", d.getLevel()));
+		}
+		text.append(String.format("\nMFX parameters: %s\n", mfxParameters));
+		
+		return text.toString();
 	}
 
 }

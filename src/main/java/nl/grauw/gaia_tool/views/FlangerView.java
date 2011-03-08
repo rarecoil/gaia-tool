@@ -73,30 +73,28 @@ public class FlangerView extends SingleParametersView {
 			flangerParameters.append(" ");
 		}
 		
-		return String.format("Flanger type: %s\n", f.getFlangerType()) +
-				(
-					f.getFlangerType() == FlangerType.FLANGER ?
-					String.format("Feedback: %s\n", f.getFeedback()) : ""
-				) +
-				(
-					f.getFlangerType() == FlangerType.PHASER ?
-					String.format("Resonance: %s\n", f.getResonance()) : ""
-				) +
-				(
-					f.getFlangerType() == FlangerType.FLANGER || f.getFlangerType() == FlangerType.PHASER ?
-					String.format("Rate: %s\n", f.getRate()) +
-					String.format("Depth: %s\n", f.getDepth()) : ""
-				) +
-				(
-					f.getFlangerType() == FlangerType.PITCH_SHIFTER ?
-					String.format("Pitch: %s semitones\n", f.getPitch()) +
-					String.format("Detune: %s cent\n", f.getDetune()) : ""
-				) +
-				(
-					f.getFlangerType() != FlangerType.OFF ?
-					String.format("Level: %s\n", f.getLevel()) : ""
-				) +
-				String.format("\nFlanger parameters: %s\n", flangerParameters);
+		StringBuilder text = new StringBuilder();
+		text.append(String.format("Flanger type: %s\n", f.getFlangerType()));
+		if (f.getFlangerType() == FlangerType.FLANGER) {
+			text.append(String.format("Feedback: %s\n", f.getFeedback()));
+		}
+		if (f.getFlangerType() == FlangerType.PHASER) {
+			text.append(String.format("Resonance: %s\n", f.getResonance()));
+		}
+		if (f.getFlangerType() == FlangerType.FLANGER || f.getFlangerType() == FlangerType.PHASER) {
+			text.append(String.format("Rate: %s\n", f.getRate()));
+			text.append(String.format("Depth: %s\n", f.getDepth()));
+		}
+		if (f.getFlangerType() == FlangerType.PITCH_SHIFTER) {
+			text.append(String.format("Pitch: %s semitones\n", f.getPitch()));
+			text.append(String.format("Detune: %s cent\n", f.getDetune()));
+		}
+		if (f.getFlangerType() != FlangerType.OFF) {
+			text.append(String.format("Level: %s\n", f.getLevel()));
+		}
+		text.append(String.format("\nFlanger parameters: %s\n", flangerParameters));
+		
+		return text.toString();
 	}
 
 }

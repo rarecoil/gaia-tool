@@ -64,30 +64,33 @@ public class SystemView extends SingleParametersView {
 	protected String getParametersText() {
 		System s = gaia.getSystem();
 		
-		return String.format("Bank select: %s (MSB: %s, LSB: %s)\n", s.getBankSelect(), s.getBankSelectMSB(), s.getBankSelectLSB()) +
-				String.format("Program number: %s\n", s.getProgramNumber()) +
-				String.format("Master level: %s\n", s.getMasterLevel()) +
-				String.format("Master tune: %.1f cent\n", s.getMasterTune().getValue() / 10.0) +
-				String.format("Patch remain: %s\n", s.getPatchRemain() ? "On" : "Off") +
-				String.format("Clock source: %s\n", s.getClockSource()) +
-				String.format("System tempo: %s bpm\n", s.getSystemTempo()) +
-				String.format("Keyboard velocity: %s\n", s.getKeyboardVelocity()) +
-				String.format("Pedal polarity: %s\n", s.getPedalPolarity()) +
-				String.format("Pedal assign: %s\n", s.getPedalAssign()) +
-				String.format("D-Beam sens: %s\n", s.getDBeamSens()) +
-				String.format("Rx/Tx channel: %s\n", s.getRxTxChannel()) +
-				String.format("MIDI-USB thru: %s\n", s.getMidiUSBThru() ? "On" : "Off") +
-				String.format("Soft thru: %s\n", s.getSoftThru() ? "On" : "Off") +
-				String.format("Rx program change: %s\n", s.getRxProgramChange() ? "On" : "Off") +
-				String.format("Rx bank select: %s\n", s.getRxBankSelect() ? "On" : "Off") +
-				String.format("Remote keyboard: %s\n", s.getRemoteKeyboard() ? "On" : "Off") +
-				String.format("Tx program change: %s\n", s.getTxProgramChange() ? "On" : "Off") +
-				String.format("Tx bank select: %s\n", s.getTxBankSelect() ? "On" : "Off") +
-				String.format("Tx edit data: %s\n", s.getTxEditData() ? "On" : "Off") +
-				String.format("Recorder sync output: %s\n", s.getRecorderSyncOutput() ? "On" : "Off") +
-				String.format("Recorder metronome mode: %s\n", s.getRecorderMetronomeMode()) +
-				String.format("Recorder metronome level: %s\n", s.getRecorderMetronomeLevel()) +
-				String.format("Power save mode: %s\n", s.getPowerSaveMode());
+		StringBuffer text = new StringBuffer();
+		text.append(String.format("Bank select: %s (MSB: %s, LSB: %s)\n", s.getBankSelect(), s.getBankSelectMSB(), s.getBankSelectLSB()));
+		text.append(String.format("Program number: %s\n", s.getProgramNumber()));
+		text.append(String.format("Master level: %s\n", s.getMasterLevel()));
+		text.append(String.format("Master tune: %.1f cent\n", s.getMasterTune().getValue() / 10.0));
+		text.append(String.format("Patch remain: %s\n", s.getPatchRemain() ? "On" : "Off"));
+		text.append(String.format("Clock source: %s\n", s.getClockSource()));
+		text.append(String.format("System tempo: %s bpm\n", s.getSystemTempo()));
+		text.append(String.format("Keyboard velocity: %s\n", s.getKeyboardVelocity()));
+		text.append(String.format("Pedal polarity: %s\n", s.getPedalPolarity()));
+		text.append(String.format("Pedal assign: %s\n", s.getPedalAssign()));
+		text.append(String.format("D-Beam sens: %s\n", s.getDBeamSens()));
+		text.append(String.format("Rx/Tx channel: %s\n", s.getRxTxChannel()));
+		text.append(String.format("MIDI-USB thru: %s\n", s.getMidiUSBThru() ? "On" : "Off"));
+		text.append(String.format("Soft thru: %s\n", s.getSoftThru() ? "On" : "Off"));
+		text.append(String.format("Rx program change: %s\n", s.getRxProgramChange() ? "On" : "Off"));
+		text.append(String.format("Rx bank select: %s\n", s.getRxBankSelect() ? "On" : "Off"));
+		text.append(String.format("Remote keyboard: %s\n", s.getRemoteKeyboard() ? "On" : "Off"));
+		text.append(String.format("Tx program change: %s\n", s.getTxProgramChange() ? "On" : "Off"));
+		text.append(String.format("Tx bank select: %s\n", s.getTxBankSelect() ? "On" : "Off"));
+		text.append(String.format("Tx edit data: %s\n", s.getTxEditData() ? "On" : "Off"));
+		text.append(String.format("Recorder sync output: %s\n", s.getRecorderSyncOutput() ? "On" : "Off"));
+		text.append(String.format("Recorder metronome mode: %s\n", s.getRecorderMetronomeMode()));
+		text.append(String.format("Recorder metronome level: %s\n", s.getRecorderMetronomeLevel()));
+		text.append(String.format("Power save mode: %s\n", s.getPowerSaveMode()));
+		
+		return text.toString();
 	}
 
 }

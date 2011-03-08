@@ -73,15 +73,17 @@ public class ReverbView extends SingleParametersView {
 			reverbParameters.append(" ");
 		}
 		
-		return String.format("Reverb type: %s\n", r.getReverbType()) +
-				(
-					r.getReverbType() != ReverbType.OFF ?
-					String.format("Time: %s\n", r.getTime()) +
-					String.format("Type: %s\n", (new String[] {"Room", "Plate", "Hall"})[r.getType().getValue()]) +
-					String.format("High damp: %.1f%%\n", r.getHighDamp().getValue() / 127.0 * 100) +
-					String.format("Level: %s\n", r.getLevel()) : ""
-				) +
-				String.format("\nReverb parameters: %s\n", reverbParameters);
+		StringBuilder text = new StringBuilder();
+		text.append(String.format("Reverb type: %s\n", r.getReverbType()));
+		if (r.getReverbType() != ReverbType.OFF) {
+			text.append(String.format("Time: %s\n", r.getTime()));
+			text.append(String.format("Type: %s\n", (new String[] {"Room", "Plate", "Hall"})[r.getType().getValue()]));
+			text.append(String.format("High damp: %.1f%%\n", r.getHighDamp().getValue() / 127.0 * 100));
+			text.append(String.format("Level: %s\n", r.getLevel()));
+		}
+		text.append(String.format("\nReverb parameters: %s\n", reverbParameters));
+		
+		return text.toString();
 	}
 
 }

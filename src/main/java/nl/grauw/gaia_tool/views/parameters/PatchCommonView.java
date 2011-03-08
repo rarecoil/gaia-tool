@@ -174,30 +174,33 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 	}
 	
 	private String getParametersText() {
-		return String.format("Patch level: %s\n", parameters.getPatchLevel()) +
-				String.format("Arpeggio switch: %s\n", parameters.getArpeggioSwitch()) +
-				String.format("Portamento switch: %s\n", parameters.getPortamentoSwitch()) +
-				String.format("Portamento time: %s\n", parameters.getPortamentoTime()) +
-				String.format("Mono switch: %s\n", parameters.getMonoSwitch()) +
-				String.format("Octave shift: %s\n", parameters.getOctaveShift()) +
-				String.format("Pitch bend range up: %s\n", parameters.getPitchBendRangeUp()) +
-				String.format("Pitch bend range down: %s\n", parameters.getPitchBendRangeDown()) +
-				String.format("Tone 1 switch: %s\n", parameters.getTone1Switch()) +
-				String.format("Tone 1 select: %s\n", parameters.getTone1Select()) +
-				String.format("Tone 2 switch: %s\n", parameters.getTone2Switch()) +
-				String.format("Tone 2 select: %s\n", parameters.getTone2Select()) +
-				String.format("Tone 3 switch: %s\n", parameters.getTone3Switch()) +
-				String.format("Tone 3 select: %s\n", parameters.getTone3Select()) +
-				String.format("SYNC/RING select: %s\n", parameters.getSyncRingSelect()) +
-				String.format("Effects master switch: %s\n", parameters.getEffectsMasterSwitch()) +
-				String.format("Delay tempo sync switch: %s\n", parameters.getDelayTempoSyncSwitch()) +
-				String.format("Low boost switch: %s\n", parameters.getLowBoostSwitch()) +
-				String.format("D-Beam assign: %s\n", parameters.getDBeamAssign()) +
-				String.format("D-Beam polarity: %s\n", parameters.getDBeamPolarity()) +
-				String.format("Effects distortion select: %s\n", parameters.getEffectsDistortionSelect()) +
-				String.format("Effects flanger select: %s\n", parameters.getEffectsFlangerSelect()) +
-				String.format("Effects delay select: %s\n", parameters.getEffectsDelaySelect()) +
-				String.format("Effects reverb select: %s\n", parameters.getEffectsReverbSelect());
+		StringBuffer text = new StringBuffer();
+		text.append(String.format("Patch level: %s\n", parameters.getPatchLevel()));
+		text.append(String.format("Arpeggio switch: %s\n", parameters.getArpeggioSwitch()));
+		text.append(String.format("Portamento switch: %s\n", parameters.getPortamentoSwitch()));
+		text.append(String.format("Portamento time: %s\n", parameters.getPortamentoTime()));
+		text.append(String.format("Mono switch: %s\n", parameters.getMonoSwitch()));
+		text.append(String.format("Octave shift: %s\n", parameters.getOctaveShift()));
+		text.append(String.format("Pitch bend range up: %s\n", parameters.getPitchBendRangeUp()));
+		text.append(String.format("Pitch bend range down: %s\n", parameters.getPitchBendRangeDown()));
+		text.append(String.format("Tone 1 switch: %s\n", parameters.getTone1Switch()));
+		text.append(String.format("Tone 1 select: %s\n", parameters.getTone1Select()));
+		text.append(String.format("Tone 2 switch: %s\n", parameters.getTone2Switch()));
+		text.append(String.format("Tone 2 select: %s\n", parameters.getTone2Select()));
+		text.append(String.format("Tone 3 switch: %s\n", parameters.getTone3Switch()));
+		text.append(String.format("Tone 3 select: %s\n", parameters.getTone3Select()));
+		text.append(String.format("SYNC/RING select: %s\n", parameters.getSyncRingSelect()));
+		text.append(String.format("Effects master switch: %s\n", parameters.getEffectsMasterSwitch()));
+		text.append(String.format("Delay tempo sync switch: %s\n", parameters.getDelayTempoSyncSwitch()));
+		text.append(String.format("Low boost switch: %s\n", parameters.getLowBoostSwitch()));
+		text.append(String.format("D-Beam assign: %s\n", parameters.getDBeamAssign()));
+		text.append(String.format("D-Beam polarity: %s\n", parameters.getDBeamPolarity()));
+		text.append(String.format("Effects distortion select: %s\n", parameters.getEffectsDistortionSelect()));
+		text.append(String.format("Effects flanger select: %s\n", parameters.getEffectsFlangerSelect()));
+		text.append(String.format("Effects delay select: %s\n", parameters.getEffectsDelaySelect()));
+		text.append(String.format("Effects reverb select: %s\n", parameters.getEffectsReverbSelect()));
+		
+		return text.toString();
 	}
 	
 	@Override
