@@ -18,52 +18,28 @@ package nl.grauw.gaia_tool;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
-import nl.grauw.gaia_tool.parameters.PatchCommon;
 import nl.grauw.gaia_tool.parameters.Delay;
 import nl.grauw.gaia_tool.parameters.Distortion;
 import nl.grauw.gaia_tool.parameters.Flanger;
+import nl.grauw.gaia_tool.parameters.PatchCommon;
 import nl.grauw.gaia_tool.parameters.Reverb;
 import nl.grauw.gaia_tool.parameters.Tone;
 
-public abstract class Patch extends Observable {
-	
-	private Gaia gaia;
-	
-	private Address lastRequestAddress;
-	
-	private PatchCommon common;
+public class Patch extends Observable {
+
+	protected PatchCommon common;
 	private Tone[] tones = new Tone[3];
 	private Distortion distortion;
 	private Flanger flanger;
 	private Delay delay;
 	private Reverb reverb;
-	private ArpeggioCommon arpeggioCommon;
-	private ArpeggioPattern[] arpeggioPatterns = new ArpeggioPattern[16];
-	
-	public Patch(Gaia gaia) {
-		this.gaia = gaia;
+	protected ArpeggioCommon arpeggioCommon;
+	protected ArpeggioPattern[] arpeggioPatterns = new ArpeggioPattern[16];
+
+	public Patch() {
+		super();
 	}
-	
-	public Gaia getGaia() {
-		return gaia;
-	}
-	
-	public Address getAddress() {
-		return getAddress(0);
-	}
-	
-	public abstract Address getAddress(int byte3);
-	
-	protected void loadData(Address address, int length) {
-		if (!address.equals(lastRequestAddress)) {
-			gaia.sendDataRequest(address, length);
-		}
-	}
-	
-	protected void saveData(Parameters parameters) {
-		gaia.sendDataTransmission(parameters);
-	}
-	
+
 	public void updateParameters(Address address, byte[] data) {
 		byte byte3 = address.getByte3();
 		byte byte4 = address.getByte4();
@@ -119,7 +95,7 @@ public abstract class Patch extends Observable {
 			throw new IllegalArgumentException("Address not recognised.");
 		}
 	}
-	
+
 	public void clearParameters() {
 		common = null;
 		for (int i = 0; i < 3; i++)
@@ -140,7 +116,7 @@ public abstract class Patch extends Observable {
 		notifyObservers("arpeggioCommon");
 		notifyObservers("arpeggioPatterns");
 	}
-	
+
 	public PatchCommon getCommon() {
 		return common;
 	}
@@ -149,16 +125,7 @@ public abstract class Patch extends Observable {
 		this.common = common;
 		notifyObservers("common");
 	}
-	
-	public void loadCommon() {
-		loadData(getAddress(0x00), 0x3D);
-	}
-	
-	public void saveCommon() {
-		if (common != null)
-			saveData(common);
-	}
-	
+
 	/**
 	 * Return one of the patch’s tone parameters.
 	 * @param number The tone number (1 - 3).
@@ -172,11 +139,7 @@ public abstract class Patch extends Observable {
 		this.tones[number - 1] = tone;
 		notifyObservers("tones");
 	}
-	
-	public void loadTone(int number) {
-		loadData(getAddress(0x01 + number - 1), 0x3E);
-	}
-	
+
 	public Distortion getDistortion() {
 		return distortion;
 	}
@@ -185,11 +148,7 @@ public abstract class Patch extends Observable {
 		this.distortion = distortion;
 		notifyObservers("distortion");
 	}
-	
-	public void loadDistortion() {
-		loadData(getAddress(0x04), 0x81);
-	}
-	
+
 	public Flanger getFlanger() {
 		return flanger;
 	}
@@ -198,11 +157,7 @@ public abstract class Patch extends Observable {
 		this.flanger = flanger;
 		notifyObservers("flanger");
 	}
-	
-	public void loadFlanger() {
-		loadData(getAddress(0x06), 0x51);
-	}
-	
+
 	public Delay getDelay() {
 		return delay;
 	}
@@ -211,11 +166,7 @@ public abstract class Patch extends Observable {
 		this.delay = delay;
 		notifyObservers("delay");
 	}
-	
-	public void loadDelay() {
-		loadData(getAddress(0x08), 0x51);
-	}
-	
+
 	public Reverb getReverb() {
 		return reverb;
 	}
@@ -224,11 +175,7 @@ public abstract class Patch extends Observable {
 		this.reverb = reverb;
 		notifyObservers("reverb");
 	}
-	
-	public void loadReverb() {
-		loadData(getAddress(0x0A), 0x51);
-	}
-	
+
 	public ArpeggioCommon getArpeggioCommon() {
 		return arpeggioCommon;
 	}
@@ -237,11 +184,7 @@ public abstract class Patch extends Observable {
 		this.arpeggioCommon = arpeggioCommon;
 		notifyObservers("arpeggioCommon");
 	}
-	
-	public void loadArpeggioCommon() {
-		loadData(getAddress(0x0C), 0x08);
-	}
-	
+
 	/**
 	 * Return one of the patch’s arpeggio pattern parameters.
 	 * @param note The arpeggio pattern note (1 - 16).
@@ -255,22 +198,5 @@ public abstract class Patch extends Observable {
 		this.arpeggioPatterns[note - 1] = arpeggioPattern;
 		notifyObservers("arpeggioPatterns");
 	}
-	
-	public void loadArpeggioPattern(int note) {
-		loadData(getAddress(0x0D + note - 1), 0x42);
-	}
-	
-	public void loadArpeggioAll() {
-		loadData(getAddress(0x0C), 0xB80);
-	}
-	
-	public void saveArpeggioAll() {
-		if (arpeggioCommon != null)
-			saveData(arpeggioCommon);
-		for (ArpeggioPattern pattern : arpeggioPatterns) {
-			if (pattern != null)
-				saveData(pattern);
-		}
-	}
-	
+
 }

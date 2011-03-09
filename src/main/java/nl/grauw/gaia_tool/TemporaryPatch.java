@@ -28,7 +28,7 @@ import nl.grauw.gaia_tool.parameters.PatchCommon;
 import nl.grauw.gaia_tool.parameters.Reverb;
 import nl.grauw.gaia_tool.parameters.Tone;
 
-public class TemporaryPatch extends Patch implements Observer {
+public class TemporaryPatch extends GaiaPatch implements Observer {
 	
 	public TemporaryPatch(Gaia gaia) {
 		super(gaia);

@@ -15,7 +15,7 @@
  */
 package nl.grauw.gaia_tool;
 
-public class UserPatch extends Patch {
+public class UserPatch extends GaiaPatch {
 	
 	private int bank;
 	private int patch;

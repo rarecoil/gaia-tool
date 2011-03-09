@@ -58,12 +58,16 @@ public class PatchSaver implements PatchCompleteListener {
 	 * @param patch
 	 */
 	public void save() {
-		new PatchDataRequester(patch, this).requestMissingParameters();
-		// continues in patchComplete once all patch data is loaded
+		if (patch instanceof GaiaPatch) {
+			new PatchDataRequester((GaiaPatch) patch, this).requestMissingParameters();
+			// continues in patchComplete once all patch data is loaded
+		} else {
+			doSave();
+		}
 	}
 
 	@Override
-	public void patchComplete(Patch patch) {
+	public void patchComplete(GaiaPatch patch) {
 		doSave();
 	}
 	

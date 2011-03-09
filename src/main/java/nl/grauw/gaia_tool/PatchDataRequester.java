@@ -30,14 +30,14 @@ public class PatchDataRequester implements Observer {
 		 * @param source The observed object.
 		 * @param detail Object providing details on the state change.
 		 */
-		public void patchComplete(Patch patch);
+		public void patchComplete(GaiaPatch patch);
 		
 	}
 	
-	Patch patch;
+	GaiaPatch patch;
 	PatchCompleteListener listener;
 	
-	public PatchDataRequester(Patch patch, PatchCompleteListener listener) {
+	public PatchDataRequester(GaiaPatch patch, PatchCompleteListener listener) {
 		this.patch = patch;
 		this.listener = listener;
 	}

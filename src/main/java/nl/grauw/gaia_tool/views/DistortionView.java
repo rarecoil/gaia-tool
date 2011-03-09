@@ -17,7 +17,7 @@ package nl.grauw.gaia_tool.views;
 
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.parameters.Distortion;
 import nl.grauw.gaia_tool.parameters.Distortion.DistortionType;
@@ -26,9 +26,9 @@ public class DistortionView extends SingleParametersView {
 
 	private static final long serialVersionUID = 1L;
 
-	private Patch patch;
+	private GaiaPatch patch;
 	
-	public DistortionView(Patch patch) {
+	public DistortionView(GaiaPatch patch) {
 		this.patch = patch;
 		patch.addObserver(this);
 		initComponents();

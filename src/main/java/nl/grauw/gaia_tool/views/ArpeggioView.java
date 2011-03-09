@@ -33,7 +33,7 @@ import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.NoteValue;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.IntValue;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
@@ -170,7 +170,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 		}
 	}
 	
-	private Patch patch;
+	private GaiaPatch patch;
 	
 	private JPanel parametersContainer;
 	private JPanel arpeggioCommonContainer;
@@ -179,7 +179,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	private JTable patternTable;
 	private JTextField editField;
 	
-	public ArpeggioView(Patch patch) {
+	public ArpeggioView(GaiaPatch patch) {
 		this.patch = patch;
 		patch.addObserver(this);
 		if (patch.getArpeggioCommon() == null)

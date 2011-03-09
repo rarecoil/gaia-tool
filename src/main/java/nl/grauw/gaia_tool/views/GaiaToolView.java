@@ -46,7 +46,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.GaiaTool;
-import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.UserPatch;
 import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
@@ -367,7 +367,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	 * Return the patch that is currently selected in the tree.
 	 * @return
 	 */
-	public Patch getSelectedPatch() {
+	public GaiaPatch getSelectedPatch() {
 		TreePath tp = contentSelectionTree.getSelectionPath();
 		if (tp != null && tp.getPathCount() >= 2) {
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
@@ -385,7 +385,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 		return null;
 	}
 	
-	public JPanel getPatchParameterByName(Patch ppg, TreePath tp, int startIndex) {
+	public JPanel getPatchParameterByName(GaiaPatch ppg, TreePath tp, int startIndex) {
 		if (tp.getPathCount() == startIndex) {
 			return new PatchView(ppg);
 		} else if (tp.getPathCount() > startIndex) {
@@ -448,7 +448,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	}
 	
 	private void save() {
-		Patch patch = getSelectedPatch();
+		GaiaPatch patch = getSelectedPatch();
 		if (patch == null) {
 			JOptionPane.showMessageDialog(this, "You must select a patch to save.",
 					"No patch selected.", JOptionPane.ERROR_MESSAGE);

@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.UserPatch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
@@ -34,9 +34,9 @@ public class PatchView extends ParametersView implements AWTObserver {
 	JPanel parametersContainer;
 	PatchCommonView patchCommonView;
 	
-	private Patch patch;
+	private GaiaPatch patch;
 	
-	public PatchView(Patch patch) {
+	public PatchView(GaiaPatch patch) {
 		this.patch = patch;
 		patch.addObserver(this);
 		if (patch.getCommon() == null)
