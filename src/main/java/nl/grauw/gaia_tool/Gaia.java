@@ -130,10 +130,11 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	private void update(Parameters source, ParameterChange arg) {
-		if (getSynchronize() && !arg.fromUpdate()) {
+		if (getSynchronize() && source.hasChanged(arg)) {
 			Address address = source.getAddress().add(arg.getOffset());
 			byte[] data = source.getData(arg.getOffset(), arg.getLength());
 			sendDataTransmission(new Parameters(address, data));
+			source.updateOriginalParameters(address, data);
 		}
 	}
 	

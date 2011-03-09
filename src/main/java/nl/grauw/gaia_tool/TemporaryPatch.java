@@ -47,11 +47,12 @@ public class TemporaryPatch extends GaiaPatch implements Observer {
 	}
 	
 	private void update(Parameters source, ParameterChange arg) {
-		if (!arg.fromUpdate()) {
+		if (source.hasChanged(arg)) {
 			if (getGaia().getSynchronize()) {
 				Address address = source.getAddress().add(arg.getOffset());
 				byte[] data = source.getData(arg.getOffset(), arg.getLength());
 				saveData(new Parameters(address, data));
+				source.updateOriginalParameters(address, data);
 			}
 			// reload effect parameters when effect type changes
 			if (source == getDistortion() && arg.getOffset() == 0x00 && arg.getLength() < 0x11) {

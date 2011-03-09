@@ -45,10 +45,10 @@ public class Reverb extends Parameters {
 		if (message.getController() != null && getReverbType() != ReverbType.OFF) {
 			switch (message.getController()) {
 			case REVERB_CONTROL_1:
-				set16BitValue(0x05, message.getValue() + 32768, true);
+				update16BitValue(0x05, message.getValue() + 32768);
 				break;
 			case REVERB_LEVEL:
-				set16BitValue(0x01, message.getValue() + 32768, true);
+				update16BitValue(0x01, message.getValue() + 32768);
 				break;
 			default:
 				throw new RuntimeException("Control change message not recognised: " + message);

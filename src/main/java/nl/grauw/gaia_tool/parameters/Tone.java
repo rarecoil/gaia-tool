@@ -86,79 +86,79 @@ public class Tone extends Parameters {
 			case TONE_1_LFO_RATE:
 			case TONE_2_LFO_RATE:
 			case TONE_3_LFO_RATE:
-				setValue(0x1D, message.getValue(), true);
+				updateValue(0x1D, message.getValue());
 				break;
 			case TONE_1_LFO_FADE_TIME:
 			case TONE_2_LFO_FADE_TIME:
 			case TONE_3_LFO_FADE_TIME:
-				setValue(0x20, message.getValue(), true);
+				updateValue(0x20, message.getValue());
 				break;
 			case TONE_1_LFO_PITCH_DEPTH:
 			case TONE_2_LFO_PITCH_DEPTH:
 			case TONE_3_LFO_PITCH_DEPTH:
-				setValue(0x22, Math.max(message.getValue(), 1), true);
+				updateValue(0x22, Math.max(message.getValue(), 1));
 				break;
 			case TONE_1_LFO_FILTER_DEPTH:
 			case TONE_2_LFO_FILTER_DEPTH:
 			case TONE_3_LFO_FILTER_DEPTH:
-				setValue(0x23, Math.max(message.getValue(), 1), true);
+				updateValue(0x23, Math.max(message.getValue(), 1));
 				break;
 			case TONE_1_LFO_AMP_DEPTH:
 			case TONE_2_LFO_AMP_DEPTH:
 			case TONE_3_LFO_AMP_DEPTH:
-				setValue(0x24, Math.max(message.getValue(), 1), true);
+				updateValue(0x24, Math.max(message.getValue(), 1));
 				break;
 			case TONE_1_OSC_PITCH:
 			case TONE_2_OSC_PITCH:
 			case TONE_3_OSC_PITCH:
 				// need to use a mapping because the values don’t change on a linear scale
-				setValue(0x03, oscPitchControlMapping[message.getValue()], true);
+				updateValue(0x03, oscPitchControlMapping[message.getValue()]);
 				break;
 			case TONE_1_OSC_DETUNE:
 			case TONE_2_OSC_DETUNE:
 			case TONE_3_OSC_DETUNE:
 				// need to use a mapping because the values don’t change on a linear scale
-				setValue(0x04, oscDetuneControlMapping[message.getValue()], true);
+				updateValue(0x04, oscDetuneControlMapping[message.getValue()]);
 				break;
 			case TONE_1_OSC_PULSE_WIDTH_MODULATION:
 			case TONE_2_OSC_PULSE_WIDTH_MODULATION:
 			case TONE_3_OSC_PULSE_WIDTH_MODULATION:
-				setValue(0x05, message.getValue(), true);
+				updateValue(0x05, message.getValue());
 				break;
 			case TONE_1_OSC_PULSE_WIDTH:
 			case TONE_2_OSC_PULSE_WIDTH:
 			case TONE_3_OSC_PULSE_WIDTH:
-				setValue(0x06, message.getValue(), true);
+				updateValue(0x06, message.getValue());
 				break;
 			case TONE_1_OSC_ENV_DEPTH:
 			case TONE_2_OSC_ENV_DEPTH:
 			case TONE_3_OSC_ENV_DEPTH:
-				setValue(0x09, Math.max(message.getValue(), 1), true);
+				updateValue(0x09, Math.max(message.getValue(), 1));
 				break;
 			case TONE_1_FILTER_CUTOFF:
 			case TONE_2_FILTER_CUTOFF:
 			case TONE_3_FILTER_CUTOFF:
-				setValue(0x0C, message.getValue(), true);
+				updateValue(0x0C, message.getValue());
 				break;
 			case TONE_1_FILTER_RESONANCE:
 			case TONE_2_FILTER_RESONANCE:
 			case TONE_3_FILTER_RESONANCE:
-				setValue(0x0F, message.getValue(), true);
+				updateValue(0x0F, message.getValue());
 				break;
 			case TONE_1_FILTER_ENV_DEPTH:
 			case TONE_2_FILTER_ENV_DEPTH:
 			case TONE_3_FILTER_ENV_DEPTH:
-				setValue(0x14, Math.max(message.getValue(), 1), true);
+				updateValue(0x14, Math.max(message.getValue(), 1));
 				break;
 			case TONE_1_FILTER_KEY_FOLLOW:
 			case TONE_2_FILTER_KEY_FOLLOW:
 			case TONE_3_FILTER_KEY_FOLLOW:
-				setValue(0x0D, (int) (message.getValue() / 6.1) + 54, true);
+				updateValue(0x0D, (int) (message.getValue() / 6.1) + 54);
 				break;
 			case TONE_1_AMP_LEVEL:
 			case TONE_2_AMP_LEVEL:
 			case TONE_3_AMP_LEVEL:
-				setValue(0x15, message.getValue(), true);
+				updateValue(0x15, message.getValue());
 				break;
 			default:
 				throw new RuntimeException("Control change message not recognised: " + message);

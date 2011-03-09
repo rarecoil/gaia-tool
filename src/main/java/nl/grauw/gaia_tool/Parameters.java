@@ -31,12 +31,10 @@ public class Parameters extends Observable {
 		
 		private int offset;
 		private int length;
-		private boolean fromUpdate;
 		
-		private ParameterChange(int offset, int length, boolean fromUpdate) {
+		private ParameterChange(int offset, int length) {
 			this.offset = offset;
 			this.length = length;
-			this.fromUpdate = fromUpdate;
 		}
 		
 		/**
@@ -56,15 +54,6 @@ public class Parameters extends Observable {
 		}
 		
 		/**
-		 * Returns whether the parameter change is an update originating from an edit data
-		 * transmission by the GAIA, in which case they should not be synced.
-		 * @return True if the change was done by an update.
-		 */
-		public boolean fromUpdate() {
-			return fromUpdate;
-		}
-		
-		/**
 		 * Test whether the parameter changes include a certain offset.
 		 * @param testOffset The offset to test.
 		 * @return True if the specified offset is included in the changes.
@@ -80,6 +69,7 @@ public class Parameters extends Observable {
 	}
 	
 	private Address address;
+	private byte[] originalData;
 	private byte[] data;
 	
 	/**
@@ -91,6 +81,7 @@ public class Parameters extends Observable {
 	 */
 	public Parameters(Address address, byte[] data) {
 		this.address = address;
+		this.originalData = data.clone();
 		this.data = data.clone();
 	}
 	
@@ -119,6 +110,37 @@ public class Parameters extends Observable {
 	}
 	
 	/**
+	 * Returns whether the data has changed since the last update.
+	 * @return True if the data has changed.
+	 */
+	public boolean hasChanged() {
+		return hasChanged(0, data.length);
+	}
+	
+	/**
+	 * Returns whether the data in the specified range has changed since the last update.
+	 * @param pc The ParameterChange object to take offset and length from.
+	 * @return True if the data has changed.
+	 */
+	public boolean hasChanged(ParameterChange pc) {
+		return hasChanged(pc.getOffset(), pc.getLength());
+	}
+	
+	/**
+	 * Returns whether the data in the specified range has changed since the last update.
+	 * @param offset The start position to check.
+	 * @param length The number of bytes to check.
+	 * @return True if the data has changed.
+	 */
+	public boolean hasChanged(int offset, int length) {
+		for (int i = offset, end = offset + length; i < end; i++) {
+			if (data[i] != originalData[i])
+				return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Returns the length of the parameter data.
 	 * @return The parameter data length.
 	 */
@@ -137,9 +159,25 @@ public class Parameters extends Observable {
 			throw new Error("Address or data out of range.");
 		
 		for (int i = 0; i < newData.length; i++) {
-			data[offset + i] = newData[i];
+			originalData[offset + i] = data[offset + i] = newData[i];
 		}
-		this.notifyObservers(new ParameterChange(offset, newData.length, true));
+		this.notifyObservers(new ParameterChange(offset, newData.length));
+	}
+	
+	/**
+	 * Update original parameter data only.
+	 * (Used by parameter synchronisation.)
+	 * @param address The start address of the data to change.
+	 * @param newData The data to change. All bytes must be in the range 0-127.
+	 */
+	public void updateOriginalParameters(Address address, byte[] newData) {
+		int offset = this.address.offsetOf(address);
+		if (offset < 0 || offset >= getLength() || offset + newData.length > getLength())
+			throw new Error("Address or data out of range.");
+		
+		for (int i = 0; i < newData.length; i++) {
+			originalData[offset + i] = newData[i];
+		}
 	}
 	
 	/**
@@ -182,8 +220,8 @@ public class Parameters extends Observable {
 	/**
 	 * Gets a string from data at the specified offset.
 	 * @param offset Offset relative to the base address.
-	 * @param length
-	 * @return The 
+	 * @param length The desired length of the string.
+	 * @return The string.
 	 */
 	public String getString(int offset, int length) {
 		return new String(data, offset, length);
@@ -195,14 +233,23 @@ public class Parameters extends Observable {
 	 * @param value A value in the range 0-127.
 	 */
 	public void setValue(int offset, int value) {
-		setValue(offset, value, false);
-	}
-	
-	protected void setValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 128)
 			throw new IllegalArgumentException("Value out of range.");
 		data[offset] = (byte)value;
-		this.notifyObservers(new ParameterChange(offset, 1, fromUpdate));
+		this.notifyObservers(new ParameterChange(offset, 1));
+	}
+	
+	/**
+	 * Update a 7-bit parameter value at the specified offset.
+	 * Also updates the original data, so the data appears unchanged.
+	 * @param offset Offset relative to the base address.
+	 * @param value A value in the range 0-127.
+	 */
+	protected void updateValue(int offset, int value) {
+		if (value < 0 || value >= 128)
+			throw new IllegalArgumentException("Value out of range.");
+		originalData[offset] = data[offset] = (byte)value;
+		this.notifyObservers(new ParameterChange(offset, 1));
 	}
 	
 	/**
@@ -211,15 +258,11 @@ public class Parameters extends Observable {
 	 * @param value A value in the range 0-255.
 	 */
 	public void set8BitValue(int offset, int value) {
-		set8BitValue(offset, value, false);
-	}
-	
-	protected void set8BitValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 256)
 			throw new IllegalArgumentException("Value out of range.");
 		data[offset] = (byte) (value >> 4 & 0x0F);
 		data[offset + 1] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 2, fromUpdate));
+		this.notifyObservers(new ParameterChange(offset, 2));
 	}
 	
 	/**
@@ -228,16 +271,12 @@ public class Parameters extends Observable {
 	 * @param value A value in the range 0-4095.
 	 */
 	public void set12BitValue(int offset, int value) {
-		set12BitValue(offset, value, false);
-	}
-	
-	protected void set12BitValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 4096)
 			throw new IllegalArgumentException("Value out of range.");
 		data[offset] = (byte) (value >> 8 & 0x0F);
 		data[offset + 1] = (byte) (value >> 4 & 0x0F);
 		data[offset + 2] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 3, fromUpdate));
+		this.notifyObservers(new ParameterChange(offset, 3));
 	}
 	
 	/**
@@ -246,17 +285,29 @@ public class Parameters extends Observable {
 	 * @param value A value in the range 0-65535.
 	 */
 	public void set16BitValue(int offset, int value) {
-		set16BitValue(offset, value, false);
-	}
-	
-	protected void set16BitValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 65536)
 			throw new IllegalArgumentException("Value out of range.");
 		data[offset] = (byte) (value >> 12 & 0x0F);
 		data[offset + 1] = (byte) (value >> 8 & 0x0F);
 		data[offset + 2] = (byte) (value >> 4 & 0x0F);
 		data[offset + 3] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 4, fromUpdate));
+		this.notifyObservers(new ParameterChange(offset, 4));
+	}
+	
+	/**
+	 * Update a 16-bit parameter value at the specified offset.
+	 * Also updates the original data, so the data appears unchanged.
+	 * @param offset Offset relative to the base address.
+	 * @param value A value in the range 0-65535.
+	 */
+	protected void update16BitValue(int offset, int value) {
+		if (value < 0 || value >= 65536)
+			throw new IllegalArgumentException("Value out of range.");
+		originalData[offset] = data[offset] = (byte) (value >> 12 & 0x0F);
+		originalData[offset + 1] = data[offset + 1] = (byte) (value >> 8 & 0x0F);
+		originalData[offset + 2] = data[offset + 2] = (byte) (value >> 4 & 0x0F);
+		originalData[offset + 3] = data[offset + 3] = (byte) (value & 0x0F);
+		this.notifyObservers(new ParameterChange(offset, 4));
 	}
 	
 	/**
@@ -272,7 +323,7 @@ public class Parameters extends Observable {
 		for (int i = 0; i < values.length; i++) {
 			data[offset + i] = (byte) values[i];
 		}
-		this.notifyObservers(new ParameterChange(offset, values.length, false));
+		this.notifyObservers(new ParameterChange(offset, values.length));
 	}
 	
 	/**
@@ -288,7 +339,7 @@ public class Parameters extends Observable {
 		for (int i = 0; i < values.length; i++) {
 			data[offset + i] = values[i];
 		}
-		this.notifyObservers(new ParameterChange(offset, values.length, false));
+		this.notifyObservers(new ParameterChange(offset, values.length));
 	}
 	
 	@Override

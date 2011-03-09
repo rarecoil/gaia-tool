@@ -45,7 +45,7 @@ public class Delay extends Parameters {
 		if (message.getController() != null && getDelayType() != DelayType.OFF) {
 			switch (message.getController()) {
 			case DELAY_LEVEL:
-				set16BitValue(0x01, message.getValue() + 32768, true);
+				update16BitValue(0x01, message.getValue() + 32768);
 				break;
 			// Commented out because functionality depends on non-local tempo sync parameter
 //			case DELAY_CONTROL_1:
