@@ -403,11 +403,11 @@ public class Gaia extends Observable implements Observer {
 		sendDataRequest(new Address(0x01, 0x00, 0x00, 0x00), 0x6E);
 	}
 	
-	public Patch getTemporaryPatch() {
+	public TemporaryPatch getTemporaryPatch() {
 		return temporaryPatch;
 	}
 	
-	public Patch getUserPatch(int bank, int patch) {
+	public UserPatch getUserPatch(int bank, int patch) {
 		if (bank < 0 || bank > 7)
 			throw new IllegalArgumentException("Invalid bank number.");
 		if (patch < 0 || patch > 7)
