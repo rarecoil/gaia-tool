@@ -17,8 +17,16 @@ package nl.grauw.gaia_tool;
 
 import nl.grauw.gaia_tool.mvc.Observable;
 
+/**
+ * Parameters encodes a set of parameters at a certain address.
+ * It provides methods to get and set individual parameter values, and to notify listeners about these changes.
+ */
 public class Parameters extends Observable {
 	
+	/**
+	 * A parameter data change notification object.
+	 * Indicates what range of values has changed.
+	 */
 	public static class ParameterChange {
 		
 		private int offset;
@@ -31,10 +39,18 @@ public class Parameters extends Observable {
 			this.fromUpdate = fromUpdate;
 		}
 		
+		/**
+		 * Get the start offset of the changed parameter data.
+		 * @return The start offset of the changed data.
+		 */
 		public int getOffset() {
 			return offset;
 		}
 		
+		/**
+		 * Get the length of the changed parameter data.
+		 * @return The length of the changed data.
+		 */
 		public int getLength() {
 			return length;
 		}
@@ -50,11 +66,14 @@ public class Parameters extends Observable {
 		
 		/**
 		 * Test whether the parameter changes include a certain offset.
+		 * @param testOffset The offset to test.
+		 * @return True if the specified offset is included in the changes.
 		 */
 		public boolean includes(int testOffset) {
 			return testOffset >= offset && testOffset < (offset + length);
 		}
 		
+		@Override
 		public String toString() {
 			return "data";
 		}
@@ -63,6 +82,13 @@ public class Parameters extends Observable {
 	private Address address;
 	private byte[] data;
 	
+	/**
+	 * Constructs a new Parameters object.
+	 * @param address The start address of the data to change.
+	 * @param data The data to change. All bytes must be in the range 0-127.
+	 * @param address
+	 * @param data All bytes must be in the range 0-127.
+	 */
 	public Parameters(Address address, byte[] data) {
 		this.address = address;
 		this.data = data.clone();
@@ -72,20 +98,39 @@ public class Parameters extends Observable {
 		return address;
 	}
 	
+	/**
+	 * Gets the raw parameter data.
+	 * @return A copy of the parameter data.
+	 */
 	public byte[] getData() {
 		return getData(0, data.length);
 	}
 	
+	/**
+	 * Gets the raw parameter data in the specified range.
+	 * @param offset The start position of the data to return.
+	 * @param length The length of the data to return.
+	 * @return A copy of the parameter data requested.
+	 */
 	public byte[] getData(int offset, int length) {
 		byte[] copy = new byte[length];
 		System.arraycopy(data, offset, copy, 0, length);
 		return copy;
 	}
 	
+	/**
+	 * Returns the length of the parameter data.
+	 * @return The parameter data length.
+	 */
 	public int getLength() {
 		return data.length;
 	}
 	
+	/**
+	 * Update parameter data.
+	 * @param address The start address of the data to change.
+	 * @param newData The data to change. All bytes must be in the range 0-127.
+	 */
 	public void updateParameters(Address address, byte[] newData) {
 		int offset = this.address.offsetOf(address);
 		if (offset < 0 || offset >= getLength() || offset + newData.length > getLength())
@@ -97,27 +142,58 @@ public class Parameters extends Observable {
 		this.notifyObservers(new ParameterChange(offset, newData.length, true));
 	}
 	
+	/**
+	 * Gets the 7-bit parameter value at the specified offset.
+	 * @param offset Offset relative to the base address.
+	 * @return The value in the range 0-127.
+	 */
 	public int getValue(int offset) {
 		return data[offset];
 	}
 	
+	/**
+	 * Gets the 8-bit parameter value at the specified offset.
+	 * @param offset Offset relative to the base address.
+	 * @return The value in the range 0-255.
+	 */
 	public int get8BitValue(int offset) {
 		return data[offset] << 4 | data[offset + 1];
 	}
 	
+	/**
+	 * Gets the 12-bit parameter value at the specified offset.
+	 * @param offset Offset relative to the base address.
+	 * @return The value in the range 0-4095.
+	 */
 	public int get12BitValue(int offset) {
 		return data[offset] << 8 | data[offset + 1] << 4 | data[offset + 2];
 	}
 	
+	/**
+	 * Gets the 16-bit parameter value at the specified offset.
+	 * @param offset Offset relative to the base address.
+	 * @return The value in the range 0-65535.
+	 */
 	public int get16BitValue(int offset) {
 		return data[offset] << 12 | data[offset + 1] << 8 |
 				data[offset + 2] << 4 | data[offset + 3];
 	}
 	
+	/**
+	 * Gets a string from data at the specified offset.
+	 * @param offset Offset relative to the base address.
+	 * @param length
+	 * @return The 
+	 */
 	public String getString(int offset, int length) {
 		return new String(data, offset, length);
 	}
 	
+	/**
+	 * Sets a 7-bit parameter value at the specified offset.
+	 * @param offset Offset relative to the base address.
+	 * @param value A value in the range 0-127.
+	 */
 	public void setValue(int offset, int value) {
 		setValue(offset, value, false);
 	}
@@ -129,6 +205,11 @@ public class Parameters extends Observable {
 		this.notifyObservers(new ParameterChange(offset, 1, fromUpdate));
 	}
 	
+	/**
+	 * Sets an 8-bit parameter value at the specified offset.
+	 * @param offset Offset relative to the base address.
+	 * @param value A value in the range 0-255.
+	 */
 	public void set8BitValue(int offset, int value) {
 		set8BitValue(offset, value, false);
 	}
@@ -141,6 +222,11 @@ public class Parameters extends Observable {
 		this.notifyObservers(new ParameterChange(offset, 2, fromUpdate));
 	}
 	
+	/**
+	 * Sets a 12-bit parameter value at the specified offset.
+	 * @param offset Offset relative to the base address.
+	 * @param value A value in the range 0-4095.
+	 */
 	public void set12BitValue(int offset, int value) {
 		set12BitValue(offset, value, false);
 	}
@@ -154,6 +240,11 @@ public class Parameters extends Observable {
 		this.notifyObservers(new ParameterChange(offset, 3, fromUpdate));
 	}
 	
+	/**
+	 * Sets a 16-bit parameter value at the specified offset.
+	 * @param offset Offset relative to the base address.
+	 * @param value A value in the range 0-65535.
+	 */
 	public void set16BitValue(int offset, int value) {
 		set16BitValue(offset, value, false);
 	}
