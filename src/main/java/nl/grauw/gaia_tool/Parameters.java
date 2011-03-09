@@ -33,7 +33,7 @@ public class Parameters extends Observable {
 		private int length;
 		private boolean fromUpdate;
 		
-		public ParameterChange(int offset, int length, boolean fromUpdate) {
+		private ParameterChange(int offset, int length, boolean fromUpdate) {
 			this.offset = offset;
 			this.length = length;
 			this.fromUpdate = fromUpdate;
