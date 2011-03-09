@@ -65,7 +65,7 @@ public class Parameters extends Observable {
 	
 	public Parameters(Address address, byte[] data) {
 		this.address = address;
-		this.data = data;
+		this.data = data.clone();
 	}
 	
 	public Address getAddress() {
