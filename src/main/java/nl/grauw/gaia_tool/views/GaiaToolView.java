@@ -45,7 +45,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import nl.grauw.gaia_tool.Gaia;
+import nl.grauw.gaia_tool.GaiaTool;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.UserPatch;
@@ -53,9 +53,9 @@ import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
-public class GaiaView extends JFrame implements ActionListener, TreeSelectionListener, WindowListener, AWTObserver {
+public class GaiaToolView extends JFrame implements ActionListener, TreeSelectionListener, WindowListener, AWTObserver {
 	
-	private Gaia gaia;
+	private GaiaTool gaiaTool;
 	
 	private static final long serialVersionUID = 1L;
 	private JMenuBar mainMenuBar;
@@ -78,9 +78,9 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	private IntroPanel introPanel;
 	private NotConnectedPanel notConnectedPanel;
 
-	public GaiaView(Gaia gaia) {
-		this.gaia = gaia;
-		gaia.addObserver(this);
+	public GaiaToolView(GaiaTool gaiaTool) {
+		this.gaiaTool = gaiaTool;
+		gaiaTool.getGaia().addObserver(this);
 		
 		initComponents();
 		updateContentPanel();
@@ -88,7 +88,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	
 	public void exit() {
 		dispose();
-		gaia.exit();
+		gaiaTool.exit();
 	}
 
 	private void initComponents() {
@@ -123,7 +123,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private LogView getLogView() {
 		if (logView == null) {
-			logView = new LogView(gaia.getLog());
+			logView = new LogView(gaiaTool.getLog());
 		}
 		return logView;
 	}
@@ -146,7 +146,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 
 	private NotConnectedPanel getNotConnectedPanel() {
 		if (notConnectedPanel == null) {
-			notConnectedPanel = new NotConnectedPanel(gaia);
+			notConnectedPanel = new NotConnectedPanel(gaiaTool.getGaia());
 		}
 		return notConnectedPanel;
 	}
@@ -188,7 +188,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			loadItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
 					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 			loadItem.addActionListener(this);
-			getLoadItem().setEnabled(gaia.isIdentityConfirmed());
+			getLoadItem().setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
 		}
 		return loadItem;
 	}
@@ -199,7 +199,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 			saveItem.addActionListener(this);
-			getSaveItem().setEnabled(gaia.isIdentityConfirmed());
+			getSaveItem().setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
 		}
 		return saveItem;
 	}
@@ -212,7 +212,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 			testMenu.add(getGM2SystemOnItem());
 			testMenu.add(getGMSystemOffItem());
 			
-			testMenu.setEnabled(gaia.isOpened());
+			testMenu.setEnabled(gaiaTool.getGaia().isOpened());
 		}
 		return testMenu;
 	}
@@ -348,12 +348,12 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		TreePath tp = contentSelectionTree.getSelectionPath();
 		if (tp == null) {
 			return getIntroPanel();
-		} else if (!gaia.isOpened() || !gaia.isIdentityConfirmed()) {
+		} else if (!gaiaTool.getGaia().isOpened() || !gaiaTool.getGaia().isIdentityConfirmed()) {
 			return getNotConnectedPanel();
 		} else if (tp.getPathCount() >= 2) {
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
 			if ("System".equals(node1.getUserObject()) && tp.getPathCount() == 2) {
-				return new SystemView(gaia);
+				return new SystemView(gaiaTool.getGaia());
 			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() >= 2) {
 				return getPatchParameterByName(getSelectedPatch(), tp, 2);
 			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 4) {
@@ -372,14 +372,14 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		if (tp != null && tp.getPathCount() >= 2) {
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
 			if ("Temporary patch".equals(node1.getUserObject())) {
-				return gaia.getTemporaryPatch();
+				return gaiaTool.getGaia().getTemporaryPatch();
 			}
 			if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 4) {
 				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(2);
 				DefaultMutableTreeNode node3 = (DefaultMutableTreeNode)tp.getPathComponent(3);
 				int bank = node1.getIndex(node2);
 				int patch = node2.getIndex(node3);
-				return gaia.getUserPatch(bank, patch);
+				return gaiaTool.getGaia().getUserPatch(bank, patch);
 			}
 		}
 		return null;
@@ -416,24 +416,24 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 	@Override
 	public void update(Observable source, Object detail) {
 		if ("opened".equals(detail)) {
-			getTestMenu().setEnabled(gaia.isOpened());
+			getTestMenu().setEnabled(gaiaTool.getGaia().isOpened());
 		} else if ("identityConfirmed".equals(detail)) {
 			updateContentPanel();
-			getLoadItem().setEnabled(gaia.isIdentityConfirmed());
-			getSaveItem().setEnabled(gaia.isIdentityConfirmed());
+			getLoadItem().setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
+			getSaveItem().setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
 		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == playTestNotesItem) {
-			gaia.playTestNote();
-			gaia.playGMTestNote();
+			gaiaTool.getGaia().playTestNote();
+			gaiaTool.getGaia().playGMTestNote();
 		} else if (e.getSource() == gmSystemOnItem) {
-			gaia.sendGM1SystemOn();
+			gaiaTool.getGaia().sendGM1SystemOn();
 		} else if (e.getSource() == gm2SystemOnItem) {
-			gaia.sendGM2SystemOn();
+			gaiaTool.getGaia().sendGM2SystemOn();
 		} else if (e.getSource() == gmSystemOffItem) {
-			gaia.sendGMSystemOff();
+			gaiaTool.getGaia().sendGMSystemOff();
 		} else if (e.getSource() == exitItem) {
 			exit();
 		} else if (e.getSource() == saveItem) {
@@ -443,7 +443,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 		} else if (e.getSource() == reconnectItem) {
 			reconnect();
 		} else if (e.getSource() == configureMidiItem) {
-			new MIDIDeviceSelector(gaia, this).show();
+			new MIDIDeviceSelector(gaiaTool.getGaia(), this).show();
 		}
 	}
 	
@@ -454,7 +454,7 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 					"No patch selected.", JOptionPane.ERROR_MESSAGE);
 		} else {
 			JFileChooser fc = new JFileChooser();
-			fc.setCurrentDirectory(gaia.getCurrentDirectory());
+			fc.setCurrentDirectory(gaiaTool.getCurrentDirectory());
 			fc.addChoosableFileFilter(new FileNameExtensionFilter("GAIA patch file", "gaia"));
 			if (patch instanceof TemporaryPatch) {
 				fc.setSelectedFile(new File(fc.getCurrentDirectory(), "patch-temporary.gaia"));
@@ -463,28 +463,28 @@ public class GaiaView extends JFrame implements ActionListener, TreeSelectionLis
 						"ABCDEFGH".charAt(((UserPatch)patch).getBank()), ((UserPatch)patch).getPatch() + 1)));
 			}
 			int result = fc.showSaveDialog(this);
-			gaia.setCurrentDirectory(fc.getCurrentDirectory());
+			gaiaTool.setCurrentDirectory(fc.getCurrentDirectory());
 			if (result == JFileChooser.APPROVE_OPTION) {
-				gaia.savePatch(fc.getSelectedFile(), getSelectedPatch());
+				gaiaTool.savePatch(fc.getSelectedFile(), getSelectedPatch());
 			}
 		}
 	}
 	
 	private void load() {
 		JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(gaia.getCurrentDirectory());
+		fc.setCurrentDirectory(gaiaTool.getCurrentDirectory());
 		fc.addChoosableFileFilter(new FileNameExtensionFilter("GAIA patch file", "gaia"));
 		int result = fc.showOpenDialog(this);
-		gaia.setCurrentDirectory(fc.getCurrentDirectory());
+		gaiaTool.setCurrentDirectory(fc.getCurrentDirectory());
 		if (result == JFileChooser.APPROVE_OPTION) {
-			gaia.loadPatch(fc.getSelectedFile(), gaia.getTemporaryPatch());
+			gaiaTool.loadPatch(fc.getSelectedFile(), gaiaTool.getGaia().getTemporaryPatch());
 		}
 	}
 	
 	private void reconnect() {
 		try {
-			gaia.close();
-			gaia.open();
+			gaiaTool.getGaia().close();
+			gaiaTool.getGaia().open();
 		} catch (GaiaNotFoundException e) {
 			JOptionPane.showMessageDialog(this, "The GAIA MIDI ports could not be found. Is your GAIA turned on?",
 					"Problem connecting to Roland GAIA", JOptionPane.ERROR_MESSAGE);

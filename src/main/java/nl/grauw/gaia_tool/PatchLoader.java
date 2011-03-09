@@ -33,13 +33,15 @@ public class PatchLoader {
 	
 	File patchFile;
 	Patch patch;
+	Log log;
 	Gaia gaia;
 	
 	final static Charset UTF8 = Charset.forName("UTF-8");
 	
-	public PatchLoader(File patchFile, Patch patch, Gaia gaia) {
+	public PatchLoader(File patchFile, Patch patch, Log log, Gaia gaia) {
 		this.patchFile = patchFile;
 		this.patch = patch;
+		this.log = log;
 		this.gaia = gaia;
 	}
 	
@@ -49,7 +51,7 @@ public class PatchLoader {
 	 * @param patch
 	 */
 	public void loadPatch() {
-		gaia.getLog().log("Loading " + patchFile);
+		log.log("Loading " + patchFile);
 		
 		FileInputStream fis;
 		try {

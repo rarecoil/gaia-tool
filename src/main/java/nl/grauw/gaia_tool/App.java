@@ -23,14 +23,14 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
-import nl.grauw.gaia_tool.views.GaiaView;
+import nl.grauw.gaia_tool.views.GaiaToolView;
 
 public class App {
 	
 	static App app;
 	
-	Gaia gaia;
-	GaiaView gaiaView;
+	GaiaTool gaiaTool;
+	GaiaToolView gaiaToolView;
 	
 	public static void main(String[] args) {
 		installLookAndFeel();
@@ -58,9 +58,9 @@ public class App {
 	}
 	
 	public void initialiseModel() {
-		gaia = new Gaia();
+		gaiaTool = new GaiaTool();
 		try {
-			gaia.open();
+			gaiaTool.getGaia().open();
 		} catch (GaiaNotFoundException e) {
 			// that’s fine
 		} catch(MidiUnavailableException e) {
@@ -73,8 +73,8 @@ public class App {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				gaiaView = new GaiaView(gaia);
-				gaiaView.setVisible(true);
+				gaiaToolView = new GaiaToolView(gaiaTool);
+				gaiaToolView.setVisible(true);
 			}
 		});
 	}

@@ -42,14 +42,14 @@ public class PatchSaver implements PatchCompleteListener {
 	
 	File patchFile;
 	Patch patch;
-	Gaia gaia;
+	Log log;
 	
 	final static Charset UTF8 = Charset.forName("UTF-8");
 	
-	public PatchSaver(File patchFile, Patch patch, Gaia gaia) {
+	public PatchSaver(File patchFile, Patch patch, Log log) {
 		this.patchFile = patchFile;
 		this.patch = patch;
-		this.gaia = gaia;
+		this.log = log;
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class PatchSaver implements PatchCompleteListener {
 				writeParameterData(fos, patch.getArpeggioPattern(note));
 			}
 			fos.close();
-			gaia.getLog().log("Patch data saved to " + patchFile);
+			log.log("Patch data saved to " + patchFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

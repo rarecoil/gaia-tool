@@ -15,11 +15,6 @@
  */
 package nl.grauw.gaia_tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Properties;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -76,8 +71,6 @@ public class Gaia extends Observable implements Observer {
 
 	private boolean opened = false;
 	private boolean identityConfirmed = false;
-	private Properties settings = new Properties();
-	private File currentDirectory = null;
 	
 	private Receiver receiver;
 	private Transmitter transmitter;
@@ -91,32 +84,23 @@ public class Gaia extends Observable implements Observer {
 	final static Note C_4 = new Note(NoteName.C, 4);
 	
 	private Log log;
+	private Properties settings;
 	
 	private System system;
 	private TemporaryPatch temporaryPatch;
 	private UserPatch[] userPatches = new UserPatch[64];
 	
-	public Gaia() {
+	public Gaia(Log log, Properties settings) {
+		this.log = log;
+		this.settings = settings;
+		
 		temporaryPatch = new TemporaryPatch(this);
 		for (int bank = 0; bank < 8; bank++) {
 			for (int patch = 0; patch < 8; patch++) {
 				userPatches[bank << 3 | patch] = new UserPatch(this, bank, patch);
 			}
 		}
-		log = new Log();
 		responseReceiver = new ResponseReceiver(this);
-		
-		loadSettings();
-	}
-	
-	public void exit() {
-		close();
-		saveSettings();
-		java.lang.System.exit(0);
-	}
-	
-	public Log getLog() {
-		return log;
 	}
 	
 	public boolean getSynchronize() {
@@ -429,86 +413,6 @@ public class Gaia extends Observable implements Observer {
 		if (patch < 0 || patch > 7)
 			throw new IllegalArgumentException("Invalid patch number.");
 		return userPatches[bank << 3 | patch];
-	}
-	
-	private void loadSettings() {
-		FileReader fr;
-		try {
-			fr = new FileReader(new File(getAndCreateSettingsPath(), "settings.properties"));
-			settings.load(fr);
-		} catch (FileNotFoundException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void saveSettings() {
-		FileWriter fw;
-		try {
-			fw = new FileWriter(new File(getAndCreateSettingsPath(), "settings.properties"));
-			settings.store(fw, "GAIA tool settings file");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Saves a patch to the specified file.
-	 * @param patchFile
-	 * @param patch
-	 */
-	public void savePatch(File patchFile, Patch patch) {
-		new PatchSaver(patchFile, patch, this).save();
-	}
-	
-	/**
-	 * Loads a patch from a file into the given patch object.
-	 * @param patchFile
-	 * @param patch
-	 */
-	public void loadPatch(File patchFile, Patch patch) {
-		new PatchLoader(patchFile, patch, this).loadPatch();
-	}
-	
-	/**
-	 * Returns a File object for the settings path.
-	 * Note: also creates the settings directory if it does not exist.
-	 * @return The settings path.
-	 */
-	private File getAndCreateSettingsPath() {
-		File path = getSettingsPath();
-		if (!path.exists()) {
-			path.mkdirs();
-		}
-		return path;
-	}
-	
-	private File getSettingsPath() {
-		String appData = java.lang.System.getenv("APPDATA");
-		String home = java.lang.System.getProperty("user.home");
-		if (appData != null) {
-			return new File(appData, "gaia-tool");
-		} else if (home != null) {
-			return new File(home, ".gaia-tool");
-		}
-		throw new RuntimeException("Home directory not found.");
-	}
-	
-	/**
-	 * Returns the current directory for the file open/close dialogs.
-	 * @return The directory to load/save in.
-	 */
-	public File getCurrentDirectory() {
-		return currentDirectory;
-	}
-	
-	/**
-	 * Sets the current directory for the file open/close dialogs.
-	 * @param directory The directory to load/save in.
-	 */
-	public void setCurrentDirectory(File directory) {
-		currentDirectory = directory;
 	}
 	
 	/**
