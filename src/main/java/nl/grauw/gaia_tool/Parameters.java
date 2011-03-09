@@ -86,32 +86,32 @@ public class Parameters extends Observable {
 		return data.length;
 	}
 	
-	public void updateParameters(Address address, byte[] data) {
+	public void updateParameters(Address address, byte[] newData) {
 		int offset = this.address.offsetOf(address);
-		if (offset < 0 || offset >= getLength() || offset + data.length > getLength())
+		if (offset < 0 || offset >= getLength() || offset + newData.length > getLength())
 			throw new Error("Address or data out of range.");
 		
-		for (int i = 0; i < data.length; i++) {
-			this.data[offset + i] = data[i];
+		for (int i = 0; i < newData.length; i++) {
+			data[offset + i] = newData[i];
 		}
-		this.notifyObservers(new ParameterChange(offset, data.length, true));
+		this.notifyObservers(new ParameterChange(offset, newData.length, true));
 	}
 	
 	public int getValue(int offset) {
-		return this.data[offset];
+		return data[offset];
 	}
 	
 	public int get8BitValue(int offset) {
-		return this.data[offset] << 4 | this.data[offset + 1];
+		return data[offset] << 4 | data[offset + 1];
 	}
 	
 	public int get12BitValue(int offset) {
-		return this.data[offset] << 8 | this.data[offset + 1] << 4 | this.data[offset + 2];
+		return data[offset] << 8 | data[offset + 1] << 4 | data[offset + 2];
 	}
 	
 	public int get16BitValue(int offset) {
-		return this.data[offset] << 12 | this.data[offset + 1] << 8 |
-				this.data[offset + 2] << 4 | this.data[offset + 3];
+		return data[offset] << 12 | data[offset + 1] << 8 |
+				data[offset + 2] << 4 | data[offset + 3];
 	}
 	
 	public String getString(int offset, int length) {
@@ -125,7 +125,7 @@ public class Parameters extends Observable {
 	protected void setValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 128)
 			throw new IllegalArgumentException("Value out of range.");
-		this.data[offset] = (byte)value;
+		data[offset] = (byte)value;
 		this.notifyObservers(new ParameterChange(offset, 1, fromUpdate));
 	}
 	
@@ -136,8 +136,8 @@ public class Parameters extends Observable {
 	protected void set8BitValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 256)
 			throw new IllegalArgumentException("Value out of range.");
-		this.data[offset] = (byte) (value >> 4 & 0x0F);
-		this.data[offset + 1] = (byte) (value & 0x0F);
+		data[offset] = (byte) (value >> 4 & 0x0F);
+		data[offset + 1] = (byte) (value & 0x0F);
 		this.notifyObservers(new ParameterChange(offset, 2, fromUpdate));
 	}
 	
@@ -148,9 +148,9 @@ public class Parameters extends Observable {
 	protected void set12BitValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 4096)
 			throw new IllegalArgumentException("Value out of range.");
-		this.data[offset] = (byte) (value >> 8 & 0x0F);
-		this.data[offset + 1] = (byte) (value >> 4 & 0x0F);
-		this.data[offset + 2] = (byte) (value & 0x0F);
+		data[offset] = (byte) (value >> 8 & 0x0F);
+		data[offset + 1] = (byte) (value >> 4 & 0x0F);
+		data[offset + 2] = (byte) (value & 0x0F);
 		this.notifyObservers(new ParameterChange(offset, 3, fromUpdate));
 	}
 	
@@ -161,10 +161,10 @@ public class Parameters extends Observable {
 	protected void set16BitValue(int offset, int value, boolean fromUpdate) {
 		if (value < 0 || value >= 65536)
 			throw new IllegalArgumentException("Value out of range.");
-		this.data[offset] = (byte) (value >> 12 & 0x0F);
-		this.data[offset + 1] = (byte) (value >> 8 & 0x0F);
-		this.data[offset + 2] = (byte) (value >> 4 & 0x0F);
-		this.data[offset + 3] = (byte) (value & 0x0F);
+		data[offset] = (byte) (value >> 12 & 0x0F);
+		data[offset + 1] = (byte) (value >> 8 & 0x0F);
+		data[offset + 2] = (byte) (value >> 4 & 0x0F);
+		data[offset + 3] = (byte) (value & 0x0F);
 		this.notifyObservers(new ParameterChange(offset, 4, fromUpdate));
 	}
 	
@@ -179,7 +179,7 @@ public class Parameters extends Observable {
 				throw new IllegalArgumentException("Value out of range.");
 		}
 		for (int i = 0; i < values.length; i++) {
-			this.data[offset + i] = (byte) values[i];
+			data[offset + i] = (byte) values[i];
 		}
 		this.notifyObservers(new ParameterChange(offset, values.length, false));
 	}
@@ -195,7 +195,7 @@ public class Parameters extends Observable {
 				throw new IllegalArgumentException("Value out of range.");
 		}
 		for (int i = 0; i < values.length; i++) {
-			this.data[offset + i] = values[i];
+			data[offset + i] = values[i];
 		}
 		this.notifyObservers(new ParameterChange(offset, values.length, false));
 	}
