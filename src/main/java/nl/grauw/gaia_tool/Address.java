@@ -15,6 +15,10 @@
  */
 package nl.grauw.gaia_tool;
 
+/**
+ * Object representing an address in the GAIA memory.
+ * This object is invariant.
+ */
 public class Address {
 	
 	private int address;
