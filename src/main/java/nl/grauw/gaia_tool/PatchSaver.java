@@ -77,17 +77,8 @@ public class PatchSaver implements PatchCompleteListener {
 			patchFile.createNewFile();
 			fos = new FileOutputStream(patchFile);
 			fos.write("GAIATOOL".getBytes(UTF8));
-			writeParameterData(fos, patch.getCommon());
-			writeParameterData(fos, patch.getTone(1));
-			writeParameterData(fos, patch.getTone(2));
-			writeParameterData(fos, patch.getTone(3));
-			writeParameterData(fos, patch.getDistortion());
-			writeParameterData(fos, patch.getFlanger());
-			writeParameterData(fos, patch.getDelay());
-			writeParameterData(fos, patch.getReverb());
-			writeParameterData(fos, patch.getArpeggioCommon());
-			for (int note = 1; note <= 16; note++) {
-				writeParameterData(fos, patch.getArpeggioPattern(note));
+			for (Parameters parameters : patch) {
+				writeParameterData(fos, parameters);
 			}
 			fos.close();
 			log.log("Patch data saved to " + patchFile);
