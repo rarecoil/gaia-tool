@@ -15,8 +15,6 @@
  */
 package nl.grauw.gaia_tool;
 
-import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
-
 public abstract class GaiaPatch extends Patch {
 	
 	private Gaia gaia;
@@ -43,17 +41,8 @@ public abstract class GaiaPatch extends Patch {
 		}
 	}
 	
-	protected void saveData(Parameters parameters) {
-		gaia.sendDataTransmission(parameters);
-	}
-	
 	public void loadCommon() {
 		loadData(getAddress(0x00), 0x3D);
-	}
-	
-	public void saveCommon() {
-		if (common != null)
-			saveData(common);
 	}
 	
 	public void loadTone(int number) {
@@ -88,12 +77,16 @@ public abstract class GaiaPatch extends Patch {
 		loadData(getAddress(0x0C), 0xB80);
 	}
 	
-	public void saveArpeggioAll() {
-		if (arpeggioCommon != null)
-			saveData(arpeggioCommon);
-		for (ArpeggioPattern pattern : arpeggioPatterns) {
-			if (pattern != null)
-				saveData(pattern);
+	/**
+	 * Saves all modified parameters.
+	 */
+	public void saveParameters() {
+		for (Parameters parameters : this) {
+			if (parameters != null && parameters.hasChanged()) {
+				Parameters copy = new Parameters(parameters);
+				gaia.sendDataTransmission(copy);
+				parameters.updateOriginalParameters(copy.getAddress(), copy.getData());
+			}
 		}
 	}
 	

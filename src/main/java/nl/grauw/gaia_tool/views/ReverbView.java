@@ -51,6 +51,7 @@ public class ReverbView extends SingleParametersView {
 
 	@Override
 	public void saveParameters() {
+		patch.saveParameters();
 	}
 
 	@Override

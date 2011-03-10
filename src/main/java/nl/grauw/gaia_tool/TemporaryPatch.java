@@ -51,7 +51,7 @@ public class TemporaryPatch extends GaiaPatch implements Observer {
 			if (getGaia().getSynchronize()) {
 				Address address = source.getAddress().add(arg.getOffset());
 				byte[] data = source.getData(arg.getOffset(), arg.getLength());
-				saveData(new Parameters(address, data));
+				getGaia().sendDataTransmission(new Parameters(address, data));
 				source.updateOriginalParameters(address, data);
 			}
 			// reload effect parameters when effect type changes

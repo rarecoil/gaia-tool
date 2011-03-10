@@ -199,7 +199,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	
 	@Override
 	public void saveParameters() {
-		patch.saveArpeggioAll();
+		patch.saveParameters();
 	}
 
 	@Override

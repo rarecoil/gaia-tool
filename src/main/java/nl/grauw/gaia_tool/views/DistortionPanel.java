@@ -53,6 +53,7 @@ public class DistortionPanel extends ParametersView implements AWTObserver {
 
 	@Override
 	public void saveParameters() {
+		patch.saveParameters();
 	}
 
 	@Override

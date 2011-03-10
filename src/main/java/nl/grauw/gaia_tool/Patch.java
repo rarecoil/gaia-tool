@@ -15,6 +15,9 @@
  */
 package nl.grauw.gaia_tool;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
@@ -27,14 +30,14 @@ import nl.grauw.gaia_tool.parameters.Tone;
 
 public class Patch extends Observable implements Iterable<Parameters> {
 
-	protected PatchCommon common;
+	private PatchCommon common;
 	private Tone[] tones = new Tone[3];
 	private Distortion distortion;
 	private Flanger flanger;
 	private Delay delay;
 	private Reverb reverb;
-	protected ArpeggioCommon arpeggioCommon;
-	protected ArpeggioPattern[] arpeggioPatterns = new ArpeggioPattern[16];
+	private ArpeggioCommon arpeggioCommon;
+	private ArpeggioPattern[] arpeggioPatterns = new ArpeggioPattern[16];
 
 	public Patch() {
 		super();

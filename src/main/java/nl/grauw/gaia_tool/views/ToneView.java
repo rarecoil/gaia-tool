@@ -52,6 +52,7 @@ public class ToneView extends SingleParametersView {
 
 	@Override
 	public void saveParameters() {
+		patch.saveParameters();
 	}
 
 	@Override
