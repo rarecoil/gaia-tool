@@ -25,7 +25,7 @@ import nl.grauw.gaia_tool.parameters.PatchCommon;
 import nl.grauw.gaia_tool.parameters.Reverb;
 import nl.grauw.gaia_tool.parameters.Tone;
 
-public class Patch extends Observable {
+public class Patch extends Observable implements Iterable<Parameters> {
 
 	protected PatchCommon common;
 	private Tone[] tones = new Tone[3];
@@ -199,4 +199,56 @@ public class Patch extends Observable {
 		notifyObservers("arpeggioPatterns");
 	}
 
+	/**
+	 * Returns an iterator to loop over all parameters on this patch.
+	 */
+	@Override
+	public Iterator<Parameters> iterator() {
+		return new PatchIterator();
+	}
+
+	private class PatchIterator implements Iterator<Parameters> {
+
+		int position = 0;
+
+		@Override
+		public boolean hasNext() {
+			return position < 25;
+		}
+
+		@Override
+		public Parameters next() {
+			if (position >= 25)
+				throw new NoSuchElementException();
+			
+			int pos = position++;
+			switch (pos) {
+			case 0:
+				return common;
+			case 1:
+			case 2:
+			case 3:
+				return tones[pos - 1];
+			case 4:
+				return distortion;
+			case 5:
+				return flanger;
+			case 6:
+				return delay;
+			case 7:
+				return reverb;
+			case 8:
+				return arpeggioCommon;
+			default:
+				return arpeggioPatterns[pos - 9];
+			}
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+		
+	}
+	
 }
