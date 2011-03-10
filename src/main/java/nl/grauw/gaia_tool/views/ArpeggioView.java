@@ -62,8 +62,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 		}
 		
 		private void addPatternObservers() {
-			for (int note = 1; note <= 16; note++) {
-				Parameters pattern = patch.getArpeggioPattern(note);
+			for (Parameters pattern : patch.getArpeggioPatterns()) {
 				if (pattern != null && !pattern.hasObserver(this)) {
 					pattern.addObserver(this);
 				}
@@ -160,12 +159,14 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 			} else if (source == patch.getArpeggioCommon()) {
 				fireTableStructureChanged();
 			} else if (source instanceof ArpeggioPattern) {
-				for (int note = 1; note <= 16; note++) {
-					if (source == patch.getArpeggioPattern(note)) {
-						fireTableRowsUpdated(note - 1, note - 1);
+				int row = 0;
+				for (ArpeggioPattern pattern : patch.getArpeggioPatterns()) {
+					if (source == pattern) {
+						fireTableRowsUpdated(row, row);
 						break;
 					}
 				}
+				row++;
 			}
 		}
 	}

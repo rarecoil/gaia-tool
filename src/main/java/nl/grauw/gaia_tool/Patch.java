@@ -27,6 +27,7 @@ import nl.grauw.gaia_tool.parameters.Flanger;
 import nl.grauw.gaia_tool.parameters.PatchCommon;
 import nl.grauw.gaia_tool.parameters.Reverb;
 import nl.grauw.gaia_tool.parameters.Tone;
+import nl.grauw.gaia_tool.util.ArrayIterable;
 
 public class Patch extends Observable implements Iterable<Parameters> {
 
@@ -129,6 +130,10 @@ public class Patch extends Observable implements Iterable<Parameters> {
 		notifyObservers("common");
 	}
 
+	public Iterable<Tone> getTones() {
+		return new ArrayIterable<Tone>(tones);
+	}
+
 	/**
 	 * Return one of the patch’s tone parameters.
 	 * @param number The tone number (1 - 3).
@@ -186,6 +191,10 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	protected void setArpeggioCommon(ArpeggioCommon arpeggioCommon) {
 		this.arpeggioCommon = arpeggioCommon;
 		notifyObservers("arpeggioCommon");
+	}
+
+	public Iterable<ArpeggioPattern> getArpeggioPatterns() {
+		return new ArrayIterable<ArpeggioPattern>(arpeggioPatterns);
 	}
 
 	/**
