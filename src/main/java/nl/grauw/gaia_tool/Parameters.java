@@ -174,17 +174,16 @@ public class Parameters extends Observable {
 	
 	/**
 	 * Update original parameter data only.
-	 * (Used by parameter synchronisation.)
-	 * @param address The start address of the data to change.
-	 * @param newData The data to change. All bytes must be in the range 0-127.
+	 * (Used after sending modified parameter data to the GAIA.)
+	 * @param parameters The parameters object containing the address and data to update.
 	 */
-	public void updateOriginalParameters(Address address, byte[] newData) {
-		int offset = this.address.offsetOf(address);
-		if (offset < 0 || offset >= getLength() || offset + newData.length > getLength())
+	public void updateOriginalParameters(Parameters parameters) {
+		int offset = address.offsetOf(parameters.address);
+		if (offset < 0 || offset >= getLength() || offset + parameters.data.length > getLength())
 			throw new Error("Address or data out of range.");
 		
-		for (int i = 0; i < newData.length; i++) {
-			originalData[offset + i] = newData[i];
+		for (int i = 0; i < parameters.data.length; i++) {
+			originalData[offset + i] = parameters.data[i];
 		}
 	}
 	

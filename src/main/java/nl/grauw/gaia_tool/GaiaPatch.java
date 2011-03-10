@@ -85,7 +85,7 @@ public abstract class GaiaPatch extends Patch {
 			if (parameters != null && parameters.hasChanged()) {
 				Parameters copy = new Parameters(parameters);
 				gaia.sendDataTransmission(copy);
-				parameters.updateOriginalParameters(copy.getAddress(), copy.getData());
+				parameters.updateOriginalParameters(copy);
 			}
 		}
 	}
