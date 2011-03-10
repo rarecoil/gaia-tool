@@ -116,8 +116,10 @@ public class Gaia extends Observable implements Observer {
 		system.setTxEditData(sync);
 		if (sync == false) {
 			// manually send sync parameter
-			sendDataTransmission(new Parameters(system.getAddress().add(0x19),
-							new byte[] {(byte) system.getValue(0x19)}));
+			Parameters syncParameter = new Parameters(system.getAddress().add(0x19),
+					new byte[] {(byte) system.getValue(0x19)});
+			sendDataTransmission(syncParameter);
+			system.updateOriginalParameters(syncParameter.getAddress(), syncParameter.getData());
 		}
 		notifyObservers("synchronize");
 	}
