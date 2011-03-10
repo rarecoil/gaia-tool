@@ -85,6 +85,14 @@ public class Parameters extends Observable {
 		this.data = data.clone();
 	}
 	
+	/**
+	 * Copy constructor.
+	 * @param parameters The parameters to copy.
+	 */
+	public Parameters(Parameters parameters) {
+		this(parameters.address, parameters.data);
+	}
+	
 	public Address getAddress() {
 		return address;
 	}
