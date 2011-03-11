@@ -116,10 +116,7 @@ public class Gaia extends Observable implements Observer {
 		system.setTxEditData(sync);
 		if (sync == false) {
 			// manually send sync parameter
-			Parameters syncParameter = new Parameters(system.getAddress().add(0x19),
-					new byte[] {(byte) system.getValue(0x19)});
-			sendDataTransmission(syncParameter);
-			system.updateOriginalParameters(syncParameter);
+			sendDataTransmission(system, 0x19, 1);
 		}
 		notifyObservers("synchronize");
 	}
@@ -133,10 +130,7 @@ public class Gaia extends Observable implements Observer {
 	
 	private void update(Parameters source, ParameterChange arg) {
 		if (getSynchronize() && source.hasChanged(arg)) {
-			Parameters changes = new Parameters(source.getAddress().add(arg.getOffset()),
-					source.getData(arg.getOffset(), arg.getLength()));
-			sendDataTransmission(changes);
-			source.updateOriginalParameters(changes);
+			sendDataTransmission(source, arg.getOffset(), arg.getLength());
 		}
 	}
 	
@@ -517,11 +511,26 @@ public class Gaia extends Observable implements Observer {
 	
 	/**
 	 * Sends a data transmission.
+	 * Also updates the parameters to reflect the GAIA’s new state.
 	 * @param parameters The Parameters object containing the address and data to send.
 	 */
 	public void sendDataTransmission(Parameters parameters) {
+		sendDataTransmission(parameters, 0, parameters.getLength());
+	}
+	
+	/**
+	 * Sends a data transmission.
+	 * Also updates the parameters to reflect the GAIA’s new state.
+	 * @param parameters The Parameters object containing the address and data to send.
+	 * @param offset The start offset of the parameter data to send.
+	 * @param length The length of the parameter data to send.
+	 */
+	public void sendDataTransmission(Parameters parameters, int offset, int length) {
+		Address address = parameters.getAddress().add(offset);
+		byte[] data = parameters.getData(offset, length);
 		try {
-			send(new DataSet1(parameters.getAddress(), parameters.getData()));
+			send(new DataSet1(address, data));
+			parameters.updateOriginalParameters(address, data);
 		} catch (InvalidMidiDataException e) {
 			e.printStackTrace();
 		}
