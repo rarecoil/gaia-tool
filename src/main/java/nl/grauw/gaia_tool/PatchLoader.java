@@ -49,7 +49,6 @@ public class PatchLoader {
 		
 		FileInputStream fis;
 		try {
-			patchFile.createNewFile();
 			fis = new FileInputStream(patchFile);
 			byte[] header = new byte[8];
 			if (fis.read(header) == -1) {
