@@ -88,7 +88,19 @@ public class GaiaTool {
 	 * @param patch
 	 */
 	public void loadPatch(File patchFile, Patch patch) {
-		new PatchLoader(patchFile, patch, log, gaia).loadPatch();
+		new PatchLoader(patchFile, patch, log).loadPatch();
+	}
+	
+	/**
+	 * Loads a patch from a file into a Gaia patch, and then sync it to the device.
+	 * @param patchFile
+	 * @param patch
+	 */
+	public void loadGaiaPatch(File patchFile, GaiaPatch patch) {
+		loadPatch(patchFile, patch);
+		for (Parameters p : patch) {
+			gaia.sendDataTransmission(p);
+		}
 	}
 	
 	/**

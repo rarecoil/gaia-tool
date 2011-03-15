@@ -22,10 +22,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import javax.sound.midi.InvalidMidiDataException;
-
-import nl.grauw.gaia_tool.messages.DataSet1;
-
 /**
  * Class that can load a patch from a specified file.
  */
@@ -34,15 +30,13 @@ public class PatchLoader {
 	File patchFile;
 	Patch patch;
 	Log log;
-	Gaia gaia;
 	
 	final static Charset UTF8 = Charset.forName("UTF-8");
 	
-	public PatchLoader(File patchFile, Patch patch, Log log, Gaia gaia) {
+	public PatchLoader(File patchFile, Patch patch, Log log) {
 		this.patchFile = patchFile;
 		this.patch = patch;
 		this.log = log;
-		this.gaia = gaia;
 	}
 	
 	/**
@@ -75,12 +69,7 @@ public class PatchLoader {
 						throw new RuntimeException("Read error: Unexpected end of file.");
 					}
 					Address address = new Address(0x10, 0x00, chunk[3], 0x00);
-					try {
-						gaia.send(new DataSet1(address, data));
-						patch.updateParameters(address, data);
-					} catch (InvalidMidiDataException e) {
-						e.printStackTrace();
-					}
+					patch.updateParameters(address, data);
 				} else {
 					if (fis.skip(length) != length) {
 						throw new RuntimeException("Read error: Unexpected end of file.");

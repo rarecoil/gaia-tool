@@ -477,7 +477,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 		int result = fc.showOpenDialog(this);
 		gaiaTool.setCurrentDirectory(fc.getCurrentDirectory());
 		if (result == JFileChooser.APPROVE_OPTION) {
-			gaiaTool.loadPatch(fc.getSelectedFile(), gaiaTool.getGaia().getTemporaryPatch());
+			gaiaTool.loadGaiaPatch(fc.getSelectedFile(), gaiaTool.getGaia().getTemporaryPatch());
 		}
 	}
 	
