@@ -38,11 +38,11 @@ public class PatchLoader {
 	
 	/**
 	 * Populates the patch from a file.
-	 * @param patchFile
+	 * @param input
 	 */
-	public void load(File patchFile) {
+	public void load(File input) {
 		try {
-			load(new FileInputStream(patchFile));
+			load(new FileInputStream(input));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -50,12 +50,12 @@ public class PatchLoader {
 	
 	/**
 	 * Populates the patch from an input stream.
-	 * @param patchInput
+	 * @param input
 	 */
-	public void load(InputStream patchInput) {
+	public void load(InputStream input) {
 		try {
 			byte[] header = new byte[8];
-			if (patchInput.read(header) == -1) {
+			if (input.read(header) == -1) {
 				throw new RuntimeException("Read error: Unexpected end of file.");
 			}
 			if (!Arrays.equals(header, "GAIATOOL".getBytes(UTF8))) {
@@ -63,23 +63,23 @@ public class PatchLoader {
 			}
 			
 			byte[] chunk = new byte[8];
-			while (patchInput.read(chunk) != -1) {
+			while (input.read(chunk) != -1) {
 				int length = (chunk[4] & 0xFF) | (chunk[5] & 0xFF) << 8 |
 						(chunk[6] & 0xFF) << 16 | (chunk[7] & 0xFF) << 24;
 				if (chunk[0] == 'P' && chunk[1] == 'A' && chunk[2] == 'T') {
 					byte[] data = new byte[length];
-					if (patchInput.read(data) == -1) {
+					if (input.read(data) == -1) {
 						throw new RuntimeException("Read error: Unexpected end of file.");
 					}
 					Address address = new Address(0x10, 0x00, chunk[3], 0x00);
 					patch.updateParameters(address, data);
 				} else {
-					if (patchInput.skip(length) != length) {
+					if (input.skip(length) != length) {
 						throw new RuntimeException("Read error: Unexpected end of file.");
 					}
 				}
 			}
-			patchInput.close();
+			input.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
