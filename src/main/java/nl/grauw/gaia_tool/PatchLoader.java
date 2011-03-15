@@ -28,9 +28,9 @@ import java.util.Arrays;
  */
 public class PatchLoader {
 	
-	Patch patch;
+	private Patch patch;
 	
-	final static Charset UTF8 = Charset.forName("UTF-8");
+	final static private Charset UTF8 = Charset.forName("UTF-8");
 	
 	public PatchLoader(Patch patch) {
 		this.patch = patch;

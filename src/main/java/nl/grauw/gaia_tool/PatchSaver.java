@@ -37,76 +37,72 @@ import nl.grauw.gaia_tool.PatchDataRequester.PatchCompleteListener;
  * 0x00: Chunk name
  * 0x04: Length (little endian)
  * 0x08: Data (length bytes)
+ * 
+ * Parameter chunk name: 'PAT' + address byte 3
  */
-public class PatchSaver implements PatchCompleteListener {
+public class PatchSaver {
 	
-	File patchFile;
-	Patch patch;
-	Log log;
+	private Patch patch;
 	
-	final static Charset UTF8 = Charset.forName("UTF-8");
+	final static private Charset UTF8 = Charset.forName("UTF-8");
 	
-	public PatchSaver(File patchFile, Patch patch, Log log) {
-		this.patchFile = patchFile;
+	public PatchSaver(Patch patch) {
 		this.patch = patch;
-		this.log = log;
 	}
 	
 	/**
-	 * Saves the patch.
-	 * @param patchFile
-	 * @param patch
+	 * Saves the patch to a file.
+	 * Makes sure it’s completely loaded first.
+	 * @param output
 	 */
-	public void save() {
-		if (patch instanceof GaiaPatch) {
-			new PatchDataRequester((GaiaPatch) patch, this).requestMissingParameters();
-			// continues in patchComplete once all patch data is loaded
-		} else {
-			doSave();
-		}
-	}
-
-	@Override
-	public void patchComplete(GaiaPatch patch) {
-		doSave();
-	}
-	
-	private void doSave() {
-		FileOutputStream fos;
+	public void save(File output) {
 		try {
-			patchFile.createNewFile();
-			fos = new FileOutputStream(patchFile);
-			fos.write("GAIATOOL".getBytes(UTF8));
-			for (Parameters parameters : patch) {
-				writeParameterData(fos, parameters);
-			}
-			fos.close();
-			log.log("Patch data saved to " + patchFile);
+			save(new FileOutputStream(output));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Saves the patch to an output stream.
+	 * Makes sure it’s completely loaded first.
+	 * @param output
+	 */
+	public void save(final OutputStream output) {
+		if (patch instanceof GaiaPatch) {
+			new PatchDataRequester((GaiaPatch) patch, new PatchCompleteListener() {
+				@Override
+				public void patchComplete(GaiaPatch patch) {
+					doSave(output);
+				}
+			}).requestMissingParameters();
+		} else {
+			doSave(output);
+		}
+	}
+	
+	/**
+	 * Saves the patch to an output stream.
+	 * @param output
+	 */
+	private void doSave(OutputStream output) {
+		try {
+			output.write("GAIATOOL".getBytes(UTF8));
+			for (Parameters parameters : patch) {
+				output.write('P');
+				output.write('A');
+				output.write('T');
+				output.write(parameters.getAddress().getByte3());
+				output.write(parameters.getLength() & 0xFF);
+				output.write(parameters.getLength() >> 8 & 0xFF);
+				output.write(parameters.getLength() >> 16 & 0xFF);
+				output.write(parameters.getLength() >> 24 & 0xFF);
+				output.write(parameters.getData());
+			}
+			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Writes a parameter chunk to the output stream.
-	 * Chunk name: 'PAT' + address byte 3
-	 * 
-	 * @param os
-	 * @param p
-	 * @throws IOException
-	 */
-	private void writeParameterData(OutputStream os, Parameters p) throws IOException {
-		os.write('P');
-		os.write('A');
-		os.write('T');
-		os.write(p.getAddress().getByte3());
-		os.write(p.getLength() & 0xFF);
-		os.write(p.getLength() >> 8 & 0xFF);
-		os.write(p.getLength() >> 16 & 0xFF);
-		os.write(p.getLength() >> 24 & 0xFF);
-		os.write(p.getData());
 	}
 	
 }

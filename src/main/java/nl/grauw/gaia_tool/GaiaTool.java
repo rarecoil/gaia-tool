@@ -79,7 +79,9 @@ public class GaiaTool {
 	 * @param patch
 	 */
 	public void savePatch(File patchFile, Patch patch) {
-		new PatchSaver(patchFile, patch, log).save();
+		log.log("Saving patch to " + patchFile + "…");
+		new PatchSaver(patch).save(patchFile);
+		// TODO: indicate when the file has finished saving.
 	}
 	
 	/**
@@ -90,6 +92,7 @@ public class GaiaTool {
 	public void loadPatch(File patchFile, Patch patch) {
 		log.log("Loading patch from " + patchFile + "…");
 		new PatchLoader(patch).load(patchFile);
+		// TODO: indicate when the file has finished loading.
 	}
 	
 	/**
@@ -102,6 +105,7 @@ public class GaiaTool {
 		for (Parameters p : patch) {
 			gaia.sendDataTransmission(p);
 		}
+		// TODO: indicate when the file has finished loading.
 	}
 	
 	/**
