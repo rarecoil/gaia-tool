@@ -88,7 +88,8 @@ public class GaiaTool {
 	 * @param patch
 	 */
 	public void loadPatch(File patchFile, Patch patch) {
-		new PatchLoader(patchFile, patch, log).loadPatch();
+		log.log("Loading patch from " + patchFile + "…");
+		new PatchLoader(patch).load(patchFile);
 	}
 	
 	/**
