@@ -22,6 +22,8 @@ import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.SignedIntValue;
 import nl.grauw.gaia_tool.IntValue;
 import nl.grauw.gaia_tool.Int12BitValue;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage.Controller;
 
 public class PatchCommon extends Parameters {
 	
@@ -49,6 +51,12 @@ public class PatchCommon extends Parameters {
 		
 		if (data.length < 0x3D)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
+	}
+	
+	public void updateParameters(ControlChangeMessage message) {
+		if (message.getController() == Controller.PORTAMENTO_TIME) {
+			updateValue(0x13, message.getValue());
+		}
 	}
 	
 	public String getPatchName() {

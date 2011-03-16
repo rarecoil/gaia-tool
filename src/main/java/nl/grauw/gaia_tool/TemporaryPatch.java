@@ -98,6 +98,11 @@ public class TemporaryPatch extends GaiaPatch implements Observer {
 					getReverb().updateParameters(message);
 				}
 				break;
+			case PORTAMENTO_TIME:
+				if (getCommon() != null) {
+					getCommon().updateParameters(message);
+				}
+				break;
 			case TONE_1_LFO_RATE:
 			case TONE_1_LFO_FADE_TIME:
 			case TONE_1_LFO_PITCH_DEPTH:
