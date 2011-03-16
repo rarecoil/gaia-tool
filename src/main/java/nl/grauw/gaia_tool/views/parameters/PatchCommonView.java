@@ -40,77 +40,6 @@ import nl.grauw.gaia_tool.views.ValueSpinner;
 public class PatchCommonView extends JPanel implements AWTObserver {
 	private static final long serialVersionUID = 1L;
 	
-	/**
-	 * A custom field for the patch name which synchronises with the parameters.
-	 */
-	private class NameField extends JTextField implements AWTObserver, DocumentListener {
-		private static final long serialVersionUID = 1L;
-		
-		public NameField() {
-			super(new NameDocument(), parameters.getPatchName().trim(), 12);
-			parameters.addObserver(this);
-			getDocument().addDocumentListener(this);
-		}
-		
-		private String getPaddedText() {
-			return (getText() + "            ").substring(0, 12);
-		}
-		
-		@Override
-		public void update(Observable source, Object detail) {
-			if (detail instanceof ParameterChange && ((ParameterChange)detail).getOffset() < 12) {
-				if (!getPaddedText().equals(parameters.getPatchName())) {
-					setText(parameters.getPatchName().trim());
-				}
-			}
-		}
-		
-		@Override
-		public void insertUpdate(DocumentEvent e) {
-			setPatchName();
-		}
-		
-		@Override
-		public void removeUpdate(DocumentEvent e) {
-			setPatchName();
-		}
-		
-		@Override
-		public void changedUpdate(DocumentEvent e) {
-			//Plain text components do not fire these events
-		}
-		
-		private void setPatchName() {
-			if (!getPaddedText().equals(parameters.getPatchName())) {
-				parameters.setPatchName(getPaddedText());
-			}
-		}
-		
-	}
-	
-	/**
-	 * A plain document which is limited to 12 ASCII characters.
-	 * Any additional characters inserted are ignored.
-	 * Any non-ASCII characters entered are replaced by a question mark.
-	 */
-	private static class NameDocument extends PlainDocument {
-		private static final long serialVersionUID = 1L;
-
-		private Charset US_ASCII = Charset.forName("US-ASCII");
-		
-		@Override
-		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-			if (str == null)
-				return;
-			
-			if (getLength() < 12) {
-				byte[] asciiBytes = str.getBytes(US_ASCII);
-				String asciiStr = new String(asciiBytes, 0, Math.min(asciiBytes.length, 12 - getLength()), US_ASCII);
-				super.insertString(offs, asciiStr, a);
-			}
-		}
-	}
-	
 	private PatchCommon parameters;
 
 	private JTextArea parameterArea;
@@ -238,6 +167,77 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 	@Override
 	public void update(Observable source, Object detail) {
 		parameterArea.setText(getParametersText());
+	}
+	
+	/**
+	 * A custom field for the patch name which synchronises with the parameters.
+	 */
+	private class NameField extends JTextField implements AWTObserver, DocumentListener {
+		private static final long serialVersionUID = 1L;
+		
+		public NameField() {
+			super(new NameDocument(), parameters.getPatchName().trim(), 12);
+			parameters.addObserver(this);
+			getDocument().addDocumentListener(this);
+		}
+		
+		private String getPaddedText() {
+			return (getText() + "            ").substring(0, 12);
+		}
+		
+		@Override
+		public void update(Observable source, Object detail) {
+			if (detail instanceof ParameterChange && ((ParameterChange)detail).getOffset() < 12) {
+				if (!getPaddedText().equals(parameters.getPatchName())) {
+					setText(parameters.getPatchName().trim());
+				}
+			}
+		}
+		
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			setPatchName();
+		}
+		
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			setPatchName();
+		}
+		
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			//Plain text components do not fire these events
+		}
+		
+		private void setPatchName() {
+			if (!getPaddedText().equals(parameters.getPatchName())) {
+				parameters.setPatchName(getPaddedText());
+			}
+		}
+		
+	}
+	
+	/**
+	 * A plain document which is limited to 12 ASCII characters.
+	 * Any additional characters inserted are ignored.
+	 * Any non-ASCII characters entered are replaced by a question mark.
+	 */
+	private static class NameDocument extends PlainDocument {
+		private static final long serialVersionUID = 1L;
+
+		private Charset US_ASCII = Charset.forName("US-ASCII");
+		
+		@Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			if (str == null)
+				return;
+			
+			if (getLength() < 12) {
+				byte[] asciiBytes = str.getBytes(US_ASCII);
+				String asciiStr = new String(asciiBytes, 0, Math.min(asciiBytes.length, 12 - getLength()), US_ASCII);
+				super.insertString(offs, asciiStr, a);
+			}
+		}
 	}
 	
 }
