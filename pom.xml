@@ -110,6 +110,7 @@
 						<exclude>LICENSE</exclude>
 						<exclude>**/.hg*</exclude>
 						<exclude>**/*.txt</exclude>
+						<exclude>src/main/resources/**/*</exclude>
 						<exclude>src/main/app-resources/**/*</exclude>
 					</excludes>
 				</configuration>
