@@ -262,7 +262,7 @@ public class System extends Parameters {
 	public boolean getWriteProtect(int bank, int patch) {
 		if (bank < 0 || bank > 7 || patch < 0 || patch > 7)
 			throw new IllegalArgumentException("Invalid bank or patch number.");
-		return getValue(0x2B + bank * 8 + patch) == 1;
+		return getValue(0x2B + (bank << 3 | patch)) == 1;
 	}
 	
 	public PowerSaveMode getPowerSaveMode() {

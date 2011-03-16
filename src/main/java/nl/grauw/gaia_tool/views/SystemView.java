@@ -90,6 +90,14 @@ public class SystemView extends SingleParametersView {
 		text.append(String.format("Recorder metronome level: %s\n", s.getRecorderMetronomeLevel()));
 		text.append(String.format("Power save mode: %s\n", s.getPowerSaveMode()));
 		
+		for (int bank = 0; bank <= 7; bank++) {
+			text.append(String.format("Write protect bank %s: ", "ABCDEFGH".charAt(bank)));
+			for (int patch = 0; patch <= 7; patch++) {
+				text.append(s.getWriteProtect(bank, patch) ? "O" : "X");
+			}
+			text.append("\n");
+		}
+		
 //		text.append(String.format("\nReserved 1: %s\n", s.getReserved1()));
 //		text.append(String.format("Reserved 2: %s\n", s.getReserved2()));
 //		text.append(String.format("Reserved 3: %s\n", s.getReserved3()));
