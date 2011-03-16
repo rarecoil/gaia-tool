@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool.views.parameters;
 
 import java.awt.FlowLayout;
+import java.nio.charset.Charset;
 
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
@@ -39,11 +40,14 @@ import nl.grauw.gaia_tool.views.ValueSpinner;
 public class PatchCommonView extends JPanel implements AWTObserver {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * A custom field for the patch name which synchronises with the parameters.
+	 */
 	private class NameField extends JTextField implements AWTObserver, DocumentListener {
 		private static final long serialVersionUID = 1L;
 		
 		public NameField() {
-			super(new LimitedDocument(), parameters.getPatchName().trim(), 12);
+			super(new NameDocument(), parameters.getPatchName().trim(), 12);
 			parameters.addObserver(this);
 			getDocument().addDocumentListener(this);
 		}
@@ -84,18 +88,25 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 		
 	}
 	
-	private static class LimitedDocument extends PlainDocument {
+	/**
+	 * A plain document which is limited to 12 ASCII characters.
+	 * Any additional characters inserted are ignored.
+	 * Any non-ASCII characters entered are replaced by a question mark.
+	 */
+	private static class NameDocument extends PlainDocument {
 		private static final long serialVersionUID = 1L;
 
+		private Charset US_ASCII = Charset.forName("US-ASCII");
+		
 		@Override
 		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 			if (str == null)
 				return;
 			
-			if (getLength() + str.length() <= 12) {
-				super.insertString(offs, str, a);
-			} else if (getLength() < 12) {
-				super.insertString(offs, str.substring(0, 12 - getLength()), a);
+			if (getLength() < 12) {
+				byte[] asciiBytes = str.getBytes(US_ASCII);
+				String asciiStr = new String(asciiBytes, 0, Math.min(asciiBytes.length, 12 - getLength()), US_ASCII);
+				super.insertString(offs, asciiStr, a);
 			}
 		}
 	}
