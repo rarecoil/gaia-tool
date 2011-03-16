@@ -132,6 +132,9 @@ public class Gaia extends Observable implements Observer {
 		if (getSynchronize() && source.hasChanged(arg)) {
 			sendDataTransmission(source, arg.getOffset(), arg.getLength());
 		}
+		if (source == system && arg.includes(0x19)) {	// Tx edit data
+			notifyObservers("synchronize");
+		}
 	}
 	
 	/**
