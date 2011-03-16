@@ -90,6 +90,23 @@ public class SystemView extends SingleParametersView {
 		text.append(String.format("Recorder metronome level: %s\n", s.getRecorderMetronomeLevel()));
 		text.append(String.format("Power save mode: %s\n", s.getPowerSaveMode()));
 		
+//		text.append(String.format("\nReserved 1: %s\n", s.getReserved1()));
+//		text.append(String.format("Reserved 2: %s\n", s.getReserved2()));
+//		text.append(String.format("Reserved 3: %s\n", s.getReserved3()));
+//		text.append(String.format("Reserved 4: %s\n", s.getReserved4()));
+//		text.append(String.format("Reserved 5: %s\n", s.getReserved5()));
+//		text.append(String.format("Reserved 6: %s\n", s.getReserved6()));
+//		text.append(String.format("Reserved 7: %s\n", s.getReserved7()));
+//		text.append(String.format("Reserved 8: %s\n", s.getReserved8()));
+//		text.append(String.format("Reserved 9: %s\n", s.getReserved9()));
+//		text.append(String.format("Reserved 10: %s\n", s.getReserved10()));
+//		text.append(String.format("Reserved 11: %s\n", s.getReserved11()));
+//		text.append(String.format("Reserved 12: %s\n", s.getReserved12()));
+//		text.append(String.format("Reserved 13: %s\n", s.getReserved13()));
+//		text.append(String.format("Reserved 14: %s\n", s.getReserved14()));
+//		text.append(String.format("Reserved 15: %s\n", s.getReserved15()));
+//		text.append(String.format("Reserved 16: %s\n", s.getReserved16()));
+		
 		return text.toString();
 	}
 

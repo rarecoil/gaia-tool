@@ -161,6 +161,29 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 		text.append(String.format("Effects delay select: %s\n", parameters.getEffectsDelaySelect()));
 		text.append(String.format("Effects reverb select: %s\n", parameters.getEffectsReverbSelect()));
 		
+//		text.append(String.format("\nReserved 1: %s\n", parameters.getReserved1()));
+//		text.append(String.format("Reserved 2: %s\n", parameters.getReserved2()));
+//		text.append(String.format("Reserved 3: %s\n", parameters.getReserved3()));
+//		text.append(String.format("Reserved 4: %s\n", parameters.getReserved4()));
+//		text.append(String.format("Reserved 5: %s\n", parameters.getReserved5()));
+//		text.append(String.format("Reserved 6: %s\n", parameters.getReserved6()));
+//		text.append(String.format("Reserved 7: %s\n", parameters.getReserved7()));
+//		text.append(String.format("Reserved 8: %s\n", parameters.getReserved8()));
+//		text.append(String.format("Reserved 9: %s\n", parameters.getReserved9()));
+//		text.append(String.format("Reserved 10: %s\n", parameters.getReserved10()));
+//		text.append(String.format("Reserved 11: %s\n", parameters.getReserved11()));
+//		text.append(String.format("Reserved 12: %s\n", parameters.getReserved12()));
+//		text.append(String.format("Reserved 13: %s\n", parameters.getReserved13()));
+//		text.append(String.format("Reserved 14: %s\n", parameters.getReserved14()));
+//		text.append(String.format("Reserved 15: %s\n", parameters.getReserved15()));
+//		text.append(String.format("Reserved 16: %s\n", parameters.getReserved16()));
+//		text.append(String.format("Reserved 17: %s\n", parameters.getReserved17()));
+//		text.append(String.format("Reserved 18: %s\n", parameters.getReserved18()));
+//		text.append(String.format("Reserved 19: %s\n", parameters.getReserved19()));
+//		text.append(String.format("Reserved 20: %s\n", parameters.getReserved20()));
+//		text.append(String.format("Reserved 21: %s\n", parameters.getReserved21()));
+//		text.append(String.format("Reserved 22: %s\n", parameters.getReserved22()));
+		
 		return text.toString();
 	}
 	

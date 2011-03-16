@@ -116,6 +116,24 @@ public class ToneView extends SingleParametersView {
 		text.append(String.format("Modulation LFO amp depth: %s\n", t.getModulationLFOAmpDepth()));
 		text.append(String.format("Modulation LFO pan depth: %s\n", t.getModulationLFOPanDepth()));
 		
+//		text.append(String.format("\nReserved 1: %s\n", t.getReserved1()));
+//		text.append(String.format("Reserved 2: %s\n", t.getReserved2()));
+//		text.append(String.format("Reserved 3: %s\n", t.getReserved3()));
+//		text.append(String.format("Reserved 4: %s\n", t.getReserved4()));
+//		text.append(String.format("Reserved 5: %s\n", t.getReserved5()));
+//		text.append(String.format("Reserved 6: %s\n", t.getReserved6()));
+//		text.append(String.format("Reserved 7: %s\n", t.getReserved7()));
+//		text.append(String.format("Reserved 8: %s\n", t.getReserved8()));
+//		text.append(String.format("Reserved 9: %s\n", t.getReserved9()));
+//		text.append(String.format("Reserved 10: %s\n", t.getReserved10()));
+//		text.append(String.format("Reserved 11: %s\n", t.getReserved11()));
+//		text.append(String.format("Reserved 12: %s\n", t.getReserved12()));
+//		text.append(String.format("Reserved 13: %s\n", t.getReserved13()));
+//		text.append(String.format("Reserved 14: %s\n", t.getReserved14()));
+//		text.append(String.format("Reserved 15: %s\n", t.getReserved15()));
+//		text.append(String.format("Reserved 16: %s\n", t.getReserved16()));
+//		text.append(String.format("Reserved 17: %s\n", t.getReserved17()));
+		
 		return text.toString();
 	}
 
