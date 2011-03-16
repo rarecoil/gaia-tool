@@ -25,7 +25,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.PlainDocument;
 
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
@@ -40,17 +43,20 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 		private static final long serialVersionUID = 1L;
 		
 		public NameField() {
-			super(parameters.getPatchName().trim(), 12);
+			super(new LimitedDocument(), parameters.getPatchName().trim(), 12);
 			parameters.addObserver(this);
 			getDocument().addDocumentListener(this);
+		}
+		
+		private String getPaddedText() {
+			return (getText() + "            ").substring(0, 12);
 		}
 		
 		@Override
 		public void update(Observable source, Object detail) {
 			if (detail instanceof ParameterChange && ((ParameterChange)detail).getOffset() < 12) {
-				String name = parameters.getPatchName().trim();
-				if (!name.equals(getText())) {
-					setText(name);
+				if (!getPaddedText().equals(parameters.getPatchName())) {
+					setText(parameters.getPatchName().trim());
 				}
 			}
 		}
@@ -67,16 +73,31 @@ public class PatchCommonView extends JPanel implements AWTObserver {
 		
 		@Override
 		public void changedUpdate(DocumentEvent e) {
-			setPatchName();
+			//Plain text components do not fire these events
 		}
 		
 		private void setPatchName() {
-			String name = parameters.getPatchName().trim();
-			if (!name.equals(getText())) {
-				parameters.setPatchName(getText());
+			if (!getPaddedText().equals(parameters.getPatchName())) {
+				parameters.setPatchName(getPaddedText());
 			}
 		}
 		
+	}
+	
+	private static class LimitedDocument extends PlainDocument {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			if (str == null)
+				return;
+			
+			if (getLength() + str.length() <= 12) {
+				super.insertString(offs, str, a);
+			} else if (getLength() < 12) {
+				super.insertString(offs, str.substring(0, 12 - getLength()), a);
+			}
+		}
 	}
 	
 	private PatchCommon parameters;

@@ -64,6 +64,8 @@ public class PatchCommon extends Parameters {
 	}
 	
 	public void setPatchName(String name) {
+		if (name.length() > 12)
+			throw new RuntimeException("Patch name can not be longer than 12 characters.");
 		setValues(0x00, (name + "            ").substring(0, 12).getBytes(US_ASCII));
 	}
 	
