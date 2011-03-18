@@ -27,8 +27,7 @@ public class PatchDataRequester implements Observer {
 		
 		/**
 		 * Invoked when the patch has loaded completely.
-		 * @param source The observed object.
-		 * @param detail Object providing details on the state change.
+		 * @param patch The patch that has loaded.
 		 */
 		public void patchComplete(GaiaPatch patch);
 		
@@ -45,8 +44,6 @@ public class PatchDataRequester implements Observer {
 	/**
 	 * Checks whether patch parameters data is missing, and requests the missing
 	 * data from the GAIA if that’s the case.
-	 * 
-	 * @return True if the patch has loaded completely.
 	 */
 	public void requestMissingParameters() {
 		if (!patch.hasObserver(this)) {

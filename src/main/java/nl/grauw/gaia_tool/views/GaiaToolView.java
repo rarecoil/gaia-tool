@@ -365,7 +365,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	
 	/**
 	 * Return the patch that is currently selected in the tree.
-	 * @return
+	 * @return The currently selected patch, or null.
 	 */
 	public GaiaPatch getSelectedPatch() {
 		TreePath tp = contentSelectionTree.getSelectionPath();

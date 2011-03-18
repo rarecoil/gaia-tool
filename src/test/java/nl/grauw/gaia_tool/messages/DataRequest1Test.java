@@ -31,7 +31,7 @@ import org.junit.Test;
 public class DataRequest1Test {
 
 	/**
-	 * Test method for {@link nl.grauw.gaia_tool.messages.DataRequest1#DataRequest1(int, int)}.
+	 * Test method for {@link nl.grauw.gaia_tool.messages.DataRequest1#DataRequest1(Address, int)}.
 	 */
 	@Test
 	public void testDataRequest1AddressInt() throws InvalidMidiDataException {
@@ -43,7 +43,7 @@ public class DataRequest1Test {
 	}
 
 	/**
-	 * Test method for {@link nl.grauw.gaia_tool.messages.DataRequest1#DataRequest1(int, int, int)}.
+	 * Test method for {@link nl.grauw.gaia_tool.messages.DataRequest1#DataRequest1(int, Address, int)}.
 	 */
 	@Test
 	public void testDataRequest1IntAddressInt() throws InvalidMidiDataException {

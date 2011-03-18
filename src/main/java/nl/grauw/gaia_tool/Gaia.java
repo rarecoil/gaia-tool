@@ -244,8 +244,8 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	/**
-	 * MIDI input port that receives messages from the GAIA.
-	 * @return
+	 * Get the MIDI input port that receives messages from the GAIA.
+	 * @return A MIDI input device, or null.
 	 */
 	public MidiDevice getMidiInput() {
 		String name = settings.getProperty("midi.input");
@@ -281,8 +281,8 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	/**
-	 * MIDI output port that sends messages to the GAIA.
-	 * @return
+	 * Get the MIDI output port that sends messages to the GAIA.
+	 * @return A MIDI output device, or null.
 	 */
 	public MidiDevice getMidiOutput() {
 		String name = settings.getProperty("midi.output");

@@ -35,7 +35,7 @@ public class LogTest {
 	}
 
 	/**
-	 * Test method for {@link nl.grauw.gaia_tool.Log#log(java.lang.String)}.
+	 * Test method for {@link nl.grauw.gaia_tool.Log#log(Object)}.
 	 */
 	@Test
 	public void testLog() {

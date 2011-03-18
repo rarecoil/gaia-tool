@@ -74,10 +74,8 @@ public class Parameters extends Observable {
 	
 	/**
 	 * Constructs a new Parameters object.
-	 * @param address The start address of the data to change.
-	 * @param data The data to change. All bytes must be in the range 0-127.
-	 * @param address
-	 * @param data All bytes must be in the range 0-127.
+	 * @param address The start address of the data.
+	 * @param data The parameter data. All bytes must be in the range 0-127.
 	 */
 	public Parameters(Address address, byte[] data) {
 		this.address = address;
