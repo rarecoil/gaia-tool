@@ -268,7 +268,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 
 	private JMenuItem getConfigureMidiItem() {
 		if (configureMidiItem == null) {
-			configureMidiItem = new JMenuItem("Configure MIDI");
+			configureMidiItem = new JMenuItem("Configure MIDI…");
 			configureMidiItem.addActionListener(this);
 		}
 		return configureMidiItem;
