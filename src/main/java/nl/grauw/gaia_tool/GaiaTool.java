@@ -91,7 +91,11 @@ public class GaiaTool {
 	 */
 	public void loadPatch(File patchFile, Patch patch) {
 		log.log("Loading patch from " + patchFile + "…");
-		new PatchLoader(patch).load(patchFile);
+		try {
+			new PatchLoader(patch).load(patchFile);
+		} catch (IOException e) {
+			log.log("Loading failed: " + e.getMessage());
+		}
 		// TODO: indicate when the file has finished loading.
 	}
 	
