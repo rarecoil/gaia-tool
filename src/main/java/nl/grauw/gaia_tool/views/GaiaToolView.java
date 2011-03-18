@@ -184,7 +184,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 
 	private JMenuItem getLoadItem() {
 		if (loadItem == null) {
-			loadItem = new JMenuItem("Load Patch…");
+			loadItem = new JMenuItem("Load patch…");
 			loadItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
 					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 			loadItem.addActionListener(this);
@@ -195,7 +195,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 
 	private JMenuItem getSaveItem() {
 		if (saveItem == null) {
-			saveItem = new JMenuItem("Save Patch As…");
+			saveItem = new JMenuItem("Save patch as…");
 			saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 			saveItem.addActionListener(this);
@@ -219,7 +219,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 
 	private JMenuItem getPlayTestNotesItem() {
 		if (playTestNotesItem == null) {
-			playTestNotesItem = new JMenuItem("Play Test Notes");
+			playTestNotesItem = new JMenuItem("Play test notes");
 			playTestNotesItem.addActionListener(this);
 		}
 		return playTestNotesItem;
@@ -227,7 +227,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 
 	private JMenuItem getGMSystemOnItem() {
 		if (gmSystemOnItem == null) {
-			gmSystemOnItem = new JMenuItem("GM System On");
+			gmSystemOnItem = new JMenuItem("GM system on");
 			gmSystemOnItem.addActionListener(this);
 		}
 		return gmSystemOnItem;
@@ -235,7 +235,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 
 	private JMenuItem getGM2SystemOnItem() {
 		if (gm2SystemOnItem == null) {
-			gm2SystemOnItem = new JMenuItem("GM2 System On");
+			gm2SystemOnItem = new JMenuItem("GM2 system on");
 			gm2SystemOnItem.addActionListener(this);
 		}
 		return gm2SystemOnItem;
@@ -243,7 +243,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 
 	private JMenuItem getGMSystemOffItem() {
 		if (gmSystemOffItem == null) {
-			gmSystemOffItem = new JMenuItem("GM System Off");
+			gmSystemOffItem = new JMenuItem("GM system off");
 			gmSystemOffItem.addActionListener(this);
 		}
 		return gmSystemOffItem;
