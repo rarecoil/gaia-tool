@@ -99,7 +99,7 @@ public class GaiaTool {
 		} catch (IOException e) {
 			log.log("Saving failed: " + e.getMessage());
 		}
-		// TODO: indicate when the file has finished saving.
+		log.log("Saving complete.");
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class GaiaTool {
 		} catch (IOException e) {
 			log.log("Loading failed: " + e.getMessage());
 		}
-		// TODO: indicate when the file has finished loading.
+		// XXX: No loading complete message if invoked directly.
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class GaiaTool {
 		for (Parameters p : patch) {
 			gaia.sendDataTransmission(p);
 		}
-		// TODO: indicate when the file has finished loading.
+		log.log("Loading complete.");
 	}
 	
 	/**
