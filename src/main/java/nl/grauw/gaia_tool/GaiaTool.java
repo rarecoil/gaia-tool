@@ -56,6 +56,7 @@ public class GaiaTool {
 			fr = new FileReader(new File(getAndCreateSettingsPath(), "settings.properties"));
 			settings.load(fr);
 		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
