@@ -87,19 +87,22 @@ public class PatchSaver {
 	 */
 	private void doSave(OutputStream output) {
 		try {
-			output.write("GAIATOOL".getBytes(UTF8));
-			for (Parameters parameters : patch) {
-				output.write('P');
-				output.write('A');
-				output.write('T');
-				output.write(parameters.getAddress().getByte3());
-				output.write(parameters.getLength() & 0xFF);
-				output.write(parameters.getLength() >> 8 & 0xFF);
-				output.write(parameters.getLength() >> 16 & 0xFF);
-				output.write(parameters.getLength() >> 24 & 0xFF);
-				output.write(parameters.getData());
+			try {
+				output.write("GAIATOOL".getBytes(UTF8));
+				for (Parameters parameters : patch) {
+					output.write('P');
+					output.write('A');
+					output.write('T');
+					output.write(parameters.getAddress().getByte3());
+					output.write(parameters.getLength() & 0xFF);
+					output.write(parameters.getLength() >> 8 & 0xFF);
+					output.write(parameters.getLength() >> 16 & 0xFF);
+					output.write(parameters.getLength() >> 24 & 0xFF);
+					output.write(parameters.getData());
+				}
+			} finally {
+				output.close();
 			}
-			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
