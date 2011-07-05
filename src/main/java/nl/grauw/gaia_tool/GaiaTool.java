@@ -21,6 +21,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+import nl.grauw.gaia_tool.PatchDataRequester.PatchCompleteListener;
+
 public class GaiaTool {
 	
 	private Gaia gaia;
@@ -77,9 +79,26 @@ public class GaiaTool {
 	 * @param patchFile
 	 * @param patch
 	 */
-	public void savePatch(File patchFile, Patch patch) {
+	public void savePatch(final File patchFile, Patch patch) {
 		log.log("Saving patch to " + patchFile + "…");
-		new PatchSaver(patch).save(patchFile);
+		if (patch instanceof GaiaPatch) {
+			new PatchDataRequester((GaiaPatch) patch, new PatchCompleteListener() {
+				@Override
+				public void patchComplete(GaiaPatch patch) {
+					savePatchContinue(patchFile, patch);
+				}
+			}).requestMissingParameters();
+		} else {
+			savePatchContinue(patchFile, patch);
+		}
+	}
+	
+	private void savePatchContinue(File patchFile, Patch patch) {
+		try {
+			new PatchSaver(patch).save(patchFile);
+		} catch (IOException e) {
+			log.log("Saving failed: " + e.getMessage());
+		}
 		// TODO: indicate when the file has finished saving.
 	}
 	

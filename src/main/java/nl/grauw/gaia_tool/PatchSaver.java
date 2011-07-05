@@ -16,13 +16,10 @@
 package nl.grauw.gaia_tool;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-
-import nl.grauw.gaia_tool.PatchDataRequester.PatchCompleteListener;
 
 /**
  * Class that can save a patch to a specified file.
@@ -52,59 +49,32 @@ public class PatchSaver {
 	
 	/**
 	 * Saves the patch to a file.
-	 * Makes sure it’s completely loaded first.
 	 * @param output
 	 */
-	public void save(File output) {
-		try {
-			save(new FileOutputStream(output));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Saves the patch to an output stream.
-	 * Makes sure it’s completely loaded first.
-	 * @param output
-	 */
-	public void save(final OutputStream output) {
-		if (patch instanceof GaiaPatch) {
-			new PatchDataRequester((GaiaPatch) patch, new PatchCompleteListener() {
-				@Override
-				public void patchComplete(GaiaPatch patch) {
-					doSave(output);
-				}
-			}).requestMissingParameters();
-		} else {
-			doSave(output);
-		}
+	public void save(File output) throws IOException {
+		save(new FileOutputStream(output));
 	}
 	
 	/**
 	 * Saves the patch to an output stream.
 	 * @param output
 	 */
-	private void doSave(OutputStream output) {
+	public void save(OutputStream output) throws IOException {
 		try {
-			try {
-				output.write("GAIATOOL".getBytes(UTF8));
-				for (Parameters parameters : patch) {
-					output.write('P');
-					output.write('A');
-					output.write('T');
-					output.write(parameters.getAddress().getByte3());
-					output.write(parameters.getLength() & 0xFF);
-					output.write(parameters.getLength() >> 8 & 0xFF);
-					output.write(parameters.getLength() >> 16 & 0xFF);
-					output.write(parameters.getLength() >> 24 & 0xFF);
-					output.write(parameters.getData());
-				}
-			} finally {
-				output.close();
+			output.write("GAIATOOL".getBytes(UTF8));
+			for (Parameters parameters : patch) {
+				output.write('P');
+				output.write('A');
+				output.write('T');
+				output.write(parameters.getAddress().getByte3());
+				output.write(parameters.getLength() & 0xFF);
+				output.write(parameters.getLength() >> 8 & 0xFF);
+				output.write(parameters.getLength() >> 16 & 0xFF);
+				output.write(parameters.getLength() >> 24 & 0xFF);
+				output.write(parameters.getData());
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} finally {
+			output.close();
 		}
 	}
 	
