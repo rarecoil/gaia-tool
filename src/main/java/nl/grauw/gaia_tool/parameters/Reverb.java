@@ -87,7 +87,7 @@ public class Reverb extends Parameters {
 	public IntValue getType() {
 		if (getReverbType() == ReverbType.OFF)
 			throw new IllegalArgumentException("Only applies to active effect.");
-		return new SignedInt16BitValue(this, 0x09, 0, 127);
+		return new SignedInt16BitValue(this, 0x09, 0, 2);
 	}
 	
 	public IntValue getHighDamp() {
