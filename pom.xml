@@ -129,11 +129,12 @@
 						<configuration>
 							<headerType>gui</headerType>
 							<outfile>target/${project.artifactId}-${project.version}.exe</outfile>
-							<errTitle>${project.name}</errTitle>
-							<downloadUrl>${project.url}</downloadUrl>
+							<jar>target/${project.artifactId}-${project.version}-shaded.jar</jar>
 							<jre>
 								<minVersion>1.6.0</minVersion>
 							</jre>
+							<errTitle>${project.name}</errTitle>
+							<downloadUrl>${project.url}</downloadUrl>
 							<versionInfo>
 								<productName>${project.name}</productName>
 								<copyright>${project.inceptionYear} ${project.organization.name}</copyright>
