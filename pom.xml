@@ -128,8 +128,8 @@
 						</goals>
 						<configuration>
 							<headerType>gui</headerType>
-							<outfile>target/${project.artifactId}-${project.version}.exe</outfile>
-							<jar>target/${project.artifactId}-${project.version}-shaded.jar</jar>
+							<outfile>target/${project.build.finalName}.exe</outfile>
+							<jar>target/${project.build.finalName}-shaded.jar</jar>
 							<jre>
 								<minVersion>1.6.0</minVersion>
 							</jre>
@@ -144,7 +144,7 @@
 								<productVersion>0.0.0.0</productVersion>
 								<txtProductVersion>${project.version}</txtProductVersion>
 								<internalName>${project.artifactId}</internalName>
-								<originalFilename>${project.artifactId}-${project.version}.exe</originalFilename>
+								<originalFilename>${project.build.finalName}.exe</originalFilename>
 							</versionInfo>
 						</configuration>
 					</execution>
