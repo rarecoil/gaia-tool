@@ -33,6 +33,7 @@
 	</scm>
 	
 	<properties>
+		<mainClass>nl.grauw.gaia_tool.App</mainClass>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
@@ -54,10 +55,63 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>nl.grauw.gaia_tool.App</mainClass>
+							<mainClass>${mainClass}</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2.1</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>${mainClass}</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<configuration>
+					<minimizeJar>true</minimizeJar>
+					<shadedArtifactAttached>true</shadedArtifactAttached>
+					<transformers>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>${mainClass}</mainClass>
+						</transformer>
+					</transformers>
+					<artifactSet>
+						<excludes>
+							<exclude>bouncycastle:*</exclude>
+							<exclude>org.bouncycastle:*</exclude>
+						</excludes>
+					</artifactSet>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-uberjar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<!-- See: http://alakai.org/reference/plugins/launch4j-plugin-usage.html -->
@@ -74,12 +128,13 @@
 						</goals>
 						<configuration>
 							<headerType>gui</headerType>
-							<outfile>target/${project.artifactId}-${project.version}.exe</outfile>
-							<errTitle>${project.name}</errTitle>
-							<downloadUrl>${project.url}</downloadUrl>
+							<outfile>target/${project.build.finalName}.exe</outfile>
+							<jar>target/${project.build.finalName}-shaded.jar</jar>
 							<jre>
 								<minVersion>1.6.0</minVersion>
 							</jre>
+							<errTitle>${project.name}</errTitle>
+							<downloadUrl>${project.url}</downloadUrl>
 							<versionInfo>
 								<productName>${project.name}</productName>
 								<copyright>${project.inceptionYear} ${project.organization.name}</copyright>
@@ -89,7 +144,7 @@
 								<productVersion>0.0.0.0</productVersion>
 								<txtProductVersion>${project.version}</txtProductVersion>
 								<internalName>${project.artifactId}</internalName>
-								<originalFilename>${project.artifactId}-${project.version}.exe</originalFilename>
+								<originalFilename>${project.build.finalName}.exe</originalFilename>
 							</versionInfo>
 						</configuration>
 					</execution>
@@ -226,7 +281,7 @@
 			<artifactId>junit</artifactId>
 			<version>4.8.2</version>
 			<type>jar</type>
-			<scope>compile</scope>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
