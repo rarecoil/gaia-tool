@@ -81,6 +81,7 @@ public class GaiaTool {
 	 */
 	public void savePatch(final File patchFile, Patch patch) {
 		log.log("Saving patch to " + patchFile + "…");
+		// TODO: reload patch from GAIA and compare with local values before saving
 		if (patch instanceof GaiaPatch) {
 			new PatchDataRequester((GaiaPatch) patch, new PatchCompleteListener() {
 				@Override
