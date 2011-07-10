@@ -7,6 +7,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import nl.grauw.gaia_tool.FilePatch;
 import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.GaiaTool;
 import nl.grauw.gaia_tool.Patch;
@@ -32,6 +33,14 @@ public class ContentSelectionTree extends JTree {
 		rootNode.add(systemNode);
 		PatchTreeNode temporaryPatchNode = new PatchTreeNode("Temporary patch", gaiaTool.getGaia().getTemporaryPatch());
 		rootNode.add(temporaryPatchNode);
+		ContentSelectionTreeNode userPatchesNode = createUserPatchesNode();
+		rootNode.add(userPatchesNode);
+		ContentSelectionTreeNode libraryNode = createLibraryNode();
+		rootNode.add(libraryNode);
+		return new DefaultTreeModel(rootNode);
+	}
+	
+	private ContentSelectionTreeNode createUserPatchesNode() {
 		ContentSelectionTreeNode userPatchesNode = new ContentSelectionTreeNode("User patches");
 		for (int bank = 0; bank < 8; bank++) {
 			ContentSelectionTreeNode bankNode = new ContentSelectionTreeNode("Bank " + "ABCDEFGH".charAt(bank));
@@ -42,8 +51,15 @@ public class ContentSelectionTree extends JTree {
 			}
 			userPatchesNode.add(bankNode);
 		}
-		rootNode.add(userPatchesNode);
-		return new DefaultTreeModel(rootNode);
+		return userPatchesNode;
+	}
+	
+	private ContentSelectionTreeNode createLibraryNode() {
+		ContentSelectionTreeNode libraryNode = new ContentSelectionTreeNode("Library");
+		for (FilePatch patch : gaiaTool.getLibrary()) {
+			libraryNode.add(new PatchTreeNode(patch.getName(), patch));
+		}
+		return libraryNode;
 	}
 	
 	/**

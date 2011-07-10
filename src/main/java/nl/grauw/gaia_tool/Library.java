@@ -3,15 +3,15 @@ package nl.grauw.gaia_tool;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import nl.grauw.gaia_tool.mvc.Observable;
 
-public class Library extends Observable {
+public class Library extends Observable implements Iterable<FilePatch> {
 	
-	List<FilePatch> patches = new Vector<FilePatch>();
-	
+	private List<FilePatch> patches = new Vector<FilePatch>();
 	private File source;
 	
 	public Library(File source) {
@@ -39,6 +39,11 @@ public class Library extends Observable {
 		public boolean accept(File pathname) {
 			return pathname.getName().endsWith(".gaia");
 		}
+	}
+	
+	@Override
+	public Iterator<FilePatch> iterator() {
+		return patches.iterator();
 	}
 	
 }
