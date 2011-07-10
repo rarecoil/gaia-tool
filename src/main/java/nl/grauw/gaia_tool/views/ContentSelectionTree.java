@@ -10,6 +10,7 @@ import javax.swing.tree.TreeSelectionModel;
 import nl.grauw.gaia_tool.FilePatch;
 import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.GaiaTool;
+import nl.grauw.gaia_tool.Library;
 import nl.grauw.gaia_tool.Patch;
 
 public class ContentSelectionTree extends JTree {
@@ -31,11 +32,11 @@ public class ContentSelectionTree extends JTree {
 		ContentSelectionTreeNode rootNode = new ContentSelectionTreeNode("Parameters");
 		SystemTreeNode systemNode = new SystemTreeNode();
 		rootNode.add(systemNode);
-		PatchTreeNode temporaryPatchNode = new PatchTreeNode("Temporary patch", gaiaTool.getGaia().getTemporaryPatch());
+		PatchTreeNode temporaryPatchNode = new PatchTreeNode(gaiaTool.getGaia().getTemporaryPatch(), "Temporary patch");
 		rootNode.add(temporaryPatchNode);
 		ContentSelectionTreeNode userPatchesNode = createUserPatchesNode();
 		rootNode.add(userPatchesNode);
-		ContentSelectionTreeNode libraryNode = createLibraryNode();
+		ContentSelectionTreeNode libraryNode = createLibraryNode(gaiaTool.getLibrary(), "Library");
 		rootNode.add(libraryNode);
 		return new DefaultTreeModel(rootNode);
 	}
@@ -46,7 +47,7 @@ public class ContentSelectionTree extends JTree {
 			ContentSelectionTreeNode bankNode = new ContentSelectionTreeNode("Bank " + "ABCDEFGH".charAt(bank));
 			for (int patch = 0; patch < 8; patch++) {
 				String patchName = "Patch " + "ABCDEFGH".charAt(bank) + "-" + (patch + 1);
-				PatchTreeNode patchNode = new PatchTreeNode(patchName, gaiaTool.getGaia().getUserPatch(bank, patch));
+				PatchTreeNode patchNode = new PatchTreeNode(gaiaTool.getGaia().getUserPatch(bank, patch), patchName);
 				bankNode.add(patchNode);
 			}
 			userPatchesNode.add(bankNode);
@@ -54,10 +55,17 @@ public class ContentSelectionTree extends JTree {
 		return userPatchesNode;
 	}
 	
-	private ContentSelectionTreeNode createLibraryNode() {
-		ContentSelectionTreeNode libraryNode = new ContentSelectionTreeNode("Library");
-		for (FilePatch patch : gaiaTool.getLibrary()) {
-			libraryNode.add(new PatchTreeNode(patch.getName(), patch));
+	private ContentSelectionTreeNode createLibraryNode(Library library) {
+		return createLibraryNode(library, library.getName());
+	}
+	
+	private ContentSelectionTreeNode createLibraryNode(Library library, String name) {
+		ContentSelectionTreeNode libraryNode = new ContentSelectionTreeNode(name);
+		for (Library sublibrary : library.getLibraries()) {
+			libraryNode.add(createLibraryNode(sublibrary));
+		}
+		for (FilePatch patch : library.getPatches()) {
+			libraryNode.add(new PatchTreeNode(patch, patch.getName()));
 		}
 		return libraryNode;
 	}
@@ -136,7 +144,7 @@ public class ContentSelectionTree extends JTree {
 		String name;
 		Patch patch;
 		
-		public PatchTreeNode(String name, Patch patch) {
+		public PatchTreeNode(Patch patch, String name) {
 			this.name = name;
 			this.patch = patch;
 			
