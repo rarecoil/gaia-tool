@@ -299,34 +299,20 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Parameters");
 		DefaultMutableTreeNode systemNode = new DefaultMutableTreeNode("System");
 		rootNode.add(systemNode);
-		DefaultMutableTreeNode temporaryPatchNode = new DefaultMutableTreeNode("Temporary patch");
-		addPatchTreeNodesTo(temporaryPatchNode);
+		PatchTreeNode temporaryPatchNode = new PatchTreeNode("Temporary patch", gaiaTool.getGaia().getTemporaryPatch());
 		rootNode.add(temporaryPatchNode);
 		DefaultMutableTreeNode userPatchesNode = new DefaultMutableTreeNode("User patches");
-		String[] banks = {"A", "B", "C", "D", "E", "F", "G", "H"};
-		for (String bank : banks) {
-			DefaultMutableTreeNode bankNode = new DefaultMutableTreeNode("Bank " + bank);
-			String[] patches = {"1", "2", "3", "4", "5", "6", "7", "8"};
-			for (String patch : patches) {
-				DefaultMutableTreeNode patchNode = new DefaultMutableTreeNode("Patch " + bank + "-" + patch);
-				addPatchTreeNodesTo(patchNode);
+		for (int bank = 0; bank < 8; bank++) {
+			DefaultMutableTreeNode bankNode = new DefaultMutableTreeNode("Bank " + "ABCDEFGH".charAt(bank));
+			for (int patch = 0; patch < 8; patch++) {
+				String patchName = "Patch " + "ABCDEFGH".charAt(bank) + "-" + (patch + 1);
+				PatchTreeNode patchNode = new PatchTreeNode(patchName, gaiaTool.getGaia().getUserPatch(bank, patch));
 				bankNode.add(patchNode);
 			}
 			userPatchesNode.add(bankNode);
 		}
 		rootNode.add(userPatchesNode);
 		return new DefaultTreeModel(rootNode);
-	}
-	
-	private void addPatchTreeNodesTo(DefaultMutableTreeNode patchNode) {
-		patchNode.add(new DefaultMutableTreeNode("Tone 1"));
-		patchNode.add(new DefaultMutableTreeNode("Tone 2"));
-		patchNode.add(new DefaultMutableTreeNode("Tone 3"));
-		patchNode.add(new DefaultMutableTreeNode("Distortion"));
-		patchNode.add(new DefaultMutableTreeNode("Flanger"));
-		patchNode.add(new DefaultMutableTreeNode("Delay"));
-		patchNode.add(new DefaultMutableTreeNode("Reverb"));
-		patchNode.add(new DefaultMutableTreeNode("Arpeggio"));
 	}
 	
 	private void updateContentPanel() {
@@ -369,17 +355,11 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	 */
 	public GaiaPatch getSelectedPatch() {
 		TreePath tp = contentSelectionTree.getSelectionPath();
-		if (tp != null && tp.getPathCount() >= 2) {
-			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
-			if ("Temporary patch".equals(node1.getUserObject())) {
-				return gaiaTool.getGaia().getTemporaryPatch();
-			}
-			if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 4) {
-				DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)tp.getPathComponent(2);
-				DefaultMutableTreeNode node3 = (DefaultMutableTreeNode)tp.getPathComponent(3);
-				int bank = node1.getIndex(node2);
-				int patch = node2.getIndex(node3);
-				return gaiaTool.getGaia().getUserPatch(bank, patch);
+		if (tp != null) {
+			for (int i = tp.getPathCount() - 1; i >= 0; i--) {
+				if (tp.getPathComponent(i) instanceof PatchTreeNode) {
+					return ((PatchTreeNode)tp.getPathComponent(i)).getPatch();
+				}
 			}
 		}
 		return null;
