@@ -155,6 +155,14 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	/**
+	 * Returns whether the Gaia has been connected and its identity has been confirmed.
+	 * @return True if the GAIA is connected and identity confirmed.
+	 */
+	public boolean isConnected() {
+		return opened && identityConfirmed;
+	}
+	
+	/**
 	 * Return the device ID of the GAIA.
 	 * Will be 0 if the GAIA’s identity has not been confirmed yet.
 	 * @return The GAIA’s device ID, or 0.
