@@ -1,30 +1,27 @@
 package nl.grauw.gaia_tool.views;
 
 import javax.swing.JPanel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 import nl.grauw.gaia_tool.GaiaPatch;
 
-public class PatchTreeNode extends DefaultMutableTreeNode {
+public class PatchTreeNode extends ContentSelectionTreeNode {
 	private static final long serialVersionUID = 1L;
 	
 	String name;
 	GaiaPatch patch;
 	
 	public PatchTreeNode(String name, GaiaPatch patch) {
-		super(name);
 		this.name = name;
 		this.patch = patch;
 		
-		add(new DefaultMutableTreeNode("Tone 1"));
-		add(new DefaultMutableTreeNode("Tone 2"));
-		add(new DefaultMutableTreeNode("Tone 3"));
-		add(new DefaultMutableTreeNode("Distortion"));
-		add(new DefaultMutableTreeNode("Flanger"));
-		add(new DefaultMutableTreeNode("Delay"));
-		add(new DefaultMutableTreeNode("Reverb"));
-		add(new DefaultMutableTreeNode("Arpeggio"));
+		add(new ToneTreeNode(1));
+		add(new ToneTreeNode(2));
+		add(new ToneTreeNode(3));
+		add(new DistortionTreeNode());
+		add(new FlangerTreeNode());
+		add(new DelayTreeNode());
+		add(new ReverbTreeNode());
+		add(new ArpeggioTreeNode());
 	}
 	
 	public GaiaPatch getPatch() {
@@ -35,33 +32,94 @@ public class PatchTreeNode extends DefaultMutableTreeNode {
 		return name;
 	}
 	
-	public JPanel getContentView(TreeNode node) {
-		if (node == this) {
-			return new PatchView(patch);
-		} else if (node.getParent() != this) {
-			throw new RuntimeException("Node must be a child or self.");
-		} else {
-			String desc = node.toString();
-			if ("Tone 1".equals(desc)) {
-				return new ToneView(patch, 1);
-			} else if ("Tone 2".equals(desc)) {
-				return new ToneView(patch, 2);
-			} else if ("Tone 3".equals(desc)) {
-				return new ToneView(patch, 3);
-			} else if ("Distortion".equals(desc)) {
-//				return new DistortionPanel(patch);
-				return new DistortionView(patch);
-			} else if ("Flanger".equals(desc)) {
-				return new FlangerView(patch);
-			} else if ("Delay".equals(desc)) {
-				return new DelayView(patch);
-			} else if ("Reverb".equals(desc)) {
-				return new ReverbView(patch);
-			} else if ("Arpeggio".equals(desc)) {
-				return new ArpeggioView(patch);
-			}
+	@Override
+	public JPanel getContentView() {
+		return new PatchView(patch);
+	}
+	
+	public class ToneTreeNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		int tone;
+		
+		public ToneTreeNode(int tone) {
+			this.tone = tone;
 		}
-		throw new RuntimeException("Parameters not found.");
+		
+		public String toString() {
+			return "Tone " + tone;
+		}
+		
+		@Override
+		public JPanel getContentView() {
+			return new ToneView(patch, tone);
+		}
+	}
+	
+	public class DistortionTreeNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		public String toString() {
+			return "Distortion";
+		}
+		
+		@Override
+		public JPanel getContentView() {
+//			return new DistortionPanel(patch);
+			return new DistortionView(patch);
+		}
+	}
+	
+	public class FlangerTreeNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		public String toString() {
+			return "Flanger";
+		}
+		
+		@Override
+		public JPanel getContentView() {
+			return new FlangerView(patch);
+		}
+	}
+	
+	public class DelayTreeNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		public String toString() {
+			return "Delay";
+		}
+		
+		@Override
+		public JPanel getContentView() {
+			return new DelayView(patch);
+		}
+	}
+	
+	public class ReverbTreeNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		public String toString() {
+			return "Reverb";
+		}
+		
+		@Override
+		public JPanel getContentView() {
+			return new ReverbView(patch);
+		}
+	}
+	
+	public class ArpeggioTreeNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		public String toString() {
+			return "Arpeggio";
+		}
+		
+		@Override
+		public JPanel getContentView() {
+			return new ArpeggioView(patch);
+		}
 	}
 	
 }

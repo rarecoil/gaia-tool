@@ -42,7 +42,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -342,10 +341,9 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 			if ("System".equals(node1.toString()) && tp.getPathCount() == 2) {
 				return new SystemView(gaiaTool.getGaia());
 			} else if ("Temporary patch".equals(node1.toString()) && tp.getPathCount() >= 2) {
-				return ((PatchTreeNode)node1).getContentView((TreeNode)tp.getLastPathComponent());
+				return ((ContentSelectionTreeNode)tp.getLastPathComponent()).getContentView();
 			} else if ("User patches".equals(node1.toString()) && tp.getPathCount() >= 4) {
-				DefaultMutableTreeNode node3 = (DefaultMutableTreeNode)tp.getPathComponent(3);
-				return ((PatchTreeNode)node3).getContentView((TreeNode)tp.getLastPathComponent());
+				return ((ContentSelectionTreeNode)tp.getLastPathComponent()).getContentView();
 			}
 		}
 		return new JPanel();
