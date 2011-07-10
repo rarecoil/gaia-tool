@@ -21,12 +21,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.swing.JFileChooser;
+
 import nl.grauw.gaia_tool.PatchDataRequester.PatchCompleteListener;
 
 public class GaiaTool {
 	
 	private Gaia gaia;
 	private Log log;
+	private Library library;
 	
 	private Properties settings = new Properties();
 	private File currentDirectory = null;
@@ -34,8 +37,10 @@ public class GaiaTool {
 	public GaiaTool() {
 		log = new Log();
 		gaia = new Gaia(log, settings);
+		library = new Library(getLibraryPath());
 		
 		loadSettings();
+		library.populate();
 	}
 	
 	public Log getLog() {
@@ -44,6 +49,10 @@ public class GaiaTool {
 	
 	public Gaia getGaia() {
 		return gaia;
+	}
+	
+	public Library getLibrary() {
+		return library;
 	}
 	
 	public void exit() {
@@ -153,6 +162,11 @@ public class GaiaTool {
 			return new File(home, ".gaia-tool");
 		}
 		throw new RuntimeException("Home directory not found.");
+	}
+	
+	private File getLibraryPath() {
+		File home = new JFileChooser().getFileSystemView().getDefaultDirectory();
+		return new File(home, "GAIA/Library");
 	}
 	
 	/**
