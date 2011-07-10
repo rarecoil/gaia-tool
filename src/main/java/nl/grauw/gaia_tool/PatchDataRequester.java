@@ -23,7 +23,7 @@ import nl.grauw.gaia_tool.mvc.Observer;
  */
 public class PatchDataRequester implements Observer {
 	
-	interface PatchCompleteListener {
+	public interface PatchCompleteListener {
 		
 		/**
 		 * Invoked when the patch has loaded completely.
