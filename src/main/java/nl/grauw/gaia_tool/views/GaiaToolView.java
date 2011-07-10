@@ -40,7 +40,6 @@ import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -296,14 +295,14 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	}
 	
 	private DefaultTreeModel createContentSelectionTreeModel() {
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Parameters");
-		DefaultMutableTreeNode systemNode = new DefaultMutableTreeNode("System");
+		ContentSelectionTreeNode rootNode = new ContentSelectionTreeNode("Parameters");
+		SystemTreeNode systemNode = new SystemTreeNode();
 		rootNode.add(systemNode);
 		PatchTreeNode temporaryPatchNode = new PatchTreeNode("Temporary patch", gaiaTool.getGaia().getTemporaryPatch());
 		rootNode.add(temporaryPatchNode);
-		DefaultMutableTreeNode userPatchesNode = new DefaultMutableTreeNode("User patches");
+		ContentSelectionTreeNode userPatchesNode = new ContentSelectionTreeNode("User patches");
 		for (int bank = 0; bank < 8; bank++) {
-			DefaultMutableTreeNode bankNode = new DefaultMutableTreeNode("Bank " + "ABCDEFGH".charAt(bank));
+			ContentSelectionTreeNode bankNode = new ContentSelectionTreeNode("Bank " + "ABCDEFGH".charAt(bank));
 			for (int patch = 0; patch < 8; patch++) {
 				String patchName = "Patch " + "ABCDEFGH".charAt(bank) + "-" + (patch + 1);
 				PatchTreeNode patchNode = new PatchTreeNode(patchName, gaiaTool.getGaia().getUserPatch(bank, patch));
@@ -336,17 +335,10 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 			return getIntroPanel();
 		} else if (!gaiaTool.getGaia().isOpened() || !gaiaTool.getGaia().isIdentityConfirmed()) {
 			return getNotConnectedPanel();
-		} else if (tp.getPathCount() >= 2) {
-			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
-			if ("System".equals(node1.toString()) && tp.getPathCount() == 2) {
-				return new SystemView(gaiaTool.getGaia());
-			} else if ("Temporary patch".equals(node1.toString()) && tp.getPathCount() >= 2) {
-				return ((ContentSelectionTreeNode)tp.getLastPathComponent()).getContentView();
-			} else if ("User patches".equals(node1.toString()) && tp.getPathCount() >= 4) {
-				return ((ContentSelectionTreeNode)tp.getLastPathComponent()).getContentView();
-			}
+		} else {
+			ContentSelectionTreeNode selectedNode = (ContentSelectionTreeNode)tp.getLastPathComponent();
+			return selectedNode.getContentView();
 		}
-		return new JPanel();
 	}
 	
 	/**
@@ -463,6 +455,19 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	@Override
 	public void windowClosing(WindowEvent e) {
 		exit();
+	}
+	
+	public class SystemTreeNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		public String toString() {
+			return "System";
+		}
+		
+		@Override
+		public JPanel getContentView() {
+			return new SystemView(gaiaTool.getGaia());
+		}
 	}
 	
 }
