@@ -21,6 +21,8 @@ import nl.grauw.gaia_tool.GaiaTool;
 import nl.grauw.gaia_tool.Library;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.Patch.IncompletePatchException;
+import nl.grauw.gaia_tool.PatchDataRequester;
+import nl.grauw.gaia_tool.PatchDataRequester.PatchCompleteListener;
 import nl.grauw.gaia_tool.TemporaryPatch;
 
 public class ContentSelectionTree extends JTree {
@@ -235,8 +237,7 @@ public class ContentSelectionTree extends JTree {
 			}
 			
 			public void update() {
-				copy.setEnabled(!(patch instanceof TemporaryPatch) && gaiaTool.getGaia().isConnected() &&
-						!(patch instanceof GaiaPatch));
+				copy.setEnabled(!(patch instanceof TemporaryPatch) && gaiaTool.getGaia().isConnected());
 			}
 			
 			@Override
@@ -260,8 +261,17 @@ public class ContentSelectionTree extends JTree {
 				try {
 					temporaryPatch.copyFrom(patch);
 					temporaryPatch.saveParameters();
+					gaiaTool.getLog().log("Patch copied to temporary patch.");
 				} catch (IncompletePatchException e) {
-					gaiaTool.getLog().log(e.getMessage());
+					if (patch instanceof GaiaPatch) {
+						new PatchDataRequester((GaiaPatch) patch, new PatchCompleteListener() {
+							public void patchComplete(GaiaPatch patch) {
+								copyToTemporaryPatch(); // try again
+							}
+						}).requestMissingParameters();
+					} else {
+						gaiaTool.getLog().log(e.getMessage());
+					}
 				}
 			}
 		}
