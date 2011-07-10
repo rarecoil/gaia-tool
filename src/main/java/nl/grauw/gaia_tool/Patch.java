@@ -43,7 +43,12 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	public Patch() {
 		super();
 	}
-
+	
+	/**
+	 * Update the patch parameters.
+	 * @param address
+	 * @param data
+	 */
 	public void updateParameters(Address address, byte[] data) {
 		byte byte3 = address.getByte3();
 		byte byte4 = address.getByte4();
@@ -99,7 +104,15 @@ public class Patch extends Observable implements Iterable<Parameters> {
 			throw new IllegalArgumentException("Address not recognised.");
 		}
 	}
-
+	
+	/**
+	 * Update the patch parameters from an existing Parameters object.
+	 * @param other
+	 */
+	public void updateParameters(Parameters other) {
+		updateParameters(other.getAddress(), other.getData());
+	}
+	
 	public void clearParameters() {
 		common = null;
 		for (int i = 0; i < 3; i++)
@@ -119,6 +132,32 @@ public class Patch extends Observable implements Iterable<Parameters> {
 		notifyObservers("reverb");
 		notifyObservers("arpeggioCommon");
 		notifyObservers("arpeggioPatterns");
+	}
+	
+	public boolean isComplete() {
+		for (Parameters p : this) {
+			if (p == null)
+				return false;
+		}
+		return true;
+	}
+	
+	public void copyFrom(Patch other) throws IncompletePatchException {
+		if (!other.isComplete())
+			throw new IncompletePatchException();
+		
+		updateParameters(other.getCommon());
+		for (int toneNumber = 1; toneNumber <= 3; toneNumber++) {
+			updateParameters(other.getTone(toneNumber));
+		}
+		updateParameters(other.getDistortion());
+		updateParameters(other.getFlanger());
+		updateParameters(other.getDelay());
+		updateParameters(other.getReverb());
+		updateParameters(other.getArpeggioCommon());
+		for (int note = 1; note <= 16; note++) {
+			updateParameters(other.getArpeggioPattern(note));
+		}
 	}
 
 	public PatchCommon getCommon() {
@@ -259,6 +298,19 @@ public class Patch extends Observable implements Iterable<Parameters> {
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
+		}
+		
+	}
+	
+	public static class IncompletePatchException extends Exception {
+		private static final long serialVersionUID = 1L;
+		
+		public IncompletePatchException() {
+			this(null);
+		}
+		
+		public IncompletePatchException(Throwable cause) {
+			super("Patch must not be incomplete.", cause);
 		}
 		
 	}

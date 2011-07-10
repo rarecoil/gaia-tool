@@ -1,6 +1,14 @@
 package nl.grauw.gaia_tool.views;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -12,6 +20,8 @@ import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.GaiaTool;
 import nl.grauw.gaia_tool.Library;
 import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.Patch.IncompletePatchException;
+import nl.grauw.gaia_tool.TemporaryPatch;
 
 public class ContentSelectionTree extends JTree {
 	private static final long serialVersionUID = 1L;
@@ -26,6 +36,7 @@ public class ContentSelectionTree extends JTree {
 		setShowsRootHandles(true);
 		setRootVisible(false);
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		addMouseListener(new PopupListener());
 	}
 	
 	private DefaultTreeModel createContentSelectionTreeModel() {
@@ -76,11 +87,11 @@ public class ContentSelectionTree extends JTree {
 	 *         hold off updating for a little longer (to avoid flickering).
 	 */
 	public JPanel getSelectedContentView() {
-		TreePath tp = getSelectionPath();
-		if (tp == null)
+		TreePath treePath = getSelectionPath();
+		if (treePath == null)
 			return new IntroPanel();
 		
-		ContentSelectionTreeNode selectedNode = (ContentSelectionTreeNode)tp.getLastPathComponent();
+		ContentSelectionTreeNode selectedNode = (ContentSelectionTreeNode)treePath.getLastPathComponent();
 		return selectedNode.getContentView();
 	}
 	
@@ -89,15 +100,41 @@ public class ContentSelectionTree extends JTree {
 	 * @return The currently selected patch, or null.
 	 */
 	public Patch getSelectedPatch() {
-		TreePath tp = getSelectionPath();
-		if (tp != null) {
-			for (int i = tp.getPathCount() - 1; i >= 0; i--) {
-				if (tp.getPathComponent(i) instanceof PatchTreeNode) {
-					return ((PatchTreeNode)tp.getPathComponent(i)).getPatch();
+		TreePath treePath = getSelectionPath();
+		if (treePath != null) {
+			for (int i = treePath.getPathCount() - 1; i >= 0; i--) {
+				if (treePath.getPathComponent(i) instanceof PatchTreeNode) {
+					return ((PatchTreeNode)treePath.getPathComponent(i)).getPatch();
 				}
 			}
 		}
 		return null;
+	}
+	
+	public class PopupListener extends MouseAdapter {
+		@Override
+		public void mousePressed(MouseEvent e) {
+			showContextMenu(e);
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			showContextMenu(e);
+		}
+		
+		private void showContextMenu(MouseEvent e) {
+			if (e.isPopupTrigger()) {
+				TreePath treePath = getPathForLocation(e.getX(), e.getY());
+				if (treePath.getLastPathComponent() instanceof ContentSelectionTreeNode) {
+					ContentSelectionTreeNode node = (ContentSelectionTreeNode)treePath.getLastPathComponent();
+					JPopupMenu contextMenu = node.getContextMenu();
+					ContentSelectionTree.this.setSelectionPath(new TreePath(node.getPath()));
+					if (contextMenu != null) {
+						contextMenu.show(e.getComponent(), e.getX(), e.getY());
+					}
+				}
+			}
+		}
 	}
 	
 	public class ContentSelectionTreeNode extends DefaultMutableTreeNode {
@@ -120,6 +157,9 @@ public class ContentSelectionTree extends JTree {
 			return new JPanel();
 		}
 		
+		public JPopupMenu getContextMenu() {
+			return null;
+		}
 	}
 	
 	public class SystemTreeNode extends ContentSelectionTreeNode {
@@ -143,6 +183,7 @@ public class ContentSelectionTree extends JTree {
 		
 		String name;
 		Patch patch;
+		JPopupMenu contextMenu;
 		
 		public PatchTreeNode(Patch patch, String name) {
 			this.name = name;
@@ -172,6 +213,57 @@ public class ContentSelectionTree extends JTree {
 				return new NotConnectedPanel(gaiaTool.getGaia());
 			
 			return new PatchView(patch);
+		}
+		
+		public JPopupMenu getContextMenu() {
+			if (contextMenu == null) {
+				contextMenu = new PatchContextMenu();
+			}
+			return contextMenu;
+		}
+		
+		public class PatchContextMenu extends JPopupMenu implements ActionListener {
+			private static final long serialVersionUID = 1L;
+			
+			JMenuItem copy;
+			
+			public PatchContextMenu() {
+				copy = new JMenuItem("Copy to temporary patch");
+				copy.addActionListener(this);
+				add(copy);
+				update();
+			}
+			
+			public void update() {
+				copy.setEnabled(!(patch instanceof TemporaryPatch) && gaiaTool.getGaia().isConnected() &&
+						!(patch instanceof GaiaPatch));
+			}
+			
+			@Override
+			public void show(Component invoker, int x, int y) {
+				update();
+				super.show(invoker, x, y);
+			}
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == copy) {
+					copyToTemporaryPatch();
+				}
+			}
+			
+			public void copyToTemporaryPatch() {
+				if (patch instanceof TemporaryPatch || !gaiaTool.getGaia().isConnected())
+					throw new RuntimeException("Preconditions not satisfied.");
+				
+				TemporaryPatch temporaryPatch = gaiaTool.getGaia().getTemporaryPatch();
+				try {
+					temporaryPatch.copyFrom(patch);
+					temporaryPatch.saveParameters();
+				} catch (IncompletePatchException e) {
+					gaiaTool.getLog().log(e.getMessage());
+				}
+			}
 		}
 		
 		public class ToneTreeNode extends ContentSelectionTreeNode {

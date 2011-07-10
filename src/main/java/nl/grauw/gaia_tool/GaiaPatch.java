@@ -78,6 +78,19 @@ public abstract class GaiaPatch extends Patch {
 	}
 	
 	/**
+	 * Saves all parameters.
+	 * @throws IncompletePatchException 
+	 */
+	public void saveParameters() throws IncompletePatchException {
+		if (!isComplete())
+			throw new IncompletePatchException();
+		
+		for (Parameters parameters : this) {
+			gaia.sendDataTransmission(parameters);
+		}
+	}
+	
+	/**
 	 * Saves all modified parameters.
 	 */
 	public void saveModifiedParameters() {
