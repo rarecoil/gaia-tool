@@ -36,32 +36,6 @@ import nl.grauw.gaia_tool.mvc.Observable;
 public abstract class ParametersView extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 123L;
 	
-	public class SynchronizeModel extends ToggleButtonModel implements AWTObserver {
-		private static final long serialVersionUID = 1L;
-		
-		public SynchronizeModel() {
-			getGaia().addObserver(this);
-		}
-		
-		@Override
-		public boolean isSelected() {
-			return getGaia().getSynchronize();
-		}
-		
-		@Override
-		public void setSelected(boolean b) {
-			getGaia().setSynchronize(b);
-		}
-
-		@Override
-		public void update(Observable source, Object detail) {
-			if (source == getGaia() && "synchronize".equals(detail)) {
-				fireStateChanged();
-			}
-		}
-		
-	}
-	
 	private JLabel titleLabel;
 	private JButton reloadButton;
 	private JButton saveButton;
@@ -160,5 +134,31 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 			saveParameters();
 		}
 	}
+	
+	public class SynchronizeModel extends ToggleButtonModel implements AWTObserver {
+		private static final long serialVersionUID = 1L;
+		
+		public SynchronizeModel() {
+			getGaia().addObserver(this);
+		}
+		
+		@Override
+		public boolean isSelected() {
+			return getGaia().getSynchronize();
+		}
+		
+		@Override
+		public void setSelected(boolean b) {
+			getGaia().setSynchronize(b);
+		}
 
+		@Override
+		public void update(Observable source, Object detail) {
+			if (source == getGaia() && "synchronize".equals(detail)) {
+				fireStateChanged();
+			}
+		}
+		
+	}
+	
 }
