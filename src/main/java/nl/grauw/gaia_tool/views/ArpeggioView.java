@@ -44,132 +44,6 @@ import nl.grauw.gaia_tool.views.parameters.ArpeggioCommonView;
 
 public class ArpeggioView extends ParametersView implements AWTObserver, ActionListener {
 	private static final long serialVersionUID = 1L;
-
-	public class ArpeggioModel extends AbstractTableModel implements AWTObserver {
-		private static final long serialVersionUID = 1L;
-		
-		public ArpeggioModel() {
-			patch.addObserver(this);
-			addCommonObserver();
-			addPatternObservers();
-		}
-		
-		private void addCommonObserver() {
-			Parameters common = patch.getArpeggioCommon();
-			if (common != null && !common.hasObserver(this)) {
-				common.addObserver(this);
-			}
-		}
-		
-		private void addPatternObservers() {
-			for (Parameters pattern : patch.getArpeggioPatterns()) {
-				if (pattern != null && !pattern.hasObserver(this)) {
-					pattern.addObserver(this);
-				}
-			}
-		}
-		
-		@Override
-		public int getRowCount() {
-			return 16;
-		}
-
-		@Override
-		public int getColumnCount() {
-			ArpeggioCommon pacp = patch.getArpeggioCommon();
-			if (pacp == null)
-				return 1;
-			return pacp.getEndStep().getValue() + 1;
-		}
-		
-		public String getColumnName(int column) {
-			if (column == 0)
-				return "Note";
-			return String.valueOf(column);
-		}
-		
-		@Override
-		public Object getValueAt(int row, int column) {
-			ArpeggioPattern papp = patch.getArpeggioPattern(row + 1);
-			if (papp == null)
-				return "";
-			if (column == 0) {
-				Note originalNote = papp.getOriginalNote().getValue();
-				return originalNote.getNoteNumber() == 128 ? "OFF" : originalNote;
-			} else {
-				int velocity = papp.getStepData(column).getValue();
-//				if (velocity == 0)
-//					return "Rest";
-				if (velocity == 128)
-					return "Tie";
-				return velocity;
-			}
-		}
-		
-		@Override
-		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-			if (aValue instanceof String) {
-				setValueAt((String) aValue, rowIndex, columnIndex);
-			}
-		}
-		
-		private void setValueAt(String aValue, int rowIndex, int columnIndex) {
-			aValue = aValue.trim().toUpperCase();
-			ArpeggioPattern pattern = patch.getArpeggioPattern(rowIndex + 1);
-			if (columnIndex == 0) {
-				NoteValue originalNote = pattern.getOriginalNote();
-				if (aValue.equals("OFF")) {
-					originalNote.setValue(new Note(128));
-				} else {
-					try {
-						originalNote.setValue(new Note(aValue));
-					} catch(IllegalArgumentException e) {
-					}
-				}
-			} else {
-				IntValue stepData = pattern.getStepData(columnIndex);
-				if (aValue.equals("TIE")) {
-					stepData.setValue(128);
-				} else if (aValue.equals("REST")) {
-					stepData.setValue(0);
-				} else {
-					try {
-						stepData.setValue(new Integer(aValue));
-					} catch(IllegalArgumentException e) {
-					}
-				}
-			}
-		}
-		
-		@Override
-		public boolean isCellEditable(int rowIndex, int columnIndex) {
-			return true;
-		}
-
-		@Override
-		public void update(Observable source, Object detail) {
-			if (source == patch) {
-				if ("arpeggioCommon".equals(detail)) {
-					addCommonObserver();
-					fireTableStructureChanged();
-				} else if ("arpeggioPatterns".equals(detail)) {
-					addPatternObservers();
-					fireTableDataChanged();
-				}
-			} else if (source == patch.getArpeggioCommon()) {
-				fireTableStructureChanged();
-			} else if (source instanceof ArpeggioPattern) {
-				int row = 0;
-				for (ArpeggioPattern pattern : patch.getArpeggioPatterns()) {
-					if (source == pattern) {
-						fireTableRowsUpdated(row, row);
-						break;
-					}
-				}
-				row++;
-			}
-		}
-	}
 	
 	private GaiaPatch patch;
 	
@@ -314,5 +188,131 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	protected boolean isSyncShown() {
 		return patch instanceof TemporaryPatch;
 	}
+	
+	public class ArpeggioModel extends AbstractTableModel implements AWTObserver {
+		private static final long serialVersionUID = 1L;
+		
+		public ArpeggioModel() {
+			patch.addObserver(this);
+			addCommonObserver();
+			addPatternObservers();
+		}
+		
+		private void addCommonObserver() {
+			Parameters common = patch.getArpeggioCommon();
+			if (common != null && !common.hasObserver(this)) {
+				common.addObserver(this);
+			}
+		}
+		
+		private void addPatternObservers() {
+			for (Parameters pattern : patch.getArpeggioPatterns()) {
+				if (pattern != null && !pattern.hasObserver(this)) {
+					pattern.addObserver(this);
+				}
+			}
+		}
+		
+		@Override
+		public int getRowCount() {
+			return 16;
+		}
 
+		@Override
+		public int getColumnCount() {
+			ArpeggioCommon pacp = patch.getArpeggioCommon();
+			if (pacp == null)
+				return 1;
+			return pacp.getEndStep().getValue() + 1;
+		}
+		
+		public String getColumnName(int column) {
+			if (column == 0)
+				return "Note";
+			return String.valueOf(column);
+		}
+		
+		@Override
+		public Object getValueAt(int row, int column) {
+			ArpeggioPattern papp = patch.getArpeggioPattern(row + 1);
+			if (papp == null)
+				return "";
+			if (column == 0) {
+				Note originalNote = papp.getOriginalNote().getValue();
+				return originalNote.getNoteNumber() == 128 ? "OFF" : originalNote;
+			} else {
+				int velocity = papp.getStepData(column).getValue();
+//				if (velocity == 0)
+//					return "Rest";
+				if (velocity == 128)
+					return "Tie";
+				return velocity;
+			}
+		}
+		
+		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			if (aValue instanceof String) {
+				setValueAt((String) aValue, rowIndex, columnIndex);
+			}
+		}
+		
+		private void setValueAt(String aValue, int rowIndex, int columnIndex) {
+			aValue = aValue.trim().toUpperCase();
+			ArpeggioPattern pattern = patch.getArpeggioPattern(rowIndex + 1);
+			if (columnIndex == 0) {
+				NoteValue originalNote = pattern.getOriginalNote();
+				if (aValue.equals("OFF")) {
+					originalNote.setValue(new Note(128));
+				} else {
+					try {
+						originalNote.setValue(new Note(aValue));
+					} catch(IllegalArgumentException e) {
+					}
+				}
+			} else {
+				IntValue stepData = pattern.getStepData(columnIndex);
+				if (aValue.equals("TIE")) {
+					stepData.setValue(128);
+				} else if (aValue.equals("REST")) {
+					stepData.setValue(0);
+				} else {
+					try {
+						stepData.setValue(new Integer(aValue));
+					} catch(IllegalArgumentException e) {
+					}
+				}
+			}
+		}
+		
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return true;
+		}
+
+		@Override
+		public void update(Observable source, Object detail) {
+			if (source == patch) {
+				if ("arpeggioCommon".equals(detail)) {
+					addCommonObserver();
+					fireTableStructureChanged();
+				} else if ("arpeggioPatterns".equals(detail)) {
+					addPatternObservers();
+					fireTableDataChanged();
+				}
+			} else if (source == patch.getArpeggioCommon()) {
+				fireTableStructureChanged();
+			} else if (source instanceof ArpeggioPattern) {
+				int row = 0;
+				for (ArpeggioPattern pattern : patch.getArpeggioPatterns()) {
+					if (source == pattern) {
+						fireTableRowsUpdated(row, row);
+						break;
+					}
+				}
+				row++;
+			}
+		}
+	}
+	
 }
