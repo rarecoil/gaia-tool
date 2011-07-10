@@ -34,15 +34,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.GaiaTool;
 import nl.grauw.gaia_tool.GaiaPatch;
@@ -71,11 +67,9 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	private JMenuItem reconnectItem;
 	private JMenuItem configureMidiItem;
 	private JScrollPane contentSelectionScrollPane;
-	private JTree contentSelectionTree;
+	private ContentSelectionTree contentSelectionTree;
 	private JPanel contentPanel;
 	private LogView logView;
-	private IntroPanel introPanel;
-	private NotConnectedPanel notConnectedPanel;
 
 	public GaiaToolView(GaiaTool gaiaTool) {
 		this.gaiaTool = gaiaTool;
@@ -131,23 +125,9 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 		if (contentPanel == null) {
 			contentPanel = new JPanel();
 			contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-			contentPanel.add(getIntroPanel());
+			contentPanel.add(getContentSelectionTree().getSelectedContentView());
 		}
 		return contentPanel;
-	}
-
-	private IntroPanel getIntroPanel() {
-		if (introPanel == null) {
-			introPanel = new IntroPanel();
-		}
-		return introPanel;
-	}
-
-	private NotConnectedPanel getNotConnectedPanel() {
-		if (notConnectedPanel == null) {
-			notConnectedPanel = new NotConnectedPanel(gaiaTool.getGaia());
-		}
-		return notConnectedPanel;
 	}
 
 	private JMenuBar getMainMenuBar() {
@@ -281,80 +261,22 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 		return contentSelectionScrollPane;
 	}
 
-	private JTree getContentSelectionTree() {
+	private ContentSelectionTree getContentSelectionTree() {
 		if (contentSelectionTree == null) {
-			contentSelectionTree = new JTree();
-			DefaultTreeModel treeModel = createContentSelectionTreeModel();
-			contentSelectionTree.setModel(treeModel);
-			contentSelectionTree.setShowsRootHandles(true);
-			contentSelectionTree.setRootVisible(false);
+			contentSelectionTree = new ContentSelectionTree(gaiaTool);
 			contentSelectionTree.addTreeSelectionListener(this);
-			contentSelectionTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		}
 		return contentSelectionTree;
 	}
 	
-	private DefaultTreeModel createContentSelectionTreeModel() {
-		ContentSelectionTreeNode rootNode = new ContentSelectionTreeNode("Parameters");
-		SystemTreeNode systemNode = new SystemTreeNode();
-		rootNode.add(systemNode);
-		PatchTreeNode temporaryPatchNode = new PatchTreeNode("Temporary patch", gaiaTool.getGaia().getTemporaryPatch());
-		rootNode.add(temporaryPatchNode);
-		ContentSelectionTreeNode userPatchesNode = new ContentSelectionTreeNode("User patches");
-		for (int bank = 0; bank < 8; bank++) {
-			ContentSelectionTreeNode bankNode = new ContentSelectionTreeNode("Bank " + "ABCDEFGH".charAt(bank));
-			for (int patch = 0; patch < 8; patch++) {
-				String patchName = "Patch " + "ABCDEFGH".charAt(bank) + "-" + (patch + 1);
-				PatchTreeNode patchNode = new PatchTreeNode(patchName, gaiaTool.getGaia().getUserPatch(bank, patch));
-				bankNode.add(patchNode);
-			}
-			userPatchesNode.add(bankNode);
-		}
-		rootNode.add(userPatchesNode);
-		return new DefaultTreeModel(rootNode);
-	}
-	
 	private void updateContentPanel() {
 		JPanel cp = getContentPanel();
-		JPanel spv = getSelectedParametersView();
+		JPanel spv = contentSelectionTree.getSelectedContentView();
 		if (cp.getComponent(0) != spv) {
 			cp.removeAll();
 			cp.add(spv);
 			cp.revalidate();
 		}
-	}
-	
-	/**
-	 * Returns a panel corresponding to the current selection in the tree.
-	 * @return A panel that is to be shown, or null if the current panel should
-	 *         hold off updating for a little longer (to avoid flickering).
-	 */
-	public JPanel getSelectedParametersView() {
-		TreePath tp = contentSelectionTree.getSelectionPath();
-		if (tp == null) {
-			return getIntroPanel();
-		} else if (!gaiaTool.getGaia().isOpened() || !gaiaTool.getGaia().isIdentityConfirmed()) {
-			return getNotConnectedPanel();
-		} else {
-			ContentSelectionTreeNode selectedNode = (ContentSelectionTreeNode)tp.getLastPathComponent();
-			return selectedNode.getContentView();
-		}
-	}
-	
-	/**
-	 * Return the patch that is currently selected in the tree.
-	 * @return The currently selected patch, or null.
-	 */
-	public GaiaPatch getSelectedPatch() {
-		TreePath tp = contentSelectionTree.getSelectionPath();
-		if (tp != null) {
-			for (int i = tp.getPathCount() - 1; i >= 0; i--) {
-				if (tp.getPathComponent(i) instanceof PatchTreeNode) {
-					return ((PatchTreeNode)tp.getPathComponent(i)).getPatch();
-				}
-			}
-		}
-		return null;
 	}
 	
 	@Override
@@ -392,7 +314,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	}
 	
 	private void save() {
-		GaiaPatch patch = getSelectedPatch();
+		GaiaPatch patch = contentSelectionTree.getSelectedPatch();
 		if (patch == null) {
 			JOptionPane.showMessageDialog(this, "You must select a patch to save.",
 					"No patch selected.", JOptionPane.ERROR_MESSAGE);
@@ -409,7 +331,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 			int result = fc.showSaveDialog(this);
 			gaiaTool.setCurrentDirectory(fc.getCurrentDirectory());
 			if (result == JFileChooser.APPROVE_OPTION) {
-				gaiaTool.savePatch(fc.getSelectedFile(), getSelectedPatch());
+				gaiaTool.savePatch(fc.getSelectedFile(), contentSelectionTree.getSelectedPatch());
 			}
 		}
 	}
@@ -455,19 +377,6 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	@Override
 	public void windowClosing(WindowEvent e) {
 		exit();
-	}
-	
-	public class SystemTreeNode extends ContentSelectionTreeNode {
-		private static final long serialVersionUID = 1L;
-		
-		public String toString() {
-			return "System";
-		}
-		
-		@Override
-		public JPanel getContentView() {
-			return new SystemView(gaiaTool.getGaia());
-		}
 	}
 	
 }
