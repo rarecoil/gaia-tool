@@ -125,7 +125,7 @@ public class ContentSelectionTree extends JTree {
 		private void showContextMenu(MouseEvent e) {
 			if (e.isPopupTrigger()) {
 				TreePath treePath = getPathForLocation(e.getX(), e.getY());
-				if (treePath.getLastPathComponent() instanceof ContentSelectionTreeNode) {
+				if (treePath != null && treePath.getLastPathComponent() instanceof ContentSelectionTreeNode) {
 					ContentSelectionTreeNode node = (ContentSelectionTreeNode)treePath.getLastPathComponent();
 					JPopupMenu contextMenu = node.getContextMenu();
 					ContentSelectionTree.this.setSelectionPath(new TreePath(node.getPath()));
