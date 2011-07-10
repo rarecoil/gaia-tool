@@ -80,7 +80,7 @@ public abstract class GaiaPatch extends Patch {
 	/**
 	 * Saves all modified parameters.
 	 */
-	public void saveParameters() {
+	public void saveModifiedParameters() {
 		for (Parameters parameters : this) {
 			if (parameters != null && parameters.hasChanged()) {
 				gaia.sendDataTransmission(parameters);

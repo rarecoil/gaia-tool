@@ -80,7 +80,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	@Override
 	public void saveParameters() {
 		if (patch instanceof GaiaPatch) {
-			((GaiaPatch)patch).saveParameters();
+			((GaiaPatch)patch).saveModifiedParameters();
 		}
 	}
 

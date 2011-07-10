@@ -66,7 +66,7 @@ public class PatchView extends ParametersView implements AWTObserver {
 	@Override
 	public void saveParameters() {
 		if (patch instanceof GaiaPatch) {
-			((GaiaPatch)patch).saveParameters();
+			((GaiaPatch)patch).saveModifiedParameters();
 		}
 	}
 
