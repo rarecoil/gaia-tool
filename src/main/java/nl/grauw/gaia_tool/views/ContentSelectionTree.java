@@ -86,6 +86,11 @@ public class ContentSelectionTree extends JTree {
 			super(label);
 		}
 		
+		/**
+		 * The content view to show when the node is selected.
+		 * Intended to be overridden by subclasses.
+		 * @return View to show when selected.
+		 */
 		public JPanel getContentView() {
 			return new JPanel();
 		}
