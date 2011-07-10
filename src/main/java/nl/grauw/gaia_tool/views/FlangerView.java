@@ -18,6 +18,7 @@ package nl.grauw.gaia_tool.views;
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.GaiaPatch;
+import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.parameters.Flanger;
 import nl.grauw.gaia_tool.parameters.Flanger.FlangerType;
@@ -26,9 +27,9 @@ public class FlangerView extends SingleParametersView {
 
 	private static final long serialVersionUID = 1L;
 
-	private GaiaPatch patch;
+	private Patch patch;
 	
-	public FlangerView(GaiaPatch patch) {
+	public FlangerView(Patch patch) {
 		this.patch = patch;
 		patch.addObserver(this);
 		initComponents();
@@ -41,17 +42,23 @@ public class FlangerView extends SingleParametersView {
 
 	@Override
 	public Gaia getGaia() {
-		return patch.getGaia();
+		if (patch instanceof GaiaPatch)
+			return ((GaiaPatch)patch).getGaia();
+		return null;
 	}
 	
 	@Override
 	public void loadParameters() {
-		patch.loadFlanger();
+		if (patch instanceof GaiaPatch) {
+			((GaiaPatch)patch).loadFlanger();
+		}
 	}
 
 	@Override
 	public void saveParameters() {
-		patch.saveParameters();
+		if (patch instanceof GaiaPatch) {
+			((GaiaPatch)patch).saveParameters();
+		}
 	}
 
 	@Override

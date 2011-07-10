@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.GaiaPatch;
+import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.UserPatch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
@@ -34,9 +35,9 @@ public class PatchView extends ParametersView implements AWTObserver {
 	JPanel parametersContainer;
 	PatchCommonView patchCommonView;
 	
-	private GaiaPatch patch;
+	private Patch patch;
 	
-	public PatchView(GaiaPatch patch) {
+	public PatchView(Patch patch) {
 		this.patch = patch;
 		patch.addObserver(this);
 		if (patch.getCommon() == null)
@@ -50,17 +51,23 @@ public class PatchView extends ParametersView implements AWTObserver {
 
 	@Override
 	public Gaia getGaia() {
-		return patch.getGaia();
+		if (patch instanceof GaiaPatch)
+			return ((GaiaPatch)patch).getGaia();
+		return null;
 	}
 	
 	@Override
 	public void loadParameters() {
-		patch.loadCommon();
+		if (patch instanceof GaiaPatch) {
+			((GaiaPatch)patch).loadCommon();
+		}
 	}
 
 	@Override
 	public void saveParameters() {
-		patch.saveParameters();
+		if (patch instanceof GaiaPatch) {
+			((GaiaPatch)patch).saveParameters();
+		}
 	}
 
 	@Override

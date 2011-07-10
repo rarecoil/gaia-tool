@@ -41,7 +41,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import nl.grauw.gaia_tool.GaiaTool;
-import nl.grauw.gaia_tool.GaiaPatch;
+import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.UserPatch;
 import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
@@ -314,7 +314,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	}
 	
 	private void save() {
-		GaiaPatch patch = contentSelectionTree.getSelectedPatch();
+		Patch patch = contentSelectionTree.getSelectedPatch();
 		if (patch == null) {
 			JOptionPane.showMessageDialog(this, "You must select a patch to save.",
 					"No patch selected.", JOptionPane.ERROR_MESSAGE);

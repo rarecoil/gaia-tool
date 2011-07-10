@@ -9,6 +9,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.GaiaTool;
+import nl.grauw.gaia_tool.Patch;
 
 public class ContentSelectionTree extends JTree {
 	private static final long serialVersionUID = 1L;
@@ -63,7 +64,7 @@ public class ContentSelectionTree extends JTree {
 	 * Return the patch that is currently selected in the tree.
 	 * @return The currently selected patch, or null.
 	 */
-	public GaiaPatch getSelectedPatch() {
+	public Patch getSelectedPatch() {
 		TreePath tp = getSelectionPath();
 		if (tp != null) {
 			for (int i = tp.getPathCount() - 1; i >= 0; i--) {
@@ -117,9 +118,9 @@ public class ContentSelectionTree extends JTree {
 		private static final long serialVersionUID = 1L;
 		
 		String name;
-		GaiaPatch patch;
+		Patch patch;
 		
-		public PatchTreeNode(String name, GaiaPatch patch) {
+		public PatchTreeNode(String name, Patch patch) {
 			this.name = name;
 			this.patch = patch;
 			
@@ -133,7 +134,7 @@ public class ContentSelectionTree extends JTree {
 			add(new ArpeggioTreeNode());
 		}
 		
-		public GaiaPatch getPatch() {
+		public Patch getPatch() {
 			return patch;
 		}
 		
@@ -143,7 +144,7 @@ public class ContentSelectionTree extends JTree {
 		
 		@Override
 		public JPanel getContentView() {
-			if (!gaiaTool.getGaia().isConnected())
+			if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
 				return new NotConnectedPanel(gaiaTool.getGaia());
 			
 			return new PatchView(patch);
@@ -164,7 +165,7 @@ public class ContentSelectionTree extends JTree {
 			
 			@Override
 			public JPanel getContentView() {
-				if (!gaiaTool.getGaia().isConnected())
+				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
 					return new NotConnectedPanel(gaiaTool.getGaia());
 				
 				return new ToneView(patch, tone);
@@ -180,7 +181,7 @@ public class ContentSelectionTree extends JTree {
 			
 			@Override
 			public JPanel getContentView() {
-				if (!gaiaTool.getGaia().isConnected())
+				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
 					return new NotConnectedPanel(gaiaTool.getGaia());
 				
 //				return new DistortionPanel(patch);
@@ -197,7 +198,7 @@ public class ContentSelectionTree extends JTree {
 			
 			@Override
 			public JPanel getContentView() {
-				if (!gaiaTool.getGaia().isConnected())
+				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
 					return new NotConnectedPanel(gaiaTool.getGaia());
 				
 				return new FlangerView(patch);
@@ -213,7 +214,7 @@ public class ContentSelectionTree extends JTree {
 			
 			@Override
 			public JPanel getContentView() {
-				if (!gaiaTool.getGaia().isConnected())
+				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
 					return new NotConnectedPanel(gaiaTool.getGaia());
 				
 				return new DelayView(patch);
@@ -229,7 +230,7 @@ public class ContentSelectionTree extends JTree {
 			
 			@Override
 			public JPanel getContentView() {
-				if (!gaiaTool.getGaia().isConnected())
+				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
 					return new NotConnectedPanel(gaiaTool.getGaia());
 				
 				return new ReverbView(patch);
@@ -245,7 +246,7 @@ public class ContentSelectionTree extends JTree {
 			
 			@Override
 			public JPanel getContentView() {
-				if (!gaiaTool.getGaia().isConnected())
+				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
 					return new NotConnectedPanel(gaiaTool.getGaia());
 				
 				return new ArpeggioView(patch);

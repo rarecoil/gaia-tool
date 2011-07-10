@@ -35,6 +35,7 @@ import nl.grauw.gaia_tool.NoteValue;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
@@ -45,7 +46,7 @@ import nl.grauw.gaia_tool.views.parameters.ArpeggioCommonView;
 public class ArpeggioView extends ParametersView implements AWTObserver, ActionListener {
 	private static final long serialVersionUID = 1L;
 	
-	private GaiaPatch patch;
+	private Patch patch;
 	
 	private JPanel parametersContainer;
 	private JPanel arpeggioCommonContainer;
@@ -54,7 +55,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	private JTable patternTable;
 	private JTextField editField;
 	
-	public ArpeggioView(GaiaPatch patch) {
+	public ArpeggioView(Patch patch) {
 		this.patch = patch;
 		patch.addObserver(this);
 		if (patch.getArpeggioCommon() == null)
@@ -64,17 +65,23 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 
 	@Override
 	public Gaia getGaia() {
-		return patch.getGaia();
+		if (patch instanceof GaiaPatch)
+			return ((GaiaPatch)patch).getGaia();
+		return null;
 	}
 	
 	@Override
 	public void loadParameters() {
-		patch.loadArpeggioAll();
+		if (patch instanceof GaiaPatch) {
+			((GaiaPatch)patch).loadArpeggioAll();
+		}
 	}
 	
 	@Override
 	public void saveParameters() {
-		patch.saveParameters();
+		if (patch instanceof GaiaPatch) {
+			((GaiaPatch)patch).saveParameters();
+		}
 	}
 
 	@Override

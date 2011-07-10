@@ -37,6 +37,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 123L;
 	
 	private JLabel titleLabel;
+	private JPanel buttonsPanel;
 	private JButton reloadButton;
 	private JButton saveButton;
 	private JToggleButton syncButton;
@@ -63,9 +64,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 						layout.createSequentialGroup()
 							.addComponent(getTitleLabel())
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Integer.MAX_VALUE)
-							.addComponent(getSyncButton())
-							.addComponent(getSaveButton())
-							.addComponent(getReloadButton())
+							.addComponent(getSyncButtons(), GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					)
 					.addComponent(getParametersContainer())
 			);
@@ -74,9 +73,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 					.addGroup(
 						layout.createParallelGroup(Alignment.CENTER)
 							.addComponent(getTitleLabel())
-							.addComponent(getSyncButton())
-							.addComponent(getSaveButton())
-							.addComponent(getReloadButton())
+							.addComponent(getSyncButtons(), GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					)
 					.addComponent(getParametersContainer())
 			);
@@ -89,6 +86,18 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 			titleLabel.setText(getTitle());
 		}
 		return titleLabel;
+	}
+	
+	private JPanel getSyncButtons() {
+		if (buttonsPanel == null) {
+			buttonsPanel = new JPanel();
+			if (getGaia() != null) {
+				buttonsPanel.add(getSyncButton());
+				buttonsPanel.add(getSaveButton());
+				buttonsPanel.add(getReloadButton());
+			}
+		}
+		return buttonsPanel;
 	}
 	
 	private JButton getReloadButton() {
