@@ -49,7 +49,7 @@ public class ContentSelectionTree extends JTree {
 		rootNode.add(temporaryPatchNode);
 		ContentSelectionTreeNode userPatchesNode = createUserPatchesNode();
 		rootNode.add(userPatchesNode);
-		ContentSelectionTreeNode libraryNode = createLibraryNode(gaiaTool.getLibrary(), "Library");
+		LibraryNode libraryNode = new LibraryNode(gaiaTool.getLibrary(), "Library");
 		rootNode.add(libraryNode);
 		return new DefaultTreeModel(rootNode);
 	}
@@ -66,21 +66,6 @@ public class ContentSelectionTree extends JTree {
 			userPatchesNode.add(bankNode);
 		}
 		return userPatchesNode;
-	}
-	
-	private ContentSelectionTreeNode createLibraryNode(Library library) {
-		return createLibraryNode(library, library.getName());
-	}
-	
-	private ContentSelectionTreeNode createLibraryNode(Library library, String name) {
-		ContentSelectionTreeNode libraryNode = new ContentSelectionTreeNode(name);
-		for (Library sublibrary : library.getLibraries()) {
-			libraryNode.add(createLibraryNode(sublibrary));
-		}
-		for (FilePatch patch : library.getPatches()) {
-			libraryNode.add(new PatchTreeNode(patch, patch.getName()));
-		}
-		return libraryNode;
 	}
 	
 	/**
@@ -161,6 +146,29 @@ public class ContentSelectionTree extends JTree {
 		
 		public JPopupMenu getContextMenu() {
 			return null;
+		}
+	}
+	
+	public class LibraryNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		public LibraryNode(Library library) {
+			this(library, library.getName());
+		}
+		
+		public LibraryNode(Library library, String name) {
+			super(name);
+			for (Library sublibrary : library.getLibraries()) {
+				add(new LibraryNode(sublibrary));
+			}
+			for (FilePatch patch : library.getPatches()) {
+				add(new PatchTreeNode(patch, patch.getName()));
+			}
+		}
+		
+		@Override
+		public JPanel getContentView() {
+			return new LibraryPanel(gaiaTool);
 		}
 	}
 	

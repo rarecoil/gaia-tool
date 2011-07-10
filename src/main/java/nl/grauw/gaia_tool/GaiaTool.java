@@ -164,7 +164,7 @@ public class GaiaTool {
 		throw new RuntimeException("Home directory not found.");
 	}
 	
-	private File getLibraryPath() {
+	public File getLibraryPath() {
 		File home = new JFileChooser().getFileSystemView().getDefaultDirectory();
 		return new File(home, "GAIA/Library");
 	}
