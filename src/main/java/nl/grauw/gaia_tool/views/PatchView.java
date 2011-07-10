@@ -18,6 +18,7 @@ package nl.grauw.gaia_tool.views;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import nl.grauw.gaia_tool.FilePatch;
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.GaiaPatch;
@@ -77,6 +78,8 @@ public class PatchView extends ParametersView implements AWTObserver {
 		} else if (patch instanceof UserPatch) {
 			return "User patch " + "ABCDEFGH".charAt(((UserPatch)patch).getBank()) +
 					"-" + (((UserPatch)patch).getPatch() + 1);
+		} else if (patch instanceof FilePatch) {
+			return "Patch " + ((FilePatch)patch).getName();
 		}
 		return "Patch";
 	}
