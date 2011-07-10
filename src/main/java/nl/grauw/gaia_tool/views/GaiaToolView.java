@@ -42,6 +42,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -338,12 +339,13 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 			return getNotConnectedPanel();
 		} else if (tp.getPathCount() >= 2) {
 			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(1);
-			if ("System".equals(node1.getUserObject()) && tp.getPathCount() == 2) {
+			if ("System".equals(node1.toString()) && tp.getPathCount() == 2) {
 				return new SystemView(gaiaTool.getGaia());
-			} else if ("Temporary patch".equals(node1.getUserObject()) && tp.getPathCount() >= 2) {
-				return getPatchParameterByName(getSelectedPatch(), tp, 2);
-			} else if ("User patches".equals(node1.getUserObject()) && tp.getPathCount() >= 4) {
-				return getPatchParameterByName(getSelectedPatch(), tp, 4);
+			} else if ("Temporary patch".equals(node1.toString()) && tp.getPathCount() >= 2) {
+				return ((PatchTreeNode)node1).getContentView((TreeNode)tp.getLastPathComponent());
+			} else if ("User patches".equals(node1.toString()) && tp.getPathCount() >= 4) {
+				DefaultMutableTreeNode node3 = (DefaultMutableTreeNode)tp.getPathComponent(3);
+				return ((PatchTreeNode)node3).getContentView((TreeNode)tp.getLastPathComponent());
 			}
 		}
 		return new JPanel();
@@ -365,34 +367,6 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 		return null;
 	}
 	
-	public JPanel getPatchParameterByName(GaiaPatch ppg, TreePath tp, int startIndex) {
-		if (tp.getPathCount() == startIndex) {
-			return new PatchView(ppg);
-		} else if (tp.getPathCount() > startIndex) {
-			DefaultMutableTreeNode node1 = (DefaultMutableTreeNode)tp.getPathComponent(startIndex);
-			String desc = (String)node1.getUserObject();
-			if ("Tone 1".equals(desc)) {
-				return new ToneView(ppg, 1);
-			} else if ("Tone 2".equals(desc)) {
-				return new ToneView(ppg, 2);
-			} else if ("Tone 3".equals(desc)) {
-				return new ToneView(ppg, 3);
-			} else if ("Distortion".equals(desc)) {
-//				return new DistortionPanel(ppg);
-				return new DistortionView(ppg);
-			} else if ("Flanger".equals(desc)) {
-				return new FlangerView(ppg);
-			} else if ("Delay".equals(desc)) {
-				return new DelayView(ppg);
-			} else if ("Reverb".equals(desc)) {
-				return new ReverbView(ppg);
-			} else if ("Arpeggio".equals(desc)) {
-				return new ArpeggioView(ppg);
-			}
-		}
-		throw new RuntimeException("Parameters not found.");
-	}
-
 	@Override
 	public void update(Observable source, Object detail) {
 		if ("opened".equals(detail)) {
