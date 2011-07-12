@@ -49,21 +49,11 @@ import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
-public class GaiaToolView extends JFrame implements ActionListener, TreeSelectionListener, WindowListener, AWTObserver {
+public class GaiaToolView extends JFrame implements TreeSelectionListener, WindowListener, AWTObserver {
 	
 	private GaiaTool gaiaTool;
 	
 	private static final long serialVersionUID = 1L;
-	private JMenuBar mainMenuBar;
-	private JMenu fileMenu;
-	private JMenuItem loadItem;
-	private JMenuItem saveItem;
-	private JMenuItem exitItem;
-	private JMenu testMenu;
-	private JMenuItem playTestNotesItem;
-	private JMenu toolsMenu;
-	private JMenuItem reconnectItem;
-	private JMenuItem configureMidiItem;
 	private JScrollPane contentSelectionScrollPane;
 	private ContentSelectionTree contentSelectionTree;
 	private JPanel contentPanel;
@@ -108,7 +98,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 					)
 					.addComponent(getLogView(), GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
 			);
-		setJMenuBar(getMainMenuBar());
+		setJMenuBar(new MainMenuBar());
 		setSize(900, 600);
 	}
 
@@ -126,102 +116,6 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 			contentPanel.add(getContentSelectionTree().getSelectedContentView());
 		}
 		return contentPanel;
-	}
-
-	private JMenuBar getMainMenuBar() {
-		if (mainMenuBar == null) {
-			mainMenuBar = new JMenuBar();
-			mainMenuBar.add(getFileMenu());
-			mainMenuBar.add(getTestMenu());
-			mainMenuBar.add(getToolsMenu());
-		}
-		return mainMenuBar;
-	}
-
-	private JMenu getFileMenu() {
-		if (fileMenu == null) {
-			fileMenu = new JMenu("File");
-			fileMenu.add(getLoadItem());
-			fileMenu.add(getSaveItem());
-			if (!"Mac OS X".equals(System.getProperty("os.name"))) {
-				fileMenu.addSeparator();
-				fileMenu.add(getExitItem());
-			}
-		}
-		return fileMenu;
-	}
-
-	private JMenuItem getExitItem() {
-		if (exitItem == null) {
-			exitItem = new JMenuItem("Exit");
-			exitItem.addActionListener(this);
-		}
-		return exitItem;
-	}
-
-	private JMenuItem getLoadItem() {
-		if (loadItem == null) {
-			loadItem = new JMenuItem("Load patch…");
-			loadItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
-					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-			loadItem.addActionListener(this);
-			getLoadItem().setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
-		}
-		return loadItem;
-	}
-
-	private JMenuItem getSaveItem() {
-		if (saveItem == null) {
-			saveItem = new JMenuItem("Save patch as…");
-			saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-			saveItem.addActionListener(this);
-			getSaveItem().setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
-		}
-		return saveItem;
-	}
-
-	private JMenu getTestMenu() {
-		if (testMenu == null) {
-			testMenu = new JMenu("Test");
-			testMenu.add(getPlayTestNotesItem());
-			
-			testMenu.setEnabled(gaiaTool.getGaia().isOpened());
-		}
-		return testMenu;
-	}
-
-	private JMenuItem getPlayTestNotesItem() {
-		if (playTestNotesItem == null) {
-			playTestNotesItem = new JMenuItem("Play test notes");
-			playTestNotesItem.addActionListener(this);
-		}
-		return playTestNotesItem;
-	}
-
-	private JMenu getToolsMenu() {
-		if (toolsMenu == null) {
-			toolsMenu = new JMenu("Tools");
-			toolsMenu.add(getReconnectItem());
-			toolsMenu.add(getConfigureMidiItem());
-		}
-		return toolsMenu;
-	}
-
-	private JMenuItem getReconnectItem() {
-		if (reconnectItem == null) {
-			reconnectItem = new JMenuItem("Reconnect");
-			reconnectItem.addActionListener(this);
-		}
-		return reconnectItem;
-	}
-
-	private JMenuItem getConfigureMidiItem() {
-		if (configureMidiItem == null) {
-			configureMidiItem = new JMenuItem("Configure MIDI…");
-			configureMidiItem.addActionListener(this);
-		}
-		return configureMidiItem;
 	}
 
 	private JScrollPane getContentSelectionScrollPane() {
@@ -252,29 +146,8 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	
 	@Override
 	public void update(Observable source, Object detail) {
-		if ("opened".equals(detail)) {
-			getTestMenu().setEnabled(gaiaTool.getGaia().isOpened());
-		} else if ("identityConfirmed".equals(detail)) {
+		if ("identityConfirmed".equals(detail)) {
 			updateContentPanel();
-			getLoadItem().setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
-			getSaveItem().setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
-		}
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == playTestNotesItem) {
-			gaiaTool.getGaia().playTestNote();
-			gaiaTool.getGaia().playGMTestNote();
-		} else if (e.getSource() == exitItem) {
-			exit();
-		} else if (e.getSource() == saveItem) {
-			save();
-		} else if (e.getSource() == loadItem) {
-			load();
-		} else if (e.getSource() == reconnectItem) {
-			reconnect();
-		} else if (e.getSource() == configureMidiItem) {
-			new MIDIDeviceSelector(gaiaTool.getGaia(), this).show();
 		}
 	}
 	
@@ -342,6 +215,165 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	@Override
 	public void windowClosing(WindowEvent e) {
 		exit();
+	}
+	
+	private class MainMenuBar extends JMenuBar {
+		private static final long serialVersionUID = 1L;
+		
+		public MainMenuBar() {
+			add(new FileMenu());
+			add(new TestMenu());
+			add(new ToolsMenu());
+		}
+		
+		private class FileMenu extends JMenu {
+			private static final long serialVersionUID = 1L;
+			
+			public FileMenu() {
+				super("File");
+				add(new LoadItem());
+				add(new SaveItem());
+				if (!"Mac OS X".equals(System.getProperty("os.name"))) {
+					addSeparator();
+					add(new ExitItem());
+				}
+			}
+			
+			private class LoadItem extends JMenuItem implements ActionListener, AWTObserver {
+				private static final long serialVersionUID = 1L;
+				
+				public LoadItem() {
+					super("Load patch…");
+					setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
+							Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+					addActionListener(this);
+					gaiaTool.getGaia().addObserver(this);
+					update(null, "identityConfirmed");
+				}
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					load();
+				}
+				
+				@Override
+				public void update(Observable source, Object detail) {
+					if ("identityConfirmed".equals(detail)) {
+						setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
+					}
+				}
+			}
+			
+			private class SaveItem extends JMenuItem implements ActionListener, AWTObserver {
+				private static final long serialVersionUID = 1L;
+				
+				public SaveItem() {
+					super("Save patch as…");
+					setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+							Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+					addActionListener(this);
+					gaiaTool.getGaia().addObserver(this);
+					update(null, "identityConfirmed");
+				}
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					save();
+				}
+				
+				@Override
+				public void update(Observable source, Object detail) {
+					if ("identityConfirmed".equals(detail)) {
+						setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
+					}
+				}
+			}
+			
+			private class ExitItem extends JMenuItem implements ActionListener {
+				private static final long serialVersionUID = 1L;
+				
+				public ExitItem() {
+					super("Exit");
+					addActionListener(this);
+				}
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					exit();
+				}
+			}
+		}
+		
+		private class TestMenu extends JMenu implements AWTObserver {
+			private static final long serialVersionUID = 1L;
+			
+			public TestMenu() {
+				super("Test");
+				add(new PlayTestNotesItem());
+				gaiaTool.getGaia().addObserver(this);
+				update(null, "opened");
+			}
+			
+			@Override
+			public void update(Observable source, Object detail) {
+				if ("opened".equals(detail)) {
+					setEnabled(gaiaTool.getGaia().isOpened());
+				}
+			}
+			
+			private class PlayTestNotesItem extends JMenuItem implements ActionListener {
+				private static final long serialVersionUID = 1L;
+				
+				public PlayTestNotesItem() {
+					super("Play test notes");
+					addActionListener(this);
+				}
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					gaiaTool.getGaia().playTestNote();
+					gaiaTool.getGaia().playGMTestNote();
+				}
+			}
+		}
+		
+		private class ToolsMenu extends JMenu {
+			private static final long serialVersionUID = 1L;
+			
+			public ToolsMenu() {
+				super("Tools");
+				add(new ReconnectItem());
+				add(new ConfigureMidiItem());
+			}
+			
+			private class ReconnectItem extends JMenuItem implements ActionListener {
+				private static final long serialVersionUID = 1L;
+				
+				public ReconnectItem() {
+					super("Reconnect");
+					addActionListener(this);
+				}
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					reconnect();
+				}
+			}
+			
+			private class ConfigureMidiItem extends JMenuItem implements ActionListener {
+				private static final long serialVersionUID = 1L;
+				
+				public ConfigureMidiItem() {
+					super("Configure MIDI…");
+					addActionListener(this);
+				}
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					new MIDIDeviceSelector(gaiaTool.getGaia(), this).show();
+				}
+			}
+		}
 	}
 	
 }
