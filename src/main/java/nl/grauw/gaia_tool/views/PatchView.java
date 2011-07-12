@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool.views;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import nl.grauw.gaia_tool.FilePatch;
@@ -90,7 +91,7 @@ public class PatchView extends ParametersView implements AWTObserver {
 	}
 
 	@Override
-	protected JPanel getParametersContainer() {
+	protected JComponent getParametersContainer() {
 		if (parametersContainer == null) {
 			parametersContainer = new JPanel();
 			parametersContainer.setLayout(new BoxLayout(parametersContainer, BoxLayout.Y_AXIS));

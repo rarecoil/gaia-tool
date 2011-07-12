@@ -23,6 +23,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -107,7 +108,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	}
 	
 	@Override
-	protected JPanel getParametersContainer() {
+	protected JComponent getParametersContainer() {
 		if (parametersContainer == null) {
 			parametersContainer = new JPanel();
 			GroupLayout layout = new GroupLayout(parametersContainer);

@@ -26,6 +26,7 @@ import java.io.File;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -271,7 +272,7 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	
 	private void updateContentPanel() {
 		JPanel cp = getContentPanel();
-		JPanel spv = contentSelectionTree.getSelectedContentView();
+		JComponent spv = contentSelectionTree.getSelectedContentView();
 		if (cp.getComponent(0) != spv) {
 			cp.removeAll();
 			cp.add(spv);

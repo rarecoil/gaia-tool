@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -52,7 +53,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 	
 	protected abstract boolean isSyncShown();
 	
-	protected abstract JPanel getParametersContainer();
+	protected abstract JComponent getParametersContainer();
 	
 	protected void initComponents() {
 		GroupLayout layout = new GroupLayout(this);
