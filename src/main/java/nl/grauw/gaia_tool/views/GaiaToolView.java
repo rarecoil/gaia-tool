@@ -41,6 +41,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.GaiaTool;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
@@ -52,6 +53,7 @@ import nl.grauw.gaia_tool.mvc.Observable;
 public class GaiaToolView extends JFrame implements TreeSelectionListener, WindowListener, AWTObserver {
 	
 	private GaiaTool gaiaTool;
+	private Gaia gaia;
 	
 	private static final long serialVersionUID = 1L;
 	private JScrollPane contentSelectionScrollPane;
@@ -61,7 +63,8 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 
 	public GaiaToolView(GaiaTool gaiaTool) {
 		this.gaiaTool = gaiaTool;
-		gaiaTool.getGaia().addObserver(this);
+		gaia = gaiaTool.getGaia();
+		gaia.addObserver(this);
 		
 		initComponents();
 		updateContentPanel();
@@ -181,14 +184,14 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 		int result = fc.showOpenDialog(this);
 		gaiaTool.setCurrentDirectory(fc.getCurrentDirectory());
 		if (result == JFileChooser.APPROVE_OPTION) {
-			gaiaTool.loadGaiaPatch(fc.getSelectedFile(), gaiaTool.getGaia().getTemporaryPatch());
+			gaiaTool.loadGaiaPatch(fc.getSelectedFile(), gaia.getTemporaryPatch());
 		}
 	}
 	
 	private void reconnect() {
 		try {
-			gaiaTool.getGaia().close();
-			gaiaTool.getGaia().open();
+			gaia.close();
+			gaia.open();
 		} catch (GaiaNotFoundException e) {
 			JOptionPane.showMessageDialog(this, "The GAIA MIDI ports could not be found. Is your GAIA turned on?",
 					"Problem connecting to Roland GAIA", JOptionPane.ERROR_MESSAGE);
@@ -247,7 +250,7 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 					setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
 							Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 					addActionListener(this);
-					gaiaTool.getGaia().addObserver(this);
+					gaia.addObserver(this);
 					update(null, "identityConfirmed");
 				}
 				
@@ -259,7 +262,7 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 				@Override
 				public void update(Observable source, Object detail) {
 					if ("identityConfirmed".equals(detail)) {
-						setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
+						setEnabled(gaia.isIdentityConfirmed());
 					}
 				}
 			}
@@ -272,7 +275,7 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 					setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 							Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 					addActionListener(this);
-					gaiaTool.getGaia().addObserver(this);
+					gaia.addObserver(this);
 					update(null, "identityConfirmed");
 				}
 				
@@ -284,7 +287,7 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 				@Override
 				public void update(Observable source, Object detail) {
 					if ("identityConfirmed".equals(detail)) {
-						setEnabled(gaiaTool.getGaia().isIdentityConfirmed());
+						setEnabled(gaia.isIdentityConfirmed());
 					}
 				}
 			}
@@ -310,14 +313,14 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 			public TestMenu() {
 				super("Test");
 				add(new PlayTestNotesItem());
-				gaiaTool.getGaia().addObserver(this);
+				gaia.addObserver(this);
 				update(null, "opened");
 			}
 			
 			@Override
 			public void update(Observable source, Object detail) {
 				if ("opened".equals(detail)) {
-					setEnabled(gaiaTool.getGaia().isOpened());
+					setEnabled(gaia.isOpened());
 				}
 			}
 			
@@ -331,8 +334,8 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					gaiaTool.getGaia().playTestNote();
-					gaiaTool.getGaia().playGMTestNote();
+					gaia.playTestNote();
+					gaia.playGMTestNote();
 				}
 			}
 		}
@@ -370,7 +373,7 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					new MIDIDeviceSelector(gaiaTool.getGaia(), this).show();
+					new MIDIDeviceSelector(gaia, this).show();
 				}
 			}
 		}
