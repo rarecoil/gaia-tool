@@ -61,9 +61,6 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 	private JMenuItem exitItem;
 	private JMenu testMenu;
 	private JMenuItem playTestNotesItem;
-	private JMenuItem gmSystemOnItem;
-	private JMenuItem gm2SystemOnItem;
-	private JMenuItem gmSystemOffItem;
 	private JMenu toolsMenu;
 	private JMenuItem reconnectItem;
 	private JMenuItem configureMidiItem;
@@ -188,9 +185,6 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 		if (testMenu == null) {
 			testMenu = new JMenu("Test");
 			testMenu.add(getPlayTestNotesItem());
-			testMenu.add(getGMSystemOnItem());
-			testMenu.add(getGM2SystemOnItem());
-			testMenu.add(getGMSystemOffItem());
 			
 			testMenu.setEnabled(gaiaTool.getGaia().isOpened());
 		}
@@ -203,30 +197,6 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 			playTestNotesItem.addActionListener(this);
 		}
 		return playTestNotesItem;
-	}
-
-	private JMenuItem getGMSystemOnItem() {
-		if (gmSystemOnItem == null) {
-			gmSystemOnItem = new JMenuItem("GM system on");
-			gmSystemOnItem.addActionListener(this);
-		}
-		return gmSystemOnItem;
-	}
-
-	private JMenuItem getGM2SystemOnItem() {
-		if (gm2SystemOnItem == null) {
-			gm2SystemOnItem = new JMenuItem("GM2 system on");
-			gm2SystemOnItem.addActionListener(this);
-		}
-		return gm2SystemOnItem;
-	}
-
-	private JMenuItem getGMSystemOffItem() {
-		if (gmSystemOffItem == null) {
-			gmSystemOffItem = new JMenuItem("GM system off");
-			gmSystemOffItem.addActionListener(this);
-		}
-		return gmSystemOffItem;
 	}
 
 	private JMenu getToolsMenu() {
@@ -295,12 +265,6 @@ public class GaiaToolView extends JFrame implements ActionListener, TreeSelectio
 		if (e.getSource() == playTestNotesItem) {
 			gaiaTool.getGaia().playTestNote();
 			gaiaTool.getGaia().playGMTestNote();
-		} else if (e.getSource() == gmSystemOnItem) {
-			gaiaTool.getGaia().sendGM1SystemOn();
-		} else if (e.getSource() == gm2SystemOnItem) {
-			gaiaTool.getGaia().sendGM2SystemOn();
-		} else if (e.getSource() == gmSystemOffItem) {
-			gaiaTool.getGaia().sendGMSystemOff();
 		} else if (e.getSource() == exitItem) {
 			exit();
 		} else if (e.getSource() == saveItem) {

@@ -33,9 +33,6 @@ import nl.grauw.gaia_tool.messages.ActiveSensingMessage;
 import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.messages.DataRequest1;
 import nl.grauw.gaia_tool.messages.DataSet1;
-import nl.grauw.gaia_tool.messages.GMSystemOn;
-import nl.grauw.gaia_tool.messages.GM2SystemOn;
-import nl.grauw.gaia_tool.messages.GMSystemOff;
 import nl.grauw.gaia_tool.messages.IdentityReply;
 import nl.grauw.gaia_tool.messages.IdentityRequest;
 import nl.grauw.gaia_tool.messages.NoteOffMessage;
@@ -469,39 +466,6 @@ public class Gaia extends Observable implements Observer {
 	public void requestIdentity() {
 		try {
 			send(new IdentityRequest());
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Sends a GM system on directive.
-	 */
-	public void sendGM1SystemOn() {
-		try {
-			send(new GMSystemOn());
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Sends a GM2 system on directive.
-	 */
-	public void sendGM2SystemOn() {
-		try {
-			send(new GM2SystemOn());
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Sends a GM system off directive.
-	 */
-	public void sendGMSystemOff() {
-		try {
-			send(new GMSystemOff());
 		} catch (InvalidMidiDataException e) {
 			e.printStackTrace();
 		}
