@@ -19,8 +19,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 
 import javax.sound.midi.MidiUnavailableException;
@@ -50,7 +50,7 @@ import nl.grauw.gaia_tool.Gaia.GaiaNotFoundException;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
-public class GaiaToolView extends JFrame implements TreeSelectionListener, WindowListener, AWTObserver {
+public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTObserver {
 	
 	private GaiaTool gaiaTool;
 	private Gaia gaia;
@@ -78,7 +78,7 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 	private void initComponents() {
 		setTitle("Roland GAIA SH-01 tool — by Grauw");
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		addWindowListener(this);
+		addWindowListener(new WindowCloseListener());
 		GroupLayout layout = new GroupLayout(getContentPane());
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
@@ -207,17 +207,12 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, Windo
 			updateContentPanel();
 		}
 	}
-
-	public void windowOpened(WindowEvent e) {}
-	public void windowClosed(WindowEvent e) {}
-	public void windowIconified(WindowEvent e) {}
-	public void windowDeiconified(WindowEvent e) {}
-	public void windowActivated(WindowEvent e) {}
-	public void windowDeactivated(WindowEvent e) {}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		exit();
+	
+	private class WindowCloseListener extends WindowAdapter {
+		@Override
+		public void windowClosing(WindowEvent e) {
+			exit();
+		}
 	}
 	
 	private class MainMenuBar extends JMenuBar {
