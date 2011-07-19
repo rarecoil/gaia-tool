@@ -45,7 +45,6 @@ public class ObservableTest {
 	}
 	
 	public class TestAWTObserver implements AWTObserver {
-		private static final long serialVersionUID = 1L;
 		public int updateCount;
 		public Observable lastSource;
 		public Object lastArgument;
