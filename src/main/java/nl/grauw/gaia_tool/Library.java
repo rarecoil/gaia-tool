@@ -48,6 +48,9 @@ public class Library extends Observable {
 			}
 		});
 		
+		if (files == null)
+			return;
+		
 		for (File patchFile : files) {
 			FilePatch patch = new FilePatch(patchFile);
 			try {
@@ -69,6 +72,9 @@ public class Library extends Observable {
 				return pathname.isDirectory();
 			}
 		});
+		
+		if (files == null)
+			return;
 		
 		for (File libraryDirectory : files) {
 			Library library = new Library(libraryDirectory);
