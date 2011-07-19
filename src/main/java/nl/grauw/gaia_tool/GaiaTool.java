@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -66,6 +67,8 @@ public class GaiaTool {
 		try {
 			fr = new FileReader(new File(getAndCreateSettingsPath(), "settings.properties"));
 			settings.load(fr);
+		} catch (FileNotFoundException e) {
+			// no settings file yet
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
