@@ -40,6 +40,10 @@ public abstract class GaiaPatch extends Patch {
 			gaia.sendDataRequest(address, length);
 		}
 	}
+
+	public void load() {
+		loadData(getAddress(0x00), 0xE80);
+	}
 	
 	public void loadCommon() {
 		loadData(getAddress(0x00), 0x3D);
