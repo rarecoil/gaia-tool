@@ -15,15 +15,12 @@
  */
 package nl.grauw.gaia_tool.views;
 
-import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.Patch;
-import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.parameters.Distortion;
 import nl.grauw.gaia_tool.parameters.Distortion.DistortionType;
 
-public class DistortionView extends SingleParametersView {
+public class DistortionView extends SingleParametersPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,43 +31,12 @@ public class DistortionView extends SingleParametersView {
 		patch.addObserver(this);
 		initComponents();
 	}
-
+	
 	@Override
 	public Parameters getParameters() {
 		return patch.getDistortion();
 	}
-
-	@Override
-	public Gaia getGaia() {
-		if (patch instanceof GaiaPatch)
-			return ((GaiaPatch)patch).getGaia();
-		return null;
-	}
 	
-	@Override
-	public void loadParameters() {
-		if (patch instanceof GaiaPatch) {
-			((GaiaPatch)patch).loadDistortion();
-		}
-	}
-
-	@Override
-	public void saveParameters() {
-		if (patch instanceof GaiaPatch) {
-			((GaiaPatch)patch).saveModifiedParameters();
-		}
-	}
-
-	@Override
-	public String getTitle() {
-		return "Patch distortion";
-	}
-	
-	@Override
-	protected boolean isSyncShown() {
-		return patch instanceof TemporaryPatch;
-	}
-
 	@Override
 	protected String getParametersText() {
 		Distortion d = patch.getDistortion();

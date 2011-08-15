@@ -199,15 +199,6 @@ public class ContentSelectionTree extends JTree {
 		public PatchTreeNode(Patch patch, String name) {
 			this.name = name;
 			this.patch = patch;
-			
-			add(new ToneTreeNode(1));
-			add(new ToneTreeNode(2));
-			add(new ToneTreeNode(3));
-			add(new DistortionTreeNode());
-			add(new FlangerTreeNode());
-			add(new DelayTreeNode());
-			add(new ReverbTreeNode());
-			add(new ArpeggioTreeNode());
 		}
 		
 		public Patch getPatch() {
@@ -282,109 +273,6 @@ public class ContentSelectionTree extends JTree {
 						gaiaTool.getLog().log(e.getMessage());
 					}
 				}
-			}
-		}
-		
-		public class ToneTreeNode extends ContentSelectionTreeNode {
-			private static final long serialVersionUID = 1L;
-			
-			int tone;
-			
-			public ToneTreeNode(int tone) {
-				this.tone = tone;
-			}
-			
-			public String toString() {
-				return "Tone " + tone;
-			}
-			
-			@Override
-			public JComponent getContentView() {
-				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
-					return new NotConnectedPanel(gaiaTool.getGaia());
-				
-				return new ToneView(patch, tone);
-			}
-		}
-		
-		public class DistortionTreeNode extends ContentSelectionTreeNode {
-			private static final long serialVersionUID = 1L;
-			
-			public String toString() {
-				return "Distortion";
-			}
-			
-			@Override
-			public JComponent getContentView() {
-				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
-					return new NotConnectedPanel(gaiaTool.getGaia());
-				
-//				return new DistortionPanel(patch);
-				return new DistortionView(patch);
-			}
-		}
-		
-		public class FlangerTreeNode extends ContentSelectionTreeNode {
-			private static final long serialVersionUID = 1L;
-			
-			public String toString() {
-				return "Flanger";
-			}
-			
-			@Override
-			public JComponent getContentView() {
-				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
-					return new NotConnectedPanel(gaiaTool.getGaia());
-				
-				return new FlangerView(patch);
-			}
-		}
-		
-		public class DelayTreeNode extends ContentSelectionTreeNode {
-			private static final long serialVersionUID = 1L;
-			
-			public String toString() {
-				return "Delay";
-			}
-			
-			@Override
-			public JComponent getContentView() {
-				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
-					return new NotConnectedPanel(gaiaTool.getGaia());
-				
-				return new DelayView(patch);
-			}
-		}
-		
-		public class ReverbTreeNode extends ContentSelectionTreeNode {
-			private static final long serialVersionUID = 1L;
-			
-			public String toString() {
-				return "Reverb";
-			}
-			
-			@Override
-			public JComponent getContentView() {
-				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
-					return new NotConnectedPanel(gaiaTool.getGaia());
-				
-				return new ReverbView(patch);
-			}
-		}
-		
-		public class ArpeggioTreeNode extends ContentSelectionTreeNode {
-			private static final long serialVersionUID = 1L;
-			
-			public String toString() {
-				return "Arpeggio";
-			}
-			
-			@Override
-			public JComponent getContentView() {
-				if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
-					return new NotConnectedPanel(gaiaTool.getGaia());
-				
-				return new ArpeggioView(patch);
 			}
 		}
 		

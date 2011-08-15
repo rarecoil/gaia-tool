@@ -15,15 +15,12 @@
  */
 package nl.grauw.gaia_tool.views;
 
-import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.Patch;
-import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.parameters.Flanger;
 import nl.grauw.gaia_tool.parameters.Flanger.FlangerType;
 
-public class FlangerView extends SingleParametersView {
+public class FlangerView extends SingleParametersPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,38 +36,7 @@ public class FlangerView extends SingleParametersView {
 	public Parameters getParameters() {
 		return patch.getFlanger();
 	}
-
-	@Override
-	public Gaia getGaia() {
-		if (patch instanceof GaiaPatch)
-			return ((GaiaPatch)patch).getGaia();
-		return null;
-	}
 	
-	@Override
-	public void loadParameters() {
-		if (patch instanceof GaiaPatch) {
-			((GaiaPatch)patch).loadFlanger();
-		}
-	}
-
-	@Override
-	public void saveParameters() {
-		if (patch instanceof GaiaPatch) {
-			((GaiaPatch)patch).saveModifiedParameters();
-		}
-	}
-
-	@Override
-	public String getTitle() {
-		return "Patch flanger";
-	}
-	
-	@Override
-	protected boolean isSyncShown() {
-		return patch instanceof TemporaryPatch;
-	}
-
 	@Override
 	protected String getParametersText() {
 		Flanger f = patch.getFlanger();

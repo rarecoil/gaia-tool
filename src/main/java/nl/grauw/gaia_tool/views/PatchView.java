@@ -15,9 +15,14 @@
  */
 package nl.grauw.gaia_tool.views;
 
-import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import nl.grauw.gaia_tool.FilePatch;
 import nl.grauw.gaia_tool.Gaia;
@@ -26,31 +31,29 @@ import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.UserPatch;
-import nl.grauw.gaia_tool.mvc.AWTObserver;
-import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.views.parameters.PatchCommonView;
 
-public class PatchView extends ParametersView implements AWTObserver {
+public class PatchView extends ParametersView implements ChangeListener {
 
 	private static final long serialVersionUID = 1L;
 	
-	JPanel parametersContainer;
+	JTabbedPane parametersContainer;
 	PatchCommonView patchCommonView;
 	
 	private Patch patch;
 	
 	public PatchView(Patch patch) {
 		this.patch = patch;
-		patch.addObserver(this);
-		if (patch.getCommon() == null)
-			loadParameters();
 		initComponents();
+		
+		if (patch instanceof GaiaPatch && !patch.isComplete()) {
+			((GaiaPatch)patch).load();
+		}
 	}
-
+	
 	public Parameters getParameters() {
 		return patch.getCommon();
 	}
-
+	
 	@Override
 	public Gaia getGaia() {
 		if (patch instanceof GaiaPatch)
@@ -64,14 +67,14 @@ public class PatchView extends ParametersView implements AWTObserver {
 			((GaiaPatch)patch).loadCommon();
 		}
 	}
-
+	
 	@Override
 	public void saveParameters() {
 		if (patch instanceof GaiaPatch) {
 			((GaiaPatch)patch).saveModifiedParameters();
 		}
 	}
-
+	
 	@Override
 	public String getTitle() {
 		if (patch instanceof TemporaryPatch) {
@@ -89,40 +92,120 @@ public class PatchView extends ParametersView implements AWTObserver {
 	protected boolean isSyncShown() {
 		return patch instanceof TemporaryPatch;
 	}
-
+	
 	@Override
 	protected JComponent getParametersContainer() {
 		if (parametersContainer == null) {
-			parametersContainer = new JPanel();
-			parametersContainer.setLayout(new BoxLayout(parametersContainer, BoxLayout.Y_AXIS));
-			PatchCommonView pcv = getPatchCommonView();
-			if (pcv != null)
-				parametersContainer.add(pcv);
+			parametersContainer = new JTabbedPane();
+			parametersContainer.addChangeListener(this);
+			
+			parametersContainer.addTab("Common", new CommonTab());
+			parametersContainer.addTab("Tone 1", new ToneTab(1));
+			parametersContainer.addTab("Tone 2", new ToneTab(2));
+			parametersContainer.addTab("Tone 3", new ToneTab(3));
+			parametersContainer.addTab("Distortion", new DistortionTab());
+			parametersContainer.addTab("Flanger", new FlangerTab());
+			parametersContainer.addTab("Delay", new DelayTab());
+			parametersContainer.addTab("Reverb", new ReverbTab());
+			parametersContainer.addTab("Arpeggio", new ArpeggioTab());
+			
+			// add mnemonic keys ALT 1, ALT 2 ... ALT 0.
+			for (int tabNr = 0; tabNr < 10 && tabNr < parametersContainer.getTabCount(); tabNr++) {
+				parametersContainer.setMnemonicAt(tabNr, KeyEvent.VK_0 + ((tabNr + 1) % 10));
+				parametersContainer.setDisplayedMnemonicIndexAt(tabNr, -1);
+			}
 		}
 		return parametersContainer;
 	}
 	
-	private PatchCommonView getPatchCommonView() {
-		if (patchCommonView == null || patchCommonView.getParameters() != patch.getCommon()) {
-			if (getParameters() != null) {
-				patchCommonView = new PatchCommonView(patch.getCommon());
-			}
-		}
-		return patchCommonView;
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		((Tab)parametersContainer.getSelectedComponent()).tabSelected();
 	}
 	
-	@Override
-	public void update(Observable source, Object detail) {
-		if ("common".equals(detail)) {
-			parametersContainer.removeAll();
-			PatchCommonView pcv = getPatchCommonView();
-			if (pcv != null)
-				parametersContainer.add(pcv);
-			parametersContainer.revalidate();
-			if (patch.getCommon() == null && isShowing()) {
-				loadParameters();
-			}
+	private abstract class Tab extends JPanel {
+		private static final long serialVersionUID = 1L;
+		
+		abstract protected JComponent createContent();
+		
+		public Tab() {
+			setLayout(new BorderLayout());
+		}
+		
+		protected void tabSelected() {
+			if (getComponentCount() == 0)
+				add(createContent());
 		}
 	}
-
+	
+	private class CommonTab extends Tab {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public JPanel createContent() {
+			return new PatchCommonView(patch);
+		}
+	}
+	
+	private class ToneTab extends Tab {
+		private static final long serialVersionUID = 1L;
+		
+		private int toneNumber;
+		
+		public ToneTab(int toneNumber) {
+			this.toneNumber = toneNumber;
+		}
+		
+		@Override
+		public JPanel createContent() {
+			return new ToneView(patch, toneNumber);
+		}
+	}
+	
+	private class DistortionTab extends Tab {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public JPanel createContent() {
+//			return new DistortionPanel(patch);
+			return new DistortionView(patch);
+		}
+	}
+	
+	private class FlangerTab extends Tab {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public JPanel createContent() {
+			return new FlangerView(patch);
+		}
+	}
+	
+	private class DelayTab extends Tab {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public JPanel createContent() {
+			return new DelayView(patch);
+		}
+	}
+	
+	private class ReverbTab extends Tab {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public JPanel createContent() {
+			return new ReverbView(patch);
+		}
+	}
+	
+	private class ArpeggioTab extends Tab {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public JPanel createContent() {
+			return new ArpeggioView(patch);
+		}
+	}
+	
 }

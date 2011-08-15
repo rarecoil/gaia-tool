@@ -17,39 +17,33 @@ package nl.grauw.gaia_tool.views;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
-import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.NoteValue;
 import nl.grauw.gaia_tool.Parameters;
-import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.IntValue;
 import nl.grauw.gaia_tool.Patch;
-import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 import nl.grauw.gaia_tool.views.parameters.ArpeggioCommonView;
 
-public class ArpeggioView extends ParametersView implements AWTObserver, ActionListener {
+public class ArpeggioView extends JPanel implements AWTObserver {
 	private static final long serialVersionUID = 1L;
 	
 	private Patch patch;
 	
-	private JPanel parametersContainer;
 	private JPanel arpeggioCommonContainer;
 	private ArpeggioCommonView arpeggioCommonView;
 	private JScrollPane patternScrollPane;
@@ -59,35 +53,7 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 	public ArpeggioView(Patch patch) {
 		this.patch = patch;
 		patch.addObserver(this);
-		if (patch.getArpeggioCommon() == null)
-			loadParameters();
 		initComponents();
-	}
-
-	@Override
-	public Gaia getGaia() {
-		if (patch instanceof GaiaPatch)
-			return ((GaiaPatch)patch).getGaia();
-		return null;
-	}
-	
-	@Override
-	public void loadParameters() {
-		if (patch instanceof GaiaPatch) {
-			((GaiaPatch)patch).loadArpeggioAll();
-		}
-	}
-	
-	@Override
-	public void saveParameters() {
-		if (patch instanceof GaiaPatch) {
-			((GaiaPatch)patch).saveModifiedParameters();
-		}
-	}
-
-	@Override
-	public String getTitle() {
-		return "Patch arpeggio";
 	}
 	
 	@Override
@@ -101,31 +67,23 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 					container.add(acv);
 				container.revalidate();
 			}
-			if (patch.getArpeggioCommon() == null && isShowing()) {
-				loadParameters();
-			}
 		}
 	}
 	
-	@Override
-	protected JComponent getParametersContainer() {
-		if (parametersContainer == null) {
-			parametersContainer = new JPanel();
-			GroupLayout layout = new GroupLayout(parametersContainer);
-			parametersContainer.setLayout(layout);
-			layout.setAutoCreateGaps(true);
-			layout.setHorizontalGroup(
-					layout.createParallelGroup()
-						.addComponent(getArpeggioCommonContainer())
-						.addComponent(getPatternScrollPane())
-				);
-			layout.setVerticalGroup(
-					layout.createSequentialGroup()
-						.addComponent(getArpeggioCommonContainer(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(getPatternScrollPane())
-				);
-		}
-		return parametersContainer;
+	protected void initComponents() {
+		GroupLayout layout = new GroupLayout(this);
+		setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setHorizontalGroup(
+				layout.createParallelGroup()
+					.addComponent(getArpeggioCommonContainer())
+					.addComponent(getPatternScrollPane())
+			);
+		layout.setVerticalGroup(
+				layout.createSequentialGroup()
+					.addComponent(getArpeggioCommonContainer(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(getPatternScrollPane())
+			);
 	}
 	
 	private JPanel getArpeggioCommonContainer() {
@@ -190,11 +148,6 @@ public class ArpeggioView extends ParametersView implements AWTObserver, ActionL
 			editField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		}
 		return editField;
-	}
-	
-	@Override
-	protected boolean isSyncShown() {
-		return patch instanceof TemporaryPatch;
 	}
 	
 	public class ArpeggioModel extends AbstractTableModel implements AWTObserver {
