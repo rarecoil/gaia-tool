@@ -49,8 +49,8 @@ public class LogView extends JPanel implements AWTObserver {
 		if (source == log) {
 			int logTextLength = log.getLog().length();
 			int logAreaLength = logArea.getText().length();
-			if (logTextLength > logAreaLength) {
-				logArea.append(log.getLog().substring(logAreaLength));
+			if (logTextLength > logAreaLength + 1) {	// skip the trailing newline
+				logArea.append(log.getLog().substring(logAreaLength, logTextLength - 1));
 			} else if (logTextLength < logAreaLength) {
 				throw new RuntimeException("Length mismatch. Something is amiss here.");
 			}
