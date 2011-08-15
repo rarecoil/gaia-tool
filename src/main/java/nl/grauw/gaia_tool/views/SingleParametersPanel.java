@@ -15,7 +15,8 @@
  */
 package nl.grauw.gaia_tool.views;
 
-import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -42,7 +43,7 @@ public abstract class SingleParametersPanel extends JPanel implements AWTObserve
 			getParameters().addObserver(this);
 		}
 		
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		setLayout(new BorderLayout());
 		add(getParametersContainer());
 	}
 	
@@ -65,7 +66,7 @@ public abstract class SingleParametersPanel extends JPanel implements AWTObserve
 	protected JComponent getParametersContainer() {
 		if (parametersContainer == null) {
 			parametersContainer = new JPanel();
-			parametersContainer.setLayout(new BoxLayout(parametersContainer, BoxLayout.X_AXIS));
+			parametersContainer.setLayout(new BorderLayout());
 			parametersContainer.add(getParameterScrollPane());
 		}
 		return parametersContainer;

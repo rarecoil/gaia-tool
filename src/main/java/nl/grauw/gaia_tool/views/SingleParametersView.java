@@ -15,7 +15,8 @@
  */
 package nl.grauw.gaia_tool.views;
 
-import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -73,7 +74,7 @@ public abstract class SingleParametersView extends ParametersView implements AWT
 	protected JComponent getParametersContainer() {
 		if (parametersContainer == null) {
 			parametersContainer = new JPanel();
-			parametersContainer.setLayout(new BoxLayout(parametersContainer, BoxLayout.X_AXIS));
+			parametersContainer.setLayout(new BorderLayout());
 			parametersContainer.add(getParameterScrollPane());
 		}
 		return parametersContainer;

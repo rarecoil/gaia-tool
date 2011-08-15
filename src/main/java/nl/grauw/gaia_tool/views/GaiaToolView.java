@@ -15,6 +15,7 @@
  */
 package nl.grauw.gaia_tool.views;
 
+import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +25,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.sound.midi.MidiUnavailableException;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -115,7 +115,7 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 	private JPanel getContentPanel() {
 		if (contentPanel == null) {
 			contentPanel = new JPanel();
-			contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+			contentPanel.setLayout(new BorderLayout());
 			contentPanel.add(getContentSelectionTree().getSelectedContentView());
 		}
 		return contentPanel;

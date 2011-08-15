@@ -15,7 +15,8 @@
  */
 package nl.grauw.gaia_tool.views;
 
-import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -76,7 +77,7 @@ public class DistortionPanel extends ParametersView implements AWTObserver {
 	protected JComponent getParametersContainer() {
 		if (parametersContainer == null) {
 			parametersContainer = new JPanel();
-			parametersContainer.setLayout(new BoxLayout(parametersContainer, BoxLayout.X_AXIS));
+			parametersContainer.setLayout(new BorderLayout());
 			if (getDistortionView() != null) {
 				parametersContainer.add(getDistortionView());
 			}

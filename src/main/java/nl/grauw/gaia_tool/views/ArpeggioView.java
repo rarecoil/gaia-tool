@@ -15,11 +15,11 @@
  */
 package nl.grauw.gaia_tool.views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
@@ -89,7 +89,7 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 	private JPanel getArpeggioCommonContainer() {
 		if (arpeggioCommonContainer == null) {
 			arpeggioCommonContainer = new JPanel();
-			arpeggioCommonContainer.setLayout(new BoxLayout(arpeggioCommonContainer, BoxLayout.Y_AXIS));
+			arpeggioCommonContainer.setLayout(new BorderLayout());
 			ArpeggioCommonView pv = getArpeggioCommonView();
 			if (pv != null)
 				arpeggioCommonContainer.add(pv);

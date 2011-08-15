@@ -15,7 +15,8 @@
  */
 package nl.grauw.gaia_tool.views;
 
-import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -57,7 +58,7 @@ public class LogView extends JPanel implements AWTObserver {
 	}
 
 	private void initComponents() {
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		setLayout(new BorderLayout());
 		add(getLogScrollPane());
 	}
 
