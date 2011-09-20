@@ -41,6 +41,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import nl.grauw.gaia_tool.FilePatch;
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.GaiaTool;
 import nl.grauw.gaia_tool.Patch;
@@ -168,6 +169,8 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 			} else if (patch instanceof UserPatch) {
 				fc.setSelectedFile(new File(fc.getCurrentDirectory(), String.format("patch-%s-%d.gaia",
 						"ABCDEFGH".charAt(((UserPatch)patch).getBank()), ((UserPatch)patch).getPatch() + 1)));
+			} else if (patch instanceof FilePatch) {
+				fc.setSelectedFile(((FilePatch)patch).getSource());
 			}
 			int result = fc.showSaveDialog(this);
 			gaiaTool.setCurrentDirectory(fc.getCurrentDirectory());
