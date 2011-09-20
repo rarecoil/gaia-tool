@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -228,11 +229,19 @@ public class ContentSelectionTree extends JTree {
 			private static final long serialVersionUID = 1L;
 			
 			private JMenuItem copy;
+			private JMenuItem refresh;
 			
 			public PatchContextMenu() {
 				copy = new JMenuItem("Copy to temporary patch");
 				copy.addActionListener(this);
 				add(copy);
+				
+				// Add refresh option to file patches
+				if (patch instanceof FilePatch) {
+					refresh = new JMenuItem("Refresh");
+					refresh.addActionListener(this);
+					add(refresh);
+				}
 				update();
 			}
 			
@@ -250,6 +259,9 @@ public class ContentSelectionTree extends JTree {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == copy) {
 					copyToTemporaryPatch();
+				}
+				if (e.getSource() == refresh) {
+					refresh();
 				}
 			}
 			
@@ -274,6 +286,18 @@ public class ContentSelectionTree extends JTree {
 					}
 				}
 			}
+			
+			private void refresh() {
+				if (!(patch instanceof FilePatch))
+					throw new RuntimeException("Refresh only works for file patches.");
+				
+				try {
+					((FilePatch)patch).load();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
 		}
 		
 	}
