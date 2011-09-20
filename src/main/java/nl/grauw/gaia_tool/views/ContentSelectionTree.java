@@ -220,7 +220,7 @@ public class ContentSelectionTree extends JTree {
 			}
 			
 			private void refresh() {
-				library.populate();
+				library.refresh();
 			}
 		}
 		
@@ -348,7 +348,7 @@ public class ContentSelectionTree extends JTree {
 				} catch (FileNotFoundException e) {
 					gaiaTool.getLog().log(e.getMessage());
 					if (PatchTreeNode.this.getParent() instanceof LibraryNode)
-						((LibraryNode)PatchTreeNode.this.getParent()).library.populate();
+						((LibraryNode)PatchTreeNode.this.getParent()).library.refresh();
 				} catch (IOException e) {
 					gaiaTool.getLog().log(e.getMessage());
 				}

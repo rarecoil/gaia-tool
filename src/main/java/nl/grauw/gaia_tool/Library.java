@@ -37,9 +37,9 @@ public class Library extends Observable {
 	/**
 	 * Populate the library contents.
 	 */
-	public void populate() {
-		populatePatches();
-		populateLibraries();
+	public void refresh() {
+		refreshPatches();
+		refreshLibraries();
 		
 		notifyObservers();
 	}
@@ -62,7 +62,7 @@ public class Library extends Observable {
 					}
 				}
 				if (!patchMatched)
-					populate();
+					refresh();
 			} else {
 				for (Library library : libraries) {
 					library.refresh(path);
@@ -74,7 +74,7 @@ public class Library extends Observable {
 	/**
 	 * Populate .gaia-files as patches.
 	 */
-	private void populatePatches() {
+	private void refreshPatches() {
 		patches.clear();
 		
 		File[] files = source.listFiles(new FileFilter() {
@@ -101,7 +101,7 @@ public class Library extends Observable {
 	/**
 	 * Populate subdirectories as sub-libraries.
 	 */
-	private void populateLibraries() {
+	private void refreshLibraries() {
 		libraries.clear();
 		
 		File[] files = source.listFiles(new FileFilter() {
@@ -115,7 +115,7 @@ public class Library extends Observable {
 		
 		for (File libraryDirectory : files) {
 			Library library = new Library(libraryDirectory);
-			library.populate();
+			library.refresh();
 			if (library.patches.size() > 0 || library.libraries.size() > 0) {
 				libraries.add(library);
 			}

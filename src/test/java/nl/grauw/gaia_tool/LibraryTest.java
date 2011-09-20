@@ -17,7 +17,7 @@ public class LibraryTest {
 	@Test
 	public void testPopulateNonExistantPath() {
 		Library library = new Library(new File("non-existant-test-path"));
-		library.populate();
+		library.refresh();
 		assertEquals(false, library.getPatches().iterator().hasNext());
 		assertEquals(false, library.getLibraries().iterator().hasNext());
 	}
