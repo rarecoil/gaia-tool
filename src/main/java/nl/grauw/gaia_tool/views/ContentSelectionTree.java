@@ -32,8 +32,8 @@ import nl.grauw.gaia_tool.mvc.Observable;
 public class ContentSelectionTree extends JTree {
 	private static final long serialVersionUID = 1L;
 	
-	GaiaTool gaiaTool;
-	DefaultTreeModel treeModel;
+	private GaiaTool gaiaTool;
+	private DefaultTreeModel treeModel;
 	
 	public ContentSelectionTree(GaiaTool gaiaTool) {
 		this.gaiaTool = gaiaTool;
@@ -244,9 +244,9 @@ public class ContentSelectionTree extends JTree {
 	public class PatchTreeNode extends ContentSelectionTreeNode {
 		private static final long serialVersionUID = 1L;
 		
-		String name;
-		Patch patch;
-		JPopupMenu contextMenu;
+		private String name;
+		private Patch patch;
+		private JPopupMenu contextMenu;
 		
 		public PatchTreeNode(Patch patch, String name) {
 			this.name = name;
