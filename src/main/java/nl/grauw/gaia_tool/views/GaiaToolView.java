@@ -176,6 +176,7 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 			gaiaTool.setCurrentDirectory(fc.getCurrentDirectory());
 			if (result == JFileChooser.APPROVE_OPTION) {
 				gaiaTool.savePatch(fc.getSelectedFile(), contentSelectionTree.getSelectedPatch());
+				gaiaTool.getLibrary().refresh(fc.getSelectedFile());
 			}
 		}
 	}

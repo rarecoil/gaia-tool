@@ -26,6 +26,10 @@ public class Library extends Observable {
 		return libraries;
 	}
 	
+	public File getSource() {
+		return source;
+	}
+	
 	public String getName() {
 		return source.getName();
 	}
@@ -38,6 +42,33 @@ public class Library extends Observable {
 		populateLibraries();
 		
 		notifyObservers();
+	}
+	
+	/**
+	 * Refresh a patch on a specific path, or the library containing it.
+	 * @param path The path to the changed file.
+	 */
+	public void refresh(File path) {
+		if (path.getPath().startsWith(source.getPath() + File.separator)) {
+			if (path.getParentFile().equals(source)) {
+				boolean patchMatched = false;
+				for (FilePatch patch : patches) {
+					if (patch.getSource().equals(path)) {
+						try {
+							patch.load();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				if (!patchMatched)
+					populate();
+			} else {
+				for (Library library : libraries) {
+					library.refresh(path);
+				}
+			}
+		}
 	}
 	
 	/**
