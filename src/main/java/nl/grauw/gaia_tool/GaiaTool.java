@@ -177,6 +177,8 @@ public class GaiaTool {
 	 * @return The directory to load/save in.
 	 */
 	public File getCurrentDirectory() {
+		if (currentDirectory == null && getLibraryPath().exists())
+			return getLibraryPath();
 		return currentDirectory;
 	}
 	
