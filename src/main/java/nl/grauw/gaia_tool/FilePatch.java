@@ -8,6 +8,9 @@ public class FilePatch extends Patch {
 	private File source;
 	
 	public FilePatch(File source) {
+		if (!source.getName().endsWith(".gaia"))
+			throw new RuntimeException("Not a GAIA file");
+		
 		this.source = source;
 	}
 	
@@ -16,7 +19,7 @@ public class FilePatch extends Patch {
 	}
 	
 	public String getName() {
-		return source.getName();
+		return source.getName().replaceFirst("\\.[^.]+$", "");
 	}
 	
 	public void load() throws IOException {
