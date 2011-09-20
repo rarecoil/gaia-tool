@@ -294,7 +294,7 @@ public class ContentSelectionTree extends JTree {
 				try {
 					((FilePatch)patch).load();
 				} catch (IOException e) {
-					e.printStackTrace();
+					gaiaTool.getLog().log(e.getMessage());
 				}
 			}
 			
