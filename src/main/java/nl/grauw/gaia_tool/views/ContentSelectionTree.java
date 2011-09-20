@@ -224,10 +224,10 @@ public class ContentSelectionTree extends JTree {
 			return contextMenu;
 		}
 		
-		public class PatchContextMenu extends JPopupMenu implements ActionListener {
+		private class PatchContextMenu extends JPopupMenu implements ActionListener {
 			private static final long serialVersionUID = 1L;
 			
-			JMenuItem copy;
+			private JMenuItem copy;
 			
 			public PatchContextMenu() {
 				copy = new JMenuItem("Copy to temporary patch");
