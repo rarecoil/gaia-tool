@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JComponent;
@@ -344,6 +345,10 @@ public class ContentSelectionTree extends JTree {
 				
 				try {
 					((FilePatch)patch).load();
+				} catch (FileNotFoundException e) {
+					gaiaTool.getLog().log(e.getMessage());
+					if (PatchTreeNode.this.getParent() instanceof LibraryNode)
+						((LibraryNode)PatchTreeNode.this.getParent()).library.populate();
 				} catch (IOException e) {
 					gaiaTool.getLog().log(e.getMessage());
 				}
