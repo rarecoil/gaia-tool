@@ -36,12 +36,16 @@ public class Library extends Observable {
 	public void populate() {
 		populatePatches();
 		populateLibraries();
+		
+		notifyObservers();
 	}
 	
 	/**
 	 * Populate .gaia-files as patches.
 	 */
 	private void populatePatches() {
+		patches.clear();
+		
 		File[] files = source.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				return pathname.getName().endsWith(".gaia");
@@ -67,6 +71,8 @@ public class Library extends Observable {
 	 * Populate subdirectories as sub-libraries.
 	 */
 	private void populateLibraries() {
+		libraries.clear();
+		
 		File[] files = source.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				return pathname.isDirectory();

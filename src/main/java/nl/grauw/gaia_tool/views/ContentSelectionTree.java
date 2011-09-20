@@ -26,16 +26,19 @@ import nl.grauw.gaia_tool.Patch.IncompletePatchException;
 import nl.grauw.gaia_tool.PatchDataRequester;
 import nl.grauw.gaia_tool.PatchDataRequester.PatchCompleteListener;
 import nl.grauw.gaia_tool.TemporaryPatch;
+import nl.grauw.gaia_tool.mvc.AWTObserver;
+import nl.grauw.gaia_tool.mvc.Observable;
 
 public class ContentSelectionTree extends JTree {
 	private static final long serialVersionUID = 1L;
 	
 	GaiaTool gaiaTool;
+	DefaultTreeModel treeModel;
 	
 	public ContentSelectionTree(GaiaTool gaiaTool) {
 		this.gaiaTool = gaiaTool;
 		
-		DefaultTreeModel treeModel = createContentSelectionTreeModel();
+		treeModel = createContentSelectionTreeModel();
 		setModel(treeModel);
 		setShowsRootHandles(true);
 		setRootVisible(false);
@@ -151,8 +154,11 @@ public class ContentSelectionTree extends JTree {
 		}
 	}
 	
-	public class LibraryNode extends ContentSelectionTreeNode {
+	public class LibraryNode extends ContentSelectionTreeNode implements AWTObserver {
 		private static final long serialVersionUID = 1L;
+
+		private Library library;
+		private JPopupMenu contextMenu;
 		
 		public LibraryNode(Library library) {
 			this(library, library.getName());
@@ -160,6 +166,13 @@ public class ContentSelectionTree extends JTree {
 		
 		public LibraryNode(Library library, String name) {
 			super(name);
+			this.library = library;
+			library.addObserver(this);
+			
+			populateChildren();
+		}
+		
+		private void populateChildren() {
 			for (Library sublibrary : library.getLibraries()) {
 				add(new LibraryNode(sublibrary));
 			}
@@ -169,9 +182,47 @@ public class ContentSelectionTree extends JTree {
 		}
 		
 		@Override
+		public void update(Observable source, Object detail) {
+			removeAllChildren();
+			populateChildren();
+			treeModel.nodeStructureChanged(this);
+		}
+		
+		@Override
 		public JComponent getContentView() {
 			return new LibraryPanel(gaiaTool);
 		}
+		
+		public JPopupMenu getContextMenu() {
+			if (contextMenu == null) {
+				contextMenu = new LibraryContextMenu();
+			}
+			return contextMenu;
+		}
+		
+		private class LibraryContextMenu extends JPopupMenu implements ActionListener {
+			private static final long serialVersionUID = 1L;
+			
+			private JMenuItem refresh;
+			
+			public LibraryContextMenu() {
+				refresh = new JMenuItem("Refresh");
+				refresh.addActionListener(this);
+				add(refresh);
+			}
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == refresh) {
+					refresh();
+				}
+			}
+			
+			private void refresh() {
+				library.populate();
+			}
+		}
+		
 	}
 	
 	public class SystemTreeNode extends ContentSelectionTreeNode {
