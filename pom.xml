@@ -4,7 +4,7 @@
 	
 	<groupId>nl.grauw</groupId>
 	<artifactId>gaia-tool</artifactId>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.3</version>
 	<packaging>jar</packaging>
 	
 	<name>GAIA tool</name>
