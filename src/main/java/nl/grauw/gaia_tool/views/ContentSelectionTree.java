@@ -205,6 +205,11 @@ public class ContentSelectionTree extends JTree {
 		}
 		
 		@Override
+		public boolean isLeaf() {
+			return false;
+		}
+		
+		@Override
 		public JComponent getContentView() {
 			return new LibraryPanel(gaiaTool);
 		}
