@@ -26,7 +26,6 @@ import javax.swing.event.ChangeListener;
 
 import nl.grauw.gaia_tool.FilePatch;
 import nl.grauw.gaia_tool.Gaia;
-import nl.grauw.gaia_tool.Parameters;
 import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
@@ -48,10 +47,6 @@ public class PatchView extends ParametersView implements ChangeListener {
 		if (patch instanceof GaiaPatch && !patch.isComplete()) {
 			((GaiaPatch)patch).load();
 		}
-	}
-	
-	public Parameters getParameters() {
-		return patch.getCommon();
 	}
 	
 	@Override
