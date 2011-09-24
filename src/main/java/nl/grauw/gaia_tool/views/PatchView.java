@@ -59,7 +59,7 @@ public class PatchView extends ParametersView implements ChangeListener {
 	@Override
 	public void loadParameters() {
 		if (patch instanceof GaiaPatch) {
-			((GaiaPatch)patch).loadCommon();
+			((GaiaPatch)patch).load();
 		}
 	}
 	
