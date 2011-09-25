@@ -41,22 +41,29 @@ public class Flanger extends Parameters {
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
+	// mapping for pitch control change message values to pitch parameter values
+	private final static int[] pitchControlMapping = {
+		  0,   1,   1,   1,   1,   1,   2,   2,   2,   2,   2,   3,   3,   3,   3,   3,
+		  4,   4,   4,   4,   4,   5,   5,   5,   5,   5,   6,   6,   6,   6,   6,   7,
+		  7,   7,   7,   7,   8,   8,   8,   8,   8,   9,   9,   9,   9,   9,  10,  10,
+		 10,  10,  10,  11,  11,  11,  11,  11,  12,  12,  12,  12,  12,  12,  12,  12,
+		 12,  12,  12,  12,  12,  12,  12,  12,  13,  13,  13,  13,  13,  14,  14,  14,
+		 14,  14,  15,  15,  15,  15,  15,  16,  16,  16,  16,  16,  17,  17,  17,  17,
+		 17,  18,  18,  18,  18,  18,  19,  19,  19,  19,  19,  20,  20,  20,  20,  20,
+		 21,  21,  21,  21,  21,  22,  22,  22,  22,  22,  23,  23,  23,  23,  23,  24
+	};
+	
 	public void updateParameters(ControlChangeMessage message) {
 		FlangerType type = getFlangerType();
 		if (message.getController() != null && type != FlangerType.OFF) {
 			switch (message.getController()) {
 			case FLANGER_CONTROL_1:
-				int value = message.getValue();
 				if (type == FlangerType.PITCH_SHIFTER) {
-					if (value < 56) {
-						value = (value + 4) / 5;
-					} else if (value > 71) {
-						value = (value - 7) / 5;
-					} else {
-						value = 12;
-					}
+					// use a mapping because the values don’t change on a linear scale
+					update16BitValue(0x05, pitchControlMapping[message.getValue()] + 32768);
+				} else {
+					update16BitValue(0x05, message.getValue() + 32768);
 				}
-				update16BitValue(0x05, value + 32768);
 				break;
 			case FLANGER_LEVEL:
 				update16BitValue(0x01, message.getValue() + 32768);
