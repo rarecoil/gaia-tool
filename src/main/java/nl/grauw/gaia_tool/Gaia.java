@@ -38,9 +38,11 @@ import nl.grauw.gaia_tool.messages.IdentityRequest;
 import nl.grauw.gaia_tool.messages.NoteOffMessage;
 import nl.grauw.gaia_tool.messages.NoteOnMessage;
 import nl.grauw.gaia_tool.messages.ProgramChangeMessage;
+import nl.grauw.gaia_tool.messages.ControlChangeMessage.Controller;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.System;
+import nl.grauw.gaia_tool.parameters.Tone;
 
 /**
  * Represents the Roland GAIA SH-01 synthesizer
@@ -466,6 +468,51 @@ public class Gaia extends Observable implements Observer {
 	public void requestIdentity() {
 		try {
 			send(new IdentityRequest());
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Debugging tool to match up control change values (0..127) with the actual value.
+	 * A list is output to the console log with the actual value for each control change value.
+	 */
+	public void testControlChange() {
+		if (temporaryPatch.getTone(1) == null) {
+			temporaryPatch.loadTone(1);
+			temporaryPatch.addObserver(new Observer() {
+				public void update(Observable source, Object detail) {
+					if ("tones".equals(detail))
+						testControlChange();
+				}
+			});
+		} else {
+			testControlChange(0);
+		}
+	}
+	
+	private void testControlChange(final int i) {
+		temporaryPatch.getTone(1).addObserver(new Observer() {
+			public void update(Observable source, Object detail) {
+				if (source instanceof Tone && detail instanceof ParameterChange)
+					update((Tone) source, (ParameterChange) detail);
+			}
+			
+			private void update(Tone source, ParameterChange detail) {
+				if (detail.getOffset() == 0x03) {
+					source.removeObserver(this);
+					
+					java.lang.System.out.print(source.getOSCPitch().getValue() + ", ");
+					
+					if (i < 127)
+						testControlChange(i + 1);
+				}
+			}
+		});
+		
+		try {
+			send(new ControlChangeMessage(synth_channel, Controller.TONE_1_OSC_PITCH, i));
+			send(new DataRequest1(new Address(0x10, 0x00, 0x01, 0x03), 1));
 		} catch (InvalidMidiDataException e) {
 			e.printStackTrace();
 		}

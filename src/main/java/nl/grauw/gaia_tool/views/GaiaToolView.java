@@ -312,6 +312,8 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 			public TestMenu() {
 				super("Test");
 				add(new PlayTestNotesItem());
+				if (GaiaTool.DEBUG)
+					add(new TestControlChange());
 				gaia.addObserver(this);
 				update(null, "opened");
 			}
@@ -335,6 +337,20 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 				public void actionPerformed(ActionEvent e) {
 					gaia.playTestNote();
 					gaia.playGMTestNote();
+				}
+			}
+			
+			private class TestControlChange extends JMenuItem implements ActionListener {
+				private static final long serialVersionUID = 1L;
+
+				public TestControlChange() {
+					super("Test control change");
+					addActionListener(this);
+				}
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					gaia.testControlChange();
 				}
 			}
 		}
