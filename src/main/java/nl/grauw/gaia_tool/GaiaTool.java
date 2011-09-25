@@ -35,6 +35,8 @@ public class GaiaTool {
 	private Properties settings = new Properties();
 	private File currentDirectory = null;
 	
+	public final static boolean DEBUG = false;
+	
 	public GaiaTool() {
 		log = new Log();
 		gaia = new Gaia(log, settings);
