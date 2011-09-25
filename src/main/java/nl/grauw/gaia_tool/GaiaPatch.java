@@ -50,6 +50,9 @@ public abstract class GaiaPatch extends Patch {
 	}
 	
 	public void loadTone(int number) {
+		if (number < 1 || number > 3)
+			throw new RuntimeException("Tone number must be 1, 2 or 3.");
+		
 		loadData(getAddress(0x01 + number - 1), 0x3E);
 	}
 	
@@ -74,6 +77,9 @@ public abstract class GaiaPatch extends Patch {
 	}
 	
 	public void loadArpeggioPattern(int note) {
+		if (note < 1 || note > 16)
+			throw new RuntimeException("Arpeggio pattern note must be between 1 and 16 (inclusive).");
+		
 		loadData(getAddress(0x0D + note - 1), 0x42);
 	}
 	
