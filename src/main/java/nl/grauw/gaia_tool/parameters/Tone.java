@@ -61,7 +61,7 @@ public class Tone extends Parameters {
 		 82,  83,  83,  83,  84,  84,  84,  85,  85,  86,  86,  86,  87,  87,  87,  88
 	};
 	
-	// mapping for detune control change message values to pitch parameter values
+	// mapping for detune control change message values to detune parameter values
 	private final static int[] oscDetuneControlMapping = {
 		 14,  14,  14,  15,  16,  17,  18,  19,  19,  20,  21,  22,  23,  24,  24,  25,
 		 26,  27,  28,  29,  29,  30,  31,  32,  33,  34,  34,  35,  36,  37,  38,  39,
@@ -99,7 +99,7 @@ public class Tone extends Parameters {
 			case TONE_2_LFO_RATE:
 			case TONE_3_LFO_RATE:
 				if (getLFOTempoSyncSwitch()) {
-					// need to use a mapping because the values don’t change on a linear scale
+					// use a mapping because the values don’t change on a linear scale
 					updateValue(0x1F, lfoTempoSyncNoteMapping[message.getValue()]);
 				} else {
 					updateValue(0x1D, message.getValue());
@@ -128,13 +128,13 @@ public class Tone extends Parameters {
 			case TONE_1_OSC_PITCH:
 			case TONE_2_OSC_PITCH:
 			case TONE_3_OSC_PITCH:
-				// need to use a mapping because the values don’t change on a linear scale
+				// use a mapping because the values don’t change on a linear scale
 				updateValue(0x03, oscPitchControlMapping[message.getValue()]);
 				break;
 			case TONE_1_OSC_DETUNE:
 			case TONE_2_OSC_DETUNE:
 			case TONE_3_OSC_DETUNE:
-				// need to use a mapping because the values don’t change on a linear scale
+				// use a mapping because the values don’t change on a linear scale
 				updateValue(0x04, oscDetuneControlMapping[message.getValue()]);
 				break;
 			case TONE_1_OSC_PULSE_WIDTH_MODULATION:
