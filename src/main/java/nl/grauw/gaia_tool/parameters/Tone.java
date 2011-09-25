@@ -73,6 +73,18 @@ public class Tone extends Parameters {
 		102, 103, 104, 104, 105, 106, 107, 108, 109, 109, 110, 111, 112, 113, 114, 114
 	};
 	
+	// mapping for rate control change message values to tempo synced rates
+	private final static int[] lfoTempoSyncNoteMapping = {
+		  0,   0,   0,   0,   0,   0,   1,   1,   1,   1,   1,   1,   2,   2,   2,   2,
+		  2,   2,   3,   3,   3,   3,   3,   3,   4,   4,   4,   4,   4,   4,   5,   5,
+		  5,   5,   5,   5,   6,   6,   6,   6,   6,   6,   6,   7,   7,   7,   7,   7,
+		  7,   7,   8,   8,   8,   8,   8,   8,   8,   9,   9,   9,   9,   9,   9,   9,
+		 10,  10,  10,  10,  10,  10,  10,  11,  11,  11,  11,  11,  11,  11,  12,  12,
+		 12,  12,  12,  12,  12,  13,  13,  13,  13,  13,  13,  13,  14,  14,  14,  14,
+		 14,  14,  15,  15,  15,  15,  15,  15,  16,  16,  16,  16,  16,  16,  17,  17,
+		 17,  17,  17,  17,  18,  18,  18,  18,  18,  18,  19,  19,  19,  19,  19,  19
+	};
+	
 	public Tone(Address address, byte[] data) {
 		super(address, data);
 		
@@ -86,7 +98,12 @@ public class Tone extends Parameters {
 			case TONE_1_LFO_RATE:
 			case TONE_2_LFO_RATE:
 			case TONE_3_LFO_RATE:
-				updateValue(0x1D, message.getValue());
+				if (getLFOTempoSyncSwitch()) {
+					// need to use a mapping because the values don’t change on a linear scale
+					updateValue(0x1F, lfoTempoSyncNoteMapping[message.getValue()]);
+				} else {
+					updateValue(0x1D, message.getValue());
+				}
 				break;
 			case TONE_1_LFO_FADE_TIME:
 			case TONE_2_LFO_FADE_TIME:

@@ -429,6 +429,7 @@ public class ToneTest {
 	@Test
 	public void testUpdateParameters_LFO_Rate() throws InvalidMidiDataException {
 		Tone parameters = getTestParameters();
+		parameters.setValue(0x1E, 0);	// disable LFO tempo sync
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
@@ -443,6 +444,27 @@ public class ToneTest {
 			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_LFO_RATE, i);
 			parameters.updateParameters(cc);
 			assertEquals(expected[i], parameters.getLFORate().getValue());
+		}
+	}
+	
+	@Test
+	public void testUpdateParameters_LFO_TempoSyncNote() throws InvalidMidiDataException {
+		Tone parameters = getTestParameters();
+		parameters.setValue(0x1E, 1);	// enable LFO tempo sync
+		int[] expected = {
+				  0,   0,   0,   0,   0,   0,   1,   1,   1,   1,   1,   1,   2,   2,   2,   2,
+				  2,   2,   3,   3,   3,   3,   3,   3,   4,   4,   4,   4,   4,   4,   5,   5,
+				  5,   5,   5,   5,   6,   6,   6,   6,   6,   6,   6,   7,   7,   7,   7,   7,
+				  7,   7,   8,   8,   8,   8,   8,   8,   8,   9,   9,   9,   9,   9,   9,   9,
+				 10,  10,  10,  10,  10,  10,  10,  11,  11,  11,  11,  11,  11,  11,  12,  12,
+				 12,  12,  12,  12,  12,  13,  13,  13,  13,  13,  13,  13,  14,  14,  14,  14,
+				 14,  14,  15,  15,  15,  15,  15,  15,  16,  16,  16,  16,  16,  16,  17,  17,
+				 17,  17,  17,  17,  18,  18,  18,  18,  18,  18,  19,  19,  19,  19,  19,  19
+			};
+		for (int i = 0; i < 128; i++) {
+			ControlChangeMessage cc = new ControlChangeMessage(0, Controller.TONE_1_LFO_RATE, i);
+			parameters.updateParameters(cc);
+			assertEquals(expected[i], parameters.getLFOTempoSyncNote().ordinal());
 		}
 	}
 	
