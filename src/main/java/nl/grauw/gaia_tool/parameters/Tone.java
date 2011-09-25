@@ -74,7 +74,7 @@ public class Tone extends Parameters {
 	};
 	
 	// mapping for rate control change message values to tempo synced rates
-	private final static int[] lfoTempoSyncNoteMapping = {
+	private final static int[] lfoTempoSyncNoteControlMapping = {
 		  0,   0,   0,   0,   0,   0,   1,   1,   1,   1,   1,   1,   2,   2,   2,   2,
 		  2,   2,   3,   3,   3,   3,   3,   3,   4,   4,   4,   4,   4,   4,   5,   5,
 		  5,   5,   5,   5,   6,   6,   6,   6,   6,   6,   6,   7,   7,   7,   7,   7,
@@ -100,7 +100,7 @@ public class Tone extends Parameters {
 			case TONE_3_LFO_RATE:
 				if (getLFOTempoSyncSwitch()) {
 					// use a mapping because the values don’t change on a linear scale
-					updateValue(0x1F, lfoTempoSyncNoteMapping[message.getValue()]);
+					updateValue(0x1F, lfoTempoSyncNoteControlMapping[message.getValue()]);
 				} else {
 					updateValue(0x1D, message.getValue());
 				}
