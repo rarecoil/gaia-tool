@@ -239,8 +239,8 @@ public class System extends Parameters {
 		return new IntValue(this, 0x25, 0, 1);
 	}
 	
-	public IntValue getReserved10() {
-		return new IntValue(this, 0x26, 0, 1);
+	public boolean getGMPartsSwitch() {
+		return getValue(0x26) == 1;
 	}
 	
 	public IntValue getReserved11() {

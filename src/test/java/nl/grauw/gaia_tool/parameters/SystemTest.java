@@ -266,9 +266,9 @@ public class SystemTest {
 	}
 
 	@Test
-	public void testGetReserved10() {
+	public void testGetGMPartsSwitch() {
 		System sp = getTestParameters();
-		assertEquals(1, sp.getReserved10().getValue());
+		assertEquals(true, sp.getGMPartsSwitch());
 	}
 
 	@Test
