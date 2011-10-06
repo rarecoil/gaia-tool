@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool;
 
 import nl.grauw.gaia_tool.mvc.Observable;
+import nl.grauw.gaia_tool.Address.AddressException;
 
 /**
  * Parameters encodes a set of parameters at a certain address.
@@ -159,10 +160,10 @@ public class Parameters extends Observable {
 	 * @param address The start address of the data to change.
 	 * @param newData The data to change. All bytes must be in the range 0-127.
 	 */
-	public void updateParameters(Address address, byte[] newData) {
+	public void updateParameters(Address address, byte[] newData) throws AddressException {
 		int offset = this.address.offsetOf(address);
 		if (offset < 0 || offset >= getLength() || offset + newData.length > getLength())
-			throw new Error("Address or data out of range.");
+			throw new AddressException("Address or data out of range.");
 		
 		for (int i = 0; i < newData.length; i++) {
 			originalData[offset + i] = data[offset + i] = newData[i];
@@ -176,10 +177,10 @@ public class Parameters extends Observable {
 	 * @param address The start address of the data to change.
 	 * @param newData The data to change. All bytes must be in the range 0-127.
 	 */
-	public void updateOriginalParameters(Address address, byte[] newData) {
+	public void updateOriginalParameters(Address address, byte[] newData) throws AddressException {
 		int offset = this.address.offsetOf(address);
 		if (offset < 0 || offset >= getLength() || offset + newData.length > getLength())
-			throw new Error("Address or data out of range.");
+			throw new AddressException("Address or data out of range.");
 		
 		for (int i = 0; i < newData.length; i++) {
 			originalData[offset + i] = newData[i];

@@ -27,6 +27,7 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 
+import nl.grauw.gaia_tool.Address.AddressException;
 import nl.grauw.gaia_tool.Note.NoteName;
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.messages.ActiveSensingMessage;
@@ -374,7 +375,11 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	private void updateParameters(DataSet1 message) {
-		updateParameters(message.getAddress(), message.getDataSet());
+		try {
+			updateParameters(message.getAddress(), message.getDataSet());
+		} catch (AddressException e) {
+			// s’ok, maybe there’s a new firmware
+		}
 	}
 	
 	private void updateParameters(ControlChangeMessage message) {
@@ -383,7 +388,7 @@ public class Gaia extends Observable implements Observer {
 		}
 	}
 	
-	public void updateParameters(Address address, byte[] data) {
+	public void updateParameters(Address address, byte[] data) throws AddressException {
 		int byte1 = address.getByte1();
 		if (byte1 == 0x01 && address.getByte2() == 0x00 && address.getByte3() == 0x00) {
 			if (address.getByte4() == 0x00 && data.length >= 0x6E) {
@@ -398,7 +403,7 @@ public class Gaia extends Observable implements Observer {
 		} else if (byte1 == 0x20) {
 			userPatches[address.getByte2()].updateParameters(address, data);
 		} else {
-			throw new IllegalArgumentException("Address not recognised.");
+			throw new AddressException("Address not recognised.");
 		}
 	}
 	
@@ -555,6 +560,8 @@ public class Gaia extends Observable implements Observer {
 			parameters.updateOriginalParameters(address, data);
 		} catch (InvalidMidiDataException e) {
 			e.printStackTrace();
+		} catch (AddressException e) {
+			throw new RuntimeException("AddressException is not supposed to occur.", e);
 		}
 	}
 	

@@ -18,6 +18,7 @@ package nl.grauw.gaia_tool;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import nl.grauw.gaia_tool.Address.AddressException;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
@@ -49,7 +50,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	 * @param address
 	 * @param data
 	 */
-	public void updateParameters(Address address, byte[] data) {
+	public void updateParameters(Address address, byte[] data) throws AddressException {
 		byte byte3 = address.getByte3();
 		byte byte4 = address.getByte4();
 		if (byte3 == 0x00) {
@@ -101,7 +102,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 				arpeggioPatterns[byte3 - 0x0D].updateParameters(address, data);
 			}
 		} else {
-			throw new IllegalArgumentException("Address not recognised.");
+			throw new AddressException("Address not recognised.");
 		}
 	}
 	
@@ -109,7 +110,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	 * Update the patch parameters from an existing Parameters object.
 	 * @param other
 	 */
-	public void updateParameters(Parameters other) {
+	public void updateParameters(Parameters other) throws AddressException {
 		updateParameters(other.getAddress(), other.getData());
 	}
 	
@@ -146,17 +147,21 @@ public class Patch extends Observable implements Iterable<Parameters> {
 		if (!other.isComplete())
 			throw new IncompletePatchException();
 		
-		updateParameters(other.getCommon());
-		for (int toneNumber = 1; toneNumber <= 3; toneNumber++) {
-			updateParameters(other.getTone(toneNumber));
-		}
-		updateParameters(other.getDistortion());
-		updateParameters(other.getFlanger());
-		updateParameters(other.getDelay());
-		updateParameters(other.getReverb());
-		updateParameters(other.getArpeggioCommon());
-		for (int note = 1; note <= 16; note++) {
-			updateParameters(other.getArpeggioPattern(note));
+		try {
+			updateParameters(other.getCommon());
+			for (int toneNumber = 1; toneNumber <= 3; toneNumber++) {
+				updateParameters(other.getTone(toneNumber));
+			}
+			updateParameters(other.getDistortion());
+			updateParameters(other.getFlanger());
+			updateParameters(other.getDelay());
+			updateParameters(other.getReverb());
+			updateParameters(other.getArpeggioCommon());
+			for (int note = 1; note <= 16; note++) {
+				updateParameters(other.getArpeggioPattern(note));
+			}
+		} catch (AddressException e) {
+			throw new RuntimeException("AddressException is not supposed to occur.", e);
 		}
 	}
 

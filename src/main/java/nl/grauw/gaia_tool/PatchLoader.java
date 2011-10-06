@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
+import nl.grauw.gaia_tool.Address.AddressException;
+
 /**
  * Class that can load a patch from a specified file.
  */
@@ -67,7 +69,11 @@ public class PatchLoader {
 						throw new IOException("Unexpected end of file.");
 					}
 					Address address = new Address(0x10, 0x00, chunk[3], 0x00);
-					patch.updateParameters(address, data);
+					try {
+						patch.updateParameters(address, data);
+					} catch (AddressException e) {
+						// s’ok, maybe it was saved on a new firmware
+					}
 				} else {
 					if (input.skip(length) != length) {
 						throw new IOException("Unexpected end of file.");
