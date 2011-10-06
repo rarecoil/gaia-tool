@@ -93,28 +93,40 @@ public class GaiaTool {
 	 * @param patchFile
 	 * @param patch
 	 */
-	public void savePatch(final File patchFile, Patch patch) {
+	public void savePatch(File patchFile, Patch patch) {
+		savePatch(patchFile, patch);
+	}
+	
+	/**
+	 * Saves a patch to the specified file.
+	 * @param patchFile
+	 * @param patch
+	 * @param listener
+	 */
+	public void savePatch(final File patchFile, Patch patch, final SaveCompleteListener listener) {
 		log.log("Saving patch to " + patchFile + "…");
 		// TODO: reload patch from GAIA and compare with local values before saving
 		if (patch instanceof GaiaPatch) {
 			new PatchDataRequester((GaiaPatch) patch, new PatchCompleteListener() {
 				@Override
 				public void patchComplete(GaiaPatch patch) {
-					savePatchContinue(patchFile, patch);
+					savePatchContinue(patchFile, patch, listener);
 				}
 			}).requestMissingParameters();
 		} else {
-			savePatchContinue(patchFile, patch);
+			savePatchContinue(patchFile, patch, listener);
 		}
 	}
 	
-	private void savePatchContinue(File patchFile, Patch patch) {
+	private void savePatchContinue(File patchFile, Patch patch, SaveCompleteListener listener) {
 		try {
 			new PatchSaver(patch).save(patchFile);
 		} catch (IOException e) {
 			log.log("Saving failed: " + e.getMessage());
 		}
 		log.log("Saving complete.");
+		if (listener != null)
+			listener.patchSaveComplete(patchFile, patch);
 	}
 	
 	/**
@@ -191,5 +203,12 @@ public class GaiaTool {
 	public void setCurrentDirectory(File directory) {
 		currentDirectory = directory;
 	}
-
+	
+	/**
+	 * A listener interface for when a patch completed saving.
+	 */
+	public interface SaveCompleteListener {
+		public void patchSaveComplete(File patchFile, Patch patch);
+	}
+	
 }

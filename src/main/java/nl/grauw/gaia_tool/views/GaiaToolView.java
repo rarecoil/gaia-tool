@@ -44,6 +44,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import nl.grauw.gaia_tool.FilePatch;
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.GaiaTool;
+import nl.grauw.gaia_tool.GaiaTool.SaveCompleteListener;
 import nl.grauw.gaia_tool.Patch;
 import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.UserPatch;
@@ -175,8 +176,12 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 			int result = fc.showSaveDialog(this);
 			gaiaTool.setCurrentDirectory(fc.getCurrentDirectory());
 			if (result == JFileChooser.APPROVE_OPTION) {
-				gaiaTool.savePatch(fc.getSelectedFile(), contentSelectionTree.getSelectedPatch());
-				gaiaTool.getLibrary().refresh(fc.getSelectedFile());
+				gaiaTool.savePatch(fc.getSelectedFile(), contentSelectionTree.getSelectedPatch(), new SaveCompleteListener() {
+					@Override
+					public void patchSaveComplete(File patchFile, Patch patch) {
+						gaiaTool.getLibrary().refresh(patchFile);
+					}
+				});
 			}
 		}
 	}
