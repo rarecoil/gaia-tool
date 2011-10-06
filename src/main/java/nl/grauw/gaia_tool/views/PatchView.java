@@ -43,10 +43,6 @@ public class PatchView extends ParametersView implements ChangeListener {
 	public PatchView(Patch patch) {
 		this.patch = patch;
 		initComponents();
-		
-		if (patch instanceof GaiaPatch && !patch.isComplete()) {
-			((GaiaPatch)patch).load();
-		}
 	}
 	
 	@Override
@@ -123,6 +119,8 @@ public class PatchView extends ParametersView implements ChangeListener {
 		
 		abstract protected JComponent createContent();
 		
+		abstract protected void loadParameters(GaiaPatch patch);
+		
 		public Tab() {
 			setLayout(new BorderLayout());
 		}
@@ -130,6 +128,8 @@ public class PatchView extends ParametersView implements ChangeListener {
 		protected void tabSelected() {
 			if (getComponentCount() == 0)
 				add(createContent());
+			if (patch instanceof GaiaPatch)
+				loadParameters((GaiaPatch)patch);
 		}
 	}
 	
@@ -139,6 +139,12 @@ public class PatchView extends ParametersView implements ChangeListener {
 		@Override
 		public JPanel createContent() {
 			return new PatchCommonView(patch);
+		}
+		
+		@Override
+		protected void loadParameters(GaiaPatch patch) {
+			if (patch.getCommon() == null)
+				patch.loadCommon();
 		}
 	}
 	
@@ -155,6 +161,12 @@ public class PatchView extends ParametersView implements ChangeListener {
 		public JPanel createContent() {
 			return new ToneView(patch, toneNumber);
 		}
+		
+		@Override
+		protected void loadParameters(GaiaPatch patch) {
+			if (patch.getTone(toneNumber) == null)
+				patch.loadTone(toneNumber);
+		}
 	}
 	
 	private class DistortionTab extends Tab {
@@ -165,6 +177,12 @@ public class PatchView extends ParametersView implements ChangeListener {
 //			return new DistortionPanel(patch);
 			return new DistortionView(patch);
 		}
+		
+		@Override
+		protected void loadParameters(GaiaPatch patch) {
+			if (patch.getDistortion() == null)
+				patch.loadDistortion();
+		}
 	}
 	
 	private class FlangerTab extends Tab {
@@ -173,6 +191,12 @@ public class PatchView extends ParametersView implements ChangeListener {
 		@Override
 		public JPanel createContent() {
 			return new FlangerView(patch);
+		}
+		
+		@Override
+		protected void loadParameters(GaiaPatch patch) {
+			if (patch.getFlanger() == null)
+				patch.loadFlanger();
 		}
 	}
 	
@@ -183,6 +207,12 @@ public class PatchView extends ParametersView implements ChangeListener {
 		public JPanel createContent() {
 			return new DelayView(patch);
 		}
+		
+		@Override
+		protected void loadParameters(GaiaPatch patch) {
+			if (patch.getDelay() == null)
+				patch.loadDelay();
+		}
 	}
 	
 	private class ReverbTab extends Tab {
@@ -192,6 +222,12 @@ public class PatchView extends ParametersView implements ChangeListener {
 		public JPanel createContent() {
 			return new ReverbView(patch);
 		}
+		
+		@Override
+		protected void loadParameters(GaiaPatch patch) {
+			if (patch.getReverb() == null)
+				patch.loadReverb();
+		}
 	}
 	
 	private class ArpeggioTab extends Tab {
@@ -200,6 +236,15 @@ public class PatchView extends ParametersView implements ChangeListener {
 		@Override
 		public JPanel createContent() {
 			return new ArpeggioView(patch);
+		}
+		
+		@Override
+		protected void loadParameters(GaiaPatch patch) {
+			boolean loaded = patch.getArpeggioCommon() != null;
+			for (int i = 1; i <= 16 && loaded; i++)
+				loaded = patch.getArpeggioPattern(i) != null;
+			if (!loaded)
+				patch.loadArpeggioAll();
 		}
 	}
 	
