@@ -16,6 +16,8 @@
 package nl.grauw.gaia_tool.mvc;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -56,7 +58,7 @@ public class Observable {
 	public void addObserver(AWTObserver observer) {
 		if (awtObservers.size() > lastGCLimit) {
 			System.gc();
-			Vector<AWTObserver> observers = getAWTObservers();	// clean up the no longer available weak references
+			List<AWTObserver> observers = getAWTObservers();	// clean up the no longer available weak references
 			lastGCLimit = observers.size() + 100;
 			System.out.println("Observer limit exceeded. Size after manual garbage collection: " + observers.size());
 		}
@@ -126,7 +128,7 @@ public class Observable {
 	 * @param detail Object providing details on the state change.
 	 */
 	protected void notifyObservers(Object detail) {
-		Vector<Observer> observers = new Vector<Observer>(this.observers);
+		Iterable<Observer> observers = new ArrayList<Observer>(this.observers);
 		for (Observer o : observers) {
 			o.update(this, detail);
 		}
@@ -161,8 +163,8 @@ public class Observable {
 	 * 
 	 * @return The observers registered on this object.
 	 */
-	protected Vector<AWTObserver> getAWTObservers() {
-		Vector<AWTObserver> observersCopy = new Vector<AWTObserver>(awtObservers.size());
+	protected List<AWTObserver> getAWTObservers() {
+		List<AWTObserver> observersCopy = new ArrayList<AWTObserver>(awtObservers.size());
 		for (int i = 0, len = awtObservers.size(); i < len; i++) {
 			WeakReference<AWTObserver> wro = awtObservers.get(i);
 			AWTObserver observer = wro.get();

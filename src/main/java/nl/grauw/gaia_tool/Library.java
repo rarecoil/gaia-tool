@@ -18,15 +18,15 @@ package nl.grauw.gaia_tool;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import nl.grauw.gaia_tool.mvc.Observable;
 
 public class Library extends Observable {
 	
-	private List<FilePatch> patches = new Vector<FilePatch>();
-	private List<Library> libraries = new Vector<Library>();
+	private List<FilePatch> patches = new ArrayList<FilePatch>();
+	private List<Library> libraries = new ArrayList<Library>();
 	private File source;
 	
 	public Library(File source) {

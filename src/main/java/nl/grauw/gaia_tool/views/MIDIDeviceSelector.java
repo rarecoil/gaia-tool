@@ -16,7 +16,8 @@
 package nl.grauw.gaia_tool.views;
 
 import java.awt.Component;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
@@ -56,7 +57,7 @@ public class MIDIDeviceSelector {
 	}
 	
 	private void selectMIDIInputDevice() {
-		Vector<Object> inputDevices = new Vector<Object>();
+		List<Object> inputDevices = new ArrayList<Object>();
 		inputDevices.add(AUTODETECT);
 		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
 			try {
@@ -81,7 +82,7 @@ public class MIDIDeviceSelector {
 	}
 	
 	private void selectMIDIOutputDevice() {
-		Vector<Object> outputDevices = new Vector<Object>();
+		List<Object> outputDevices = new ArrayList<Object>();
 		outputDevices.add(AUTODETECT);
 		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
 			try {

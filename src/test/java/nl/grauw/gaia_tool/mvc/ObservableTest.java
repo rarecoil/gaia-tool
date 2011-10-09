@@ -17,7 +17,7 @@ package nl.grauw.gaia_tool.mvc;
 
 import static org.junit.Assert.*;
 
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -67,7 +67,7 @@ public class ObservableTest {
 	}
 	
 	public class TestObservable extends Observable {
-		public Vector<AWTObserver> getAWTObservers() {
+		public List<AWTObserver> getAWTObservers() {
 			return super.getAWTObservers();
 		}
 	}
