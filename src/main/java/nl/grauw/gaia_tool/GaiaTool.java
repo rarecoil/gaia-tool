@@ -65,9 +65,8 @@ public class GaiaTool {
 	}
 	
 	private void loadSettings() {
-		FileReader fr;
 		try {
-			fr = new FileReader(new File(getAndCreateSettingsPath(), "settings.properties"));
+			FileReader fr = new FileReader(new File(getAndCreateSettingsPath(), "settings.properties"));
 			settings.load(fr);
 		} catch (FileNotFoundException e) {
 			// no settings file yet
@@ -79,9 +78,8 @@ public class GaiaTool {
 	}
 	
 	private void saveSettings() {
-		FileWriter fw;
 		try {
-			fw = new FileWriter(new File(getAndCreateSettingsPath(), "settings.properties"));
+			FileWriter fw = new FileWriter(new File(getAndCreateSettingsPath(), "settings.properties"));
 			settings.store(fw, "GAIA tool settings file");
 		} catch (IOException e) {
 			e.printStackTrace();
