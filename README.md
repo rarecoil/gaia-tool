@@ -1,8 +1,10 @@
 GAIA tool for the Roland GAIA SH-01
+===================================
+
 Copyright 2010 Laurens Holst
 
 Table of Contents
-=================
+-----------------
 
 - Project information
 - Contribution information
@@ -13,13 +15,13 @@ Table of Contents
 
 
 Project information
-===================
+-------------------
 
-Name: GAIA tool
-Site: http://www.grauw.nl/projects/gaia-tool/
-Source: http://hg.grauw.nl/gaia-tool/
-Author: Laurens Holst
-Contact: laurens.nospam at the above mentioned domain
+Name: GAIA tool  
+Site: <http://www.grauw.nl/projects/gaia-tool/>  
+Source: <http://hg.grauw.nl/gaia-tool/>  
+Author: Laurens Holst  
+Contact: laurens.nospam at the above mentioned domain  
 License: Apache License, Version 2.0
 
 The Gaia Tool is a free tool to connect your PC or Mac to the Roland GAIA SH-01
@@ -35,7 +37,7 @@ project and its author(s). For details, please consult the LICENSE file.
 
 
 Contribution information
-========================
+------------------------
 
 First of all, contributions are very much welcomed!
 
@@ -113,45 +115,45 @@ contributing:
 
 
 Dependencies
-============
+------------
 
 * Java 6
 
   This project is written using the Java SE 6 SDK.
   
-  Download: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-  Version check: java -version
+  Download: <http://www.oracle.com/technetwork/java/javase/downloads/index.html>  
+  Version check: `java -version`
 
 * Maven 3
 
   This project is built using Maven 3, although Maven 2 will probably work as
   well (but I did not test this). It follows standard Maven project setup.
   
-  Download: http://maven.apache.org/download.html
-  Version check: mvn --version
+  Download: <http://maven.apache.org/download.html>  
+  Version check: `mvn --version`
 
 * Mercurial
 
   The source code of this project is managed with the Mercurial SCM.
   
-  Download: http://hg-scm.org/
-  Version check: hg version
+  Download: <http://hg-scm.org/>  
+  Version check: `hg version`
 
 
 Getting the source code
-=======================
+-----------------------
 
 The source is managed using the Mercurial SCM, you can retrieve it with the
 following command:
 
-  hg clone http://hg.grauw.nl/gaia-tool gaia-tool
+    hg clone http://hg.grauw.nl/gaia-tool gaia-tool
 
 This will download the project source code into the gaia-tool directory.
 
 If you’re new to Mercurial, here are some resources to get you started:
 
-  http://mercurial.selenic.com/wiki/BeginnersGuides
-  http://hginit.com/
+  <http://mercurial.selenic.com/wiki/BeginnersGuides>  
+  <http://hginit.com/>
 
 The basic model in a nutshell: you clone the complete source code repository
 including all history onto your hard drive, which gives you a working copy
@@ -170,11 +172,11 @@ would also recommend the TortoiseHg GUI if you’re on Windows or Linux.
 
 
 Build instructions
-==================
+------------------
 
 From the project directory, enter the following command:
 
-  mvn verify
+    mvn verify
 
 This will build and test the project, and output the binaries into the target
 directory. The first time it may take a while, because Maven needs to download
@@ -191,11 +193,11 @@ Due to licensing issues I can not include this file with the source code.
 
 
 Eclipse setup instructions
-==========================
+--------------------------
 
 There is no requirement for any specific editor, however here are some
 instructions to get you started with this project in Eclipse. Eclipse can be
-downloaded from http://www.eclipse.org/.
+downloaded from <http://www.eclipse.org/>.
 
 (Note that these instructions are based on Eclipse Indigo SR1, you may have to
 adapt them a little for older or newer versions of Eclipse.)
@@ -203,7 +205,7 @@ adapt them a little for older or newer versions of Eclipse.)
 You can let Maven generate the project configuration so that Eclipse is
 properly configured using the following command:
 
-  mvn eclipse:eclipse
+    mvn eclipse:eclipse
 
 Now in Eclipse, go to File, Import, select General, Existing Projects into
 Workspace, and press Next. Browse to your project folder, and press Finish.
