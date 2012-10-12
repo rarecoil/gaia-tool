@@ -15,6 +15,8 @@
  */
 package nl.grauw.gaia_tool;
 
+import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -50,24 +52,34 @@ public class PatchLoader {
 	 * @param input The input stream.
 	 */
 	public void load(InputStream input) throws IOException {
+		load(new DataInputStream(input));
+	}
+	
+	/**
+	 * Populates the patch from a data input stream.
+	 * @param input The data input stream.
+	 */
+	public void load(DataInputStream input) throws IOException {
 		try {
 			byte[] header = new byte[8];
-			if (input.read(header) == -1) {
-				throw new IOException("Unexpected end of file.");
-			}
+			input.readFully(header);
 			if (!Arrays.equals(header, "GAIATOOL".getBytes(UTF8))) {
 				throw new IOException("Fingerprint mismatch.");
 			}
 			
 			byte[] chunk = new byte[8];
-			while (input.read(chunk) != -1) {
+			while (true) {
+				try {
+					input.readFully(chunk);
+				} catch (EOFException e) {
+					return;
+				}
 				int length = (chunk[4] & 0xFF) | (chunk[5] & 0xFF) << 8 |
 						(chunk[6] & 0xFF) << 16 | (chunk[7] & 0xFF) << 24;
+				byte[] data = new byte[length];
+				input.readFully(data);
+				
 				if (chunk[0] == 'P' && chunk[1] == 'A' && chunk[2] == 'T') {
-					byte[] data = new byte[length];
-					if (input.read(data) == -1) {
-						throw new IOException("Unexpected end of file.");
-					}
 					Address address = new Address(0x10, 0x00, chunk[3], 0x00);
 					try {
 						patch.updateParameters(address, data);
@@ -75,14 +87,12 @@ public class PatchLoader {
 						// s’ok, maybe it was saved on a new firmware
 					}
 				} else {
-					if (input.skip(length) != length) {
-						throw new IOException("Unexpected end of file.");
-					}
+					// ignore
 				}
 			}
 		} finally {
 			input.close();
 		}
 	}
-
+	
 }
