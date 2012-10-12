@@ -41,7 +41,6 @@ public class PatchLoader {
 	
 	/**
 	 * Populates the patch from a file.
-	 * @param input The input file.
 	 */
 	public void load(File input) throws IOException {
 		load(new FileInputStream(input));
@@ -49,7 +48,6 @@ public class PatchLoader {
 	
 	/**
 	 * Populates the patch from an input stream.
-	 * @param input The input stream.
 	 */
 	public void load(InputStream input) throws IOException {
 		load(new DataInputStream(input));
@@ -57,7 +55,6 @@ public class PatchLoader {
 	
 	/**
 	 * Populates the patch from a data input stream.
-	 * @param input The data input stream.
 	 */
 	public void load(DataInputStream input) throws IOException {
 		try {
