@@ -33,8 +33,8 @@ public class LibraryTest {
 	public void testPopulateNonExistantPath() {
 		Library library = new Library(new File("non-existant-test-path"));
 		library.refresh();
-		assertEquals(false, library.getPatches().iterator().hasNext());
-		assertEquals(false, library.getLibraries().iterator().hasNext());
+		assertEquals(true, library.getPatches().isEmpty());
+		assertEquals(true, library.getLibraries().isEmpty());
 	}
 
 }

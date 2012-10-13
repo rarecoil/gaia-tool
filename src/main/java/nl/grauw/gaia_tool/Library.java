@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import nl.grauw.gaia_tool.mvc.Observable;
@@ -33,12 +34,12 @@ public class Library extends Observable {
 		this.source = source;
 	}
 	
-	public Iterable<FilePatch> getPatches() {
-		return patches;
+	public List<FilePatch> getPatches() {
+		return Collections.unmodifiableList(patches);
 	}
 	
-	public Iterable<Library> getLibraries() {
-		return libraries;
+	public List<Library> getLibraries() {
+		return Collections.unmodifiableList(libraries);
 	}
 	
 	public File getSource() {
