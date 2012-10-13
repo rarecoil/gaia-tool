@@ -207,7 +207,7 @@ public class Parameters extends Observable {
 	 * @return The value in the range 0-127.
 	 */
 	public int getValue(int offset) {
-		return data[offset];
+		return data[offset] & 0x7F;
 	}
 	
 	/**
@@ -216,7 +216,7 @@ public class Parameters extends Observable {
 	 * @return The value in the range 0-255.
 	 */
 	public int get8BitValue(int offset) {
-		return data[offset] << 4 | data[offset + 1];
+		return (data[offset] & 0x0F) << 4 | data[offset + 1] & 0x0F;
 	}
 	
 	/**
@@ -225,7 +225,7 @@ public class Parameters extends Observable {
 	 * @return The value in the range 0-4095.
 	 */
 	public int get12BitValue(int offset) {
-		return data[offset] << 8 | data[offset + 1] << 4 | data[offset + 2];
+		return (data[offset] & 0x0F) << 8 | (data[offset + 1] & 0x0F) << 4 | data[offset + 2] & 0x0F;
 	}
 	
 	/**
@@ -234,8 +234,8 @@ public class Parameters extends Observable {
 	 * @return The value in the range 0-65535.
 	 */
 	public int get16BitValue(int offset) {
-		return data[offset] << 12 | data[offset + 1] << 8 |
-				data[offset + 2] << 4 | data[offset + 3];
+		return (data[offset] & 0x0F) << 12 | (data[offset + 1] & 0x0F) << 8 |
+				(data[offset + 2] & 0x0F) << 4 | data[offset + 3] & 0x0F;
 	}
 	
 	/**
