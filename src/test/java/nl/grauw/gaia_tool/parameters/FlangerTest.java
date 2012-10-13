@@ -84,6 +84,54 @@ public class FlangerTest {
 	}
 	
 	@Test
+	public void testGetLevel() {
+		Flanger pfp = createTestParameters();
+		assertEquals(127, pfp.getLevel().getValue());
+	}
+	
+	@Test
+	public void testGetFeedback() {
+		Flanger pfp = createTestParameters();
+		pfp.getFlangerTypeValue().setValue(FlangerType.FLANGER);
+		assertEquals(126, pfp.getFeedback().getValue());
+	}
+	
+	@Test
+	public void testGetResonance() {
+		Flanger pfp = createTestParameters();
+		pfp.getFlangerTypeValue().setValue(FlangerType.PHASER);
+		assertEquals(126, pfp.getResonance().getValue());
+	}
+	
+	@Test
+	public void testGetPitch() {
+		Flanger pfp = createTestParameters();
+		pfp.getFlangerTypeValue().setValue(FlangerType.PITCH_SHIFTER);
+		assertEquals(114, pfp.getPitch().getValue());
+	}
+	
+	@Test
+	public void testGetDepth() {
+		Flanger pfp = createTestParameters();
+		pfp.getFlangerTypeValue().setValue(FlangerType.FLANGER);
+		assertEquals(125, pfp.getDepth().getValue());
+	}
+	
+	@Test
+	public void testGetDetune() {
+		Flanger pfp = createTestParameters();
+		pfp.getFlangerTypeValue().setValue(FlangerType.PITCH_SHIFTER);
+		assertEquals(125, pfp.getDetune().getValue());
+	}
+	
+	@Test
+	public void testGetRate() {
+		Flanger pfp = createTestParameters();
+		pfp.getFlangerTypeValue().setValue(FlangerType.PHASER);
+		assertEquals(124, pfp.getRate().getValue());
+	}
+	
+	@Test
 	public void testUpdateParameters_Level() throws InvalidMidiDataException {
 		Flanger parameters = createTestParameters();
 		int[] expected = {

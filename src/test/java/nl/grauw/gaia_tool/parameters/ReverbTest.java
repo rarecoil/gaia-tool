@@ -84,6 +84,30 @@ public class ReverbTest {
 	}
 	
 	@Test
+	public void testGetLevel() {
+		Reverb prp = createTestParameters();
+		assertEquals(127, prp.getLevel().getValue());
+	}
+
+	@Test
+	public void testGetTime() {
+		Reverb prp = createTestParameters();
+		assertEquals(126, prp.getTime().getValue());
+	}
+
+	@Test
+	public void testGetType() {
+		Reverb prp = createTestParameters();
+		assertEquals(125, prp.getType().getValue());
+	}
+
+	@Test
+	public void testGetHighDamp() {
+		Reverb prp = createTestParameters();
+		assertEquals(124, prp.getHighDamp().getValue());
+	}
+
+	@Test
 	public void testUpdateParameters_Level() throws InvalidMidiDataException {
 		Reverb parameters = createTestParameters();
 		int[] expected = {

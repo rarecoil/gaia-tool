@@ -84,6 +84,36 @@ public class DelayTest {
 	}
 	
 	@Test
+	public void testGetLevel() {
+		Delay pdp = createTestParameters();
+		assertEquals(127, pdp.getLevel().getValue());
+	}
+	
+	@Test
+	public void testGetTime() {
+		Delay pdp = createTestParameters();
+		assertEquals(126, pdp.getTime().getValue());
+	}
+	
+	@Test
+	public void testGetSyncedTime() {
+		Delay pdp = createTestParameters();
+		assertEquals(125, pdp.getSyncedTime().getValue());
+	}
+	
+	@Test
+	public void testGetFeedback() {
+		Delay pdp = createTestParameters();
+		assertEquals(124, pdp.getFeedback().getValue());
+	}
+	
+	@Test
+	public void testGetHighDamp() {
+		Delay pdp = createTestParameters();
+		assertEquals(-20036, pdp.getHighDamp().getValue());
+	}
+	
+	@Test
 	public void testUpdateParameters_Level() throws InvalidMidiDataException {
 		Delay parameters = createTestParameters();
 		int[] expected = {
