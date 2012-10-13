@@ -71,6 +71,13 @@ public class ReverbTest {
 		assertEquals(15038, prp.getReverbParameter(20).getValue());
 	}
 
+	@Test
+	public void testGetReverbParameter_SetValue() {
+		Reverb prp = createTestParameters();
+		prp.getReverbParameter(2).setValue(48);
+		assertEquals(48, prp.getTime().getValue());
+	}
+
 	@Test (expected = RuntimeException.class)
 	public void testGetReverbParameterInvalidLow() {
 		Reverb prp = createTestParameters();

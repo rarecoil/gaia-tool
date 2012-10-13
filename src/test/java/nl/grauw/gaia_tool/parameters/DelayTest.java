@@ -71,6 +71,13 @@ public class DelayTest {
 		assertEquals(15038, pdp.getDelayParameter(20).getValue());
 	}
 
+	@Test
+	public void testGetDelayParameter_SetValue() {
+		Delay pdp = createTestParameters();
+		pdp.getDelayParameter(2).setValue(47);
+		assertEquals(47, pdp.getTime().getValue());
+	}
+
 	@Test (expected = RuntimeException.class)
 	public void testGetDelayParameterInvalidLow() {
 		Delay pdp = createTestParameters();

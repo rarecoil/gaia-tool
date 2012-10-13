@@ -71,6 +71,13 @@ public class FlangerTest {
 		assertEquals(15038, pfp.getFlangerParameter(20).getValue());
 	}
 
+	@Test
+	public void testGetFlangerParameter_SetValue() {
+		Flanger pfp = createTestParameters();
+		pfp.getFlangerParameter(1).setValue(46);
+		assertEquals(46, pfp.getLevel().getValue());
+	}
+
 	@Test (expected = RuntimeException.class)
 	public void testGetFlangerParameterInvalidLow() {
 		Flanger pfp = createTestParameters();

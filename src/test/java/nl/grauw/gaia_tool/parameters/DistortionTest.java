@@ -77,6 +77,13 @@ public class DistortionTest {
 		assertEquals(15038, pdp.getMFXParameter(32).getValue());
 	}
 
+	@Test
+	public void testGetMFXParameter_SetValue() {
+		Distortion pdp = createTestParameters();
+		pdp.getMFXParameter(3).setValue(45);
+		assertEquals(45, pdp.getBitDown().getValue());
+	}
+
 	@Test (expected = RuntimeException.class)
 	public void testGetMFXParameterInvalidLow() {
 		Distortion pdp = createTestParameters();
