@@ -40,6 +40,10 @@ public class IntValue extends Value {
 		parameters.setValue(offset, value);
 	}
 	
+	public boolean isValid() {
+		return isValidValue(getValue());
+	}
+	
 	public boolean isValidValue(int value) {
 		return value >= min && value <= max;
 	}
