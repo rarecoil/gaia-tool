@@ -15,6 +15,8 @@
  */
 package nl.grauw.gaia_tool;
 
+import java.util.Arrays;
+
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.Address.AddressException;
 
@@ -153,6 +155,15 @@ public class Parameters extends Observable {
 	 */
 	public int getLength() {
 		return data.length;
+	}
+	
+	/**
+	 * Returns whether these parameters’ address and data are equal to another.
+	 * The address comparison is fuzzy (ignores temporary/user patch difference).
+	 * Also it does not compare the original data.
+	 */
+	public boolean isEqualTo(Parameters other) {
+		return address.fuzzyEquals(other.address) && Arrays.equals(data, other.data);
 	}
 	
 	/**
