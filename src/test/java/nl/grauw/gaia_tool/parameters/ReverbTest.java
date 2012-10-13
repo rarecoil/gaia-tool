@@ -32,7 +32,7 @@ public class ReverbTest {
 	static byte[] testParameterData = {
 		0x01, // 0x00
 		0x08, 0x00, 0x07, 0x0F, 0x08, 0x00, 0x07, 0x0E, // 0x01
-		0x08, 0x00, 0x07, 0x0D, 0x08, 0x00, 0x07, 0x0C, // 0x09
+		0x08, 0x00, 0x00, 0x02, 0x08, 0x00, 0x07, 0x0C, // 0x09
 		0x03, 0x01, 0x0E, 0x00, 0x0C, 0x0E, 0x02, 0x00, // 0x11
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x19
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x21
@@ -63,7 +63,7 @@ public class ReverbTest {
 		Reverb prp = createTestParameters();
 		assertEquals(127, prp.getReverbParameter(1).getValue());
 		assertEquals(126, prp.getReverbParameter(2).getValue());
-		assertEquals(125, prp.getReverbParameter(3).getValue());
+		assertEquals(2, prp.getReverbParameter(3).getValue());
 		assertEquals(124, prp.getReverbParameter(4).getValue());
 		assertEquals(-20000, prp.getReverbParameter(5).getValue());
 		assertEquals(20000, prp.getReverbParameter(6).getValue());
@@ -86,24 +86,28 @@ public class ReverbTest {
 	@Test
 	public void testGetLevel() {
 		Reverb prp = createTestParameters();
+		assertEquals(true, prp.getLevel().isValid());
 		assertEquals(127, prp.getLevel().getValue());
 	}
 
 	@Test
 	public void testGetTime() {
 		Reverb prp = createTestParameters();
+		assertEquals(true, prp.getTime().isValid());
 		assertEquals(126, prp.getTime().getValue());
 	}
 
 	@Test
 	public void testGetType() {
 		Reverb prp = createTestParameters();
-		assertEquals(125, prp.getType().getValue());
+		assertEquals(true, prp.getType().isValid());
+		assertEquals(2, prp.getType().getValue());
 	}
 
 	@Test
 	public void testGetHighDamp() {
 		Reverb prp = createTestParameters();
+		assertEquals(true, prp.getHighDamp().isValid());
 		assertEquals(124, prp.getHighDamp().getValue());
 	}
 
