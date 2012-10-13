@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class PatchTest {
 	
-	public Patch createTestPatch() {
+	public static Patch createTestPatch() {
 		Patch patch = new Patch();
 		patch.setCommon(PatchCommonTest.createTestParameters());
 		for (int tone = 1; tone <= 3; tone++)
