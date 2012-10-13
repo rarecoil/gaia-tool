@@ -32,6 +32,10 @@ public class ArpeggioPattern extends Parameters {
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
+	public int getNoteNumber() {
+		return getAddress().getByte3() - 0x0D + 1;
+	}
+	
 	/**
 	 * Get the pattern’s original note (C-4 is the base).
 	 * Note number 128 (G#9) means OFF.

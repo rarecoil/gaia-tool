@@ -205,6 +205,8 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	protected void setTone(int number, Tone tone) {
 		if (number < 1 || number > 3)
 			throw new RuntimeException("Tone number must be 1, 2 or 3.");
+		if (tone != null && number != tone.getToneNumber())
+			throw new RuntimeException("Tone number mismatch.");
 		
 		this.tones[number - 1] = tone;
 		notifyObservers("tones");
@@ -274,6 +276,8 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	protected void setArpeggioPattern(int note, ArpeggioPattern arpeggioPattern) {
 		if (note < 1 || note > 16)
 			throw new RuntimeException("Arpeggio pattern note must be between 1 and 16 (inclusive).");
+		if (arpeggioPattern != null && note != arpeggioPattern.getNoteNumber())
+			throw new RuntimeException("Note number mismatch.");
 		
 		this.arpeggioPatterns[note - 1] = arpeggioPattern;
 		notifyObservers("arpeggioPatterns");

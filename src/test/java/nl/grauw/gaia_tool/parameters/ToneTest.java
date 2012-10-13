@@ -46,12 +46,22 @@ public class ToneTest {
 	};
 	
 	public static Tone createTestParameters() {
-		return new Tone(testAddress, testParameterData.clone());
+		return createTestParameters(1);
+	}
+	
+	public static Tone createTestParameters(int tone) {
+		return new Tone(testAddress.add((tone - 1) * 0x80), testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchToneParameters() {
 		new Tone(testAddress, new byte[61]);
+	}
+
+	@Test
+	public void testGetToneNumber() {
+		Tone tone = createTestParameters(2);
+		assertEquals(2, tone.getToneNumber());
 	}
 
 	@Test

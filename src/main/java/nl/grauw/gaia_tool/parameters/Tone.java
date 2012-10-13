@@ -94,6 +94,10 @@ public class Tone extends Parameters {
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
 	
+	public int getToneNumber() {
+		return getAddress().getByte3() - 0x01 + 1;
+	}
+	
 	public void updateParameters(ControlChangeMessage message) {
 		if (message.getController() != null) {
 			switch (message.getController()) {

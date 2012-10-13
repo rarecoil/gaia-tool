@@ -20,14 +20,14 @@ public class PatchTest {
 		Patch patch = new Patch();
 		patch.setCommon(PatchCommonTest.createTestParameters());
 		for (int tone = 1; tone <= 3; tone++)
-			patch.setTone(tone, ToneTest.createTestParameters());
+			patch.setTone(tone, ToneTest.createTestParameters(tone));
 		patch.setDistortion(DistortionTest.createTestParameters());
 		patch.setFlanger(FlangerTest.createTestParameters());
 		patch.setDelay(DelayTest.createTestParameters());
 		patch.setReverb(ReverbTest.createTestParameters());
 		patch.setArpeggioCommon(ArpeggioCommonTest.createTestParameters());
 		for (int note = 1; note <= 16; note++)
-			patch.setArpeggioPattern(note, ArpeggioPatternTest.createTestParameters());
+			patch.setArpeggioPattern(note, ArpeggioPatternTest.createTestParameters(note));
 		return patch;
 	}
 	

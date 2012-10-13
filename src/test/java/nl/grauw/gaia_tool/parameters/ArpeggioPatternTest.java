@@ -38,12 +38,22 @@ public class ArpeggioPatternTest {
 	};
 	
 	public static ArpeggioPattern createTestParameters() {
-		return new ArpeggioPattern(testAddress, testParameterData.clone());
+		return createTestParameters(1);
+	}
+	
+	public static ArpeggioPattern createTestParameters(int note) {
+		return new ArpeggioPattern(testAddress.add((note - 1) * 0x80), testParameterData.clone());
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testPatchArpeggioPatternParameters() {
 		new ArpeggioPattern(testAddress, new byte[65]);
+	}
+
+	@Test
+	public void testGetNoteNumber() {
+		ArpeggioPattern pattern = createTestParameters(9);
+		assertEquals(9, pattern.getNoteNumber());
 	}
 
 	@Test
