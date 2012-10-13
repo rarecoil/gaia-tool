@@ -139,6 +139,16 @@ public class Address {
 		return address;
 	}
 	
+	/**
+	 * Returns whether the address is fuzzy-identical to another.
+	 * “Fuzzy” means that it ignores ignores temporary/user patch difference.
+	 */
+	public boolean fuzzyEquals(Address other) {
+		if ((getByte1() == 0x10 || getByte1() == 0x20) && (other.getByte1() == 0x10 || other.getByte1() == 0x20))
+			return getByte3() == other.getByte3() && getByte4() == other.getByte4();
+		return address == other.address;
+	}
+	
 	public String toString() {
 		return toHexString() + " (" + getDescription() + ")";
 	}

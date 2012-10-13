@@ -48,5 +48,53 @@ public class AddressTest {
 		Address a = new Address(0x0028E2E7);
 		assertEquals("01 23 45 67", a.toHexString());
 	}
+	
+	@Test
+	public void testFuzzyEquals() {
+		Address a = new Address(0x20, 0x2F, 0x02, 0x11);
+		Address b = new Address(0x20, 0x2F, 0x02, 0x11);
+		
+		assertEquals(true, a.fuzzyEquals(b));
+	}
+	
+	@Test
+	public void testFuzzyEquals_IgnoresPatchLocation() {
+		Address a = new Address(0x10, 0x00, 0x02, 0x11);
+		Address b = new Address(0x20, 0x2F, 0x02, 0x11);
+		
+		assertEquals(true, a.fuzzyEquals(b));
+	}
+	
+	@Test
+	public void testFuzzyEquals_SystemVsPatchCommon() {
+		Address a = new Address(0x01, 0x00, 0x00, 0x11);
+		Address b = new Address(0x10, 0x00, 0x00, 0x11);
+		
+		assertEquals(false, a.fuzzyEquals(b));
+	}
+	
+	@Test
+	public void testFuzzyEquals_Byte2() {
+		Address a = new Address(0x01, 0x01, 0x02, 0x11);
+		Address b = new Address(0x01, 0x02, 0x02, 0x11);
+		
+		assertEquals(false, a.fuzzyEquals(b));
+	}
+	
+	@Test
+	public void testFuzzyEquals_Byte3() {
+		Address a = new Address(0x10, 0x00, 0x02, 0x11);
+		Address b = new Address(0x10, 0x00, 0x03, 0x11);
+		
+		assertEquals(false, a.fuzzyEquals(b));
+	}
+	
+	@Test
+	public void testFuzzyEquals_Byte4() {
+		Address a = new Address(0x20, 0x2F, 0x02, 0x11);
+		Address b = new Address(0x20, 0x2F, 0x02, 0x12);
+		
+		assertEquals(false, a.fuzzyEquals(b));
+	}
 
 }
