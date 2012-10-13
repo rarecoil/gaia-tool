@@ -164,6 +164,18 @@ public class Patch extends Observable implements Iterable<Parameters> {
 			throw new RuntimeException("AddressException is not supposed to occur.", e);
 		}
 	}
+	
+	/**
+	 * Returns whether this patch’s parameter data is equal to another.
+	 */
+	public boolean isEqualTo(Patch other) {
+		Iterator<Parameters> thisIterator = iterator();
+		Iterator<Parameters> otherIterator = other.iterator();
+		for (; thisIterator.hasNext() && otherIterator.hasNext();)
+			if (!thisIterator.next().isEqualTo(otherIterator.next()))
+				return false;
+		return !thisIterator.hasNext() && !otherIterator.hasNext();
+	}
 
 	public PatchCommon getCommon() {
 		return common;
