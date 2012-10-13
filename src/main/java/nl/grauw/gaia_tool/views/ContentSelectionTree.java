@@ -42,6 +42,7 @@ import nl.grauw.gaia_tool.Patch.IncompletePatchException;
 import nl.grauw.gaia_tool.PatchDataRequester;
 import nl.grauw.gaia_tool.PatchDataRequester.PatchCompleteListener;
 import nl.grauw.gaia_tool.TemporaryPatch;
+import nl.grauw.gaia_tool.UserPatch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
@@ -66,7 +67,7 @@ public class ContentSelectionTree extends JTree {
 		ContentSelectionTreeNode rootNode = new ContentSelectionTreeNode("Parameters");
 		SystemTreeNode systemNode = new SystemTreeNode();
 		rootNode.add(systemNode);
-		PatchTreeNode temporaryPatchNode = new PatchTreeNode(gaiaTool.getGaia().getTemporaryPatch(), "Temporary patch");
+		PatchTreeNode temporaryPatchNode = new PatchTreeNode(gaiaTool.getGaia().getTemporaryPatch());
 		rootNode.add(temporaryPatchNode);
 		ContentSelectionTreeNode userPatchesNode = createUserPatchesNode();
 		rootNode.add(userPatchesNode);
@@ -80,8 +81,7 @@ public class ContentSelectionTree extends JTree {
 		for (int bank = 0; bank < 8; bank++) {
 			ContentSelectionTreeNode bankNode = new ContentSelectionTreeNode("Bank " + "ABCDEFGH".charAt(bank));
 			for (int patch = 0; patch < 8; patch++) {
-				String patchName = "Patch " + "ABCDEFGH".charAt(bank) + "-" + (patch + 1);
-				PatchTreeNode patchNode = new PatchTreeNode(gaiaTool.getGaia().getUserPatch(bank, patch), patchName);
+				PatchTreeNode patchNode = new PatchTreeNode(gaiaTool.getGaia().getUserPatch(bank, patch));
 				bankNode.add(patchNode);
 			}
 			userPatchesNode.add(bankNode);
@@ -193,7 +193,7 @@ public class ContentSelectionTree extends JTree {
 				add(new LibraryNode(sublibrary));
 			}
 			for (FilePatch patch : library.getPatches()) {
-				add(new PatchTreeNode(patch, patch.getName()));
+				add(new PatchTreeNode(patch));
 			}
 		}
 		
@@ -265,12 +265,10 @@ public class ContentSelectionTree extends JTree {
 	public class PatchTreeNode extends ContentSelectionTreeNode {
 		private static final long serialVersionUID = 1L;
 		
-		private String name;
 		private Patch patch;
 		private JPopupMenu contextMenu;
 		
-		public PatchTreeNode(Patch patch, String name) {
-			this.name = name;
+		public PatchTreeNode(Patch patch) {
 			this.patch = patch;
 		}
 		
@@ -279,7 +277,13 @@ public class ContentSelectionTree extends JTree {
 		}
 		
 		public String toString() {
-			return name;
+			if (patch instanceof TemporaryPatch)
+				return "Temporary patch";
+			if (patch instanceof UserPatch)
+				return "Patch " + "ABCDEFGH".charAt(((UserPatch)patch).getBank()) + "-" + (((UserPatch)patch).getPatch() + 1);
+			if (patch instanceof FilePatch)
+				return ((FilePatch)patch).getName();
+			return "Unknown patch";
 		}
 		
 		@Override
