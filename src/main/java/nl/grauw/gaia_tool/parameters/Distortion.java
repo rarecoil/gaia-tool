@@ -47,6 +47,8 @@ public class Distortion extends Parameters {
 	public Distortion(Address address, byte[] data) {
 		super(address, data);
 		
+		if (address.getByte3() != 0x04)
+			throw new Error("Invalid parameters address.");
 		if (data.length < 0x81)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}

@@ -49,6 +49,8 @@ public class PatchCommon extends Parameters {
 	public PatchCommon(Address address, byte[] data) {
 		super(address, data);
 		
+		if (address.getByte3() != 0x00)
+			throw new Error("Invalid parameters address.");
 		if (data.length < 0x3D)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}

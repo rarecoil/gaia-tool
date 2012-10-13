@@ -88,6 +88,8 @@ public class Tone extends Parameters {
 	public Tone(Address address, byte[] data) {
 		super(address, data);
 		
+		if (address.getByte3() < 0x01 || address.getByte3() > 0x03)
+			throw new Error("Invalid parameters address.");
 		if (data.length < 0x3E)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}

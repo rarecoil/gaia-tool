@@ -37,6 +37,8 @@ public class Reverb extends Parameters {
 	public Reverb(Address address, byte[] data) {
 		super(address, data);
 		
+		if (address.getByte3() != 0x0A)
+			throw new Error("Invalid parameters address.");
 		if (data.length < 0x51)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}

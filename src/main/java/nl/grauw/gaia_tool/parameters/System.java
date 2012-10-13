@@ -67,6 +67,8 @@ public class System extends Parameters {
 	public System(Address address, byte[] data) {
 		super(address, data);
 		
+		if (!address.equals(new Address(0x01, 0x00, 0x00, 0x00)))
+			throw new Error("Invalid parameters address.");
 		if (data.length < 0x6E)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}

@@ -37,6 +37,8 @@ public class Delay extends Parameters {
 	public Delay(Address address, byte[] data) {
 		super(address, data);
 		
+		if (address.getByte3() != 0x08)
+			throw new Error("Invalid parameters address.");
 		if (data.length < 0x51)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}

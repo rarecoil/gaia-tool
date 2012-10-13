@@ -37,6 +37,8 @@ public class Flanger extends Parameters {
 	public Flanger(Address address, byte[] data) {
 		super(address, data);
 		
+		if (address.getByte3() != 0x06)
+			throw new Error("Invalid parameters address.");
 		if (data.length < 0x51)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}

@@ -81,6 +81,9 @@ public class Parameters extends Observable {
 	 * @param data The parameter data. All bytes must be in the range 0-127.
 	 */
 	public Parameters(Address address, byte[] data) {
+		if (address.getByte4() != 0x00)
+			throw new Error("Invalid parameters address.");
+		
 		this.address = address;
 		this.originalData = data.clone();
 		this.data = data.clone();

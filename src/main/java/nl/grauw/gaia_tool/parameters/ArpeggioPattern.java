@@ -26,6 +26,8 @@ public class ArpeggioPattern extends Parameters {
 	public ArpeggioPattern(Address address, byte[] data) {
 		super(address, data);
 		
+		if (address.getByte3() < 0x0D || address.getByte3() > 0x1C)
+			throw new Error("Invalid parameters address.");
 		if (data.length < 0x42)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}

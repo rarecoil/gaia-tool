@@ -73,6 +73,8 @@ public class ArpeggioCommon extends Parameters {
 	public ArpeggioCommon(Address address, byte[] data) {
 		super(address, data);
 		
+		if (address.getByte3() != 0x0C)
+			throw new Error("Invalid parameters address.");
 		if (data.length < 0x08)
 			throw new IllegalArgumentException("Parameters data size mismatch.");
 	}
