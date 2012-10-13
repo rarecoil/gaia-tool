@@ -32,6 +32,21 @@ public class PatchTest {
 	}
 	
 	@Test
+	public void testIsComplete() {
+		Patch patch = createTestPatch();
+		
+		assertEquals(true, patch.isComplete());
+	}
+
+	@Test
+	public void testIsComplete_Incomplete() {
+		Patch patch = createTestPatch();
+		patch.setTone(3, null);
+		
+		assertEquals(false, patch.isComplete());
+	}
+	
+	@Test
 	public void testIsEqualTo() {
 		Patch a = createTestPatch();
 		Patch b = createTestPatch();
