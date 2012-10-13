@@ -35,18 +35,46 @@ public class Address {
 		return address;
 	}
 	
+	/**
+	 * Subsystem part of the address.
+	 * 
+	 * System:          0x01
+	 * Temporary Patch: 0x10
+	 * User Patches:    0x20
+	 */
 	public byte getByte1() {
 		return (byte) (address >> 21 & 0x7F);
 	}
 	
+	/**
+	 * Patch number part of the address.
+	 * 
+	 * Patch A-1: 0x00
+	 * Patch H-8: 0x3F
+	 */
 	public byte getByte2() {
 		return (byte) (address >> 14 & 0x7F);
 	}
 	
+	/**
+	 * Parameter MSB part of the address.
+	 * 
+	 * Patch Common:             0x00
+	 * Patch Tone 1-3:           0x01 - 0x03
+	 * Patch Distortion:         0x04
+	 * Patch Flanger:            0x06
+	 * Patch Delay:              0x08
+	 * Patch Reverb:             0x0A
+	 * Patch Arpeggio Common:    0x0C
+	 * Patch Arpeggio Pattern 1: 0x0D - 0x1C
+	 */
 	public byte getByte3() {
 		return (byte) (address >> 7 & 0x7F);
 	}
 	
+	/**
+	 * Parameter LSB part of the address.
+	 */
 	public byte getByte4() {
 		return (byte) (address & 0x7F);
 	}
