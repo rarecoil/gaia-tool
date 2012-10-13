@@ -192,7 +192,7 @@ public class ContentSelectionTree extends JTree {
 			for (Library sublibrary : library.getLibraries()) {
 				add(new LibraryNode(sublibrary));
 			}
-			for (FilePatch patch : library.getPatches()) {
+			for (Patch patch : library.getPatches()) {
 				add(new PatchTreeNode(patch));
 			}
 		}
