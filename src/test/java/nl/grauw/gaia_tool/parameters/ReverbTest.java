@@ -43,7 +43,7 @@ public class ReverbTest {
 		0x0C, 0x0A, 0x0F, 0x0E, 0x0B, 0x0A, 0x0B, 0x0E  // 0x49
 	};
 	
-	public static Reverb getTestParameters() {
+	public static Reverb createTestParameters() {
 		return new Reverb(testAddress, testParameterData.clone());
 	}
 
@@ -54,13 +54,13 @@ public class ReverbTest {
 
 	@Test
 	public void testGetReverbType() {
-		Reverb prp = getTestParameters();
+		Reverb prp = createTestParameters();
 		assertEquals(ReverbType.REVERB, prp.getReverbType());
 	}
 
 	@Test
 	public void testGetReverbParameter() {
-		Reverb prp = getTestParameters();
+		Reverb prp = createTestParameters();
 		assertEquals(127, prp.getReverbParameter(1).getValue());
 		assertEquals(126, prp.getReverbParameter(2).getValue());
 		assertEquals(125, prp.getReverbParameter(3).getValue());
@@ -73,19 +73,19 @@ public class ReverbTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetReverbParameterInvalidLow() {
-		Reverb prp = getTestParameters();
+		Reverb prp = createTestParameters();
 		prp.getReverbParameter(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetReverbParameterInvalidHigh() {
-		Reverb prp = getTestParameters();
+		Reverb prp = createTestParameters();
 		prp.getReverbParameter(21);
 	}
 	
 	@Test
 	public void testUpdateParameters_Level() throws InvalidMidiDataException {
-		Reverb parameters = getTestParameters();
+		Reverb parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
@@ -105,7 +105,7 @@ public class ReverbTest {
 	
 	@Test
 	public void testUpdateParameters_Control_1() throws InvalidMidiDataException {
-		Reverb parameters = getTestParameters();
+		Reverb parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,

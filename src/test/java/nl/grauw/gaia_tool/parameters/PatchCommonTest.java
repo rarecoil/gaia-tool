@@ -46,7 +46,7 @@ public class PatchCommonTest {
 		0x79, 0x78, 0x3F, 0x3E, 0x3D // 0x38
 	};
 	
-	public static PatchCommon getTestParameters() {
+	public static PatchCommon createTestParameters() {
 		return new PatchCommon(testAddress, testParameterData.clone());
 	}
 	
@@ -57,295 +57,295 @@ public class PatchCommonTest {
 
 	@Test
 	public void testGetPatchName() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertTrue("Test Patch--".equals(pcp.getPatchName()));
 	}
 
 	@Test
 	public void testGetPatchLevel() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(127, pcp.getPatchLevel().getValue());
 	}
 
 	@Test
 	public void testGetPatchTempo() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(292, pcp.getPatchTempo().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioSwitch() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(false, pcp.getArpeggioSwitch());
 	}
 
 	@Test
 	public void testGetReserved1() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(1, pcp.getReserved1().getValue());
 	}
 
 	@Test
 	public void testGetPortamentoSwitch() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(false, pcp.getPortamentoSwitch());
 	}
 
 	@Test
 	public void testGetPortamentoTime() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(126, pcp.getPortamentoTime().getValue());
 	}
 
 	@Test
 	public void testGetMonoSwitch() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(true, pcp.getMonoSwitch());
 	}
 
 	@Test
 	public void testGetOctaveShift() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(3, pcp.getOctaveShift().getValue());
 	}
 
 	@Test
 	public void testGetPitchBendRangeUp() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(24, pcp.getPitchBendRangeUp().getValue());
 	}
 
 	@Test
 	public void testGetPitchBendRangeDown() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(23, pcp.getPitchBendRangeDown().getValue());
 	}
 
 	@Test
 	public void testGetReserved2() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(0, pcp.getReserved2().getValue());
 	}
 
 	@Test
 	public void testGetTone1Switch() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(true, pcp.getTone1Switch());
 	}
 
 	@Test
 	public void testGetTone1Select() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(false, pcp.getTone1Select());
 	}
 
 	@Test
 	public void testGetTone2Switch() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(false, pcp.getTone2Switch());
 	}
 
 	@Test
 	public void testGetTone2Select() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(true, pcp.getTone2Select());
 	}
 
 	@Test
 	public void testGetTone3Switch() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(true, pcp.getTone3Switch());
 	}
 
 	@Test
 	public void testGetTone3Select() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(false, pcp.getTone3Select());
 	}
 
 	@Test
 	public void testGetSyncRingSelect() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(SyncRingSelect.RING, pcp.getSyncRingSelect());
 	}
 
 	@Test
 	public void testGetEffectsMasterSwitch() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(true, pcp.getEffectsMasterSwitch());
 	}
 
 	@Test
 	public void testGetReserved3() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(3, pcp.getReserved3().getValue());
 	}
 
 	@Test
 	public void testGetDelayTempoSyncSwitch() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(false, pcp.getDelayTempoSyncSwitch());
 	}
 
 	@Test
 	public void testGetLowBoostSwitch() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(true, pcp.getLowBoostSwitch());
 	}
 
 	@Test
 	public void testGetDBeamAssign() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(DBeamAssign.FILTER_CUTOFF_KF, pcp.getDBeamAssign());
 	}
 
 	@Test
 	public void testGetReserved4() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(1, pcp.getReserved4().getValue());
 	}
 
 	@Test
 	public void testGetReserved5() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(0, pcp.getReserved5().getValue());
 	}
 
 	@Test
 	public void testGetReserved6() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(1, pcp.getReserved6().getValue());
 	}
 
 	@Test
 	public void testGetReserved7() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(0, pcp.getReserved7().getValue());
 	}
 
 	@Test
 	public void testGetDBeamPolarity() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(DBeamPolarity.REVERSE, pcp.getDBeamPolarity());
 	}
 
 	@Test
 	public void testGetEffectsDistortionSelect() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(false, pcp.getEffectsDistortionSelect());
 	}
 
 	@Test
 	public void testGetEffectsFlangerSelect() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(true, pcp.getEffectsFlangerSelect());
 	}
 
 	@Test
 	public void testGetEffectsDelaySelect() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(false, pcp.getEffectsDelaySelect());
 	}
 
 	@Test
 	public void testGetEffectsReverbSelect() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(true, pcp.getEffectsReverbSelect());
 	}
 
 	@Test
 	public void testGetReserved8() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(0, pcp.getReserved8().getValue());
 	}
 
 	@Test
 	public void testGetReserved9() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(1, pcp.getReserved9().getValue());
 	}
 
 	@Test
 	public void testGetReserved10() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(0, pcp.getReserved10().getValue());
 	}
 
 	@Test
 	public void testGetReserved11() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(1, pcp.getReserved11().getValue());
 	}
 
 	@Test
 	public void testGetReserved12() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(0, pcp.getReserved12().getValue());
 	}
 
 	@Test
 	public void testGetReserved13() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(1, pcp.getReserved13().getValue());
 	}
 
 	@Test
 	public void testGetReserved14() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(125, pcp.getReserved14().getValue());
 	}
 
 	@Test
 	public void testGetReserved15() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(124, pcp.getReserved15().getValue());
 	}
 
 	@Test
 	public void testGetReserved16() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(123, pcp.getReserved16().getValue());
 	}
 
 	@Test
 	public void testGetReserved17() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(122, pcp.getReserved17().getValue());
 	}
 
 	@Test
 	public void testGetReserved18() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(121, pcp.getReserved18().getValue());
 	}
 
 	@Test
 	public void testGetReserved19() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(120, pcp.getReserved19().getValue());
 	}
 
 	@Test
 	public void testGetReserved20() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(-1, pcp.getReserved20().getValue());
 	}
 
 	@Test
 	public void testGetReserved21() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(-2, pcp.getReserved21().getValue());
 	}
 
 	@Test
 	public void testGetReserved22() {
-		PatchCommon pcp = getTestParameters();
+		PatchCommon pcp = createTestParameters();
 		assertEquals(-3, pcp.getReserved22().getValue());
 	}
 	
 	@Test
 	public void testUpdateParameters_PortamentoTime() throws InvalidMidiDataException {
-		PatchCommon parameters = getTestParameters();
+		PatchCommon parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,

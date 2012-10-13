@@ -43,7 +43,7 @@ public class FlangerTest {
 		0x0C, 0x0A, 0x0F, 0x0E, 0x0B, 0x0A, 0x0B, 0x0E  // 0x49
 	};
 	
-	public static Flanger getTestParameters() {
+	public static Flanger createTestParameters() {
 		return new Flanger(testAddress, testParameterData.clone());
 	}
 
@@ -54,13 +54,13 @@ public class FlangerTest {
 
 	@Test
 	public void testGetFlangerType() {
-		Flanger pfp = getTestParameters();
+		Flanger pfp = createTestParameters();
 		assertEquals(FlangerType.PITCH_SHIFTER, pfp.getFlangerType());
 	}
 
 	@Test
 	public void testGetFlangerParameter() {
-		Flanger pfp = getTestParameters();
+		Flanger pfp = createTestParameters();
 		assertEquals(127, pfp.getFlangerParameter(1).getValue());
 		assertEquals(126, pfp.getFlangerParameter(2).getValue());
 		assertEquals(125, pfp.getFlangerParameter(3).getValue());
@@ -73,19 +73,19 @@ public class FlangerTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetFlangerParameterInvalidLow() {
-		Flanger pfp = getTestParameters();
+		Flanger pfp = createTestParameters();
 		pfp.getFlangerParameter(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetFlangerParameterInvalidHigh() {
-		Flanger pfp = getTestParameters();
+		Flanger pfp = createTestParameters();
 		pfp.getFlangerParameter(21);
 	}
 	
 	@Test
 	public void testUpdateParameters_Level() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
+		Flanger parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
@@ -105,7 +105,7 @@ public class FlangerTest {
 	
 	@Test
 	public void testUpdateParameters_Control_1_Flanger() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
+		Flanger parameters = createTestParameters();
 		parameters.getFlangerTypeValue().setValue(FlangerType.FLANGER);
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -126,7 +126,7 @@ public class FlangerTest {
 	
 	@Test
 	public void testUpdateParameters_Control_1_Phaser() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
+		Flanger parameters = createTestParameters();
 		parameters.getFlangerTypeValue().setValue(FlangerType.PHASER);
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -147,7 +147,7 @@ public class FlangerTest {
 	
 	@Test
 	public void testUpdateParameters_Control_1_Pitch_Shifter() throws InvalidMidiDataException {
-		Flanger parameters = getTestParameters();
+		Flanger parameters = createTestParameters();
 		parameters.getFlangerTypeValue().setValue(FlangerType.PITCH_SHIFTER);
 		int[] expected = {
 				-12, -11, -11, -11, -11, -11, -10, -10, -10, -10, -10,  -9,  -9,  -9,  -9,  -9,

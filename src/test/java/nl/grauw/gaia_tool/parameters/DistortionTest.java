@@ -49,7 +49,7 @@ public class DistortionTest {
 		0x0C, 0x0A, 0x0F, 0x0E, 0x0B, 0x0A, 0x0B, 0x0E  // 0x79
 	};
 	
-	public static Distortion getTestParameters() {
+	public static Distortion createTestParameters() {
 		return new Distortion(testAddress, testParameterData.clone());
 	}
 
@@ -60,13 +60,13 @@ public class DistortionTest {
 	
 	@Test
 	public void testGetDistortionType() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		assertEquals(DistortionType.BIT_CRASH, pdp.getDistortionType());
 	}
 
 	@Test
 	public void testGetMFXParameter() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		assertEquals(127, pdp.getMFXParameter(1).getValue());
 		assertEquals(126, pdp.getMFXParameter(2).getValue());
 		assertEquals(125, pdp.getMFXParameter(3).getValue());
@@ -79,19 +79,19 @@ public class DistortionTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetMFXParameterInvalidLow() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		pdp.getMFXParameter(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetMFXParameterInvalidHigh() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		pdp.getMFXParameter(33);
 	}
 
 	@Test
 	public void testGetLevel() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		pdp.getDistortionTypeValue().setValue(DistortionType.DIST);
 		pdp.getMFXParameter(1).setValue(47);
 		assertEquals(47, pdp.getLevel().getValue());
@@ -99,7 +99,7 @@ public class DistortionTest {
 
 	@Test
 	public void testGetDrive() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		pdp.getDistortionTypeValue().setValue(DistortionType.DIST);
 		pdp.getMFXParameter(2).setValue(47);
 		assertEquals(47, pdp.getDrive().getValue());
@@ -107,7 +107,7 @@ public class DistortionTest {
 
 	@Test
 	public void testGetType() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		pdp.getDistortionTypeValue().setValue(DistortionType.FUZZ);
 		pdp.getMFXParameter(3).setValue(5);
 		assertEquals(6, pdp.getType().getValue());
@@ -115,7 +115,7 @@ public class DistortionTest {
 
 	@Test
 	public void testGetPresence() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		pdp.getDistortionTypeValue().setValue(DistortionType.FUZZ);
 		pdp.getMFXParameter(4).setValue(47);
 		assertEquals(47, pdp.getPresence().getValue());
@@ -123,7 +123,7 @@ public class DistortionTest {
 
 	@Test
 	public void testGetSampleRate() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		pdp.getDistortionTypeValue().setValue(DistortionType.BIT_CRASH);
 		pdp.getMFXParameter(2).setValue(47);
 		assertEquals(47, pdp.getSampleRate().getValue());
@@ -131,7 +131,7 @@ public class DistortionTest {
 
 	@Test
 	public void testGetBitDown() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		pdp.getDistortionTypeValue().setValue(DistortionType.BIT_CRASH);
 		pdp.getMFXParameter(3).setValue(47);
 		assertEquals(47, pdp.getBitDown().getValue());
@@ -139,7 +139,7 @@ public class DistortionTest {
 
 	@Test
 	public void testGetFilter() {
-		Distortion pdp = getTestParameters();
+		Distortion pdp = createTestParameters();
 		pdp.getDistortionTypeValue().setValue(DistortionType.BIT_CRASH);
 		pdp.getMFXParameter(4).setValue(47);
 		assertEquals(47, pdp.getFilter().getValue());
@@ -147,7 +147,7 @@ public class DistortionTest {
 	
 	@Test
 	public void testUpdateParameters_Level() throws InvalidMidiDataException {
-		Distortion parameters = getTestParameters();
+		Distortion parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
@@ -167,7 +167,7 @@ public class DistortionTest {
 	
 	@Test
 	public void testUpdateParameters_Control_1_Distortion() throws InvalidMidiDataException {
-		Distortion parameters = getTestParameters();
+		Distortion parameters = createTestParameters();
 		parameters.getDistortionTypeValue().setValue(DistortionType.DIST);
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -188,7 +188,7 @@ public class DistortionTest {
 	
 	@Test
 	public void testUpdateParameters_Control_1_Fuzz() throws InvalidMidiDataException {
-		Distortion parameters = getTestParameters();
+		Distortion parameters = createTestParameters();
 		parameters.getDistortionTypeValue().setValue(DistortionType.FUZZ);
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -209,7 +209,7 @@ public class DistortionTest {
 	
 	@Test
 	public void testUpdateParameters_Control_1_Bit_Crash() throws InvalidMidiDataException {
-		Distortion parameters = getTestParameters();
+		Distortion parameters = createTestParameters();
 		parameters.getDistortionTypeValue().setValue(DistortionType.BIT_CRASH);
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,

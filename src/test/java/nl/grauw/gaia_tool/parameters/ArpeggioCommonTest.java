@@ -31,7 +31,7 @@ public class ArpeggioCommonTest {
 		0x08, 0x09, 0x0B, 0x3D, 0x64, 0x00, 0x01, 0x08 // 0x00
 	};
 	
-	public static ArpeggioCommon getTestParameters() {
+	public static ArpeggioCommon createTestParameters() {
 		return new ArpeggioCommon(testAddress, testParameterData.clone());
 	}
 
@@ -42,43 +42,43 @@ public class ArpeggioCommonTest {
 
 	@Test
 	public void testGetArpeggioGrid() {
-		ArpeggioCommon pacp = getTestParameters();
+		ArpeggioCommon pacp = createTestParameters();
 		assertEquals(ArpeggioGrid._16t, pacp.getArpeggioGrid().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioDuration() {
-		ArpeggioCommon pacp = getTestParameters();
+		ArpeggioCommon pacp = createTestParameters();
 		assertEquals(ArpeggioDuration.FUL, pacp.getArpeggioDuration().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioMotif() {
-		ArpeggioCommon pacp = getTestParameters();
+		ArpeggioCommon pacp = createTestParameters();
 		assertEquals(ArpeggioMotif.PHRASE, pacp.getArpeggioMotif().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioOctaveRange() {
-		ArpeggioCommon pacp = getTestParameters();
+		ArpeggioCommon pacp = createTestParameters();
 		assertEquals(-3, pacp.getArpeggioOctaveRange().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioAccentRate() {
-		ArpeggioCommon pacp = getTestParameters();
+		ArpeggioCommon pacp = createTestParameters();
 		assertEquals(100, pacp.getArpeggioAccentRate().getValue());
 	}
 
 	@Test
 	public void testGetArpeggioVelocity() {
-		ArpeggioCommon pacp = getTestParameters();
+		ArpeggioCommon pacp = createTestParameters();
 		assertEquals(0, pacp.getArpeggioVelocity().getValue());
 	}
 
 	@Test
 	public void testGetEndStep() {
-		ArpeggioCommon pacp = getTestParameters();
+		ArpeggioCommon pacp = createTestParameters();
 		assertEquals(24, pacp.getEndStep().getValue());
 	}
 

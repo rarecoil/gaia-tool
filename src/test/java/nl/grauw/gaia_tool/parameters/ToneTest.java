@@ -45,7 +45,7 @@ public class ToneTest {
 		0x6C, 0x6B, 0x6A, 0x69, 0x2F, 0x2E
 	};
 	
-	public static Tone getTestParameters() {
+	public static Tone createTestParameters() {
 		return new Tone(testAddress, testParameterData.clone());
 	}
 
@@ -56,379 +56,379 @@ public class ToneTest {
 
 	@Test
 	public void testGetOSCWave() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(OSCWave.SUPER_SAW, ptp.getOSCWave());
 	}
 
 	@Test
 	public void testGetOSCWaveVariation() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(OSCWaveVariation.C, ptp.getOSCWaveVariation());
 	}
 
 	@Test
 	public void testGetReserved1() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(true, ptp.getReserved1());
 	}
 
 	@Test
 	public void testGetOSCPitch() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(24, ptp.getOSCPitch().getValue());
 	}
 
 	@Test
 	public void testGetOSCDetune() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-50, ptp.getOSCDetune().getValue());
 	}
 
 	@Test
 	public void testGetOSCPulseWidthModDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(127, ptp.getOSCPulseWidthModDepth().getValue());
 	}
 
 	@Test
 	public void testGetOSCPulseWidth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(126, ptp.getOSCPulseWidth().getValue());
 	}
 
 	@Test
 	public void testGetOSCPitchEnvAttackTime() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(125, ptp.getOSCPitchEnvAttackTime().getValue());
 	}
 
 	@Test
 	public void testGetOSCPitchEnvDecay() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(124, ptp.getOSCPitchEnvDecay().getValue());
 	}
 
 	@Test
 	public void testGetOSCPitchEnvDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-1, ptp.getOSCPitchEnvDepth().getValue());
 	}
 
 	@Test
 	public void testGetFilterMode() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(FilterMode.PKG, ptp.getFilterMode());
 	}
 
 	@Test
 	public void testGetFilterSlope() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(FilterSlope.MINUS_24_DB, ptp.getFilterSlope());
 	}
 
 	@Test
 	public void testGetFilterCutoff() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(123, ptp.getFilterCutoff().getValue());
 	}
 
 	@Test
 	public void testGetFilterCutoffKeyfollow() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-10, ptp.getFilterCutoffKeyfollow().getValue());
 	}
 
 	@Test
 	public void testGetFilterEnvVelocitySens() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-2, ptp.getFilterEnvVelocitySens().getValue());
 	}
 
 	@Test
 	public void testGetFilterResonance() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(122, ptp.getFilterResonance().getValue());
 	}
 
 	@Test
 	public void testGetFilterEnvAttackTime() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(121, ptp.getFilterEnvAttackTime().getValue());
 	}
 
 	@Test
 	public void testGetFilterEnvDecayTime() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(120, ptp.getFilterEnvDecayTime().getValue());
 	}
 
 	@Test
 	public void testGetFilterEnvSustainLevel() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(119, ptp.getFilterEnvSustainLevel().getValue());
 	}
 
 	@Test
 	public void testGetFilterEnvReleaseTime() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(118, ptp.getFilterEnvReleaseTime().getValue());
 	}
 
 	@Test
 	public void testGetFilterEnvDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-3, ptp.getFilterEnvDepth().getValue());
 	}
 
 	@Test
 	public void testGetAmpLevel() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(117, ptp.getAmpLevel().getValue());
 	}
 
 	@Test
 	public void testGetAmpLevelVelocitySens() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-4, ptp.getAmpLevelVelocitySens().getValue());
 	}
 
 	@Test
 	public void testGetAmpEnvAttackTime() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(116, ptp.getAmpEnvAttackTime().getValue());
 	}
 
 	@Test
 	public void testGetAmpEnvDecayTime() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(115, ptp.getAmpEnvDecayTime().getValue());
 	}
 
 	@Test
 	public void testGetAmpEnvSustainLevel() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(114, ptp.getAmpEnvSustainLevel().getValue());
 	}
 
 	@Test
 	public void testGetAmpEnvReleaseTime() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(113, ptp.getAmpEnvReleaseTime().getValue());
 	}
 
 	@Test
 	public void testGetAmpPan() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-64, ptp.getAmpPan().getValue());
 	}
 
 	@Test
 	public void testGetLFOShape() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(LFOShape.RND, ptp.getLFOShape());
 	}
 
 	@Test
 	public void testGetLFORate() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(112, ptp.getLFORate().getValue());
 	}
 
 	@Test
 	public void testGetLFOTempoSyncSwitch() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(true, ptp.getLFOTempoSyncSwitch());
 	}
 
 	@Test
 	public void testGetLFOTempoSyncNote() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(LFOTempoSyncNote._1_16TH, ptp.getLFOTempoSyncNote());
 	}
 
 	@Test
 	public void testGetLFOFadeTime() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(111, ptp.getLFOFadeTime().getValue());
 	}
 
 	@Test
 	public void testGetLFOKeyTrigger() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(true, ptp.getLFOKeyTrigger());
 	}
 
 	@Test
 	public void testGetLFOPitchDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-5, ptp.getLFOPitchDepth().getValue());
 	}
 
 	@Test
 	public void testGetLFOFilterDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-6, ptp.getLFOFilterDepth().getValue());
 	}
 
 	@Test
 	public void testGetLFOAmpDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-7, ptp.getLFOAmpDepth().getValue());
 	}
 
 	@Test
 	public void testGetLFOPanDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-8, ptp.getLFOPanDepth().getValue());
 	}
 
 	@Test
 	public void testGetModulationLFOShape() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(LFOShape.SQR, ptp.getModulationLFOShape());
 	}
 
 	@Test
 	public void testGetModulationLFORate() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(110, ptp.getModulationLFORate().getValue());
 	}
 
 	@Test
 	public void testGetModulationLFOTempoSyncSwitch() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(false, ptp.getModulationLFOTempoSyncSwitch());
 	}
 
 	@Test
 	public void testGetModulationLFOTempoSyncNote() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(LFOTempoSyncNote._1_32ND, ptp.getModulationLFOTempoSyncNote());
 	}
 
 	@Test
 	public void testGetReserved2() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(109, ptp.getReserved2().getValue());
 	}
 
 	@Test
 	public void testGetReserved3() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(1, ptp.getReserved3().getValue());
 	}
 
 	@Test
 	public void testGetModulationLFOPitchDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-9, ptp.getModulationLFOPitchDepth().getValue());
 	}
 
 	@Test
 	public void testGetModulationLFOFilterDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-10, ptp.getModulationLFOFilterDepth().getValue());
 	}
 
 	@Test
 	public void testGetModulationLFOAmpDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-11, ptp.getModulationLFOAmpDepth().getValue());
 	}
 
 	@Test
 	public void testGetModulationLFOPanDepth() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-12, ptp.getModulationLFOPanDepth().getValue());
 	}
 
 	@Test
 	public void testGetReserved4() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-13, ptp.getReserved4().getValue());
 	}
 
 	@Test
 	public void testGetReserved5() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-14, ptp.getReserved5().getValue());
 	}
 
 	@Test
 	public void testGetReserved6() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-15, ptp.getReserved6().getValue());
 	}
 
 	@Test
 	public void testGetReserved7() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-16, ptp.getReserved7().getValue());
 	}
 
 	@Test
 	public void testGetReserved8() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(0, ptp.getReserved8().getValue());
 	}
 
 	@Test
 	public void testGetReserved9() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(1, ptp.getReserved9().getValue());
 	}
 
 	@Test
 	public void testGetReserved10() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(0, ptp.getReserved10().getValue());
 	}
 
 	@Test
 	public void testGetReserved11() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(1, ptp.getReserved11().getValue());
 	}
 
 	@Test
 	public void testGetReserved12() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(108, ptp.getReserved12().getValue());
 	}
 
 	@Test
 	public void testGetReserved13() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(107, ptp.getReserved13().getValue());
 	}
 
 	@Test
 	public void testGetReserved14() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(106, ptp.getReserved14().getValue());
 	}
 
 	@Test
 	public void testGetReserved15() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(105, ptp.getReserved15().getValue());
 	}
 
 	@Test
 	public void testGetReserved16() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-17, ptp.getReserved16().getValue());
 	}
 
 	@Test
 	public void testGetReserved17() {
-		Tone ptp = getTestParameters();
+		Tone ptp = createTestParameters();
 		assertEquals(-18, ptp.getReserved17().getValue());
 	}
 	
 	@Test
 	public void testUpdateParameters_LFO_Rate() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		parameters.setValue(0x1E, 0);	// disable LFO tempo sync
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -449,7 +449,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_LFO_TempoSyncNote() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		parameters.setValue(0x1E, 1);	// enable LFO tempo sync
 		int[] expected = {
 				  0,   0,   0,   0,   0,   0,   1,   1,   1,   1,   1,   1,   2,   2,   2,   2,
@@ -470,7 +470,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_LFO_Fade_Time() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
@@ -490,7 +490,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_LFO_Pitch_Depth() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
 				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
@@ -510,7 +510,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_LFO_Filter_Depth() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
 				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
@@ -530,7 +530,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_LFO_Amp_Depth() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
 				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
@@ -550,7 +550,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_OSC_Pitch() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				-24, -24, -23, -23, -23, -22, -22, -22, -21, -21, -20, -20, -20, -19, -19, -19,
 				-18, -18, -17, -17, -17, -16, -16, -15, -15, -14, -14, -14, -13, -13, -13, -12,
@@ -570,7 +570,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_OSC_Detune() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				-50, -50, -50, -49, -48, -47, -46, -45, -45, -44, -43, -42, -41, -40, -40, -39,
 				-38, -37, -36, -35, -35, -34, -33, -32, -31, -30, -30, -29, -28, -27, -26, -25,
@@ -590,7 +590,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_OSC_Pulse_Width_Modulation() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
@@ -610,7 +610,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_OSC_Pulse_Width() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
@@ -630,7 +630,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_OSC_Env_Depth() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
 				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
@@ -650,7 +650,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_Filter_Cutoff() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
@@ -670,7 +670,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_Filter_Resonance() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
@@ -690,7 +690,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_Filter_Env_Depth() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
 				-48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33,
@@ -710,7 +710,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_Filter_Key_Follow() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				-10, -10, -10, -10, -10, -10, -10,  -9,  -9,  -9,  -9,  -9,  -9,  -8,  -8,  -8,
 				 -8,  -8,  -8,  -7,  -7,  -7,  -7,  -7,  -7,  -6,  -6,  -6,  -6,  -6,  -6,  -5,
@@ -730,7 +730,7 @@ public class ToneTest {
 	
 	@Test
 	public void testUpdateParameters_Amp_Level() throws InvalidMidiDataException {
-		Tone parameters = getTestParameters();
+		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,

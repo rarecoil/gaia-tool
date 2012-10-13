@@ -43,7 +43,7 @@ public class DelayTest {
 		0x0C, 0x0A, 0x0F, 0x0E, 0x0B, 0x0A, 0x0B, 0x0E  // 0x49
 	};
 	
-	public static Delay getTestParameters() {
+	public static Delay createTestParameters() {
 		return new Delay(testAddress, testParameterData.clone());
 	}
 
@@ -54,13 +54,13 @@ public class DelayTest {
 
 	@Test
 	public void testGetDelayType() {
-		Delay pdp = getTestParameters();
+		Delay pdp = createTestParameters();
 		assertEquals(DelayType.PANNING_DELAY, pdp.getDelayType());
 	}
 
 	@Test
 	public void testGetDelayParameter() {
-		Delay pdp = getTestParameters();
+		Delay pdp = createTestParameters();
 		assertEquals(127, pdp.getDelayParameter(1).getValue());
 		assertEquals(126, pdp.getDelayParameter(2).getValue());
 		assertEquals(125, pdp.getDelayParameter(3).getValue());
@@ -73,19 +73,19 @@ public class DelayTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetDelayParameterInvalidLow() {
-		Delay pdp = getTestParameters();
+		Delay pdp = createTestParameters();
 		pdp.getDelayParameter(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetDelayParameterInvalidHigh() {
-		Delay pdp = getTestParameters();
+		Delay pdp = createTestParameters();
 		pdp.getDelayParameter(21);
 	}
 	
 	@Test
 	public void testUpdateParameters_Level() throws InvalidMidiDataException {
-		Delay parameters = getTestParameters();
+		Delay parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
 				 16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,

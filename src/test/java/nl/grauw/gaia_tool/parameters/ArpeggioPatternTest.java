@@ -37,7 +37,7 @@ public class ArpeggioPatternTest {
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00  // 0x3A
 	};
 	
-	public static ArpeggioPattern getTestParameters() {
+	public static ArpeggioPattern createTestParameters() {
 		return new ArpeggioPattern(testAddress, testParameterData.clone());
 	}
 
@@ -48,14 +48,14 @@ public class ArpeggioPatternTest {
 
 	@Test
 	public void testGetOriginalNote() {
-		ArpeggioPattern papp = getTestParameters();
+		ArpeggioPattern papp = createTestParameters();
 		assertEquals(NoteName.C, papp.getOriginalNote().getValue().getNote());
 		assertEquals(4, papp.getOriginalNote().getValue().getOctave());
 	}
 
 	@Test
 	public void testGetStepData() {
-		ArpeggioPattern papp = getTestParameters();
+		ArpeggioPattern papp = createTestParameters();
 		assertEquals(0, papp.getStepData(1).getValue());
 		assertEquals(127, papp.getStepData(2).getValue());
 		assertEquals(128, papp.getStepData(3).getValue());
@@ -64,13 +64,13 @@ public class ArpeggioPatternTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetStepDataInvalidLow() {
-		ArpeggioPattern papp = getTestParameters();
+		ArpeggioPattern papp = createTestParameters();
 		papp.getStepData(0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetStepDataInvalidHigh() {
-		ArpeggioPattern papp = getTestParameters();
+		ArpeggioPattern papp = createTestParameters();
 		papp.getStepData(33);
 	}
 

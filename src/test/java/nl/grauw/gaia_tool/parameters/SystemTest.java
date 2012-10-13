@@ -52,7 +52,7 @@ public class SystemTest {
 		0x04, 0x0C, 0x0D // 0x6B
 	};
 	
-	public static System getTestParameters() {
+	public static System createTestParameters() {
 		return new System(testAddress, testParameterData.clone());
 	}
 
@@ -63,241 +63,241 @@ public class SystemTest {
 
 	@Test
 	public void testGetBankSelect() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(11200, sp.getBankSelect().getValue());
 	}
 
 	@Test
 	public void testGetBankSelectMSB() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(87, sp.getBankSelectMSB().getValue());
 	}
 
 	@Test
 	public void testGetBankSelectLSB() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(64, sp.getBankSelectLSB().getValue());
 	}
 
 	@Test
 	public void testGetProgramNumber() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(33, sp.getProgramNumber().getValue());
 	}
 
 	@Test
 	public void testGetMasterLevel() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(127, sp.getMasterLevel().getValue());
 	}
 
 	@Test
 	public void testGetMasterTune() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(18, sp.getMasterTune().getValue());
 	}
 
 	@Test
 	public void testGetPatchRemain() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(true, sp.getPatchRemain());
 	}
 
 	@Test
 	public void testGetClockSource() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(ClockSource.USB, sp.getClockSource());
 	}
 
 	@Test
 	public void testGetSystemTempo() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(292, sp.getSystemTempo().getValue());
 	}
 
 	@Test
 	public void testGetKeyboardVelocity() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(KeyboardVelocity.REAL, sp.getKeyboardVelocity());
 	}
 
 	@Test
 	public void testGetPedalPolarity() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(PedalPolarity.REVERSE, sp.getPedalPolarity());
 	}
 
 	@Test
 	public void testGetPedalAssign() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(PedalAssign.TAP_TEMPO, sp.getPedalAssign());
 	}
 
 	@Test
 	public void testGetDBeamSens() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(7, sp.getDBeamSens().getValue());
 	}
 
 	@Test
 	public void testGetRxTxChannel() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(15, sp.getRxTxChannel().getValue());
 	}
 
 	@Test
 	public void testGetMidiUSBThru() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(true, sp.getMidiUSBThru());
 	}
 
 	@Test
 	public void testGetSoftThru() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(false, sp.getSoftThru());
 	}
 
 	@Test
 	public void testGetRxProgramChange() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(true, sp.getRxProgramChange());
 	}
 
 	@Test
 	public void testGetRxBankSelect() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(false, sp.getRxBankSelect());
 	}
 
 	@Test
 	public void testGetRemoteKeyboard() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(true, sp.getRemoteKeyboard());
 	}
 
 	@Test
 	public void testGetTxProgramChange() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(false, sp.getTxProgramChange());
 	}
 
 	@Test
 	public void testGetTxBankSelect() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(true, sp.getTxBankSelect());
 	}
 
 	@Test
 	public void testGetTxEditData() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(false, sp.getTxEditData());
 	}
 
 	@Test
 	public void testGetRecorderSyncOutput() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(true, sp.getRecorderSyncOutput());
 	}
 
 	@Test
 	public void testGetRecorderMetronomeMode() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(RecorderMetronomeMode.REC_AND_PLAY, sp.getRecorderMetronomeMode());
 	}
 
 	@Test
 	public void testGetRecorderMetronomeLevel() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(5, sp.getRecorderMetronomeLevel().getValue());
 	}
 
 	@Test
 	public void testGetReserved1() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(0, sp.getReserved1().getValue());
 	}
 
 	@Test
 	public void testGetReserved2() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(126, sp.getReserved2().getValue());
 	}
 
 	@Test
 	public void testGetReserved3() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(125, sp.getReserved3().getValue());
 	}
 
 	@Test
 	public void testGetReserved4() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(1, sp.getReserved4().getValue());
 	}
 
 	@Test
 	public void testGetReserved5() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(-5, sp.getReserved5().getValue());
 	}
 
 	@Test
 	public void testGetReserved6() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(-3, sp.getReserved6().getValue());
 	}
 
 	@Test
 	public void testGetReserved7() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(124, sp.getReserved7().getValue());
 	}
 
 	@Test
 	public void testGetReserved8() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(1, sp.getReserved8().getValue());
 	}
 
 	@Test
 	public void testGetReserved9() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(0, sp.getReserved9().getValue());
 	}
 
 	@Test
 	public void testGetGMPartsSwitch() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(true, sp.getGMPartsSwitch());
 	}
 
 	@Test
 	public void testGetReserved11() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(0, sp.getReserved11().getValue());
 	}
 
 	@Test
 	public void testGetReserved12() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(123, sp.getReserved12().getValue());
 	}
 
 	@Test
 	public void testGetReserved13() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(122, sp.getReserved13().getValue());
 	}
 
 	@Test
 	public void testGetReserved14() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(57, sp.getReserved14().getValue());
 	}
 
 	@Test
 	public void testGetWriteProtect() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(true, sp.getWriteProtect(0, 0));
 		assertEquals(false, sp.getWriteProtect(0, 1));
 		assertEquals(false, sp.getWriteProtect(1, 0));
@@ -310,43 +310,43 @@ public class SystemTest {
 
 	@Test (expected = RuntimeException.class)
 	public void testGetWriteProtect_BankTooLow() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		sp.getWriteProtect(-1, 0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetWriteProtect_BankTooHigh() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		sp.getWriteProtect(8, 0);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetWriteProtect_PatchTooLow() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		sp.getWriteProtect(0, -1);
 	}
 
 	@Test (expected = RuntimeException.class)
 	public void testGetWriteProtect_PatchTooHigh() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		sp.getWriteProtect(0, 8);
 	}
 
 	@Test
 	public void testGetPowerSaveMode() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(PowerSaveMode.MIN_10, sp.getPowerSaveMode());
 	}
 
 	@Test
 	public void testGetReserved15() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(12, sp.getReserved15().getValue());
 	}
 
 	@Test
 	public void testGetReserved16() {
-		System sp = getTestParameters();
+		System sp = createTestParameters();
 		assertEquals(13, sp.getReserved16().getValue());
 	}
 
