@@ -32,8 +32,8 @@ public class DelayTest {
 	static byte[] testParameterData = {
 		0x02, // 0x00
 		0x08, 0x00, 0x07, 0x0F, 0x08, 0x00, 0x07, 0x0E, // 0x01
-		0x08, 0x00, 0x07, 0x0D, 0x08, 0x00, 0x07, 0x0C, // 0x09
-		0x03, 0x01, 0x0E, 0x00, 0x0C, 0x0E, 0x02, 0x00, // 0x11
+		0x08, 0x00, 0x00, 0x0E, 0x08, 0x00, 0x07, 0x0C, // 0x09
+		0x08, 0x00, 0x00, 0x0B, 0x0C, 0x0E, 0x02, 0x00, // 0x11
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x19
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x21
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x29
@@ -63,9 +63,9 @@ public class DelayTest {
 		Delay pdp = createTestParameters();
 		assertEquals(127, pdp.getDelayParameter(1).getValue());
 		assertEquals(126, pdp.getDelayParameter(2).getValue());
-		assertEquals(125, pdp.getDelayParameter(3).getValue());
+		assertEquals(14, pdp.getDelayParameter(3).getValue());
 		assertEquals(124, pdp.getDelayParameter(4).getValue());
-		assertEquals(-20000, pdp.getDelayParameter(5).getValue());
+		assertEquals(11, pdp.getDelayParameter(5).getValue());
 		assertEquals(20000, pdp.getDelayParameter(6).getValue());
 		assertEquals(19198, pdp.getDelayParameter(19).getValue());
 		assertEquals(15038, pdp.getDelayParameter(20).getValue());
@@ -86,31 +86,36 @@ public class DelayTest {
 	@Test
 	public void testGetLevel() {
 		Delay pdp = createTestParameters();
+		assertEquals(true, pdp.getLevel().isValid());
 		assertEquals(127, pdp.getLevel().getValue());
 	}
 	
 	@Test
 	public void testGetTime() {
 		Delay pdp = createTestParameters();
+		assertEquals(true, pdp.getTime().isValid());
 		assertEquals(126, pdp.getTime().getValue());
 	}
 	
 	@Test
 	public void testGetSyncedTime() {
 		Delay pdp = createTestParameters();
-		assertEquals(125, pdp.getSyncedTime().getValue());
+		assertEquals(true, pdp.getSyncedTime().isValid());
+		assertEquals(14, pdp.getSyncedTime().getValue());
 	}
 	
 	@Test
 	public void testGetFeedback() {
 		Delay pdp = createTestParameters();
+		assertEquals(true, pdp.getFeedback().isValid());
 		assertEquals(124, pdp.getFeedback().getValue());
 	}
 	
 	@Test
 	public void testGetHighDamp() {
 		Delay pdp = createTestParameters();
-		assertEquals(-20036, pdp.getHighDamp().getValue());
+		assertEquals(true, pdp.getHighDamp().isValid());
+		assertEquals(-25, pdp.getHighDamp().getValue());
 	}
 	
 	@Test
