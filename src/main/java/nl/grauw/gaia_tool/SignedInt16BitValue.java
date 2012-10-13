@@ -15,6 +15,10 @@
  */
 package nl.grauw.gaia_tool;
 
+/**
+ * Representation of a positive signed 16-bit integer value.
+ * Positive signed means that -32768 .. 0 .. 32767 is stored as 0 .. 32768 .. 65536.
+ */
 public class SignedInt16BitValue extends Int16BitValue {
 	
 	public SignedInt16BitValue(Parameters parameters, int offset, int min, int max) {

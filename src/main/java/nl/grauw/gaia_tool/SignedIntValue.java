@@ -15,6 +15,10 @@
  */
 package nl.grauw.gaia_tool;
 
+/**
+ * Representation of a positive signed 7-bit integer value.
+ * Positive signed means that -64 .. 0 .. 63 is stored as 0 .. 64 .. 127.
+ */
 public class SignedIntValue extends IntValue {
 	
 	public SignedIntValue(Parameters parameters, int offset, int min, int max) {
