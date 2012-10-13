@@ -31,8 +31,8 @@ public class FlangerTest {
 	static Address testAddress = new Address(0x10, 0x00, 0x06, 0x00);
 	static byte[] testParameterData = {
 		0x03, // 0x00
-		0x08, 0x00, 0x07, 0x0F, 0x08, 0x00, 0x07, 0x0E, // 0x01
-		0x08, 0x00, 0x07, 0x0D, 0x08, 0x00, 0x07, 0x0C, // 0x09
+		0x08, 0x00, 0x07, 0x0F, 0x08, 0x00, 0x01, 0x07, // 0x01
+		0x08, 0x00, 0x03, 0x02, 0x08, 0x00, 0x07, 0x0C, // 0x09
 		0x03, 0x01, 0x0E, 0x00, 0x0C, 0x0E, 0x02, 0x00, // 0x11
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x19
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x21
@@ -62,8 +62,8 @@ public class FlangerTest {
 	public void testGetFlangerParameter() {
 		Flanger pfp = createTestParameters();
 		assertEquals(127, pfp.getFlangerParameter(1).getValue());
-		assertEquals(126, pfp.getFlangerParameter(2).getValue());
-		assertEquals(125, pfp.getFlangerParameter(3).getValue());
+		assertEquals(23, pfp.getFlangerParameter(2).getValue());
+		assertEquals(50, pfp.getFlangerParameter(3).getValue());
 		assertEquals(124, pfp.getFlangerParameter(4).getValue());
 		assertEquals(-20000, pfp.getFlangerParameter(5).getValue());
 		assertEquals(20000, pfp.getFlangerParameter(6).getValue());
@@ -86,6 +86,7 @@ public class FlangerTest {
 	@Test
 	public void testGetLevel() {
 		Flanger pfp = createTestParameters();
+		assertEquals(true, pfp.getLevel().isValid());
 		assertEquals(127, pfp.getLevel().getValue());
 	}
 	
@@ -93,41 +94,47 @@ public class FlangerTest {
 	public void testGetFeedback() {
 		Flanger pfp = createTestParameters();
 		pfp.getFlangerTypeValue().setValue(FlangerType.FLANGER);
-		assertEquals(126, pfp.getFeedback().getValue());
+		assertEquals(true, pfp.getFeedback().isValid());
+		assertEquals(23, pfp.getFeedback().getValue());
 	}
 	
 	@Test
 	public void testGetResonance() {
 		Flanger pfp = createTestParameters();
 		pfp.getFlangerTypeValue().setValue(FlangerType.PHASER);
-		assertEquals(126, pfp.getResonance().getValue());
+		assertEquals(true, pfp.getResonance().isValid());
+		assertEquals(23, pfp.getResonance().getValue());
 	}
 	
 	@Test
 	public void testGetPitch() {
 		Flanger pfp = createTestParameters();
 		pfp.getFlangerTypeValue().setValue(FlangerType.PITCH_SHIFTER);
-		assertEquals(114, pfp.getPitch().getValue());
+		assertEquals(true, pfp.getPitch().isValid());
+		assertEquals(11, pfp.getPitch().getValue());
 	}
 	
 	@Test
 	public void testGetDepth() {
 		Flanger pfp = createTestParameters();
 		pfp.getFlangerTypeValue().setValue(FlangerType.FLANGER);
-		assertEquals(125, pfp.getDepth().getValue());
+		assertEquals(true, pfp.getDepth().isValid());
+		assertEquals(50, pfp.getDepth().getValue());
 	}
 	
 	@Test
 	public void testGetDetune() {
 		Flanger pfp = createTestParameters();
 		pfp.getFlangerTypeValue().setValue(FlangerType.PITCH_SHIFTER);
-		assertEquals(125, pfp.getDetune().getValue());
+		assertEquals(true, pfp.getDetune().isValid());
+		assertEquals(50, pfp.getDetune().getValue());
 	}
 	
 	@Test
 	public void testGetRate() {
 		Flanger pfp = createTestParameters();
 		pfp.getFlangerTypeValue().setValue(FlangerType.PHASER);
+		assertEquals(true, pfp.getRate().isValid());
 		assertEquals(124, pfp.getRate().getValue());
 	}
 	
