@@ -69,6 +69,8 @@ public class PatchLoader {
 				try {
 					input.readFully(chunk);
 				} catch (EOFException e) {
+					if (!patch.isComplete())
+						throw new IOException("Incomplete patch.");
 					return;
 				}
 				int length = (chunk[4] & 0xFF) | (chunk[5] & 0xFF) << 8 |
