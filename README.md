@@ -44,99 +44,102 @@ However to make it easier for me to accept your contributions and to minimise
 any wasted effort, here are some guidelines you should try to follow when
 contributing:
 
-* Coordinate your changes with me.
+  * Coordinate your changes with me.
+    
+    When you start, don’t hesitate to send me an email telling me what you
+    intend to do, and how. That way I can join you by brainstorming, and make
+    sure that I agree with the direction. This way you won’t be wasting your
+    time on a dead end. Especially for larger changes or features, such as a big
+    UI change or adding a new dependency (I need to check license compatibility,
+    etc.).
 
-  When you start, don’t hesitate to send me an email telling me what you intend
-  to do, and how. That way I can join you by brainstorming, and make sure that
-  I agree with the direction. This way you won’t be wasting your time on a dead
-  end. Especially for larger changes or features, such as a big UI change or
-  adding a new dependency (I need to check license compatibility, etc.).
+  * Share your work in progress.
+    
+    Once you have code to share, send me a link to your Mercurial repository so
+    I can see your changes. If you need a place to put it, bitbucket.com offers
+    free hosting. I can then provide code review comments and catch problems
+    early, saving you time.
 
-* Share your work in progress.
+  * Adhere to the coding style.
 
-  Once you have code to share, send me a link to your Mercurial repository so I
-  can see your changes. If you need a place to put it, bitbucket.com offers
-  free hosting. I can then provide code review comments and catch problems
-  early, saving you time.
+    I think it is important, so please adhere to it. You should be able to glean
+    much of the style from the existing code, and I think most of these are
+    standard Java and good practices, but let me just name a few:
+    
+      - Indent code with tabs.
+      - Put curly braces on the same line.
+      - Always put the body of an if/for/while statement on a new line.
+      - If/for/while blocks braces are optional, but don’t mix.
+      - Variables and members are written lower camelCase. Class names are
+        CamelCase.
+      - Don’t abbreviate with initialisms. E.g. FileReader reader, not
+        FileReader fr. (Though there are exceptions, e.g. i for loop counters
+        and e for exceptions.)
+      - Don’t break lines at 80 characters, you can go up to 120 or so.
+      - Keep your functions small.
+      - Document your functions (but DRY).
+      - Only write inline comments when absolutely necessary.
 
-* Adhere to the coding style.
+  * Make small, incremental commits.
+    
+    I really prefer not to receive one big blob of code, so please chop up your
+    work into small commits. Keep unrelated changes separate: don’t make a
+    functional change in the same commit as adjusting white space. If you need
+    to refactor something, do it in a separate commit.
+    
+    Doing this is easier for me to review, and also makes it easier for me to
+    already accept parts of your work into the code base while other parts get
+    refined a little further.
 
-  I think it is important, so please adhere to it. You should be able to glean
-  much of the style from the existing code, and I think most of these are
-  standard Java and good practices, but let me just name a few:
-  
-  - Indent code with tabs.
-  - Put curly braces on the same line.
-  - Always put the body of an if/for/while statement on a new line.
-  - If/for/while blocks braces are optional, but don’t mix.
-  - Variables and members are written lower camelCase. Class names are CamelCase.
-  - Don’t abbreviate with initialisms. E.g. FileReader reader, not FileReader fr.
-    (Though there are exceptions, e.g. i for loop counters and e for exceptions.)
-  - Don’t break lines at 80 characters, you can go up to 120 or so.
-  - Keep your functions small.
-  - Document your functions (but DRY).
-  - Only write inline comments when absolutely necessary.
-
-* Make small, incremental commits.
-
-  I really prefer not to receive one big blob of code, so please chop up your
-  work into small commits. Keep unrelated changes separate: don’t make a
-  functional change in the same commit as adjusting white space. If you need
-  to refactor something, do it in a separate commit.
-  
-  Doing this is easier for me to review, and also makes it easier for me to
-  already accept parts of your work into the code base while other parts get
-  refined a little further.
-
-* Adhere to the MVC pattern
-
-  This project is using the Model-View-Controller pattern, which dictates that
-  you separate the domain logic from the presentation. This gives you reusable
-  models which contain all the logic and can basically work independently, and
-  interchangeable views which focus solely on presentation.
-  
-  To notify views of changes to the models I use an observer pattern; a model
-  extends Observable and invokes notifyObservers() whenever it changes, and
-  then all registered classes implementing Observer will receive a callback
-  to their update() method.
-  
-  The Gaia Tool’s Observable only retains weak references to the observers, so
-  generally you don’t have to worry about removing the observers for garbage
-  collection. Also, views have to use the AWTObserver interface, this ensures
-  that their notifications are done on the AWT thread as required by Swing.
+  * Adhere to the MVC pattern
+    
+    This project is using the Model-View-Controller pattern, which dictates that
+    you separate the domain logic from the presentation. This gives you reusable
+    models which contain all the logic and can basically work independently, and
+    interchangeable views which focus solely on presentation.
+    
+    To notify views of changes to the models I use an observer pattern; a model
+    extends Observable and invokes notifyObservers() whenever it changes, and
+    then all registered classes implementing Observer will receive a callback
+    to their update() method.
+    
+    The Gaia Tool’s Observable only retains weak references to the observers, so
+    generally you don’t have to worry about removing the observers for garbage
+    collection. Also, views have to use the AWTObserver interface, this ensures
+    that their notifications are done on the AWT thread as required by Swing.
 
 * Write unit tests
-
-  Please try to write some unit tests for functionality that you add. Now I’ll
-  be the first to admit that the current codebase hasn’t got full test
-  coverage, but it really does make a difference in terms of reliability.
-  Note that you don’t have to write tests for the views.
+    
+    Please try to write some unit tests for functionality that you add. Now I’ll
+    be the first to admit that the current codebase hasn’t got full test
+    coverage, but it really does make a difference in terms of reliability.
+    Note that you don’t have to write tests for the views.
 
 
 Dependencies
 ------------
 
-* Java 6
+  * Java 6
+    
+    This project is written using the Java SE 6 SDK.
+    
+    Download: <http://www.oracle.com/technetwork/java/javase/downloads/index.html>  
+    Version check: `java -version`
 
-  This project is written using the Java SE 6 SDK.
-  
-  Download: <http://www.oracle.com/technetwork/java/javase/downloads/index.html>  
-  Version check: `java -version`
+  * Maven 3
+    
+    This project is built using Maven 3, although Maven 2 will probably work as
+    well (but I did not test this). It follows standard Maven project setup.
+    
+    Download: <http://maven.apache.org/download.html>  
+    Version check: `mvn --version`
 
-* Maven 3
-
-  This project is built using Maven 3, although Maven 2 will probably work as
-  well (but I did not test this). It follows standard Maven project setup.
-  
-  Download: <http://maven.apache.org/download.html>  
-  Version check: `mvn --version`
-
-* Mercurial
-
-  The source code of this project is managed with the Mercurial SCM.
-  
-  Download: <http://hg-scm.org/>  
-  Version check: `hg version`
+  * Mercurial
+    
+    The source code of this project is managed with the Mercurial SCM.
+    
+    Download: <http://hg-scm.org/>  
+    Version check: `hg version`
 
 
 Getting the source code
