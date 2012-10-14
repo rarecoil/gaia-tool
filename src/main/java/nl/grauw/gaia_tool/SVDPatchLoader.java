@@ -39,8 +39,6 @@ public class SVDPatchLoader {
 	 * Populates the patch from a file.
 	 */
 	public void load(File input) throws IOException {
-		System.out.println("Loading SVD file " + input);
-		
 		load(new FileInputStream(input));
 	}
 	
