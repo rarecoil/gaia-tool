@@ -34,6 +34,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import nl.grauw.gaia_tool.FilePatch;
+import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.GaiaTool;
 import nl.grauw.gaia_tool.Library;
@@ -69,24 +70,11 @@ public class ContentSelectionTree extends JTree {
 		rootNode.add(systemNode);
 		PatchTreeNode temporaryPatchNode = new PatchTreeNode(gaiaTool.getGaia().getTemporaryPatch());
 		rootNode.add(temporaryPatchNode);
-		ContentSelectionTreeNode userPatchesNode = createUserPatchesNode();
+		ContentSelectionTreeNode userPatchesNode = new UserPatchesNode(gaiaTool.getGaia());
 		rootNode.add(userPatchesNode);
 		LibraryNode libraryNode = new LibraryNode(gaiaTool.getLibrary(), "Library");
 		rootNode.add(libraryNode);
 		return new DefaultTreeModel(rootNode);
-	}
-	
-	private ContentSelectionTreeNode createUserPatchesNode() {
-		ContentSelectionTreeNode userPatchesNode = new ContentSelectionTreeNode("User patches");
-		for (int bank = 0; bank < 8; bank++) {
-			ContentSelectionTreeNode bankNode = new ContentSelectionTreeNode("Bank " + "ABCDEFGH".charAt(bank));
-			for (int patch = 0; patch < 8; patch++) {
-				PatchTreeNode patchNode = new PatchTreeNode(gaiaTool.getGaia().getUserPatch(bank, patch));
-				bankNode.add(patchNode);
-			}
-			userPatchesNode.add(bankNode);
-		}
-		return userPatchesNode;
 	}
 	
 	/**
@@ -167,6 +155,23 @@ public class ContentSelectionTree extends JTree {
 		
 		public JPopupMenu getContextMenu() {
 			return null;
+		}
+	}
+	
+	public class UserPatchesNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		public UserPatchesNode(Gaia gaia) {
+			super("User patches");
+			
+			for (int bank = 0; bank < 8; bank++) {
+				ContentSelectionTreeNode bankNode = new ContentSelectionTreeNode("Bank " + "ABCDEFGH".charAt(bank));
+				for (int patch = 0; patch < 8; patch++) {
+					PatchTreeNode patchNode = new PatchTreeNode(gaiaTool.getGaia().getUserPatch(bank, patch));
+					bankNode.add(patchNode);
+				}
+				add(bankNode);
+			}
 		}
 	}
 	
