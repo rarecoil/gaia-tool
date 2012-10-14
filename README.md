@@ -46,12 +46,9 @@ contributing:
 
   * Coordinate your changes with me.
     
-    When you start, don’t hesitate to send me an email telling me what you
-    intend to do, and how. That way I can join you by brainstorming, and make
-    sure that I agree with the direction. This way you won’t be wasting your
-    time on a dead end. Especially for larger changes or features, such as a big
-    UI change or adding a new dependency (I need to check license compatibility,
-    etc.).
+    When you start, contact me and tell me about your ideas. That way we can
+    brainstorm a on it a bit, and make sure that we agree on the direction.
+    This way you won’t be wasting your time on duplicated effort or a dead end.
 
   * Share your work in progress.
     
@@ -84,7 +81,8 @@ contributing:
     I really prefer not to receive one big blob of code, so please chop up your
     work into small commits. Keep unrelated changes separate: don’t make a
     functional change in the same commit as adjusting white space. If you need
-    to refactor something, do it in a separate commit.
+    to refactor something, do it in a separate commit. Bullet points or the word
+    “also” in your commit messages is a strong indicator it needs to be split.
     
     Doing this is easier for me to review, and also makes it easier for me to
     already accept parts of your work into the code base while other parts get
@@ -109,10 +107,10 @@ contributing:
 
 * Write unit tests
     
-    Please try to write some unit tests for functionality that you add. Now I’ll
-    be the first to admit that the current codebase hasn’t got full test
-    coverage, but it really does make a difference in terms of reliability.
-    Note that you don’t have to write tests for the views.
+    Please write some unit tests for functionality that you add. Now I’ll be the
+    first to admit that the current codebase hasn’t got full test coverage, but
+    it really does make a difference in terms of reliability. Note that you
+    don’t have to write tests for the views.
 
 
 Dependencies
@@ -156,20 +154,21 @@ If you’re new to Mercurial, here are some resources to get you started:
   <http://mercurial.selenic.com/wiki/BeginnersGuides>  
   <http://hginit.com/>
 
-The basic model in a nutshell: you clone the complete source code repository
-including all history onto your hard drive, which gives you a working copy
-with all the files and a .hg directory containing the repository. After that
-you can perform all operations like committing groups of changes and viewing
-on that local repository. When you want to share your changes you push them
-back to a public repository, and send me an email.
+In a nutshell: Mercurial is a distributed version control system (DVCS), which
+means that the complete source code repository including all history is cloned
+onto your hard drive. You can perform all version control operations on that
+local clone, such as committing and viewing change history. When you are ready
+to share your changes you push them to a public repository, which can then be
+reviewed and merged back into the main project repository.
 
 Advantages of this distributed model are that all operations are fast, you can
-continue working if your internet or the server is down, you can experiment
-without fear of messing up the main repository, and you don’t need to ask me
-for commit access.
+continue working when you have no internet connection or the server is down, you
+can experiment without fear of messing up the main repository, and you don’t
+need to ask me for commit access.
 
 The command line interface of Mercurial is very simple and intuitive, but I
-would also recommend the TortoiseHg GUI if you’re on Windows or Linux.
+would also recommend the TortoiseHg GUI if you’re on Windows or Linux. On
+Mac OS X, I have good experiences with Atlassian’s SourceTree.
 
 
 Build instructions
@@ -179,7 +178,7 @@ From the project directory, enter the following command:
 
     mvn verify
 
-This will build and test the project, and output the binaries into the target
+This will build and test the project, and output the binaries into the `target`
 directory. The first time it may take a while, because Maven needs to download
 dependencies.
 
@@ -187,10 +186,11 @@ The build creates both a general-purpose jar, as well as a .exe-version for
 Windows and a -app.zip version for Mac OS X. Some other jars are also generated
 but these are intermediate files and you can ignore them.
 
-To make Mac OS X builds on Windows or Linux machines, please get a copy
-of the JavaApplicationStub from a Mac and put it in the src/main/app-resources
-directory. The next time you build, a Mac binary will be generated as well.
-Due to licensing issues I can not include this file with the source code.
+To make Mac OS X builds on Windows or Linux machines, you need to get a copy of
+the `JavaApplicationStub` file from a Mac and put it in the
+`src/main/app-resources` directory. The next time you build, a Mac binary will
+be generated as well. Due to licensing issues I can not include this file with
+the source code.
 
 
 Eclipse setup instructions
@@ -208,7 +208,7 @@ properly configured using the following command:
 
     mvn eclipse:eclipse
 
-Now in Eclipse, go to File, Import, select General, Existing Projects into
+Next, in Eclipse, go to File, Import, select General, Existing Projects into
 Workspace, and press Next. Browse to your project folder, and press Finish.
 
 Now you can build and launch the project from Eclipse by right-clicking on
