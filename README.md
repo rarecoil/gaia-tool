@@ -68,13 +68,12 @@ contributing:
     
       - Indent code with tabs.
       - Put curly braces on the same line.
-      - Always put the body of an if/for/while statement on a new line.
-      - If/for/while blocks braces are optional, but don’t mix.
-      - Variables and members are written lower camelCase. Class names are
-        CamelCase.
-      - Don’t abbreviate with initialisms. E.g. FileReader reader, not
-        FileReader fr. (Though there are exceptions, e.g. i for loop counters
-        and e for exceptions.)
+      - Always put the body of an `if`/`for`/`while` statement on a new line.
+      - `if`/`for`/`while` blocks braces are optional, but don’t mix.
+      - Variables and members are written with lower `camelCase`. Class names
+        use upper `CamelCase`.
+      - Don’t abbreviate with initialisms. E.g. write `FileReader reader`, not
+        `FileReader fr`. (Notable exception: `i`/`j` for loop counters.)
       - Don’t break lines at 80 characters, you can go up to 120 or so.
       - Keep your functions small.
       - Document your functions (but DRY).
