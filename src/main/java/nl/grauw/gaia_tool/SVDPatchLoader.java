@@ -29,10 +29,10 @@ import nl.grauw.gaia_tool.Address.AddressException;
  */
 public class SVDPatchLoader {
 	
-	private Patch patch;
+	private SVDPatchGroup patchGroup;
 	
-	public SVDPatchLoader(Patch patch) {
-		this.patch = patch;
+	public SVDPatchLoader(SVDPatchGroup patchGroup) {
+		this.patchGroup = patchGroup;
 	}
 	
 	/**
@@ -59,6 +59,18 @@ public class SVDPatchLoader {
 			if (!Arrays.equals(header, headerTemplate))
 				throw new IOException("Unrecognised header.");
 			
+			for (int bank = 0; bank < 8; bank++) {
+				for (int patch = 0; patch < 8; patch++) {
+					loadPatch(input, patchGroup.getPatch(bank, patch));
+				}
+			}
+		} finally {
+			input.close();
+		}
+	}
+	
+	private void loadPatch(DataInputStream input, Patch patch) throws IOException {
+		try {
 			byte[] patchData = new byte[0x388];
 			input.readFully(patchData);
 			
@@ -74,8 +86,6 @@ public class SVDPatchLoader {
 				patch.updateParameters(new Address(0x10, 0x00, 0x0D + note - 1, 0x00), unpackArpeggioPattern(patchData, note));
 		} catch (AddressException e) {
 			throw new RuntimeException(e);
-		} finally {
-			input.close();
 		}
 	}
 	
