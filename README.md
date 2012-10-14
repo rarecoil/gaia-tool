@@ -96,19 +96,19 @@ contributing:
     interchangeable views which focus solely on presentation.
     
     To notify views of changes to the models I use an observer pattern; a model
-    extends Observable and invokes notifyObservers() whenever it changes, and
-    then all registered classes implementing Observer will receive a callback
-    to their update() method.
+    extends `Observable` and invokes `notifyObservers()` whenever it changes.
+    Then, all classes that registered themselves as an `Observer` will receive a
+    callback to their `update()` method.
     
-    The Gaia Tool’s Observable only retains weak references to the observers, so
+    The Gaia Tool’s `Observable` only has weak references to the observers, so
     generally you don’t have to worry about removing the observers for garbage
-    collection. Also, views have to use the AWTObserver interface, this ensures
+    collection. Also, views should use the `AWTObserver` interface, this ensures
     that their notifications are done on the AWT thread as required by Swing.
 
 * Write unit tests
     
     Please write some unit tests for functionality that you add. Now I’ll be the
-    first to admit that the current codebase hasn’t got full test coverage, but
+    first to admit that the current code base hasn’t got full test coverage, but
     it really does make a difference in terms of reliability. Note that you
     don’t have to write tests for the views.
 
