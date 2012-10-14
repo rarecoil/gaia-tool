@@ -27,6 +27,7 @@ import nl.grauw.gaia_tool.mvc.Observable;
 public class Library extends Observable {
 	
 	private List<FilePatch> patches = new ArrayList<FilePatch>();
+	private List<SVDPatchGroup> svdPatchGroups = new ArrayList<SVDPatchGroup>();
 	private List<Library> libraries = new ArrayList<Library>();
 	private File source;
 	
@@ -36,6 +37,10 @@ public class Library extends Observable {
 	
 	public List<FilePatch> getPatches() {
 		return Collections.unmodifiableList(patches);
+	}
+
+	public List<SVDPatchGroup> getSVDPatchGroups() {
+		return Collections.unmodifiableList(svdPatchGroups);
 	}
 	
 	public List<Library> getLibraries() {
@@ -55,6 +60,7 @@ public class Library extends Observable {
 	 */
 	public void refresh() {
 		refreshPatches();
+		refreshSVDPatchGroups();
 		refreshLibraries();
 		
 		notifyObservers();
@@ -115,6 +121,33 @@ public class Library extends Observable {
 	}
 	
 	/**
+	 * Populate .SVD-files as patch groups.
+	 */
+	private void refreshSVDPatchGroups() {
+		svdPatchGroups.clear();
+		
+		File[] files = source.listFiles(new FileFilter() {
+			public boolean accept(File pathname) {
+				return pathname.getName().endsWith(".SVD");
+			}
+		});
+		
+		if (files == null)
+			return;
+		
+		for (File svdPatchGroupFile : files) {
+			SVDPatchGroup svdPatchGroup = new SVDPatchGroup(svdPatchGroupFile);
+			try {
+				svdPatchGroup.load();
+			} catch (IOException e) {
+				e.printStackTrace();
+				continue;
+			}
+			svdPatchGroups.add(svdPatchGroup);
+		}
+	}
+	
+	/**
 	 * Populate subdirectories as sub-libraries.
 	 */
 	private void refreshLibraries() {
@@ -139,7 +172,7 @@ public class Library extends Observable {
 	}
 	
 	private boolean isEmpty() {
-		return patches.size() == 0 && libraries.size() == 0;
+		return patches.size() == 0 && svdPatchGroups.size() == 0 && libraries.size() == 0;
 	}
 	
 }

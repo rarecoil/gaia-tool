@@ -39,6 +39,8 @@ import nl.grauw.gaia_tool.GaiaPatch;
 import nl.grauw.gaia_tool.GaiaTool;
 import nl.grauw.gaia_tool.Library;
 import nl.grauw.gaia_tool.Patch;
+import nl.grauw.gaia_tool.SVDPatch;
+import nl.grauw.gaia_tool.SVDPatchGroup;
 import nl.grauw.gaia_tool.Patch.IncompletePatchException;
 import nl.grauw.gaia_tool.PatchDataRequester;
 import nl.grauw.gaia_tool.PatchDataRequester.PatchCompleteListener;
@@ -197,6 +199,9 @@ public class ContentSelectionTree extends JTree {
 			for (Library sublibrary : library.getLibraries()) {
 				add(new LibraryNode(sublibrary));
 			}
+			for (SVDPatchGroup svdPatchGroup : library.getSVDPatchGroups()) {
+				add(new SVDPatchGroupNode(svdPatchGroup));
+			}
 			for (Patch patch : library.getPatches()) {
 				add(new PatchTreeNode(patch));
 			}
@@ -251,6 +256,23 @@ public class ContentSelectionTree extends JTree {
 		
 	}
 	
+	public class SVDPatchGroupNode extends ContentSelectionTreeNode {
+		private static final long serialVersionUID = 1L;
+		
+		public SVDPatchGroupNode(SVDPatchGroup svdPatches) {
+			super(svdPatches.getName());
+			
+			for (int bank = 0; bank < 8; bank++) {
+				ContentSelectionTreeNode bankNode = new ContentSelectionTreeNode("Bank " + "ABCDEFGH".charAt(bank));
+				for (int patch = 0; patch < 8; patch++) {
+					PatchTreeNode patchNode = new PatchTreeNode(svdPatches.getPatch(bank, patch));
+					bankNode.add(patchNode);
+				}
+				add(bankNode);
+			}
+		}
+	}
+	
 	public class SystemTreeNode extends ContentSelectionTreeNode {
 		private static final long serialVersionUID = 1L;
 		
@@ -286,6 +308,8 @@ public class ContentSelectionTree extends JTree {
 				return "Temporary patch";
 			if (patch instanceof UserPatch)
 				return "Patch " + "ABCDEFGH".charAt(((UserPatch)patch).getBank()) + "-" + (((UserPatch)patch).getPatch() + 1);
+			if (patch instanceof SVDPatch)
+				return "Patch " + "ABCDEFGH".charAt(((SVDPatch)patch).getBank()) + "-" + (((SVDPatch)patch).getPatch() + 1);
 			if (patch instanceof FilePatch)
 				return ((FilePatch)patch).getName();
 			return "Unknown patch";
