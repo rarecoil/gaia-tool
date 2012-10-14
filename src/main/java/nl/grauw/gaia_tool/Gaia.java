@@ -88,7 +88,7 @@ public class Gaia extends Observable implements Observer {
 	
 	private System system;
 	private TemporaryPatch temporaryPatch;
-	private UserPatch[] userPatches = new UserPatch[64];
+	private UserPatch[][] userPatches = new UserPatch[8][8];
 	
 	public Gaia(Log log, Properties settings) {
 		this.log = log;
@@ -97,7 +97,7 @@ public class Gaia extends Observable implements Observer {
 		temporaryPatch = new TemporaryPatch(this);
 		for (int bank = 0; bank < 8; bank++) {
 			for (int patch = 0; patch < 8; patch++) {
-				userPatches[bank << 3 | patch] = new UserPatch(this, bank, patch);
+				userPatches[bank][patch] = new UserPatch(this, bank, patch);
 			}
 		}
 		responseReceiver = new ResponseReceiver(this);
@@ -401,7 +401,7 @@ public class Gaia extends Observable implements Observer {
 		} else if (byte1 == 0x10) {
 			temporaryPatch.updateParameters(address, data);
 		} else if (byte1 == 0x20) {
-			userPatches[address.getByte2()].updateParameters(address, data);
+			userPatches[address.getByte2() / 8][address.getByte2() % 8].updateParameters(address, data);
 		} else {
 			throw new AddressException("Address not recognised.");
 		}
@@ -424,7 +424,7 @@ public class Gaia extends Observable implements Observer {
 			throw new IllegalArgumentException("Invalid bank number.");
 		if (patch < 0 || patch > 7)
 			throw new IllegalArgumentException("Invalid patch number.");
-		return userPatches[bank << 3 | patch];
+		return userPatches[bank][patch];
 	}
 	
 	/**
