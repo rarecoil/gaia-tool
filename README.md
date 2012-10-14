@@ -19,7 +19,7 @@ Project information
 
 Name: GAIA tool  
 Site: <http://www.grauw.nl/projects/gaia-tool/>  
-Source: <http://hg.grauw.nl/gaia-tool/>  
+Source: <https://bitbucket.org/grauw/gaia-tool>  
 Author: Laurens Holst  
 Contact: laurens.nospam at the above mentioned domain  
 License: Apache License, Version 2.0
@@ -146,7 +146,7 @@ Getting the source code
 The source is managed using the Mercurial SCM, you can retrieve it with the
 following command:
 
-    hg clone http://hg.grauw.nl/gaia-tool gaia-tool
+    hg clone https://bitbucket.org/grauw/gaia-tool gaia-tool
 
 This will download the project source code into the gaia-tool directory.
 
