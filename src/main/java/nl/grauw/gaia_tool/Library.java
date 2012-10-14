@@ -132,10 +132,14 @@ public class Library extends Observable {
 		for (File libraryDirectory : files) {
 			Library library = new Library(libraryDirectory);
 			library.refresh();
-			if (library.patches.size() > 0 || library.libraries.size() > 0) {
+			if (!library.isEmpty()) {
 				libraries.add(library);
 			}
 		}
+	}
+	
+	private boolean isEmpty() {
+		return patches.size() == 0 && libraries.size() == 0;
 	}
 	
 }
