@@ -171,7 +171,7 @@ public class Library extends Observable {
 		}
 	}
 	
-	private boolean isEmpty() {
+	public boolean isEmpty() {
 		return patches.size() == 0 && svdPatchGroups.size() == 0 && libraries.size() == 0;
 	}
 	

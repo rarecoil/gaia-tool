@@ -43,7 +43,6 @@ public class GaiaTool {
 		library = new Library(getLibraryPath());
 		
 		loadSettings();
-		library.refresh();
 	}
 	
 	public Log getLog() {

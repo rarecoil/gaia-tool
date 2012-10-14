@@ -28,8 +28,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -75,6 +78,7 @@ public class ContentSelectionTree extends JTree {
 		ContentSelectionTreeNode userPatchesNode = new UserPatchesNode(gaiaTool.getGaia());
 		rootNode.add(userPatchesNode);
 		LibraryNode libraryNode = new LibraryNode(gaiaTool.getLibrary(), "Library");
+		addTreeWillExpandListener(libraryNode);
 		rootNode.add(libraryNode);
 		return new DefaultTreeModel(rootNode);
 	}
@@ -177,7 +181,7 @@ public class ContentSelectionTree extends JTree {
 		}
 	}
 	
-	public class LibraryNode extends ContentSelectionTreeNode implements AWTObserver {
+	public class LibraryNode extends ContentSelectionTreeNode implements AWTObserver, TreeWillExpandListener {
 		private static final long serialVersionUID = 1L;
 
 		private Library library;
@@ -229,6 +233,16 @@ public class ContentSelectionTree extends JTree {
 				contextMenu = new LibraryContextMenu();
 			}
 			return contextMenu;
+		}
+		
+		@Override
+		public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+			if (library.isEmpty())
+				library.refresh();
+		}
+		
+		@Override
+		public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
 		}
 		
 		private class LibraryContextMenu extends JPopupMenu implements ActionListener {
