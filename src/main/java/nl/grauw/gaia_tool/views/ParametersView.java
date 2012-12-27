@@ -105,6 +105,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 		if (refreshButton == null) {
 			refreshButton = new JButton();
 			refreshButton.setText("Refresh");
+			refreshButton.setToolTipText("Refresh patch data.");
 			refreshButton.addActionListener(this);
 		}
 		return refreshButton;
@@ -114,6 +115,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 		if (saveButton == null) {
 			saveButton = new JButton();
 			saveButton.setText("Save");
+			saveButton.setToolTipText("Save local changes to the Gaia.");
 			saveButton.addActionListener(this);
 		}
 		return saveButton;
@@ -123,6 +125,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 		if (syncButton == null) {
 			syncButton = new JToggleButton();
 			syncButton.setText("Sync");
+			syncButton.setToolTipText("Toggle parameter synchronization.");
 			syncButton.setModel(new SynchronizeModel());
 			syncButton.setVisible(isSyncShown());
 		}
