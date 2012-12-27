@@ -26,13 +26,9 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import nl.grauw.gaia_tool.Gaia;
-import nl.grauw.gaia_tool.mvc.AWTObserver;
-import nl.grauw.gaia_tool.mvc.Observable;
 
 public abstract class ParametersView extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 123L;
@@ -41,7 +37,6 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 	private JPanel buttonsPanel;
 	private JButton refreshButton;
 	private JButton saveButton;
-	private JToggleButton syncButton;
 	
 	public abstract Gaia getGaia();
 	
@@ -93,7 +88,6 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 		if (buttonsPanel == null) {
 			buttonsPanel = new JPanel();
 			if (getGaia() != null) {
-				buttonsPanel.add(getSyncButton());
 				buttonsPanel.add(getSaveButton());
 				buttonsPanel.add(getRefreshButton());
 			}
@@ -121,17 +115,6 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 		return saveButton;
 	}
 	
-	private JToggleButton getSyncButton() {
-		if (syncButton == null) {
-			syncButton = new JToggleButton();
-			syncButton.setText("Sync");
-			syncButton.setToolTipText("Toggle parameter synchronization.");
-			syncButton.setModel(new SynchronizeModel());
-			syncButton.setVisible(isSyncShown());
-		}
-		return syncButton;
-	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == refreshButton) {
@@ -146,32 +129,6 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 			}
 			saveParameters();
 		}
-	}
-	
-	public class SynchronizeModel extends ToggleButtonModel implements AWTObserver {
-		private static final long serialVersionUID = 1L;
-		
-		public SynchronizeModel() {
-			getGaia().addObserver(this);
-		}
-		
-		@Override
-		public boolean isSelected() {
-			return getGaia().getSynchronize();
-		}
-		
-		@Override
-		public void setSelected(boolean b) {
-			getGaia().setSynchronize(b);
-		}
-
-		@Override
-		public void update(Observable source, Object detail) {
-			if (source == getGaia() && "synchronize".equals(detail)) {
-				fireStateChanged();
-			}
-		}
-		
 	}
 	
 }
