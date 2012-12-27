@@ -39,7 +39,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 	
 	private JLabel titleLabel;
 	private JPanel buttonsPanel;
-	private JButton reloadButton;
+	private JButton refreshButton;
 	private JButton saveButton;
 	private JToggleButton syncButton;
 	
@@ -95,19 +95,19 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 			if (getGaia() != null) {
 				buttonsPanel.add(getSyncButton());
 				buttonsPanel.add(getSaveButton());
-				buttonsPanel.add(getReloadButton());
+				buttonsPanel.add(getRefreshButton());
 			}
 		}
 		return buttonsPanel;
 	}
 	
-	private JButton getReloadButton() {
-		if (reloadButton == null) {
-			reloadButton = new JButton();
-			reloadButton.setText("Reload");
-			reloadButton.addActionListener(this);
+	private JButton getRefreshButton() {
+		if (refreshButton == null) {
+			refreshButton = new JButton();
+			refreshButton.setText("Refresh");
+			refreshButton.addActionListener(this);
 		}
-		return reloadButton;
+		return refreshButton;
 	}
 	
 	private JButton getSaveButton() {
@@ -131,7 +131,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == reloadButton) {
+		if (e.getSource() == refreshButton) {
 			loadParameters();
 		}
 		if (e.getSource() == saveButton) {
