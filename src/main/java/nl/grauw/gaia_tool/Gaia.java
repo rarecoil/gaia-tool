@@ -121,6 +121,14 @@ public class Gaia extends Observable implements Observer {
 		notifyObservers("synchronize");
 	}
 	
+	public void autoEnableSynchronize() {
+		if (!getSynchronize())
+		{
+			setSynchronize(true);
+			log.log("Automatically enabled TX Edit Data parameter.");
+		}
+	}
+	
 	@Override
 	public void update(Observable source, Object detail) {
 		if (source instanceof Parameters && detail instanceof ParameterChange) {
@@ -398,6 +406,8 @@ public class Gaia extends Observable implements Observer {
 			} else if (system != null) {
 				system.updateParameters(address, data);
 			}
+			
+			autoEnableSynchronize();
 		} else if (byte1 == 0x10) {
 			temporaryPatch.updateParameters(address, data);
 		} else if (byte1 == 0x20) {
