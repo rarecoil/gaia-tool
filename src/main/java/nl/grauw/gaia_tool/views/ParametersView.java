@@ -24,7 +24,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -36,7 +35,6 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 	private JLabel titleLabel;
 	private JPanel buttonsPanel;
 	private JButton refreshButton;
-	private JButton saveButton;
 	
 	public abstract Gaia getGaia();
 	
@@ -88,7 +86,6 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 		if (buttonsPanel == null) {
 			buttonsPanel = new JPanel();
 			if (getGaia() != null) {
-				buttonsPanel.add(getSaveButton());
 				buttonsPanel.add(getRefreshButton());
 			}
 		}
@@ -105,29 +102,10 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 		return refreshButton;
 	}
 	
-	private JButton getSaveButton() {
-		if (saveButton == null) {
-			saveButton = new JButton();
-			saveButton.setText("Save");
-			saveButton.setToolTipText("Save local changes to the Gaia.");
-			saveButton.addActionListener(this);
-		}
-		return saveButton;
-	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == refreshButton) {
 			loadParameters();
-		}
-		if (e.getSource() == saveButton) {
-			if (!isSyncShown()) {
-				JOptionPane.showMessageDialog(this, "Sending changes to the GAIA…\n\n" +
-						"Please note: changes saved in this manner are not persisted when the GAIA reboots.\n" +
-						"To persist changes, you need to make them in the temporary patch and save them using the " +
-						"GAIA front panel.", "Saving changes to GAIA.", JOptionPane.INFORMATION_MESSAGE);
-			}
-			saveParameters();
 		}
 	}
 	

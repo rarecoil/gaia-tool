@@ -102,6 +102,8 @@ public abstract class GaiaPatch extends Patch {
 	
 	/**
 	 * Saves all modified parameters.
+	 * 
+	 * Note: For user patches, saved changes are not persisted after reboot.
 	 */
 	public void saveModifiedParameters() {
 		for (Parameters parameters : this) {
