@@ -385,8 +385,10 @@ public class ContentSelectionTree extends JTree {
 			}
 			
 			public void copyToTemporaryPatch() {
-				if (patch instanceof TemporaryPatch || !gaiaTool.getGaia().isConnected())
-					throw new RuntimeException("Preconditions not satisfied.");
+				if (patch instanceof TemporaryPatch)
+					throw new RuntimeException("Can not copy from temporary patch.");
+				if (!gaiaTool.getGaia().isConnected())
+					throw new RuntimeException("Gaia not connected.");
 				
 				TemporaryPatch temporaryPatch = gaiaTool.getGaia().getTemporaryPatch();
 				try {
