@@ -39,6 +39,7 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import nl.grauw.gaia_tool.FilePatch;
@@ -183,7 +184,9 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 	private void load() {
 		JFileChooser fc = new JFileChooser();
 		fc.setCurrentDirectory(gaiaTool.getCurrentDirectory());
-		fc.addChoosableFileFilter(new FileNameExtensionFilter("GAIA patch file", "gaia"));
+		FileFilter filter = new FileNameExtensionFilter("GAIA patch file", "gaia");
+		fc.addChoosableFileFilter(filter);
+		fc.setFileFilter(filter);
 		int result = fc.showOpenDialog(this);
 		gaiaTool.setCurrentDirectory(fc.getCurrentDirectory());
 		if (result == JFileChooser.APPROVE_OPTION) {
