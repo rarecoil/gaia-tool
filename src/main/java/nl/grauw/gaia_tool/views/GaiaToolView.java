@@ -164,7 +164,9 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 		} else {
 			JFileChooser fc = new JFileChooser();
 			fc.setCurrentDirectory(gaiaTool.getCurrentDirectory());
-			fc.addChoosableFileFilter(new FileNameExtensionFilter("GAIA patch file", "gaia"));
+			FileFilter filter = new FileNameExtensionFilter("GAIA patch file", "gaia");
+			fc.addChoosableFileFilter(filter);
+			fc.setFileFilter(filter);
 			if (patch instanceof TemporaryPatch) {
 				fc.setSelectedFile(new File(fc.getCurrentDirectory(), "patch-temporary.gaia"));
 			} else if (patch instanceof UserPatch) {
