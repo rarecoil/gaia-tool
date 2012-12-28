@@ -15,6 +15,10 @@
  */
 package nl.grauw.gaia_tool;
 
+import java.io.PrintWriter;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -88,8 +92,38 @@ public class App {
 		
 		@Override
 		public void uncaughtException(Thread thread, Throwable exception) {
+			submitErrorLog(exception);
 			showErrorDialog(exception);
 			System.exit(1);
+		}
+		
+		/**
+		 * Submits exception stack trace to Loggly on a new thread.
+		 * Optimistically hoping it can complete before the dialog is closed.
+		 */
+		private void submitErrorLog(final Throwable exception) {
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						System.out.println("Submitting exception stack trace...");
+						
+						URL url = new URL("https://logs.loggly.com/inputs/b2f0a92a-0ba8-4085-82f6-e217d20e5b6a");
+						HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+						connection.setRequestMethod("POST");
+						connection.setRequestProperty("Content-Type", "text/plain");
+						connection.setDoOutput(true);
+						
+						PrintWriter writer = new PrintWriter(connection.getOutputStream());
+						exception.printStackTrace(writer);
+						writer.flush();
+						writer.close();
+						
+						System.out.println(connection.getResponseCode() + " " + connection.getResponseMessage());
+						connection.disconnect();
+					} catch (Exception e) {
+					}
+				}
+			}).start();
 		}
 		
 		private void showErrorDialog(Throwable exception) {
