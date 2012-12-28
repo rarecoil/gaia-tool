@@ -80,11 +80,6 @@ public class PatchView extends ParametersView implements ChangeListener {
 	}
 	
 	@Override
-	protected boolean isSyncShown() {
-		return patch instanceof TemporaryPatch;
-	}
-	
-	@Override
 	protected JComponent getParametersContainer() {
 		if (parametersContainer == null) {
 			parametersContainer = new JTabbedPane();

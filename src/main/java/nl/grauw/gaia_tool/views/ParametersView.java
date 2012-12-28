@@ -44,8 +44,6 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 	
 	public abstract String getTitle();
 	
-	protected abstract boolean isSyncShown();
-	
 	protected abstract JComponent getParametersContainer();
 	
 	protected void initComponents() {

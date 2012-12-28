@@ -92,10 +92,5 @@ public class DistortionPanel extends ParametersView implements AWTObserver {
 		}
 		return distortionView;
 	}
-	
-	@Override
-	protected boolean isSyncShown() {
-		return patch instanceof TemporaryPatch;
-	}
 
 }
