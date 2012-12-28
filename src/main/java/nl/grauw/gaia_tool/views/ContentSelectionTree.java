@@ -407,11 +407,11 @@ public class ContentSelectionTree extends JTree {
 			}
 			
 			private void refresh() {
-				if (!(patch instanceof FilePatch))
-					throw new RuntimeException("Refresh only works for file patches.");
-				
 				try {
-					((FilePatch)patch).load();
+					if (patch instanceof FilePatch)
+						((FilePatch)patch).load();
+					else
+						throw new RuntimeException("Patch type can not be refreshed.");
 				} catch (FileNotFoundException e) {
 					gaiaTool.getLog().log(e.getMessage());
 					if (PatchTreeNode.this.getParent() instanceof LibraryNode)
