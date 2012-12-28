@@ -63,6 +63,11 @@ public class PatchView extends ParametersView implements ChangeListener {
 				((FilePatch)patch).load();
 			} catch (IOException e) {
 			}
+		} else if (patch instanceof SVDPatch) {
+			try {
+				((SVDPatch)patch).load();
+			} catch (IOException e) {
+			}
 		}
 	}
 	
@@ -91,7 +96,7 @@ public class PatchView extends ParametersView implements ChangeListener {
 	
 	@Override
 	protected boolean isRefreshShown() {
-		return patch instanceof GaiaPatch || patch instanceof FilePatch;
+		return patch instanceof GaiaPatch || patch instanceof FilePatch || patch instanceof SVDPatch;
 	}
 	
 	@Override
