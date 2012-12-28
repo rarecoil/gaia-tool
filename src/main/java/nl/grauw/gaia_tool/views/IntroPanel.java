@@ -29,6 +29,7 @@ public class IntroPanel extends JPanel {
 	private JLabel title;
 	private JLabel copyright;
 	private JLabel introduction;
+	private JLabel instructions;
 	private JLabel notice;
 	
 	public IntroPanel() {
@@ -38,12 +39,14 @@ public class IntroPanel extends JPanel {
 	private void initComponents() {
 		title = new JLabel("<html>Welcome to the Roland GAIA SH-01 tool</html>");
 		copyright = new JLabel("<html>Copyright © 2010 Laurens Holst</html>");
-		introduction = new JLabel("<html>With this tool you can view your Roland GAIA’s settings, " +
-				"such as patch names, patch parameters, arpeggio patterns and system settings. Use " +
-				"the tree on the left to select the system or patch parameters that you want to view. " +
-				"E.g. by expanding “Temporary patch” and then selecting “Arpeggio”, you can edit the " +
-				"patch’s arpeggio.</html>");
-		notice = new JLabel("<html>This is free software licensed under the Apache 2.0 license. " +
+		introduction = new JLabel("<html>This tool allows you to view and edit your Roland GAIA’s settings, " +
+				"such as patch names, parameters, and arpeggio patterns. It also has a library " +
+				"function.</html>");
+		instructions = new JLabel("<html>Select the patch that you want to view in the tree on the left. " +
+				"The <em>temporary patch</em> contains the patch that is currently being edited. " +
+				"Once selected you can see the settings organised in several tabs. For example, " +
+				"the arpeggio tab lets you customise the patch’s arpeggio.</html>");
+		notice = new JLabel("<html>This is free software available under the Apache 2.0 license. " +
 				"For more information and downloads visit the GAIA tool project page at " +
 				"http://www.grauw.nl/projects/gaia-tool/.</html>");
 		
@@ -57,6 +60,7 @@ public class IntroPanel extends JPanel {
 					.addComponent(title)
 					.addComponent(copyright)
 					.addComponent(introduction)
+					.addComponent(instructions)
 					.addComponent(notice)
 			);
 		layout.setVerticalGroup(
@@ -65,6 +69,7 @@ public class IntroPanel extends JPanel {
 					.addComponent(copyright)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(introduction)
+					.addComponent(instructions)
 					.addComponent(notice)
 			);
 	}
