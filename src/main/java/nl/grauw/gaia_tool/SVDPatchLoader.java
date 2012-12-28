@@ -36,21 +36,21 @@ public class SVDPatchLoader {
 	}
 	
 	/**
-	 * Populates the patch from a file.
+	 * Populates the patch group from a file.
 	 */
 	public void load(File input) throws IOException {
 		load(new FileInputStream(input));
 	}
 	
 	/**
-	 * Populates the patch from an input stream.
+	 * Populates the patch group from an input stream.
 	 */
 	public void load(InputStream input) throws IOException {
 		load(new DataInputStream(input));
 	}
 	
 	/**
-	 * Populates the patch from a data input stream.
+	 * Populates the patch group from a data input stream.
 	 */
 	public void load(DataInputStream input) throws IOException {
 		try {
