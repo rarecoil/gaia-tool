@@ -356,7 +356,7 @@ public class ContentSelectionTree extends JTree {
 				add(copy);
 				
 				// Add refresh option to file patches
-				if (patch instanceof FilePatch) {
+				if (patch instanceof GaiaPatch || patch instanceof FilePatch || patch instanceof SVDPatch) {
 					refresh = new JMenuItem("Refresh");
 					refresh.addActionListener(this);
 					add(refresh);
@@ -408,8 +408,12 @@ public class ContentSelectionTree extends JTree {
 			
 			private void refresh() {
 				try {
-					if (patch instanceof FilePatch)
+					if (patch instanceof GaiaPatch)
+						((GaiaPatch)patch).load();
+					else if (patch instanceof FilePatch)
 						((FilePatch)patch).load();
+					else if (patch instanceof SVDPatch)
+						((SVDPatch)patch).load();
 					else
 						throw new RuntimeException("Patch type can not be refreshed.");
 				} catch (FileNotFoundException e) {
