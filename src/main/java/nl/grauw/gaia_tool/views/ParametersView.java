@@ -44,6 +44,8 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 	
 	public abstract String getTitle();
 	
+	protected abstract boolean isRefreshShown();
+	
 	protected abstract JComponent getParametersContainer();
 	
 	protected void initComponents() {
@@ -83,7 +85,7 @@ public abstract class ParametersView extends JPanel implements ActionListener {
 	private JPanel getSyncButtons() {
 		if (buttonsPanel == null) {
 			buttonsPanel = new JPanel();
-			if (getGaia() != null) {
+			if (isRefreshShown()) {
 				buttonsPanel.add(getRefreshButton());
 			}
 		}

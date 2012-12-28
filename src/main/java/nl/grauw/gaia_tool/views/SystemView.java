@@ -54,6 +54,11 @@ public class SystemView extends SingleParametersView {
 	public String getTitle() {
 		return "System parameters";
 	}
+	
+	@Override
+	protected boolean isRefreshShown() {
+		return true;
+	}
 
 	@Override
 	protected String getParametersText() {

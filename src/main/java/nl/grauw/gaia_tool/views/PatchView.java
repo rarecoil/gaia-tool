@@ -17,6 +17,7 @@ package nl.grauw.gaia_tool.views;
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -56,6 +57,11 @@ public class PatchView extends ParametersView implements ChangeListener {
 	public void loadParameters() {
 		if (patch instanceof GaiaPatch) {
 			((GaiaPatch)patch).load();
+		} else if (patch instanceof FilePatch) {
+			try {
+				((FilePatch)patch).load();
+			} catch (IOException e) {
+			}
 		}
 	}
 	
@@ -77,6 +83,11 @@ public class PatchView extends ParametersView implements ChangeListener {
 			return "Patch " + ((FilePatch)patch).getName();
 		}
 		return "Patch";
+	}
+	
+	@Override
+	protected boolean isRefreshShown() {
+		return patch instanceof GaiaPatch || patch instanceof FilePatch;
 	}
 	
 	@Override

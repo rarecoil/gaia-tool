@@ -22,7 +22,6 @@ import javax.swing.JPanel;
 
 import nl.grauw.gaia_tool.Gaia;
 import nl.grauw.gaia_tool.GaiaPatch;
-import nl.grauw.gaia_tool.TemporaryPatch;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.views.parameters.DistortionView;
@@ -91,6 +90,11 @@ public class DistortionPanel extends ParametersView implements AWTObserver {
 				distortionView = new DistortionView(patch.getDistortion());
 		}
 		return distortionView;
+	}
+	
+	@Override
+	protected boolean isRefreshShown() {
+		return true;
 	}
 
 }
