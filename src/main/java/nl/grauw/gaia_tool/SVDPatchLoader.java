@@ -54,10 +54,7 @@ public class SVDPatchLoader {
 	 */
 	public void load(DataInputStream input) throws IOException {
 		try {
-			byte[] header = new byte[0x30];
-			input.readFully(header);
-			if (!Arrays.equals(header, headerTemplate))
-				throw new IOException("Unrecognised header.");
+			loadHeader(input);
 			
 			for (int bank = 0; bank < 8; bank++) {
 				for (int patch = 0; patch < 8; patch++) {
@@ -67,6 +64,13 @@ public class SVDPatchLoader {
 		} finally {
 			input.close();
 		}
+	}
+	
+	private void loadHeader(DataInputStream input) throws IOException {
+		byte[] header = new byte[0x30];
+		input.readFully(header);
+		if (!Arrays.equals(header, headerTemplate))
+			throw new IOException("Unrecognised header.");
 	}
 	
 	private void loadPatch(DataInputStream input, Patch patch) throws IOException {
