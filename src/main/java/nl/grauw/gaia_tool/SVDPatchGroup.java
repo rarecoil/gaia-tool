@@ -34,7 +34,7 @@ public class SVDPatchGroup {
 		this.source = source;
 		for (int bank = 0; bank < 8; bank++) {
 			for (int patch = 0; patch < 8; patch++) {
-				patches[bank][patch] = new SVDPatch(bank, patch);
+				patches[bank][patch] = new SVDPatch(this, bank, patch);
 			}
 		}
 	}
