@@ -43,10 +43,24 @@ public class SVDPatchLoader {
 	}
 	
 	/**
+	 * Populates a patch from a file.
+	 */
+	public void load(File input, SVDPatch patch) throws IOException {
+		load(new FileInputStream(input), patch);
+	}
+	
+	/**
 	 * Populates the patch group from an input stream.
 	 */
 	public void load(InputStream input) throws IOException {
 		load(new DataInputStream(input));
+	}
+	
+	/**
+	 * Populates a patch from an input stream.
+	 */
+	public void load(InputStream input, SVDPatch patch) throws IOException {
+		load(new DataInputStream(input), patch);
 	}
 	
 	/**
@@ -66,11 +80,34 @@ public class SVDPatchLoader {
 		}
 	}
 	
+	/**
+	 * Populates a patch from a data input stream.
+	 */
+	public void load(DataInputStream input, SVDPatch patch) throws IOException {
+		if (patchGroup.getPatch(patch.getBank(), patch.getPatch()) != patch)
+			throw new RuntimeException("Patch not in patch group.");
+		
+		try {
+			loadHeader(input);
+			
+			for (int skip = patch.getBank() * 8 + patch.getPatch(); skip > 0; skip--)
+				skipPatch(input);
+			loadPatch(input, patch);
+		} finally {
+			input.close();
+		}
+	}
+	
 	private void loadHeader(DataInputStream input) throws IOException {
 		byte[] header = new byte[0x30];
 		input.readFully(header);
 		if (!Arrays.equals(header, headerTemplate))
 			throw new IOException("Unrecognised header.");
+	}
+	
+	private void skipPatch(DataInputStream input) throws IOException {
+		byte[] patchData = new byte[0x388];
+		input.readFully(patchData);
 	}
 	
 	private void loadPatch(DataInputStream input, Patch patch) throws IOException {
