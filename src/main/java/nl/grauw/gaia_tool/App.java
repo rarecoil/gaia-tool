@@ -35,6 +35,7 @@ public class App {
 	public static void main(String[] args) {
 		installLookAndFeel();
 		app = new App();
+		app.initialiseExceptionHandler();
 		app.initialiseModel();
 		app.initialiseView();
 	}
@@ -77,6 +78,34 @@ public class App {
 				gaiaToolView.setVisible(true);
 			}
 		});
+	}
+	
+	public void initialiseExceptionHandler() {
+		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
+	}
+	
+	private class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+		
+		@Override
+		public void uncaughtException(Thread thread, Throwable exception) {
+			showErrorDialog(exception);
+			System.exit(1);
+		}
+		
+		private void showErrorDialog(Throwable exception) {
+			String[] options = new String[] { "Exit" };
+			JOptionPane.showOptionDialog(
+				gaiaToolView,
+				"[" + exception.getClass().getName() + "]\n\n" + exception.getMessage(),
+				"An error has occurred.",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.ERROR_MESSAGE,
+				null,
+				options,
+				options[0]
+			);
+		}
+		
 	}
 	
 }
