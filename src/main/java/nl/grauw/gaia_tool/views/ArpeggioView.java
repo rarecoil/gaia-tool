@@ -144,12 +144,11 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 				"notes are specified the row order is used, so to keep things simple you may just<br>" +
 				"want to use the same original note for all patterns, e.g. C4 C4 C4.<br>" +
 				"<br>" +
-				"For the phrase motif, the base note is the lowest note sounded on step 1. All other<br>" +
-				"notes will be played relative to this note. This means that the notes played by the<br>" +
-				"first step of your arpeggio can never go below the note played by the user.<br>" +
+				"For the phrase motif, it specifies what note to play relative to the base note.<br>" +
+				"The base note is the lowest note sounded on step 1.<br>" +
 				"<br>" +
-				"In the numbered columns you can specify for each step whether to play a note or<br>" +
-				"not. Enter a number in the range 1-127 to play a note with the specified velocity.<br>" +
+				"In the numbered columns you can specify for each step whether to play the note.<br>" +
+				"Enter a number in the range 1-127 to play a note with the specified velocity.<br>" +
 				"A 0 indicates a rest, and you can enter “Tie” to connect two steps together." +
 				"</html>"
 			);
