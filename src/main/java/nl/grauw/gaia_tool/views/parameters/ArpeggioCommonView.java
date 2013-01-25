@@ -95,8 +95,10 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	private EnumComboBox getArpeggioGridControl() {
 		if (gridComboBox == null) {
 			gridComboBox = new EnumComboBox(parameters.getArpeggioGrid(), "Grid");
-			gridComboBox.setToolTipText("<html>Sets the note division and resolution in a " +
-					"grid, and how much of a “shuffle” syncopation is applied to it.</html>");
+			gridComboBox.setToolTipText(
+				"<html>Sets the note division and resolution in a " +
+				"grid, and how much of a “shuffle” syncopation is applied to it.</html>"
+			);
 		}
 		return gridComboBox;
 	}
@@ -104,13 +106,15 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	private EnumComboBox getArpeggioDurationControl() {
 		if (durationComboBox == null) {
 			durationComboBox = new EnumComboBox(parameters.getArpeggioDuration(), "Duration");
-			durationComboBox.setToolTipText("<html>Determines whether the sounds are played staccato " +
-					"(short and clipped), or tenuto (fully drawn out).<br><br> " +
-					"<b>30–120%:</b> The percentage of the length of the note relative to the " +
-					"full length of the note set in the grid.<br> When a series of grids is connected with " +
-					"ties, it is relative to the final grid.<br> " +
-					"<b>Full:</b> Even if the linked grid is not connected with a tie, the same note " +
-					"continues to sound until<br> the point at which the next new sound is specified.</html>");
+			durationComboBox.setToolTipText(
+				"<html>Determines whether the sounds are played staccato " +
+				"(short and clipped), or tenuto (fully drawn out).<br><br> " +
+				"<b>30–120%:</b> The percentage of the length of the note relative to the " +
+				"full length of the note set in the grid.<br> When a series of grids is connected with " +
+				"ties, it is relative to the final grid.<br> " +
+				"<b>Full:</b> Even if the linked grid is not connected with a tie, the same note " +
+				"continues to sound until<br> the point at which the next new sound is specified.</html>"
+			);
 		}
 		return durationComboBox;
 	}
@@ -118,23 +122,25 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	private EnumComboBox getArpeggioMotifControl() {
 		if (motifComboBox == null) {
 			motifComboBox = new EnumComboBox(parameters.getArpeggioMotif(), "Motif");
-			motifComboBox.setToolTipText("<html>The method used to play sounds (motif) when you have a greater " +
-					"number of notes than programmed for the arpeggio style.<br>" +
-					"When the number of keys played is less than the number of notes in the arpeggio style, " +
-					"the highest pitched of the pressed keys is played by default.<br><br> " +
-					"Base motif patterns:<br> " +
-					"<b>Up:</b> The notes play in order from the lowest of the pressed keys.<br> " +
-					"<b>Down:</b> The notes play in order from the highest of the pressed keys. " +
-					"No note is played every time.<br> " +
-					"<b>Up & down:</b> The notes play in order from the lowest of the pressed keys and then back " +
-					"again in the reverse order.<br> " +
-					"<b>Random:</b> The notes play randomly.<br> " +
-					"<b>Phrase:</b> Pressing just one key plays a phrase based on the pitch of that key. " +
-					"If you press more than one key, the key you press last is used.<br><br> " +
-					"Motif annotations:<br> " +
-					"<b>(L)</b> Notes from the lowest of the keys pressed are sounded every time.<br> " +
-					"<b>(L&H)</b> Notes from the lowest and highest of the keys pressed are sounded every time.<br> " +
-					"</html>");
+			motifComboBox.setToolTipText(
+				"<html>The method used to play sounds (motif) when you have a greater " +
+				"number of notes than programmed for the arpeggio style.<br>" +
+				"When the number of keys played is less than the number of notes in the arpeggio style, " +
+				"the highest pitched of the pressed keys is played by default.<br><br> " +
+				"Base motif patterns:<br> " +
+				"<b>Up:</b> The notes play in order from the lowest of the pressed keys.<br> " +
+				"<b>Down:</b> The notes play in order from the highest of the pressed keys. " +
+				"No note is played every time.<br> " +
+				"<b>Up & down:</b> The notes play in order from the lowest of the pressed keys and then back " +
+				"again in the reverse order.<br> " +
+				"<b>Random:</b> The notes play randomly.<br> " +
+				"<b>Phrase:</b> Pressing just one key plays a phrase based on the pitch of that key. " +
+				"If you press more than one key, the key you press last is used.<br><br> " +
+				"Motif annotations:<br> " +
+				"<b>(L)</b> Notes from the lowest of the keys pressed are sounded every time.<br> " +
+				"<b>(L&H)</b> Notes from the lowest and highest of the keys pressed are sounded every time.<br> " +
+				"</html>"
+			);
 		}
 		return motifComboBox;
 	}
@@ -142,9 +148,11 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	private ValueSpinner getArpeggioOctaveRangeControl() {
 		if (octaveRangeSpinner == null) {
 			octaveRangeSpinner = new ValueSpinner(parameters.getArpeggioOctaveRange(), "Octave range");
-			octaveRangeSpinner.setToolTipText("<html>The range of the arpeggio.<br> " +
-					"Adds an effect that shifts arpeggios one cycle at a time in octave units.<br> " +
-					"You can set the shift range upwards or downwards (up to three octaves up or down).</html>");
+			octaveRangeSpinner.setToolTipText(
+				"<html>The range of the arpeggio.<br> " +
+				"Adds an effect that shifts arpeggios one cycle at a time in octave units.<br> " +
+				"You can set the shift range upwards or downwards (up to three octaves up or down).</html>"
+			);
 		}
 		return octaveRangeSpinner;
 	}
@@ -152,10 +160,12 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	private ValueSpinner getArpeggioAccentRateControl() {
 		if (accentRateSpinner == null) {
 			accentRateSpinner = new ValueSpinner(parameters.getArpeggioAccentRate(), "Accent rate");
-			accentRateSpinner.setToolTipText("<html>The accent strength of the arpeggio.<br> " +
-					"With a setting of “100”, the arpeggiated notes will have the velocities that are " +
-					"programmed by the arpeggio style.<br> " +
-					"With a setting of “0”, all arpeggiated notes will be sounded at a fixed velocity.</html>");
+			accentRateSpinner.setToolTipText(
+				"<html>The accent strength of the arpeggio.<br> " +
+				"With a setting of “100”, the arpeggiated notes will have the velocities that are " +
+				"programmed by the arpeggio style.<br> " +
+				"With a setting of “0”, all arpeggiated notes will be sounded at a fixed velocity.</html>"
+			);
 		}
 		return accentRateSpinner;
 	}
@@ -163,9 +173,11 @@ public class ArpeggioCommonView extends JPanel implements AWTObserver {
 	private ValueSpinner getArpeggioVelocityControl() {
 		if (velocitySpinner == null) {
 			velocitySpinner = new ValueSpinner(parameters.getArpeggioVelocity(), "Velocity");
-			velocitySpinner.setToolTipText("<html>The loudness of the notes that you play.<br><br> " +
-					"<b>REAL (0):</b> The velocity value of each note will depend on how strongly you play the keyboard.<br> " +
-					"<b>1–127:</b> Each note will have a fixed velocity regardless of how strongly you play the keyboard.</html>");
+			velocitySpinner.setToolTipText(
+				"<html>The loudness of the notes that you play.<br><br> " +
+				"<b>REAL (0):</b> The velocity value of each note will depend on how strongly you play the keyboard.<br> " +
+				"<b>1–127:</b> Each note will have a fixed velocity regardless of how strongly you play the keyboard.</html>"
+			);
 		}
 		return velocitySpinner;
 	}
