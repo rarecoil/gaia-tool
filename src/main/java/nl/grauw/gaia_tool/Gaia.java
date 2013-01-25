@@ -408,6 +408,9 @@ public class Gaia extends Observable implements Observer {
 			}
 			
 			autoEnableSynchronize();
+		} else if (byte1 == 0x0F) {
+			if (address.equals(Address.INIT_PATCH) || address.equals(Address.MANUAL) || address.equals(Address.TONE_COPY))
+				temporaryPatch.clearParameters();
 		} else if (byte1 == 0x10) {
 			temporaryPatch.updateParameters(address, data);
 		} else if (byte1 == 0x20) {
