@@ -15,7 +15,9 @@
  */
 package nl.grauw.gaia_tool;
 
+import java.awt.Toolkit;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -37,11 +39,35 @@ public class App {
 	GaiaToolView gaiaToolView;
 	
 	public static void main(String[] args) {
+		fixLinuxDoubleClick();
 		installLookAndFeel();
 		app = new App();
 		app.initialiseExceptionHandler();
 		app.initialiseModel();
 		app.initialiseView();
+	}
+	
+	/**
+	 * Under Linux, Java 6 does not honour the multi/double-click speed preferences,
+	 * and defaults to a 200 ms double-click, which is very fast and difficult to hit.
+	 * (The default was changed to 500 ms in Java 7.)
+	 * 
+	 * So if this is the case, cheat and set the sun.awt.X11.XToolkit#awt_multiclick_time
+	 * field to a higher value through reflection.
+	 * 
+	 * See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5076635
+	 * See sun.awt.X11.XToolkit#getMultiClickTime()
+	 */
+	public static void fixLinuxDoubleClick() {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		if ((Integer)(toolkit.getDesktopProperty("awt.multiClickInterval")) == 200) {
+			try {
+				Field field = toolkit.getClass().getDeclaredField("awt_multiclick_time");
+				field.setAccessible(true);
+				field.setInt(toolkit, 500);  // ms
+			} catch (Exception e) {
+			}
+		}
 	}
 	
 	public static void installLookAndFeel() {
