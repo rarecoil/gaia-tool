@@ -15,6 +15,7 @@
  */
 package nl.grauw.gaia_tool;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import nl.grauw.gaia_tool.mvc.Observable;
@@ -29,6 +30,8 @@ public class Parameters extends Observable {
 	private Address address;
 	private byte[] originalData;
 	private byte[] data;
+	
+	private ArrayList<ParameterChangeListener> changeListeners = new ArrayList<ParameterChangeListener>();
 	
 	/**
 	 * Constructs a new Parameters object.
@@ -137,7 +140,7 @@ public class Parameters extends Observable {
 		for (int i = 0; i < newData.length; i++) {
 			originalData[offset + i] = data[offset + i] = newData[i];
 		}
-		this.notifyObservers(new ParameterChange(offset, newData.length));
+		fireParameterChange(new ParameterChange(offset, newData.length));
 	}
 	
 	/**
@@ -212,7 +215,7 @@ public class Parameters extends Observable {
 		if (value < 0 || value >= 128)
 			throw new IllegalArgumentException("Value out of range.");
 		data[offset] = (byte)value;
-		this.notifyObservers(new ParameterChange(offset, 1));
+		fireParameterChange(new ParameterChange(offset, 1));
 	}
 	
 	/**
@@ -225,7 +228,7 @@ public class Parameters extends Observable {
 		if (value < 0 || value >= 128)
 			throw new IllegalArgumentException("Value out of range.");
 		originalData[offset] = data[offset] = (byte)value;
-		this.notifyObservers(new ParameterChange(offset, 1));
+		fireParameterChange(new ParameterChange(offset, 1));
 	}
 	
 	/**
@@ -238,7 +241,7 @@ public class Parameters extends Observable {
 			throw new IllegalArgumentException("Value out of range.");
 		data[offset] = (byte) (value >> 4 & 0x0F);
 		data[offset + 1] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 2));
+		fireParameterChange(new ParameterChange(offset, 2));
 	}
 	
 	/**
@@ -252,7 +255,7 @@ public class Parameters extends Observable {
 		data[offset] = (byte) (value >> 8 & 0x0F);
 		data[offset + 1] = (byte) (value >> 4 & 0x0F);
 		data[offset + 2] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 3));
+		fireParameterChange(new ParameterChange(offset, 3));
 	}
 	
 	/**
@@ -267,7 +270,7 @@ public class Parameters extends Observable {
 		data[offset + 1] = (byte) (value >> 8 & 0x0F);
 		data[offset + 2] = (byte) (value >> 4 & 0x0F);
 		data[offset + 3] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 4));
+		fireParameterChange(new ParameterChange(offset, 4));
 	}
 	
 	/**
@@ -283,7 +286,7 @@ public class Parameters extends Observable {
 		originalData[offset + 1] = data[offset + 1] = (byte) (value >> 8 & 0x0F);
 		originalData[offset + 2] = data[offset + 2] = (byte) (value >> 4 & 0x0F);
 		originalData[offset + 3] = data[offset + 3] = (byte) (value & 0x0F);
-		this.notifyObservers(new ParameterChange(offset, 4));
+		fireParameterChange(new ParameterChange(offset, 4));
 	}
 	
 	/**
@@ -299,7 +302,7 @@ public class Parameters extends Observable {
 		for (int i = 0; i < values.length; i++) {
 			data[offset + i] = (byte) values[i];
 		}
-		this.notifyObservers(new ParameterChange(offset, values.length));
+		fireParameterChange(new ParameterChange(offset, values.length));
 	}
 	
 	/**
@@ -315,7 +318,7 @@ public class Parameters extends Observable {
 		for (int i = 0; i < values.length; i++) {
 			data[offset + i] = values[i];
 		}
-		this.notifyObservers(new ParameterChange(offset, values.length));
+		fireParameterChange(new ParameterChange(offset, values.length));
 	}
 	
 	@Override
@@ -326,6 +329,24 @@ public class Parameters extends Observable {
 		}
 		
 		return String.format("Parameters. Address: %s. Data: %s.", getAddress(), parameterData.toString().trim());
+	}
+	
+	public void addParameterChangeListener(ParameterChangeListener listener) {
+		changeListeners.add(listener);
+	}
+	
+	public void removeParameterChangeListener(ParameterChangeListener listener) {
+		changeListeners.remove(listener);
+	}
+	
+	private void fireParameterChange(ParameterChange change) {
+		for (ParameterChangeListener listener : changeListeners)
+			listener.parameterChange(this, change);
+		notifyObservers(change);
+	}
+	
+	public interface ParameterChangeListener {
+		public void parameterChange(Parameters source, ParameterChange change);
 	}
 	
 	/**

@@ -16,6 +16,7 @@
 package nl.grauw.gaia_tool;
 
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
+import nl.grauw.gaia_tool.Parameters.ParameterChangeListener;
 import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.mvc.Observer;
@@ -28,7 +29,7 @@ import nl.grauw.gaia_tool.parameters.PatchCommon;
 import nl.grauw.gaia_tool.parameters.Reverb;
 import nl.grauw.gaia_tool.parameters.Tone;
 
-public class TemporaryPatch extends GaiaPatch implements Observer {
+public class TemporaryPatch extends GaiaPatch implements ParameterChangeListener {
 	
 	public TemporaryPatch(Gaia gaia) {
 		super(gaia);
@@ -40,13 +41,7 @@ public class TemporaryPatch extends GaiaPatch implements Observer {
 	}
 	
 	@Override
-	public void update(Observable source, Object detail) {
-		if (source instanceof Parameters && detail instanceof ParameterChange) {
-			update((Parameters) source, (ParameterChange) detail);
-		}
-	}
-	
-	private void update(Parameters source, ParameterChange arg) {
+	public void parameterChange(Parameters source, ParameterChange arg) {
 		if (source.hasChanged(arg)) {
 			if (getGaia().getSynchronize()) {
 				getGaia().sendDataTransmission(source, arg.getOffset(), arg.getLength());
@@ -166,49 +161,49 @@ public class TemporaryPatch extends GaiaPatch implements Observer {
 	
 	@Override
 	protected void setCommon(PatchCommon common) {
-		common.addObserver(this);
+		common.addParameterChangeListener(this);
 		super.setCommon(common);
 	}
 	
 	@Override
 	protected void setTone(int number, Tone tone) {
-		tone.addObserver(this);
+		tone.addParameterChangeListener(this);
 		super.setTone(number, tone);
 	}
 	
 	@Override
 	protected void setDistortion(Distortion distortion) {
-		distortion.addObserver(this);
+		distortion.addParameterChangeListener(this);
 		super.setDistortion(distortion);
 	}
 	
 	@Override
 	protected void setFlanger(Flanger flanger) {
-		flanger.addObserver(this);
+		flanger.addParameterChangeListener(this);
 		super.setFlanger(flanger);
 	}
 	
 	@Override
 	protected void setDelay(Delay delay) {
-		delay.addObserver(this);
+		delay.addParameterChangeListener(this);
 		super.setDelay(delay);
 	}
 	
 	@Override
 	protected void setReverb(Reverb reverb) {
-		reverb.addObserver(this);
+		reverb.addParameterChangeListener(this);
 		super.setReverb(reverb);
 	}
 	
 	@Override
 	protected void setArpeggioCommon(ArpeggioCommon arpeggioCommon) {
-		arpeggioCommon.addObserver(this);
+		arpeggioCommon.addParameterChangeListener(this);
 		super.setArpeggioCommon(arpeggioCommon);
 	}
 	
 	@Override
 	protected void setArpeggioPattern(int note, ArpeggioPattern arpeggioPattern) {
-		arpeggioPattern.addObserver(this);
+		arpeggioPattern.addParameterChangeListener(this);
 		super.setArpeggioPattern(note, arpeggioPattern);
 	}
 	

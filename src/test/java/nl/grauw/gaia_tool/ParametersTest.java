@@ -17,6 +17,8 @@ package nl.grauw.gaia_tool;
 
 import static org.junit.Assert.*;
 
+import nl.grauw.gaia_tool.Parameters.ParameterChange;
+import nl.grauw.gaia_tool.Parameters.ParameterChangeListener;
 import nl.grauw.gaia_tool.parameters.PatchCommonTest;
 import nl.grauw.gaia_tool.parameters.SystemTest;
 
@@ -101,6 +103,35 @@ public class ParametersTest {
 		Parameters p2 = new Parameters(new Address(0x20, 0x00, 0x01, 0x00), PatchCommonTest.createTestParameters().getData());
 		
 		assertEquals(false, p1.isEqualTo(p2));
+	}
+	
+	@Test
+	public void testParameterChangeListener() {
+		Parameters p = PatchCommonTest.createTestParameters();
+		TestParameterChangeListener listener = new TestParameterChangeListener();
+		p.addParameterChangeListener(listener);
+		p.setValue(3, 86);
+		
+		assertEquals(1, listener.callCount);
+		assertEquals(p, listener.lastSource);
+		assertEquals(3, listener.lastChange.getOffset());
+		assertEquals(1, listener.lastChange.getLength());
+		
+		p.removeParameterChangeListener(listener);
+		p.setValue(4, 86);
+		
+		assertEquals(1, listener.callCount);
+	}
+	
+	private static class TestParameterChangeListener implements ParameterChangeListener {
+		public int callCount = 0;
+		public Parameters lastSource = null;
+		public ParameterChange lastChange = null;
+		public void parameterChange(Parameters source, ParameterChange detail) {
+			callCount++;
+			lastSource = source;
+			lastChange = detail;
+		}
 	}
 	
 }

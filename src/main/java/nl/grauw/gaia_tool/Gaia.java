@@ -30,6 +30,7 @@ import javax.sound.midi.Transmitter;
 import nl.grauw.gaia_tool.Address.AddressException;
 import nl.grauw.gaia_tool.Note.NoteName;
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
+import nl.grauw.gaia_tool.Parameters.ParameterChangeListener;
 import nl.grauw.gaia_tool.messages.ActiveSensingMessage;
 import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.messages.DataRequest1;
@@ -59,7 +60,7 @@ import nl.grauw.gaia_tool.parameters.Tone;
  * RX/TX channel setting so this value can be changed, and then the
  * GM synth will occupy the rest.
  */
-public class Gaia extends Observable implements Observer {
+public class Gaia extends Observable implements ParameterChangeListener {
 	
 	public static class GaiaNotFoundException extends Exception {
 		private static final long serialVersionUID = 1L;
@@ -130,13 +131,7 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	@Override
-	public void update(Observable source, Object detail) {
-		if (source instanceof Parameters && detail instanceof ParameterChange) {
-			update((Parameters) source, (ParameterChange) detail);
-		}
-	}
-	
-	private void update(Parameters source, ParameterChange arg) {
+	public void parameterChange(Parameters source, ParameterChange arg) {
 		if (getSynchronize() && source.hasChanged(arg)) {
 			sendDataTransmission(source, arg.getOffset(), arg.getLength());
 		}
@@ -401,7 +396,7 @@ public class Gaia extends Observable implements Observer {
 		if (byte1 == 0x01 && address.getByte2() == 0x00 && address.getByte3() == 0x00) {
 			if (address.getByte4() == 0x00 && data.length >= 0x6E) {
 				system = new System(address, data);
-				system.addObserver(this);
+				system.addParameterChangeListener(this);
 				notifyObservers("system");
 			} else if (system != null) {
 				system.updateParameters(address, data);
@@ -510,17 +505,12 @@ public class Gaia extends Observable implements Observer {
 	}
 	
 	private void testControlChange(final int i) {
-		temporaryPatch.getTone(1).addObserver(new Observer() {
-			public void update(Observable source, Object detail) {
-				if (source instanceof Tone && detail instanceof ParameterChange)
-					update((Tone) source, (ParameterChange) detail);
-			}
-			
-			private void update(Tone source, ParameterChange detail) {
+		temporaryPatch.getTone(1).addParameterChangeListener(new ParameterChangeListener() {
+			public void parameterChange(Parameters source, ParameterChange detail) {
 				if (detail.getOffset() == 0x03) {
-					source.removeObserver(this);
+					source.removeParameterChangeListener(this);
 					
-					java.lang.System.out.print(source.getOSCPitch().getValue() + ", ");
+					java.lang.System.out.print(((Tone)source).getOSCPitch().getValue() + ", ");
 					
 					if (i < 127)
 						testControlChange(i + 1);
