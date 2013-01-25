@@ -130,6 +130,29 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 					return editField;
 				}
 			});
+			patternTable.getTableHeader().setToolTipText(
+				"<html>" +
+				"The note column specifies the “original note” of each pattern. This can be either<br>" +
+				"a note in the notation “C#4” (note letter, optional sharp, and octave number), or<br>" +
+				"OFF to disable the pattern. When a pattern is OFF, any patterns that follow will<br>" +
+				"not be played either.<br>" +
+				"<br>" +
+				"For up/down and random motifs, the note specified does not influence the actual<br>" +
+				"note played, but it does influence how patterns are matched up with the notes<br>" +
+				"played by the user; e.g. C4 D4 E4 uses the first pattern for the lowest note and<br>" +
+				"the third for the highest, whereas for E4 D4 C4 this is reversed. When the same<br>" +
+				"notes are specified the row order is used, so to keep things simple you may just<br>" +
+				"want to use the same original note for all patterns, e.g. C4 C4 C4.<br>" +
+				"<br>" +
+				"For the phrase motif, the base note is the lowest note sounded on step 1. All other<br>" +
+				"notes will be played relative to this note. This means that the notes played by the<br>" +
+				"first step of your arpeggio can never go below the note played by the user.<br>" +
+				"<br>" +
+				"In the numbered columns you can specify for each step whether to play a note or<br>" +
+				"not. Enter a number in the range 1-127 to play a note with the specified velocity.<br>" +
+				"A 0 indicates a rest, and you can enter “Tie” to connect two steps together." +
+				"</html>"
+			);
 		}
 		return patternTable;
 	}
