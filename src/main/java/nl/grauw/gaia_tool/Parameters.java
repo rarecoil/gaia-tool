@@ -26,51 +26,6 @@ import nl.grauw.gaia_tool.Address.AddressException;
  */
 public class Parameters extends Observable {
 	
-	/**
-	 * A parameter data change notification object.
-	 * Indicates what range of values has changed.
-	 */
-	public static class ParameterChange {
-		
-		private int offset;
-		private int length;
-		
-		private ParameterChange(int offset, int length) {
-			this.offset = offset;
-			this.length = length;
-		}
-		
-		/**
-		 * Get the start offset of the changed parameter data.
-		 * @return The start offset of the changed data.
-		 */
-		public int getOffset() {
-			return offset;
-		}
-		
-		/**
-		 * Get the length of the changed parameter data.
-		 * @return The length of the changed data.
-		 */
-		public int getLength() {
-			return length;
-		}
-		
-		/**
-		 * Test whether the parameter changes include a certain offset.
-		 * @param testOffset The offset to test.
-		 * @return True if the specified offset is included in the changes.
-		 */
-		public boolean includes(int testOffset) {
-			return testOffset >= offset && testOffset < (offset + length);
-		}
-		
-		@Override
-		public String toString() {
-			return "data";
-		}
-	}
-	
 	private Address address;
 	private byte[] originalData;
 	private byte[] data;
@@ -371,6 +326,51 @@ public class Parameters extends Observable {
 		}
 		
 		return String.format("Parameters. Address: %s. Data: %s.", getAddress(), parameterData.toString().trim());
+	}
+	
+	/**
+	 * A parameter data change notification object.
+	 * Indicates what range of values has changed.
+	 */
+	public static class ParameterChange {
+		
+		private int offset;
+		private int length;
+		
+		private ParameterChange(int offset, int length) {
+			this.offset = offset;
+			this.length = length;
+		}
+		
+		/**
+		 * Get the start offset of the changed parameter data.
+		 * @return The start offset of the changed data.
+		 */
+		public int getOffset() {
+			return offset;
+		}
+		
+		/**
+		 * Get the length of the changed parameter data.
+		 * @return The length of the changed data.
+		 */
+		public int getLength() {
+			return length;
+		}
+		
+		/**
+		 * Test whether the parameter changes include a certain offset.
+		 * @param testOffset The offset to test.
+		 * @return True if the specified offset is included in the changes.
+		 */
+		public boolean includes(int testOffset) {
+			return testOffset >= offset && testOffset < (offset + length);
+		}
+		
+		@Override
+		public String toString() {
+			return "data";
+		}
 	}
 	
 }
