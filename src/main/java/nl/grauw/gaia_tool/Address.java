@@ -21,6 +21,11 @@ package nl.grauw.gaia_tool;
  */
 public class Address {
 	
+	public static final Address CANCEL_SHIFT = new Address(0x0F, 0x00, 0x00, 0x01);
+	public static final Address INIT_PATCH = new Address(0x0F, 0x00, 0x06, 0x03);
+	public static final Address MANUAL = new Address(0x0F, 0x00, 0x06, 0x04);
+	public static final Address TONE_COPY = new Address(0x0F, 0x00, 0x06, 0x05);
+	
 	private int address;
 	
 	public Address(int byte1, int byte2, int byte3, int byte4) {
@@ -39,6 +44,7 @@ public class Address {
 	 * Subsystem part of the address.
 	 * 
 	 * System:          0x01
+	 * Command (?):     0x0F
 	 * Temporary Patch: 0x10
 	 * User Patches:    0x20
 	 */
@@ -95,6 +101,14 @@ public class Address {
 		} else if (getByte1() == 0x20) {
 			return "User patch (" + "ABCDEFGH".charAt(getByte2() >> 3) + "-" + 
 					((getByte2() & 7) + 1) + ") - " + getSubDescription();
+		} else if (address == CANCEL_SHIFT.address) {
+			return "Command (Cancel/shift)";
+		} else if (address == INIT_PATCH.address) {
+			return "Command (Init patch)";
+		} else if (address == MANUAL.address) {
+			return "Command (Manual)";
+		} else if (address == TONE_COPY.address) {
+			return "Command (Tone copy)";
 		}
 		return "Unknown";
 	}
