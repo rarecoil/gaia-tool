@@ -68,9 +68,9 @@ public class Note {
 	 */
 	public Note(String noteString) {
 		this(
-				NoteName.getNoteByName(noteString.substring(0, noteString.charAt(1) == '#' ? 2 : 1)),
-				new Integer(noteString.substring(noteString.charAt(1) == '#' ? 2 : 1).trim())
-			);
+			NoteName.getNoteByName(noteString.substring(0, noteString.length() >= 2 && noteString.charAt(1) == '#' ? 2 : 1)),
+			new Integer(noteString.substring(noteString.length() >= 2 && noteString.charAt(1) == '#' ? 2 : 1).trim())
+		);
 	}
 	
 	public NoteName getNote() {
