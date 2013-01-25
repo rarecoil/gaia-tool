@@ -39,6 +39,7 @@ public class PatchView extends ParametersView implements ChangeListener {
 	
 	JTabbedPane parametersContainer;
 	PatchCommonView patchCommonView;
+	Tab selectedTab = null;
 	
 	private Patch patch;
 	
@@ -126,7 +127,10 @@ public class PatchView extends ParametersView implements ChangeListener {
 	
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		((Tab)parametersContainer.getSelectedComponent()).tabSelected();
+		if (selectedTab != null)
+			selectedTab.tabDeselected();
+		selectedTab = (Tab)parametersContainer.getSelectedComponent();
+		selectedTab.tabSelected();
 	}
 	
 	private abstract class Tab extends JPanel {
@@ -145,6 +149,11 @@ public class PatchView extends ParametersView implements ChangeListener {
 				add(createContent());
 			if (patch instanceof GaiaPatch)
 				loadParameters((GaiaPatch)patch);
+		}
+		
+		protected void tabDeselected() {
+			if (getComponentCount() > 0)
+				removeAll();
 		}
 	}
 	
