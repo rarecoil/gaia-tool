@@ -44,19 +44,4 @@ public class Value extends Observable {
 		return source == parameters && pc.includes(offset);
 	}
 	
-	/**
-	 * Determine whether the value has changed based on information received from
-	 * a Parameter observable update notification.
-	 * 
-	 * This takes plain objects so that the user doesn’t need to cast.
-	 * 
-	 * @param source The source of the update.
-	 * @param pc The update’s event object.
-	 * @return True if the value has changed.
-	 */
-	public boolean testChanged(Object source, Object pc) {
-		return source == parameters && pc instanceof ParameterChange &&
-				((ParameterChange)pc).includes(offset);
-	}
-	
 }

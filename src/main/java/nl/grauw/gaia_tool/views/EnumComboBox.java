@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import nl.grauw.gaia_tool.EnumValue;
+import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
@@ -57,6 +59,11 @@ public class EnumComboBox extends JPanel {
 		
 		@Override
 		public void update(Observable source, Object detail) {
+			if (source instanceof Parameters && detail instanceof ParameterChange)
+				update((Parameters) source, (ParameterChange) detail);
+		}
+		
+		public void update(Parameters source, ParameterChange detail) {
 			if (value.testChanged(source, detail)) {
 				int ordinal = value.getValue().ordinal();
 				fireContentsChanged(this, ordinal, ordinal);

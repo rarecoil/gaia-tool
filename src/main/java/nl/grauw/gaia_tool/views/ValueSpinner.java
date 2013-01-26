@@ -23,6 +23,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import nl.grauw.gaia_tool.IntValue;
+import nl.grauw.gaia_tool.Parameters;
+import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.mvc.AWTObserver;
 import nl.grauw.gaia_tool.mvc.Observable;
 
@@ -105,9 +107,14 @@ public class ValueSpinner extends JPanel {
 		public void setStepSize(Number stepSize) {
 			throw new RuntimeException("Setting step size is not allowed.");
 		}
-
+		
 		@Override
 		public void update(Observable source, Object detail) {
+			if (source instanceof Parameters && detail instanceof ParameterChange)
+				update((Parameters) source, (ParameterChange) detail);
+		}
+		
+		public void update(Parameters source, ParameterChange detail) {
 			if (value.testChanged(source, detail)) {
 				fireStateChanged();
 			}
