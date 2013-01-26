@@ -172,8 +172,8 @@ public class DistortionView extends JPanel implements AWTObserver {
 		}
 	}
 	
-	private void update(Distortion source, ParameterChange detail) {
-		if (parameters.getDistortionTypeValue().testChanged(source, detail)) {
+	private void update(Distortion source, ParameterChange change) {
+		if (parameters.getDistortionTypeValue().testChanged(source, change)) {
 			reinitComponents();
 		}
 	}

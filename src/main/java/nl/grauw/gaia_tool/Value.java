@@ -37,11 +37,11 @@ public class Value extends Observable {
 	 * a Parameter observable update notification.
 	 * 
 	 * @param source The source of the update.
-	 * @param pc The update’s event object.
+	 * @param change The update’s event object.
 	 * @return True if the value has changed.
 	 */
-	public boolean testChanged(Parameters source, ParameterChange pc) {
-		return source == parameters && pc.includes(offset);
+	public boolean testChanged(Parameters source, ParameterChange change) {
+		return source == parameters && change.includes(offset);
 	}
 	
 }

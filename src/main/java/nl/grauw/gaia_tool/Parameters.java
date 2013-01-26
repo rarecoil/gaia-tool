@@ -91,11 +91,11 @@ public class Parameters extends Observable {
 	
 	/**
 	 * Returns whether the data in the specified range has changed since the last update.
-	 * @param pc The ParameterChange object to take offset and length from.
+	 * @param change The ParameterChange object to take offset and length from.
 	 * @return True if the data has changed.
 	 */
-	public boolean hasChanged(ParameterChange pc) {
-		return hasChanged(pc.getOffset(), pc.getLength());
+	public boolean hasChanged(ParameterChange change) {
+		return hasChanged(change.getOffset(), change.getLength());
 	}
 	
 	/**

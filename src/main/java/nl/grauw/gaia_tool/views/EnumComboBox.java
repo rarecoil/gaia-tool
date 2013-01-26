@@ -63,8 +63,8 @@ public class EnumComboBox extends JPanel {
 				update((Parameters) source, (ParameterChange) detail);
 		}
 		
-		public void update(Parameters source, ParameterChange detail) {
-			if (value.testChanged(source, detail)) {
+		public void update(Parameters source, ParameterChange change) {
+			if (value.testChanged(source, change)) {
 				int ordinal = value.getValue().ordinal();
 				fireContentsChanged(this, ordinal, ordinal);
 			}

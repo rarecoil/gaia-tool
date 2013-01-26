@@ -114,8 +114,8 @@ public class ValueSpinner extends JPanel {
 				update((Parameters) source, (ParameterChange) detail);
 		}
 		
-		public void update(Parameters source, ParameterChange detail) {
-			if (value.testChanged(source, detail)) {
+		public void update(Parameters source, ParameterChange change) {
+			if (value.testChanged(source, change)) {
 				fireStateChanged();
 			}
 		}

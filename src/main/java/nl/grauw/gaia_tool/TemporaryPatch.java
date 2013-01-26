@@ -39,22 +39,22 @@ public class TemporaryPatch extends GaiaPatch implements ParameterChangeListener
 	}
 	
 	@Override
-	public void parameterChange(Parameters source, ParameterChange arg) {
-		if (source.hasChanged(arg)) {
+	public void parameterChange(Parameters source, ParameterChange change) {
+		if (source.hasChanged(change)) {
 			if (getGaia().getSynchronize()) {
-				getGaia().sendDataTransmission(source, arg.getOffset(), arg.getLength());
+				getGaia().sendDataTransmission(source, change.getOffset(), change.getLength());
 			}
 			// reload effect parameters when effect type changes
-			if (source == getDistortion() && arg.getOffset() == 0x00 && arg.getLength() < 0x11) {
+			if (source == getDistortion() && change.getOffset() == 0x00 && change.getLength() < 0x11) {
 				loadData(getDistortion().getAddress().add(0x01), 0x10);
 			}
-			if (source == getFlanger() && arg.getOffset() == 0x00 && arg.getLength() < 0x11) {
+			if (source == getFlanger() && change.getOffset() == 0x00 && change.getLength() < 0x11) {
 				loadData(getFlanger().getAddress().add(0x01), 0x10);
 			}
-			if (source == getDelay() && arg.getOffset() == 0x00 && arg.getLength() < 0x15) {
+			if (source == getDelay() && change.getOffset() == 0x00 && change.getLength() < 0x15) {
 				loadData(getDelay().getAddress().add(0x01), 0x14);
 			}
-			if (source == getReverb() && arg.getOffset() == 0x00 && arg.getLength() < 0x10) {
+			if (source == getReverb() && change.getOffset() == 0x00 && change.getLength() < 0x10) {
 				loadData(getReverb().getAddress().add(0x01), 0x10);
 			}
 		}

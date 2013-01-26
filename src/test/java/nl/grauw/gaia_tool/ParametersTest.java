@@ -127,10 +127,10 @@ public class ParametersTest {
 		public int callCount = 0;
 		public Parameters lastSource = null;
 		public ParameterChange lastChange = null;
-		public void parameterChange(Parameters source, ParameterChange detail) {
+		public void parameterChange(Parameters source, ParameterChange change) {
 			callCount++;
 			lastSource = source;
-			lastChange = detail;
+			lastChange = change;
 		}
 	}
 	

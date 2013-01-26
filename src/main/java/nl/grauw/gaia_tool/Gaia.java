@@ -131,11 +131,11 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	}
 	
 	@Override
-	public void parameterChange(Parameters source, ParameterChange arg) {
-		if (getSynchronize() && source.hasChanged(arg)) {
-			sendDataTransmission(source, arg.getOffset(), arg.getLength());
+	public void parameterChange(Parameters source, ParameterChange change) {
+		if (getSynchronize() && source.hasChanged(change)) {
+			sendDataTransmission(source, change.getOffset(), change.getLength());
 		}
-		if (source == system && arg.includes(0x19)) {	// Tx edit data
+		if (source == system && change.includes(0x19)) {	// Tx edit data
 			notifyObservers("synchronize");
 		}
 	}
@@ -506,8 +506,8 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	
 	private void testControlChange(final int i) {
 		temporaryPatch.getTone(1).addParameterChangeListener(new ParameterChangeListener() {
-			public void parameterChange(Parameters source, ParameterChange detail) {
-				if (detail.getOffset() == 0x03) {
+			public void parameterChange(Parameters source, ParameterChange change) {
+				if (change.getOffset() == 0x03) {
 					source.removeParameterChangeListener(this);
 					
 					java.lang.System.out.print(((Tone)source).getOSCPitch().getValue() + ", ");
