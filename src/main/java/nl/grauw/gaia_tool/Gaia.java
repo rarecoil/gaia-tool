@@ -31,6 +31,7 @@ import nl.grauw.gaia_tool.Address.AddressException;
 import nl.grauw.gaia_tool.Note.NoteName;
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.Parameters.ParameterChangeListener;
+import nl.grauw.gaia_tool.Patch.PatchChangeListener;
 import nl.grauw.gaia_tool.messages.ActiveSensingMessage;
 import nl.grauw.gaia_tool.messages.ControlChangeMessage;
 import nl.grauw.gaia_tool.messages.DataRequest1;
@@ -42,7 +43,6 @@ import nl.grauw.gaia_tool.messages.NoteOnMessage;
 import nl.grauw.gaia_tool.messages.ProgramChangeMessage;
 import nl.grauw.gaia_tool.messages.ControlChangeMessage.Controller;
 import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.System;
 import nl.grauw.gaia_tool.parameters.Tone;
 
@@ -493,8 +493,8 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	public void testControlChange() {
 		if (temporaryPatch.getTone(1) == null) {
 			temporaryPatch.loadTone(1);
-			temporaryPatch.addObserver(new Observer() {
-				public void update(Observable source, Object detail) {
+			temporaryPatch.addPatchChangeListener(new PatchChangeListener() {
+				public void patchChange(Patch patch, String detail) {
 					if ("tones".equals(detail))
 						testControlChange();
 				}

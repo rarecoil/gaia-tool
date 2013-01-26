@@ -17,6 +17,7 @@ package nl.grauw.gaia_tool;
 
 import static org.junit.Assert.*;
 
+import nl.grauw.gaia_tool.Patch.PatchChangeListener;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommonTest;
 import nl.grauw.gaia_tool.parameters.ArpeggioPatternTest;
 import nl.grauw.gaia_tool.parameters.DelayTest;
@@ -76,6 +77,37 @@ public class PatchTest {
 		b.getArpeggioCommon().getArpeggioDuration().setValue(ArpeggioDuration._30);
 		
 		assertEquals(false, a.isEqualTo(b));
+	}
+	
+	@Test
+	public void testPatchChangeListener() {
+		Patch p = createTestPatch();
+		TestPatchChangeListener listener = new TestPatchChangeListener();
+		
+		p.addPatchChangeListener(listener);
+		
+		assertEquals(true, p.hasPatchChangeListener(listener));
+		
+		p.setFlanger(FlangerTest.createTestParameters());
+		
+		assertEquals(1, listener.callCount);
+		assertEquals(p, listener.lastSource);
+		assertEquals("flanger", listener.lastDetail);
+		
+		p.removePatchChangeListener(listener);
+		
+		assertEquals(false, p.hasPatchChangeListener(listener));
+	}
+	
+	private static class TestPatchChangeListener implements PatchChangeListener {
+		public int callCount = 0;
+		public Patch lastSource = null;
+		public String lastDetail = null;
+		public void patchChange(Patch source, String detail) {
+			callCount++;
+			lastSource = source;
+			lastDetail = detail;
+		}
 	}
 	
 }

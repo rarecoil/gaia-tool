@@ -15,7 +15,10 @@
  */
 package nl.grauw.gaia_tool;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import nl.grauw.gaia_tool.Address.AddressException;
@@ -40,7 +43,9 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	private Reverb reverb;
 	private ArpeggioCommon arpeggioCommon;
 	private ArpeggioPattern[] arpeggioPatterns = new ArpeggioPattern[16];
-
+	
+	private List<PatchChangeListener> changeListeners = Collections.synchronizedList(new ArrayList<PatchChangeListener>());
+	
 	public Patch() {
 		super();
 	}
@@ -125,14 +130,14 @@ public class Patch extends Observable implements Iterable<Parameters> {
 		arpeggioCommon = null;
 		for (int i = 0; i < 16; i++)
 			arpeggioPatterns[i] = null;
-		notifyObservers("common");
-		notifyObservers("tones");
-		notifyObservers("distortion");
-		notifyObservers("flanger");
-		notifyObservers("delay");
-		notifyObservers("reverb");
-		notifyObservers("arpeggioCommon");
-		notifyObservers("arpeggioPatterns");
+		firePatchChange("common");
+		firePatchChange("tones");
+		firePatchChange("distortion");
+		firePatchChange("flanger");
+		firePatchChange("delay");
+		firePatchChange("reverb");
+		firePatchChange("arpeggioCommon");
+		firePatchChange("arpeggioPatterns");
 	}
 	
 	public boolean isComplete() {
@@ -183,7 +188,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 
 	protected void setCommon(PatchCommon common) {
 		this.common = common;
-		notifyObservers("common");
+		firePatchChange("common");
 	}
 
 	public Iterable<Tone> getTones() {
@@ -209,7 +214,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 			throw new RuntimeException("Tone number mismatch.");
 		
 		this.tones[number - 1] = tone;
-		notifyObservers("tones");
+		firePatchChange("tones");
 	}
 
 	public Distortion getDistortion() {
@@ -218,7 +223,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 
 	protected void setDistortion(Distortion distortion) {
 		this.distortion = distortion;
-		notifyObservers("distortion");
+		firePatchChange("distortion");
 	}
 
 	public Flanger getFlanger() {
@@ -227,7 +232,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 
 	protected void setFlanger(Flanger flanger) {
 		this.flanger = flanger;
-		notifyObservers("flanger");
+		firePatchChange("flanger");
 	}
 
 	public Delay getDelay() {
@@ -236,7 +241,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 
 	protected void setDelay(Delay delay) {
 		this.delay = delay;
-		notifyObservers("delay");
+		firePatchChange("delay");
 	}
 
 	public Reverb getReverb() {
@@ -245,7 +250,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 
 	protected void setReverb(Reverb reverb) {
 		this.reverb = reverb;
-		notifyObservers("reverb");
+		firePatchChange("reverb");
 	}
 
 	public ArpeggioCommon getArpeggioCommon() {
@@ -254,7 +259,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 
 	protected void setArpeggioCommon(ArpeggioCommon arpeggioCommon) {
 		this.arpeggioCommon = arpeggioCommon;
-		notifyObservers("arpeggioCommon");
+		firePatchChange("arpeggioCommon");
 	}
 
 	public Iterable<ArpeggioPattern> getArpeggioPatterns() {
@@ -280,7 +285,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 			throw new RuntimeException("Note number mismatch.");
 		
 		this.arpeggioPatterns[note - 1] = arpeggioPattern;
-		notifyObservers("arpeggioPatterns");
+		firePatchChange("arpeggioPatterns");
 	}
 
 	/**
@@ -333,6 +338,28 @@ public class Patch extends Observable implements Iterable<Parameters> {
 			throw new UnsupportedOperationException();
 		}
 		
+	}
+	
+	public void addPatchChangeListener(PatchChangeListener listener) {
+		changeListeners.add(listener);
+	}
+
+	public boolean hasPatchChangeListener(PatchChangeListener listener) {
+		return changeListeners.contains(listener);
+	}
+	
+	public void removePatchChangeListener(PatchChangeListener listener) {
+		changeListeners.remove(listener);
+	}
+	
+	private void firePatchChange(String parametersName) {
+		for (PatchChangeListener listener : new ArrayList<PatchChangeListener>(changeListeners))
+			listener.patchChange(this, parametersName);
+		notifyObservers(parametersName);
+	}
+	
+	public interface PatchChangeListener {
+		public void patchChange(Patch patch, String parametersName);
 	}
 	
 	public static class IncompletePatchException extends Exception {

@@ -15,13 +15,12 @@
  */
 package nl.grauw.gaia_tool;
 
-import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
+import nl.grauw.gaia_tool.Patch.PatchChangeListener;
 
 /**
  * Utility class that requests all missing data in a patch.
  */
-public class PatchDataRequester implements Observer {
+public class PatchDataRequester implements PatchChangeListener {
 	
 	public interface PatchCompleteListener {
 		
@@ -46,8 +45,8 @@ public class PatchDataRequester implements Observer {
 	 * data from the GAIA if that’s the case.
 	 */
 	public void requestMissingParameters() {
-		if (!patch.hasObserver(this)) {
-			patch.addObserver(this);
+		if (!patch.hasPatchChangeListener(this)) {
+			patch.addPatchChangeListener(this);
 		}
 		if (patch.getCommon() == null) {
 			patch.loadCommon();
@@ -75,13 +74,13 @@ public class PatchDataRequester implements Observer {
 				}
 			}
 			// done
-			patch.removeObserver(this);
+			patch.removePatchChangeListener(this);
 			listener.patchComplete(patch);
 		}
 	}
 	
 	@Override
-	public void update(Observable source, Object detail) {
+	public void patchChange(Patch source, String detail) {
 		if (source == patch && ("common".equals(detail) || "tones".equals(detail) || "distortion".equals(detail) ||
 				"flanger".equals(detail) || "delay".equals(detail) || "reverb".equals(detail) ||
 				"arpeggioCommon".equals(detail) || "arpeggioPatterns".equals(detail))) {
