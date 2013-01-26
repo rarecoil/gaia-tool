@@ -17,6 +17,8 @@ package nl.grauw.gaia_tool;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import nl.grauw.gaia_tool.mvc.Observable;
 import nl.grauw.gaia_tool.Address.AddressException;
@@ -31,7 +33,7 @@ public class Parameters extends Observable {
 	private byte[] originalData;
 	private byte[] data;
 	
-	private ArrayList<ParameterChangeListener> changeListeners = new ArrayList<ParameterChangeListener>();
+	private List<ParameterChangeListener> changeListeners = Collections.synchronizedList(new ArrayList<ParameterChangeListener>());
 	
 	/**
 	 * Constructs a new Parameters object.
