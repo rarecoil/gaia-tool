@@ -18,8 +18,6 @@ package nl.grauw.gaia_tool;
 import nl.grauw.gaia_tool.Parameters.ParameterChange;
 import nl.grauw.gaia_tool.Parameters.ParameterChangeListener;
 import nl.grauw.gaia_tool.messages.ControlChangeMessage;
-import nl.grauw.gaia_tool.mvc.Observable;
-import nl.grauw.gaia_tool.mvc.Observer;
 import nl.grauw.gaia_tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia_tool.parameters.ArpeggioPattern;
 import nl.grauw.gaia_tool.parameters.Delay;
