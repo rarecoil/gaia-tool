@@ -340,7 +340,7 @@ public class Parameters extends Observable {
 	}
 	
 	private void fireParameterChange(ParameterChange change) {
-		for (ParameterChangeListener listener : changeListeners)
+		for (ParameterChangeListener listener : new ArrayList<ParameterChangeListener>(changeListeners))
 			listener.parameterChange(this, change);
 		notifyObservers(change);
 	}
