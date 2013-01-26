@@ -118,6 +118,8 @@ public class App {
 		
 		@Override
 		public void uncaughtException(Thread thread, Throwable exception) {
+			exception.printStackTrace();
+			
 			submitErrorLog(exception);
 			showErrorDialog(exception);
 			System.exit(1);
