@@ -18,6 +18,7 @@ package nl.grauw.gaia_tool.views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
@@ -26,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.table.AbstractTableModel;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.NoteValue;
@@ -122,6 +124,8 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 	private static class ArpeggioTable extends JTable {
 		private static final long serialVersionUID = 1L;
 		
+		private Object lastValue = null;
+		
 		public ArpeggioTable(ArpeggioTableModel model) {
 			super(model);
 			setFillsViewportHeight(true);
@@ -148,6 +152,24 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 				"A 0 indicates a rest, and you can enter “Tie” to connect two steps together." +
 				"</html>"
 			);
+		}
+		
+		@Override
+		protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+			// repeat last entered value when pressing enter on cell
+			if (e.getKeyCode() == KeyEvent.VK_ENTER && pressed && condition == ArpeggioView.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT) {
+				if (!isEditing() && lastValue != null) {
+					setValueAt(lastValue, getSelectedRow(), getSelectedColumn());
+				}
+			}
+			
+			return super.processKeyBinding(ks, e, condition, pressed);
+		}
+		
+		@Override
+		public void setValueAt(Object aValue, int row, int column) {
+			lastValue = aValue;
+			super.setValueAt(aValue, row, column);
 		}
 		
 		private static class CellEditor extends DefaultCellEditor {
