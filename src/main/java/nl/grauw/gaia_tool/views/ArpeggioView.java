@@ -27,7 +27,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import nl.grauw.gaia_tool.Note;
 import nl.grauw.gaia_tool.NoteValue;
 import nl.grauw.gaia_tool.Parameters;
@@ -48,7 +47,6 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 	private ArpeggioCommonView arpeggioCommonView;
 	private JScrollPane patternScrollPane;
 	private JTable patternTable;
-	private JTextField editField;
 	
 	public ArpeggioView(Patch patch) {
 		this.patch = patch;
@@ -116,21 +114,19 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 	
 	private JTable getPatternTable() {
 		if (patternTable == null) {
-			TableModel model = new ArpeggioModel();
-			patternTable = new JTable(model);
-			patternTable.setFillsViewportHeight(true);
-			patternTable.setDefaultEditor(Object.class, new DefaultCellEditor(getEditField()) {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Component getTableCellEditorComponent(JTable table,
-						Object value, boolean isSelected, int row, int column) {
-					// selects the text when starting to edit
-					JTextField editField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
-					editField.selectAll();
-					return editField;
-				}
-			});
-			patternTable.getTableHeader().setToolTipText(
+			patternTable = new ArpeggioTable(new ArpeggioModel());
+		}
+		return patternTable;
+	}
+	
+	private static class ArpeggioTable extends JTable {
+		private static final long serialVersionUID = 1L;
+		
+		public ArpeggioTable(ArpeggioModel model) {
+			super(model);
+			setFillsViewportHeight(true);
+			setDefaultEditor(Object.class, new CellEditor());
+			getTableHeader().setToolTipText(
 				"<html>" +
 				"The note column specifies the “original note” of each pattern. This can be either<br>" +
 				"a note in the notation “C#4” (note letter, optional sharp, and octave number), or<br>" +
@@ -153,23 +149,40 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 				"</html>"
 			);
 		}
-		return patternTable;
-	}
-	
-	private JTextField getEditField() {
-		if (editField == null) {
-			editField = new JTextField() {
+		
+		private static class CellEditor extends DefaultCellEditor {
+			private static final long serialVersionUID = 1L;
+			
+			public CellEditor() {
+				super(new CellEditField());
+			}
+			
+			@Override
+			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+				// selects the text when starting to edit (by typing)
+				JTextField editField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
+				editField.selectAll();
+				return editField;
+			}
+			
+			private static class CellEditField extends JTextField {
 				private static final long serialVersionUID = 1L;
+				
+				public CellEditField() {
+					setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				}
+				
 				@Override
-				// selects the text on focus
 				public void requestFocus() {
+					// selects the text on focus (by double-clicking)
 					selectAll();
 					super.requestFocus();
 				}
-			};
-			editField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				
+			}
+			
 		}
-		return editField;
+		
 	}
 	
 	public class ArpeggioModel extends AbstractTableModel implements AWTObserver {
