@@ -114,7 +114,7 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 	
 	private JTable getPatternTable() {
 		if (patternTable == null) {
-			patternTable = new ArpeggioTable(new ArpeggioModel());
+			patternTable = new ArpeggioTable(new ArpeggioTableModel());
 		}
 		return patternTable;
 	}
@@ -122,7 +122,7 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 	private static class ArpeggioTable extends JTable {
 		private static final long serialVersionUID = 1L;
 		
-		public ArpeggioTable(ArpeggioModel model) {
+		public ArpeggioTable(ArpeggioTableModel model) {
 			super(model);
 			setFillsViewportHeight(true);
 			setDefaultEditor(Object.class, new CellEditor());
@@ -185,10 +185,10 @@ public class ArpeggioView extends JPanel implements AWTObserver {
 		
 	}
 	
-	public class ArpeggioModel extends AbstractTableModel implements AWTObserver {
+	public class ArpeggioTableModel extends AbstractTableModel implements AWTObserver {
 		private static final long serialVersionUID = 1L;
 		
-		public ArpeggioModel() {
+		public ArpeggioTableModel() {
 			patch.addObserver(this);
 			addCommonObserver();
 			addPatternObservers();
