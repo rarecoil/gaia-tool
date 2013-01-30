@@ -17,15 +17,15 @@ package nl.grauw.gaia.tool.messages;
 
 import javax.sound.midi.MidiMessage;
 
-public class GenericMessage extends MidiMessage {
+public class Message extends MidiMessage {
 	
-	public GenericMessage(byte[] message) {
+	public Message(byte[] message) {
 		super(message);
 	}
 
 	@Override
 	public Object clone() {
-		return new GenericMessage(this.getMessage());
+		return new Message(this.getMessage());
 	}
 	
 	protected static String toHex(int number) {

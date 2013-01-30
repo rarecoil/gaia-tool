@@ -23,7 +23,7 @@ import javax.sound.midi.SysexMessage;
 import nl.grauw.gaia.tool.messages.ActiveSensingMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage;
 import nl.grauw.gaia.tool.messages.DataSet1;
-import nl.grauw.gaia.tool.messages.GenericMessage;
+import nl.grauw.gaia.tool.messages.Message;
 import nl.grauw.gaia.tool.messages.IdentityReply;
 import nl.grauw.gaia.tool.messages.NoteOffMessage;
 import nl.grauw.gaia.tool.messages.NoteOnMessage;
@@ -61,7 +61,7 @@ public class ResponseReceiver implements Receiver {
 		} else if (message instanceof ShortMessage) {
 			return processMidiMessage((ShortMessage) message);
 		}
-		return new GenericMessage(message.getMessage());
+		return new Message(message.getMessage());
 	}
 	
 	public MidiMessage processMidiMessage(SysexMessage message) {
@@ -77,7 +77,7 @@ public class ResponseReceiver implements Receiver {
 				}
 			}
 		}
-		return new GenericMessage(message.getMessage());
+		return new Message(message.getMessage());
 	}
 	
 	public MidiMessage processMidiMessage(ShortMessage message) {
@@ -94,7 +94,7 @@ public class ResponseReceiver implements Receiver {
 		} else if (message.getStatus() == ShortMessage.ACTIVE_SENSING) {
 			return new ActiveSensingMessage(message.getMessage());
 		}
-		return new GenericMessage(message.getMessage());
+		return new Message(message.getMessage());
 	}
 
 }
