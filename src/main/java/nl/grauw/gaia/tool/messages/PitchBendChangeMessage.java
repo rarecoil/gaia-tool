@@ -20,8 +20,8 @@ import javax.sound.midi.ShortMessage;
 
 public class PitchBendChangeMessage extends ShortMessage {
 	
-	public PitchBendChangeMessage(ShortMessage sm) {
-		super(sm.getMessage());
+	public PitchBendChangeMessage(byte[] message) {
+		super(message);
 	}
 	
 	public PitchBendChangeMessage(int channel, int value) throws InvalidMidiDataException {

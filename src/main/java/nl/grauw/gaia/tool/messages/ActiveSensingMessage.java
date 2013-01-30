@@ -19,8 +19,8 @@ import javax.sound.midi.ShortMessage;
 
 public class ActiveSensingMessage extends ShortMessage {
 	
-	public ActiveSensingMessage(ShortMessage sm) {
-		super(sm.getMessage());
+	public ActiveSensingMessage(byte[] message) {
+		super(message);
 	}
 	
 	public String toString() {

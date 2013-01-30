@@ -15,15 +15,13 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.SysexMessage;
-
 public class IdentityReply extends UniversalSysex {
 	
 	final static int GENERAL_INFORMATION = 0x06;
 	final static int IDENTITY_REPLY = 0x02;
 	
-	public IdentityReply(SysexMessage sem) {
-		super(sem.getMessage());
+	public IdentityReply(byte[] message) {
+		super(message);
 	}
 	
 	public int getIdNumber() {

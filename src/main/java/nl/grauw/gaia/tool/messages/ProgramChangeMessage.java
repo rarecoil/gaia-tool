@@ -20,8 +20,8 @@ import javax.sound.midi.ShortMessage;
 
 public class ProgramChangeMessage extends ShortMessage {
 	
-	public ProgramChangeMessage(ShortMessage sm) {
-		super(sm.getMessage());
+	public ProgramChangeMessage(byte[] message) {
+		super(message);
 	}
 	
 	public ProgramChangeMessage(int channel, int program) throws InvalidMidiDataException {

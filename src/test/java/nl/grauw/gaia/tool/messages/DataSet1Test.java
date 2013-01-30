@@ -36,7 +36,7 @@ public class DataSet1Test {
 				0x01, 0x23, 0x45, 0x67, 0x76, 0x54, 0x32, 0x10, 0x24, (byte)0xF7};
 		SysexMessage sem = new SysexMessage();
 		sem.setMessage(semData, semData.length);
-		MidiMessage mm = new DataSet1(sem);
+		MidiMessage mm = new DataSet1(sem.getMessage());
 		
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x41, 0x7F, 0x00, 0x00, 0x41, 0x12,

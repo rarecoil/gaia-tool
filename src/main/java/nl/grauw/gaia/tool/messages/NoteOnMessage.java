@@ -22,8 +22,8 @@ import nl.grauw.gaia.tool.Note;
 
 public class NoteOnMessage extends ShortMessage {
 	
-	public NoteOnMessage(ShortMessage sm) {
-		super(sm.getMessage());
+	public NoteOnMessage(byte[] message) {
+		super(message);
 	}
 	
 	public NoteOnMessage(int channel, Note note, int velocity) throws InvalidMidiDataException {

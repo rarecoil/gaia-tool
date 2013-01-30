@@ -19,13 +19,13 @@ import javax.sound.midi.MidiMessage;
 
 public class GenericMessage extends MidiMessage {
 	
-	public GenericMessage(MidiMessage mm) {
-		super(mm.getMessage());
+	public GenericMessage(byte[] message) {
+		super(message);
 	}
 
 	@Override
 	public Object clone() {
-		return new GenericMessage(this);
+		return new GenericMessage(this.getMessage());
 	}
 	
 	protected static String toHex(int number) {

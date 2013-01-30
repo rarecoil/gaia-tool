@@ -61,7 +61,7 @@ public class ResponseReceiver implements Receiver {
 		} else if (message instanceof ShortMessage) {
 			return processMidiMessage((ShortMessage) message);
 		}
-		return new GenericMessage(message);
+		return new GenericMessage(message.getMessage());
 	}
 	
 	public MidiMessage processMidiMessage(SysexMessage message) {
@@ -69,32 +69,32 @@ public class ResponseReceiver implements Receiver {
 			byte[] data = message.getData();
 			if (data.length > 0 && data[0] == UNIVERSAL_NONREALTIME_SYSEX) {
 				if (data.length > 3 && data[2] == GENERAL_INFORMATION && data[3] == IDENTITY_REPLY) {
-					return new IdentityReply(message);
+					return new IdentityReply(message.getMessage());
 				}
 			} else if (data.length > 4 && data[0] == ROLAND_ID && data[2] == 0 && data[3] == 0 && data[4] == MODEL_SH01) {
 				if (data.length > 5 && data[5] == COMMAND_DT1) {
-					return new DataSet1(message);
+					return new DataSet1(message.getMessage());
 				}
 			}
 		}
-		return new GenericMessage(message);
+		return new GenericMessage(message.getMessage());
 	}
 	
 	public MidiMessage processMidiMessage(ShortMessage message) {
 		if (message.getCommand() == ShortMessage.NOTE_ON) {
-			return new NoteOnMessage(message);
+			return new NoteOnMessage(message.getMessage());
 		} else if (message.getCommand() == ShortMessage.NOTE_OFF) {
-			return new NoteOffMessage(message);
+			return new NoteOffMessage(message.getMessage());
 		} else if (message.getCommand() == ShortMessage.PROGRAM_CHANGE) {
-			return new ProgramChangeMessage(message);
+			return new ProgramChangeMessage(message.getMessage());
 		} else if (message.getCommand() == ShortMessage.CONTROL_CHANGE) {
-			return new ControlChangeMessage(message);
+			return new ControlChangeMessage(message.getMessage());
 		} else if (message.getCommand() == ShortMessage.PITCH_BEND) {
-			return new PitchBendChangeMessage(message);
+			return new PitchBendChangeMessage(message.getMessage());
 		} else if (message.getStatus() == ShortMessage.ACTIVE_SENSING) {
-			return new ActiveSensingMessage(message);
+			return new ActiveSensingMessage(message.getMessage());
 		}
-		return new GenericMessage(message);
+		return new GenericMessage(message.getMessage());
 	}
 
 }

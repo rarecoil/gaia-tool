@@ -78,8 +78,8 @@ public class ControlChangeMessage extends ShortMessage {
 		}
 	}
 	
-	public ControlChangeMessage(ShortMessage sm) {
-		super(sm.getMessage());
+	public ControlChangeMessage(byte[] message) {
+		super(message);
 	}
 	
 	public ControlChangeMessage(int channel, Controller controller, int value) throws InvalidMidiDataException {

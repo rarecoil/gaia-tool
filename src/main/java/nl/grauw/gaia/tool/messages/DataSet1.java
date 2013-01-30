@@ -31,8 +31,8 @@ public class DataSet1 extends SysexMessage {
 	final static int MODEL_SH01 = 0x41;
 	final static int COMMAND_DT1 = 0x12;
 	
-	public DataSet1(SysexMessage sem) {
-		super(sem.getMessage());
+	public DataSet1(byte[] message) {
+		super(message);
 		
 		byte[] data = getData();
 		if (data[0] != ROLAND_ID || data[2] != 0 || data[3] != 0 || data[4] != MODEL_SH01 || data[5] != COMMAND_DT1)
