@@ -19,12 +19,10 @@ import static org.junit.Assert.*;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
-import javax.sound.midi.SysexMessage;
 
 import nl.grauw.gaia.tool.Address;
 import nl.grauw.gaia.tool.messages.DataSet1;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class DataSet1Test {
@@ -33,9 +31,7 @@ public class DataSet1Test {
 	public void testDataSet1SysexMessage() throws InvalidMidiDataException {
 		byte[] semData = {(byte)0xF0, 0x41, 0x7F, 0x00, 0x00, 0x41, 0x12,
 				0x01, 0x23, 0x45, 0x67, 0x76, 0x54, 0x32, 0x10, 0x24, (byte)0xF7};
-		SysexMessage sem = new SysexMessage();
-		sem.setMessage(semData, semData.length);
-		MidiMessage mm = new DataSet1(sem.getMessage());
+		MidiMessage mm = new DataSet1(semData);
 		
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x41, 0x7F, 0x00, 0x00, 0x41, 0x12,
