@@ -42,7 +42,7 @@ public class IdentityRequest extends UniversalSysex {
 	}
 	
 	public String toString() {
-		String device = getDeviceID() == UniversalSysex.BROADCAST_DEVICE ? "broadcast" : String.format("%02XH", getDeviceID());
+		String device = getDeviceId() == UniversalSysex.BROADCAST_DEVICE ? "broadcast" : String.format("%02XH", getDeviceId());
 		return "Identity request message. Device ID: " + device + ".";
 	}
 	
