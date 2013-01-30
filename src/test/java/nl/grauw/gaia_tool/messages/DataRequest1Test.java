@@ -24,15 +24,8 @@ import nl.grauw.gaia_tool.Address;
 
 import org.junit.Test;
 
-/**
- * @author Grauw
- *
- */
 public class DataRequest1Test {
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.messages.DataRequest1#DataRequest1(Address, int)}.
-	 */
 	@Test
 	public void testDataRequest1AddressInt() throws InvalidMidiDataException {
 		MidiMessage mm = new DataRequest1(new Address(0x01, 0x23, 0x45, 0x67), 0x17F);
@@ -42,9 +35,6 @@ public class DataRequest1Test {
 		assertArrayEquals(expected, message);
 	}
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.messages.DataRequest1#DataRequest1(int, Address, int)}.
-	 */
 	@Test
 	public void testDataRequest1IntAddressInt() throws InvalidMidiDataException {
 		MidiMessage mm = new DataRequest1(0x10, new Address(0x01, 0x23, 0x45, 0x67), 0x17F);

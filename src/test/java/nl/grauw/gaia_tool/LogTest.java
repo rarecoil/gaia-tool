@@ -19,24 +19,14 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-/**
- * @author Grauw
- *
- */
 public class LogTest {
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.Log#getLog()}.
-	 */
 	@Test
 	public void testGetLog() {
 		Log l = new Log();
 		assertTrue("".equals(l.getLog()));
 	}
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.Log#log(Object)}.
-	 */
 	@Test
 	public void testLog() {
 		Log l = new Log();

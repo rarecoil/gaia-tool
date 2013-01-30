@@ -24,15 +24,8 @@ import nl.grauw.gaia_tool.messages.GMSystemOff;
 
 import org.junit.Test;
 
-/**
- * @author Grauw
- *
- */
 public class GMSystemOffTest {
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.messages.GMSystemOff#GMSystemOff()}.
-	 */
 	@Test
 	public void testGMSystemOff() throws InvalidMidiDataException {
 		MidiMessage mm = new GMSystemOff();

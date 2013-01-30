@@ -28,10 +28,6 @@ import nl.grauw.gaia_tool.parameters.PatchCommon.SyncRingSelect;
 
 import org.junit.Test;
 
-/**
- * @author Grauw
- *
- */
 public class PatchCommonTest {
 	
 	static Address testAddress = new Address(0x10, 0x00, 0x00, 0x00);

@@ -26,15 +26,8 @@ import nl.grauw.gaia_tool.Address;
 import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- * @author Grauw
- *
- */
 public class DataSet1Test {
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.messages.DataSet1#DataSet1(javax.sound.midi.SysexMessage)}.
-	 */
 	@Test
 	@Ignore
 	public void testDataSet1SysexMessage() throws InvalidMidiDataException {
@@ -50,9 +43,6 @@ public class DataSet1Test {
 		assertArrayEquals(expected, message);
 	}
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.messages.DataSet1#DataSet1(nl.grauw.gaia_tool.Address, byte[])}.
-	 */
 	@Test
 	public void testDataSet1AddressByteArray() throws InvalidMidiDataException {
 		byte[] data = { 0x76, 0x54, 0x32, 0x10 };
@@ -63,9 +53,6 @@ public class DataSet1Test {
 		assertArrayEquals(expected, message);
 	}
 
-	/**
-	 * Test method for {@link nl.grauw.gaia_tool.messages.DataSet1#DataSet1(int, nl.grauw.gaia_tool.Address, byte[])}.
-	 */
 	@Test
 	public void testDataSet1IntAddressByteArray() throws InvalidMidiDataException {
 		byte[] data = { 0x76, 0x54, 0x32, 0x10 };

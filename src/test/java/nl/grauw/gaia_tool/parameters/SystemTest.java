@@ -27,10 +27,6 @@ import nl.grauw.gaia_tool.parameters.System.RecorderMetronomeMode;
 
 import org.junit.Test;
 
-/**
- * @author Grauw
- *
- */
 public class SystemTest {
 	
 	static Address testAddress = new Address(0x01, 0x00, 0x00, 0x00);
