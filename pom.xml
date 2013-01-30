@@ -33,7 +33,7 @@
 	</scm>
 	
 	<properties>
-		<mainClass>nl.grauw.gaia_tool.App</mainClass>
+		<mainClass>nl.grauw.gaia.tool.App</mainClass>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
@@ -210,7 +210,7 @@
 								</goals>
 								<configuration>
 									<bundleName>${project.name}</bundleName>
-									<mainClass>nl.grauw.gaia_tool.App</mainClass>
+									<mainClass>nl.grauw.gaia.tool.App</mainClass>
 									<jvmVersion>1.6+</jvmVersion>
 									<dictionaryFile>src/main/app-resources/Info.plist</dictionaryFile>
 								</configuration>
@@ -247,7 +247,7 @@
 								</goals>
 								<configuration>
 									<bundleName>${project.name}</bundleName>
-									<mainClass>nl.grauw.gaia_tool.App</mainClass>
+									<mainClass>nl.grauw.gaia.tool.App</mainClass>
 									<jvmVersion>1.6+</jvmVersion>
 									<dictionaryFile>src/main/app-resources/Info.plist</dictionaryFile>
 									<javaApplicationStub>src/main/app-resources/JavaApplicationStub</javaApplicationStub>
