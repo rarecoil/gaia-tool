@@ -27,6 +27,10 @@ public class UniversalSysex extends SysexMessage {
 	final static int UNIVERSAL_NONREALTIME_SYSEX = 0x7E;
 	final static int BROADCAST_DEVICE = 0x7F;
 	
+	public UniversalSysex(byte[] message) {
+		super(message);
+	}
+	
 	public UniversalSysex(int sub_id1, int sub_id2) throws InvalidMidiDataException {
 		this(BROADCAST_DEVICE, sub_id1, sub_id2);
 	}
