@@ -19,12 +19,13 @@ import java.util.Properties;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
+import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
 
 import nl.grauw.gaia.tool.Address.AddressException;
@@ -38,13 +39,16 @@ import nl.grauw.gaia.tool.messages.DataRequest1;
 import nl.grauw.gaia.tool.messages.DataSet1;
 import nl.grauw.gaia.tool.messages.IdentityReply;
 import nl.grauw.gaia.tool.messages.IdentityRequest;
+import nl.grauw.gaia.tool.messages.Message;
 import nl.grauw.gaia.tool.messages.NoteOffMessage;
 import nl.grauw.gaia.tool.messages.NoteOnMessage;
 import nl.grauw.gaia.tool.messages.ProgramChangeMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage.Controller;
+import nl.grauw.gaia.tool.messages.Sysex;
 import nl.grauw.gaia.tool.mvc.Observable;
 import nl.grauw.gaia.tool.parameters.System;
 import nl.grauw.gaia.tool.parameters.Tone;
+
 
 /**
  * Represents the Roland GAIA SH-01 synthesizer
@@ -334,19 +338,36 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	 * Sends a MidiMessage to the GAIA.
 	 * @param message
 	 */
-	public void send(MidiMessage message) {
+	public void send(Message message) {
 		if (!opened)
 			throw new RuntimeException("MIDI connection not open.");
 		
-		receiver.send(message, -1);
+		if (message instanceof Sysex) {
+			receiver.send(new SysexMessageWrapper(message.getMessage()), -1);
+		} else {
+			receiver.send(new ShortMessageWrapper(message.getMessage()), -1);
+		}
+		
 		log.log("Sent: " + message);
+	}
+	
+	private static class SysexMessageWrapper extends SysexMessage {
+		public SysexMessageWrapper(byte[] message) {
+			super(message);
+		}
+	}
+	
+	private static class ShortMessageWrapper extends ShortMessage {
+		public ShortMessageWrapper(byte[] message) {
+			super(message);
+		}
 	}
 	
 	/**
 	 * Receives an incoming MidiMessage object from the ResponseReceiver.
 	 * @param message
 	 */
-	public void receive(MidiMessage message) {
+	public void receive(Message message) {
 		if (!(message instanceof ActiveSensingMessage)) {
 			log.log("Received: " + message);
 		}

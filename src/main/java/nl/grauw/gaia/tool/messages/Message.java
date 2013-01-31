@@ -15,17 +15,48 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.MidiMessage;
-
-public class Message extends MidiMessage {
+public class Message {
+	
+	protected final byte[] message;
 	
 	public Message(byte[] message) {
-		super(message);
+		this.message = message;
+		
+		if (message.length < 1)
+			throw new RuntimeException("Message too short.");
+		if ((message[0] & 0x80) == 0)
+			throw new RuntimeException("Invalid status value.");
+		for (int i = 1; i < message.length; i++)
+			if ((message[i] & 0x80) == 1)
+				throw new RuntimeException("Data byte out of range.");
 	}
-
-	@Override
-	public Object clone() {
-		return new Message(this.getMessage());
+	
+	public byte[] getMessage() {
+		return message.clone();
+	}
+	
+	public int getStatus() {
+		return message[0];
+	}
+	
+	public int getSize() {
+		return message.length;
+	}
+	
+	public int getDataSize() {
+		return message.length - 1;
+	}
+	
+	public byte[] getData() {
+		byte[] copy = new byte[message.length - 1];
+		System.arraycopy(message, 1, copy, 0, copy.length);
+		return copy;
+	}
+	
+	public int getData(int i) {
+		if (i < 0 || i >= (message.length - 1))
+			throw new RuntimeException("Data position out of range.");
+		return message[i + 1];
 	}
 	
 	protected static String toHex(int number) {
@@ -33,7 +64,7 @@ public class Message extends MidiMessage {
 	}
 	
 	public String toString() {
-		String s = "Generic MIDI message. Status code: " + toHex(getStatus()) + ". Body: ";
+		String s = "MIDI message. Status code: " + toHex(getStatus()) + ". Body: ";
 		byte[] message_bytes = getMessage();
 		for (byte message_byte : message_bytes) {
 			s += toHex(message_byte & 0xFF) + " ";

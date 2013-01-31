@@ -16,9 +16,8 @@
 package nl.grauw.gaia.tool.messages;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.ShortMessage;
 
-public class ControlChangeMessage extends ShortMessage {
+public class ControlChangeMessage extends ChannelMessage {
 	
 	public enum Controller {
 		BANK_SELECT(0), MODULATION(1), PORTAMENTO_TIME(5), VOLUME(7), PANPOT(10), EXPRESSION(11),
@@ -87,8 +86,7 @@ public class ControlChangeMessage extends ShortMessage {
 	}
 	
 	public ControlChangeMessage(int channel, int controller, int value) throws InvalidMidiDataException {
-		super();
-		setMessage(CONTROL_CHANGE, channel, controller, value);
+		super(CONTROL_CHANGE, channel, controller, value);
 	}
 	
 	/**
@@ -97,15 +95,15 @@ public class ControlChangeMessage extends ShortMessage {
 	 *         the specified code (get the code through getControllerCode()).
 	 */
 	public Controller getController() {
-		return Controller.getControllerByCode(getData1());
+		return Controller.getControllerByCode(getData(0));
 	}
 	
 	public int getControllerNumber() {
-		return getData1();
+		return getData(0);
 	}
 	
 	public int getValue() {
-		return getData2();
+		return getData(1);
 	}
 	
 	public String toString() {

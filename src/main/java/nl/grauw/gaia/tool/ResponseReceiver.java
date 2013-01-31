@@ -55,7 +55,7 @@ public class ResponseReceiver implements Receiver {
 	public void close() {
 	}
 	
-	public MidiMessage processMidiMessage(MidiMessage message) {
+	public Message processMidiMessage(MidiMessage message) {
 		if (message instanceof SysexMessage) {
 			return processMidiMessage((SysexMessage) message);
 		} else if (message instanceof ShortMessage) {
@@ -64,7 +64,7 @@ public class ResponseReceiver implements Receiver {
 		return new Message(message.getMessage());
 	}
 	
-	public MidiMessage processMidiMessage(SysexMessage message) {
+	public Message processMidiMessage(SysexMessage message) {
 		if (message.getStatus() == SysexMessage.SYSTEM_EXCLUSIVE) {
 			byte[] data = message.getData();
 			if (data.length > 0 && data[0] == UNIVERSAL_NONREALTIME_SYSEX) {
@@ -80,7 +80,7 @@ public class ResponseReceiver implements Receiver {
 		return new Message(message.getMessage());
 	}
 	
-	public MidiMessage processMidiMessage(ShortMessage message) {
+	public Message processMidiMessage(ShortMessage message) {
 		if (message.getCommand() == ShortMessage.NOTE_ON) {
 			return new NoteOnMessage(message.getMessage());
 		} else if (message.getCommand() == ShortMessage.NOTE_OFF) {

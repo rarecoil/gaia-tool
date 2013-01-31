@@ -15,9 +15,7 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.ShortMessage;
-
-public class ActiveSensingMessage extends ShortMessage {
+public class ActiveSensingMessage extends Message {
 	
 	public ActiveSensingMessage(byte[] message) {
 		super(message);

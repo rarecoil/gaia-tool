@@ -18,7 +18,6 @@ package nl.grauw.gaia.tool.messages;
 import static org.junit.Assert.*;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiMessage;
 
 import nl.grauw.gaia.tool.messages.GMSystemOff;
 
@@ -28,7 +27,7 @@ public class GMSystemOffTest {
 
 	@Test
 	public void testGMSystemOff() throws InvalidMidiDataException {
-		MidiMessage mm = new GMSystemOff();
+		Message mm = new GMSystemOff();
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x7E, 0x7F, 0x09, 0x02, (byte)0xF7};
 		assertArrayEquals(expected, message);

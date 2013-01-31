@@ -16,13 +16,11 @@
 package nl.grauw.gaia.tool.messages;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.ShortMessage;
-import javax.sound.midi.SysexMessage;
 
 /**
  * Universal non-realtime system exclusive MIDI message
  */
-public class UniversalSysex extends SysexMessage {
+public class UniversalSysex extends Sysex {
 	
 	final static int UNIVERSAL_NONREALTIME_SYSEX = 0x7E;
 	final static int BROADCAST_DEVICE = 0x7F;
@@ -40,20 +38,22 @@ public class UniversalSysex extends SysexMessage {
 	}
 	
 	public UniversalSysex(int device_id, int sub_id1, int sub_id2, byte[] data) throws InvalidMidiDataException {
-		super();
+		super(createMessage(device_id, sub_id1, sub_id2, data));
+		
 		if (device_id != 0x7F && (device_id < 0x10 || device_id > 0x1F))
 			throw new IllegalArgumentException("Invalid device ID.");
-		
-		byte[] message = new byte[data.length + 5];
-		message[0] = UNIVERSAL_NONREALTIME_SYSEX;
-		message[1] = (byte)device_id;
-		message[2] = (byte)sub_id1;
-		message[3] = (byte)sub_id2;
-		for (int i = 0; i < data.length; i++) {
-			message[4 + i] = data[i];
-		}
-		message[4 + data.length] = (byte)ShortMessage.END_OF_EXCLUSIVE;
-		setMessage(SYSTEM_EXCLUSIVE, message, message.length);
+	}
+	
+	private static byte[] createMessage(int device_id, int sub_id1, int sub_id2, byte[] data) {
+		byte[] message = new byte[data.length + 6];
+		message[0] = (byte)SYSTEM_EXCLUSIVE;
+		message[1] = UNIVERSAL_NONREALTIME_SYSEX;
+		message[2] = (byte)device_id;
+		message[3] = (byte)sub_id1;
+		message[4] = (byte)sub_id2;
+		System.arraycopy(data, 0, message, 5, data.length);
+		message[5 + data.length] = (byte)END_OF_EXCLUSIVE;
+		return message;
 	}
 	
 	public int getDeviceId() {

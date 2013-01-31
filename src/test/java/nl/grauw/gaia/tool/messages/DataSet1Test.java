@@ -18,7 +18,6 @@ package nl.grauw.gaia.tool.messages;
 import static org.junit.Assert.*;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiMessage;
 
 import nl.grauw.gaia.tool.Address;
 import nl.grauw.gaia.tool.messages.DataSet1;
@@ -31,7 +30,7 @@ public class DataSet1Test {
 	public void testDataSet1SysexMessage() throws InvalidMidiDataException {
 		byte[] semData = {(byte)0xF0, 0x41, 0x7F, 0x00, 0x00, 0x41, 0x12,
 				0x01, 0x23, 0x45, 0x67, 0x76, 0x54, 0x32, 0x10, 0x24, (byte)0xF7};
-		MidiMessage mm = new DataSet1(semData);
+		Message mm = new DataSet1(semData);
 		
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x41, 0x7F, 0x00, 0x00, 0x41, 0x12,
@@ -42,7 +41,7 @@ public class DataSet1Test {
 	@Test
 	public void testDataSet1AddressByteArray() throws InvalidMidiDataException {
 		byte[] data = { 0x76, 0x54, 0x32, 0x10 };
-		MidiMessage mm = new DataSet1(new Address(0x01, 0x23, 0x45, 0x67), data);
+		Message mm = new DataSet1(new Address(0x01, 0x23, 0x45, 0x67), data);
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x41, 0x7F, 0x00, 0x00, 0x41, 0x12,
 				0x01, 0x23, 0x45, 0x67, 0x76, 0x54, 0x32, 0x10, 0x24, (byte)0xF7};
@@ -52,7 +51,7 @@ public class DataSet1Test {
 	@Test
 	public void testDataSet1IntAddressByteArray() throws InvalidMidiDataException {
 		byte[] data = { 0x76, 0x54, 0x32, 0x10 };
-		MidiMessage mm = new DataSet1(0x10, new Address(0x01, 0x23, 0x45, 0x67), data);
+		Message mm = new DataSet1(0x10, new Address(0x01, 0x23, 0x45, 0x67), data);
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x41, 0x10, 0x00, 0x00, 0x41, 0x12,
 				0x01, 0x23, 0x45, 0x67, 0x76, 0x54, 0x32, 0x10, 0x24, (byte)0xF7};
