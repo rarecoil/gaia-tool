@@ -33,17 +33,15 @@ public class LogView extends JPanel implements AWTObserver {
 	private static final long serialVersionUID = 1L;
 	private JTextArea logArea;
 	private JScrollPane logScrollPane;
-
-	public LogView(Log l) {
-		initComponents();
-		
-		if (log != null)
-			log.removeObserver(this);
-		log = l;
+	
+	public LogView(Log log) {
+		this.log = log;
 		log.addObserver(this);
+		
+		initComponents();
 		update(log, null);
 	}
-
+	
 	@Override
 	public void update(Observable source, Object detail) {
 		if (source == log) {
