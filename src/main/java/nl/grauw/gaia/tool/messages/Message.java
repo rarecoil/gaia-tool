@@ -36,7 +36,7 @@ public class Message {
 	}
 	
 	public int getStatus() {
-		return message[0];
+		return message[0] & 0xFF;
 	}
 	
 	public int getSize() {
@@ -56,7 +56,7 @@ public class Message {
 	public int getData(int i) {
 		if (i < 0 || i >= (message.length - 1))
 			throw new RuntimeException("Data position out of range.");
-		return message[i + 1];
+		return message[i + 1] & 0xFF;
 	}
 	
 	protected static String toHex(int number) {
