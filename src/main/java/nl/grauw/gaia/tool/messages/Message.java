@@ -27,7 +27,7 @@ public class Message {
 		if ((message[0] & 0x80) == 0)
 			throw new RuntimeException("Invalid status value.");
 		for (int i = 1; i < message.length; i++)
-			if ((message[i] & 0x80) == 1)
+			if ((message[i] & 0x80) != 0 && !((message[i] & 0xFF) == Sysex.END_OF_EXCLUSIVE && (message[0] & 0xFF) == Sysex.SYSTEM_EXCLUSIVE && i == message.length - 1))
 				throw new RuntimeException("Data byte out of range.");
 	}
 	
