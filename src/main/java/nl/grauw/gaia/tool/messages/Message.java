@@ -64,12 +64,13 @@ public class Message {
 	}
 	
 	public String toString() {
-		String s = "MIDI message. Status code: " + toHex(getStatus()) + ". Body: ";
+		StringBuilder builder = new StringBuilder();
 		byte[] message_bytes = getMessage();
 		for (byte message_byte : message_bytes) {
-			s += toHex(message_byte & 0xFF) + " ";
+			builder.append(toHex(message_byte & 0xFF));
+			builder.append(" ");
 		}
-		return s.trim() + ".";
+		return String.format("MIDI message: %s.", builder.toString().trim());
 	}
 
 }
