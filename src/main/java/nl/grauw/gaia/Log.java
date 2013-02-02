@@ -15,11 +15,15 @@
  */
 package nl.grauw.gaia;
 
-import nl.grauw.gaia.tool.mvc.Observable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class Log extends Observable {
+public class Log {
 	
 	private StringBuffer log;
+	
+	private List<LogUpdateListener> updateListeners = Collections.synchronizedList(new ArrayList<LogUpdateListener>());
 	
 	public Log() {
 		log = new StringBuffer();
@@ -29,11 +33,28 @@ public class Log extends Observable {
 		log.append(message.toString());
 		log.append("\n");
 		
-		notifyObservers();
+		fireLogUpdate();
 	}
 	
 	public String getLog() {
 		return log.toString();
+	}
+	
+	public void addUpdateListener(LogUpdateListener listener) {
+		updateListeners.add(listener);
+	}
+	
+	public void removeUpdateListener(LogUpdateListener listener) {
+		updateListeners.remove(listener);
+	}
+	
+	private void fireLogUpdate() {
+		for (LogUpdateListener listener : new ArrayList<LogUpdateListener>(updateListeners))
+			listener.onLogUpdate(this);
+	}
+	
+	public interface LogUpdateListener {
+		public void onLogUpdate(Log source);
 	}
 	
 }

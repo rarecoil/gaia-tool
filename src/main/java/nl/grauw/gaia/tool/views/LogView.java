@@ -20,13 +20,15 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.text.DefaultCaret;
 
 import nl.grauw.gaia.Log;
-import nl.grauw.gaia.tool.mvc.AWTObserver;
-import nl.grauw.gaia.tool.mvc.Observable;
+import nl.grauw.gaia.Log.LogUpdateListener;
 
-public class LogView extends JPanel implements AWTObserver {
+public class LogView extends JPanel {
 	
 	private Log log;
 
@@ -36,14 +38,12 @@ public class LogView extends JPanel implements AWTObserver {
 	
 	public LogView(Log log) {
 		this.log = log;
-		log.addObserver(this);
 		
 		initComponents();
-		update(log, null);
+		this.addAncestorListener(new LogUpdateProxy());
 	}
 	
-	@Override
-	public void update(Observable source, Object detail) {
+	public void onLogUpdate(Log source) {
 		if (source == log) {
 			int logTextLength = log.getLog().length();
 			int logAreaLength = logArea.getText().length();
@@ -80,4 +80,32 @@ public class LogView extends JPanel implements AWTObserver {
 		return logArea;
 	}
 
+	public class LogUpdateProxy implements AncestorListener, LogUpdateListener {
+		
+		@Override
+		public void onLogUpdate(final Log source) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					LogView.this.onLogUpdate(source);
+				}
+			});
+		}
+		
+		@Override
+		public void ancestorAdded(AncestorEvent event) {
+			log.addUpdateListener(this);
+			LogView.this.onLogUpdate(log);
+		}
+		
+		@Override
+		public void ancestorRemoved(AncestorEvent event) {
+			log.removeUpdateListener(this);
+		}
+		
+		@Override
+		public void ancestorMoved(AncestorEvent event) {
+		}
+		
+	}
+	
 }
