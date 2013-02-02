@@ -44,8 +44,7 @@ public class GaiaTool {
 	public GaiaTool() {
 		log = new Log();
 		midiConnection = new JavaMidiConnection(log, settings);
-		gaia = new Gaia(log, midiConnection.getMidiTransmitter());
-		midiConnection.addMidiReceiver(gaia);
+		gaia = new Gaia(log, midiConnection);
 		library = new Library(getLibraryPath());
 		
 		loadSettings();

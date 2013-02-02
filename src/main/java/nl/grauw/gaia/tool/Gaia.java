@@ -30,6 +30,7 @@ import nl.grauw.gaia.tool.messages.NoteOffMessage;
 import nl.grauw.gaia.tool.messages.NoteOnMessage;
 import nl.grauw.gaia.tool.messages.ProgramChangeMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage.Controller;
+import nl.grauw.gaia.tool.midi.MidiConnection;
 import nl.grauw.gaia.tool.midi.MidiReceiver;
 import nl.grauw.gaia.tool.midi.MidiTransmitter;
 import nl.grauw.gaia.tool.mvc.Observable;
@@ -71,9 +72,10 @@ public class Gaia extends Observable implements ParameterChangeListener, MidiRec
 	private TemporaryPatch temporaryPatch;
 	private UserPatch[][] userPatches = new UserPatch[8][8];
 	
-	public Gaia(Log log, MidiTransmitter transmitter) {
+	public Gaia(Log log, MidiConnection connection) {
 		this.log = log;
-		this.transmitter = transmitter;
+		this.transmitter = connection.getMidiTransmitter();
+		connection.addMidiReceiver(this);
 		
 		temporaryPatch = new TemporaryPatch(this);
 		for (int bank = 0; bank < 8; bank++) {
