@@ -48,7 +48,7 @@ import nl.grauw.gaia.tool.GaiaTool;
 import nl.grauw.gaia.tool.Patch;
 import nl.grauw.gaia.tool.TemporaryPatch;
 import nl.grauw.gaia.tool.UserPatch;
-import nl.grauw.gaia.tool.midi.MidiConnection.GaiaNotFoundException;
+import nl.grauw.gaia.tool.midi.JavaMidiConnection.GaiaNotFoundException;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
 

@@ -28,7 +28,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import nl.grauw.gaia.tool.midi.MidiConnection.GaiaNotFoundException;
+import nl.grauw.gaia.tool.midi.JavaMidiConnection.GaiaNotFoundException;
 import nl.grauw.gaia.tool.views.GaiaToolView;
 
 public class App {

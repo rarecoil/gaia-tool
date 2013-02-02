@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import nl.grauw.gaia.tool.midi.MidiConnection.GaiaNotFoundException;
+import nl.grauw.gaia.tool.midi.JavaMidiConnection.GaiaNotFoundException;
 import nl.grauw.gaia.tool.GaiaTool;
 
 public class NotConnectedPanel extends JPanel implements ActionListener {
