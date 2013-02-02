@@ -15,8 +15,6 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Address;
 
 /**
@@ -38,11 +36,11 @@ public class DataSet1 extends Sysex {
 			throw new IllegalArgumentException("Checksum mismatch.");
 	}
 	
-	public DataSet1(Address address, byte[] data) throws InvalidMidiDataException {
+	public DataSet1(Address address, byte[] data) {
 		this(BROADCAST_DEVICE, address, data);
 	}
 	
-	public DataSet1(int device_id, Address address, byte[] data) throws InvalidMidiDataException {
+	public DataSet1(int device_id, Address address, byte[] data) {
 		super(createMessage(device_id, address, data));
 		
 		if (device_id != 0x7F && (device_id < 0x10 || device_id > 0x1F))

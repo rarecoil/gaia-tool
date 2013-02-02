@@ -17,8 +17,6 @@ package nl.grauw.gaia.tool.messages;
 
 import static org.junit.Assert.*;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Address;
 import nl.grauw.gaia.tool.messages.DataRequest1;
 
@@ -27,7 +25,7 @@ import org.junit.Test;
 public class DataRequest1Test {
 
 	@Test
-	public void testDataRequest1AddressInt() throws InvalidMidiDataException {
+	public void testDataRequest1AddressInt() {
 		Message mm = new DataRequest1(new Address(0x01, 0x23, 0x45, 0x67), 0x17F);
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x41, 0x7F, 0x00, 0x00, 0x41, 0x11,
@@ -36,7 +34,7 @@ public class DataRequest1Test {
 	}
 
 	@Test
-	public void testDataRequest1IntAddressInt() throws InvalidMidiDataException {
+	public void testDataRequest1IntAddressInt() {
 		Message mm = new DataRequest1(0x10, new Address(0x01, 0x23, 0x45, 0x67), 0x17F);
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x41, 0x10, 0x00, 0x00, 0x41, 0x11,

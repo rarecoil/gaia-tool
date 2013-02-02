@@ -15,8 +15,6 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 public class ControlChangeMessage extends ChannelMessage {
 	
 	public enum Controller {
@@ -81,11 +79,11 @@ public class ControlChangeMessage extends ChannelMessage {
 		super(message);
 	}
 	
-	public ControlChangeMessage(int channel, Controller controller, int value) throws InvalidMidiDataException {
+	public ControlChangeMessage(int channel, Controller controller, int value) {
 		this(channel, controller.getCode(), value);
 	}
 	
-	public ControlChangeMessage(int channel, int controller, int value) throws InvalidMidiDataException {
+	public ControlChangeMessage(int channel, int controller, int value) {
 		super(CONTROL_CHANGE, channel, controller, value);
 	}
 	

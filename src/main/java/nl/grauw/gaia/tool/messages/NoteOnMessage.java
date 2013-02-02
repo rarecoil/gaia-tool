@@ -15,8 +15,6 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Note;
 
 public class NoteOnMessage extends ChannelMessage {
@@ -25,7 +23,7 @@ public class NoteOnMessage extends ChannelMessage {
 		super(message);
 	}
 	
-	public NoteOnMessage(int channel, Note note, int velocity) throws InvalidMidiDataException {
+	public NoteOnMessage(int channel, Note note, int velocity) {
 		super(NOTE_ON, channel, note.getNoteNumber(), velocity);
 	}
 	

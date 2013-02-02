@@ -17,8 +17,6 @@ package nl.grauw.gaia.tool.parameters;
 
 import static org.junit.Assert.*;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Address;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage.Controller;
@@ -341,7 +339,7 @@ public class PatchCommonTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_PortamentoTime() throws InvalidMidiDataException {
+	public void testUpdateParameters_PortamentoTime() {
 		PatchCommon parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,

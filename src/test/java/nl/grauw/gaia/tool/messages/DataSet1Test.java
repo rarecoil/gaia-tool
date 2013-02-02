@@ -17,8 +17,6 @@ package nl.grauw.gaia.tool.messages;
 
 import static org.junit.Assert.*;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Address;
 import nl.grauw.gaia.tool.messages.DataSet1;
 
@@ -27,7 +25,7 @@ import org.junit.Test;
 public class DataSet1Test {
 
 	@Test
-	public void testDataSet1SysexMessage() throws InvalidMidiDataException {
+	public void testDataSet1SysexMessage() {
 		byte[] semData = {(byte)0xF0, 0x41, 0x7F, 0x00, 0x00, 0x41, 0x12,
 				0x01, 0x23, 0x45, 0x67, 0x76, 0x54, 0x32, 0x10, 0x24, (byte)0xF7};
 		Message mm = new DataSet1(semData);
@@ -39,7 +37,7 @@ public class DataSet1Test {
 	}
 
 	@Test
-	public void testDataSet1AddressByteArray() throws InvalidMidiDataException {
+	public void testDataSet1AddressByteArray() {
 		byte[] data = { 0x76, 0x54, 0x32, 0x10 };
 		Message mm = new DataSet1(new Address(0x01, 0x23, 0x45, 0x67), data);
 		byte[] message = mm.getMessage();
@@ -49,7 +47,7 @@ public class DataSet1Test {
 	}
 
 	@Test
-	public void testDataSet1IntAddressByteArray() throws InvalidMidiDataException {
+	public void testDataSet1IntAddressByteArray() {
 		byte[] data = { 0x76, 0x54, 0x32, 0x10 };
 		Message mm = new DataSet1(0x10, new Address(0x01, 0x23, 0x45, 0x67), data);
 		byte[] message = mm.getMessage();
@@ -59,14 +57,14 @@ public class DataSet1Test {
 	}
 	
 	@Test
-	public void testGetAddress() throws InvalidMidiDataException {
+	public void testGetAddress() {
 		byte[] data = { 0x76, 0x54, 0x32, 0x10 };
 		DataSet1 mm = new DataSet1(new Address(0x01, 0x23, 0x45, 0x67), data);
 		assertEquals("01 23 45 67", mm.getAddress().toHexString());
 	}
 	
 	@Test
-	public void testGetDataSet() throws InvalidMidiDataException {
+	public void testGetDataSet() {
 		byte[] data = { 0x76, 0x54, 0x32, 0x10 };
 		DataSet1 mm = new DataSet1(new Address(0x01, 0x23, 0x45, 0x67), data);
 		assertArrayEquals(data, mm.getDataSet());

@@ -17,8 +17,6 @@ package nl.grauw.gaia.tool.parameters;
 
 import static org.junit.Assert.*;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Address;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage.Controller;
@@ -154,7 +152,7 @@ public class DistortionTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Level() throws InvalidMidiDataException {
+	public void testUpdateParameters_Level() {
 		Distortion parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -174,7 +172,7 @@ public class DistortionTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Control_1_Distortion() throws InvalidMidiDataException {
+	public void testUpdateParameters_Control_1_Distortion() {
 		Distortion parameters = createTestParameters();
 		parameters.getDistortionTypeValue().setValue(DistortionType.DIST);
 		int[] expected = {
@@ -195,7 +193,7 @@ public class DistortionTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Control_1_Fuzz() throws InvalidMidiDataException {
+	public void testUpdateParameters_Control_1_Fuzz() {
 		Distortion parameters = createTestParameters();
 		parameters.getDistortionTypeValue().setValue(DistortionType.FUZZ);
 		int[] expected = {
@@ -216,7 +214,7 @@ public class DistortionTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Control_1_Bit_Crash() throws InvalidMidiDataException {
+	public void testUpdateParameters_Control_1_Bit_Crash() {
 		Distortion parameters = createTestParameters();
 		parameters.getDistortionTypeValue().setValue(DistortionType.BIT_CRASH);
 		int[] expected = {

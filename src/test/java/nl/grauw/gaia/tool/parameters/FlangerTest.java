@@ -17,8 +17,6 @@ package nl.grauw.gaia.tool.parameters;
 
 import static org.junit.Assert.*;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Address;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage.Controller;
@@ -147,7 +145,7 @@ public class FlangerTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Level() throws InvalidMidiDataException {
+	public void testUpdateParameters_Level() {
 		Flanger parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -167,7 +165,7 @@ public class FlangerTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Control_1_Flanger() throws InvalidMidiDataException {
+	public void testUpdateParameters_Control_1_Flanger() {
 		Flanger parameters = createTestParameters();
 		parameters.getFlangerTypeValue().setValue(FlangerType.FLANGER);
 		int[] expected = {
@@ -188,7 +186,7 @@ public class FlangerTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Control_1_Phaser() throws InvalidMidiDataException {
+	public void testUpdateParameters_Control_1_Phaser() {
 		Flanger parameters = createTestParameters();
 		parameters.getFlangerTypeValue().setValue(FlangerType.PHASER);
 		int[] expected = {
@@ -209,7 +207,7 @@ public class FlangerTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Control_1_Pitch_Shifter() throws InvalidMidiDataException {
+	public void testUpdateParameters_Control_1_Pitch_Shifter() {
 		Flanger parameters = createTestParameters();
 		parameters.getFlangerTypeValue().setValue(FlangerType.PITCH_SHIFTER);
 		int[] expected = {

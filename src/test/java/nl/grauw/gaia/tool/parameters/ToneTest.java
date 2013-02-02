@@ -17,8 +17,6 @@ package nl.grauw.gaia.tool.parameters;
 
 import static org.junit.Assert.*;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Address;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage.Controller;
@@ -438,7 +436,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_LFO_Rate() throws InvalidMidiDataException {
+	public void testUpdateParameters_LFO_Rate() {
 		Tone parameters = createTestParameters();
 		parameters.setValue(0x1E, 0);	// disable LFO tempo sync
 		int[] expected = {
@@ -459,7 +457,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_LFO_TempoSyncNote() throws InvalidMidiDataException {
+	public void testUpdateParameters_LFO_TempoSyncNote() {
 		Tone parameters = createTestParameters();
 		parameters.setValue(0x1E, 1);	// enable LFO tempo sync
 		int[] expected = {
@@ -480,7 +478,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_LFO_Fade_Time() throws InvalidMidiDataException {
+	public void testUpdateParameters_LFO_Fade_Time() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -500,7 +498,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_LFO_Pitch_Depth() throws InvalidMidiDataException {
+	public void testUpdateParameters_LFO_Pitch_Depth() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
@@ -520,7 +518,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_LFO_Filter_Depth() throws InvalidMidiDataException {
+	public void testUpdateParameters_LFO_Filter_Depth() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
@@ -540,7 +538,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_LFO_Amp_Depth() throws InvalidMidiDataException {
+	public void testUpdateParameters_LFO_Amp_Depth() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
@@ -560,7 +558,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_OSC_Pitch() throws InvalidMidiDataException {
+	public void testUpdateParameters_OSC_Pitch() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				-24, -24, -23, -23, -23, -22, -22, -22, -21, -21, -20, -20, -20, -19, -19, -19,
@@ -580,7 +578,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_OSC_Detune() throws InvalidMidiDataException {
+	public void testUpdateParameters_OSC_Detune() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				-50, -50, -50, -49, -48, -47, -46, -45, -45, -44, -43, -42, -41, -40, -40, -39,
@@ -600,7 +598,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_OSC_Pulse_Width_Modulation() throws InvalidMidiDataException {
+	public void testUpdateParameters_OSC_Pulse_Width_Modulation() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -620,7 +618,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_OSC_Pulse_Width() throws InvalidMidiDataException {
+	public void testUpdateParameters_OSC_Pulse_Width() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -640,7 +638,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_OSC_Env_Depth() throws InvalidMidiDataException {
+	public void testUpdateParameters_OSC_Env_Depth() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
@@ -660,7 +658,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Filter_Cutoff() throws InvalidMidiDataException {
+	public void testUpdateParameters_Filter_Cutoff() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -680,7 +678,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Filter_Resonance() throws InvalidMidiDataException {
+	public void testUpdateParameters_Filter_Resonance() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -700,7 +698,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Filter_Env_Depth() throws InvalidMidiDataException {
+	public void testUpdateParameters_Filter_Env_Depth() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				-63, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49,
@@ -720,7 +718,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Filter_Key_Follow() throws InvalidMidiDataException {
+	public void testUpdateParameters_Filter_Key_Follow() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				-10, -10, -10, -10, -10, -10, -10,  -9,  -9,  -9,  -9,  -9,  -9,  -8,  -8,  -8,
@@ -740,7 +738,7 @@ public class ToneTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Amp_Level() throws InvalidMidiDataException {
+	public void testUpdateParameters_Amp_Level() {
 		Tone parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,

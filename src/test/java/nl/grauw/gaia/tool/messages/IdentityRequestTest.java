@@ -17,8 +17,6 @@ package nl.grauw.gaia.tool.messages;
 
 import static org.junit.Assert.*;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.messages.IdentityRequest;
 
 import org.junit.Test;
@@ -26,7 +24,7 @@ import org.junit.Test;
 public class IdentityRequestTest {
 
 	@Test
-	public void testIdentityRequest() throws InvalidMidiDataException {
+	public void testIdentityRequest() {
 		Message mm = new IdentityRequest();
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x7E, 0x7F, 0x06, 0x01, (byte)0xF7};
@@ -34,7 +32,7 @@ public class IdentityRequestTest {
 	}
 
 	@Test
-	public void testIdentityRequestInt() throws InvalidMidiDataException {
+	public void testIdentityRequestInt() {
 		Message mm = new IdentityRequest(0x10);
 		byte[] message = mm.getMessage();
 		byte[] expected = {(byte)0xF0, 0x7E, 0x10, 0x06, 0x01, (byte)0xF7};
@@ -42,17 +40,17 @@ public class IdentityRequestTest {
 	}
 
 	@Test (expected=RuntimeException.class)
-	public void testIdentityRequestInt_InvalidDevice() throws InvalidMidiDataException {
+	public void testIdentityRequestInt_InvalidDevice() {
 		new IdentityRequest(0x0F);
 	}
 
 	@Test (expected=RuntimeException.class)
-	public void testIdentityRequestInt_InvalidDevice2() throws InvalidMidiDataException {
+	public void testIdentityRequestInt_InvalidDevice2() {
 		new IdentityRequest(0x20);
 	}
 
 	@Test (expected=RuntimeException.class)
-	public void testIdentityRequestInt_InvalidDevice3() throws InvalidMidiDataException {
+	public void testIdentityRequestInt_InvalidDevice3() {
 		new IdentityRequest(0x7F);
 	}
 

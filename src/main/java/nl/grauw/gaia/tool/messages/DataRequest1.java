@@ -15,8 +15,6 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Address;
 
 /**
@@ -29,11 +27,11 @@ public class DataRequest1 extends Sysex {
 	final static int MODEL_SH01 = 0x41;
 	final static int COMMAND_RQ1 = 0x11;
 	
-	public DataRequest1(Address address, int size) throws InvalidMidiDataException {
+	public DataRequest1(Address address, int size) {
 		this(BROADCAST_DEVICE, address, size);
 	}
 	
-	public DataRequest1(int device_id, Address address, int size) throws InvalidMidiDataException {
+	public DataRequest1(int device_id, Address address, int size) {
 		super(createMessage(device_id, address, size));
 		
 		if (device_id != 0x7F && (device_id < 0x10 || device_id > 0x1F))

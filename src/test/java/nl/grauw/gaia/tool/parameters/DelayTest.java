@@ -17,8 +17,6 @@ package nl.grauw.gaia.tool.parameters;
 
 import static org.junit.Assert.*;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 import nl.grauw.gaia.tool.Address;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage.Controller;
@@ -127,7 +125,7 @@ public class DelayTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Level() throws InvalidMidiDataException {
+	public void testUpdateParameters_Level() {
 		Delay parameters = createTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -149,7 +147,7 @@ public class DelayTest {
 /*	Control 1 tests are commented out because functionality depends on non-local tempo sync parameter
 	
 	@Test
-	public void testUpdateParameters_Control_1() throws InvalidMidiDataException {
+	public void testUpdateParameters_Control_1() {
 		Delay parameters = getTestParameters();
 		int[] expected = {
 				  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
@@ -169,7 +167,7 @@ public class DelayTest {
 	}
 	
 	@Test
-	public void testUpdateParameters_Control_1_TempoSync() throws InvalidMidiDataException {
+	public void testUpdateParameters_Control_1_TempoSync() {
 		Delay parameters = getTestParameters();
 		int[] expected = {
 				 0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,

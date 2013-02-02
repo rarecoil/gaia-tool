@@ -15,15 +15,13 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 public class PitchBendChangeMessage extends ChannelMessage {
 	
 	public PitchBendChangeMessage(byte[] message) {
 		super(message);
 	}
 	
-	public PitchBendChangeMessage(int channel, int value) throws InvalidMidiDataException {
+	public PitchBendChangeMessage(int channel, int value) {
 		super(PITCH_BEND, channel, value + 8192 & 0x7F, value + 8192 >> 7);
 	}
 	

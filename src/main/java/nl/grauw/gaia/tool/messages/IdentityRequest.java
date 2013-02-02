@@ -15,8 +15,6 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 public class IdentityRequest extends UniversalSysex {
 	
 	final static int GENERAL_INFORMATION = 0x06;
@@ -25,7 +23,7 @@ public class IdentityRequest extends UniversalSysex {
 	/**
 	 * Construct a broadcast identity request message.
 	 */
-	public IdentityRequest() throws InvalidMidiDataException {
+	public IdentityRequest() {
 		super(GENERAL_INFORMATION, IDENTITY_REQUEST);
 	}
 	
@@ -33,7 +31,7 @@ public class IdentityRequest extends UniversalSysex {
 	 * Construct an identity request message for a specific device.
 	 * @param device_id The device ID. Must be between 0x10-0x1F (inclusive).
 	 */
-	public IdentityRequest(int device_id) throws InvalidMidiDataException {
+	public IdentityRequest(int device_id) {
 		super(device_id, GENERAL_INFORMATION, IDENTITY_REQUEST);
 		
 		// stupid super call restriction prevents me from making this assertion earlier

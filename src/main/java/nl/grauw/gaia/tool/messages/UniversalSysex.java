@@ -15,8 +15,6 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 /**
  * Universal non-realtime system exclusive MIDI message
  */
@@ -29,15 +27,15 @@ public class UniversalSysex extends Sysex {
 		super(message);
 	}
 	
-	public UniversalSysex(int sub_id1, int sub_id2) throws InvalidMidiDataException {
+	public UniversalSysex(int sub_id1, int sub_id2) {
 		this(BROADCAST_DEVICE, sub_id1, sub_id2);
 	}
 	
-	public UniversalSysex(int device_id, int sub_id1, int sub_id2) throws InvalidMidiDataException {
+	public UniversalSysex(int device_id, int sub_id1, int sub_id2) {
 		this(device_id, sub_id1, sub_id2, new byte[0]);
 	}
 	
-	public UniversalSysex(int device_id, int sub_id1, int sub_id2, byte[] data) throws InvalidMidiDataException {
+	public UniversalSysex(int device_id, int sub_id1, int sub_id2, byte[] data) {
 		super(createMessage(device_id, sub_id1, sub_id2, data));
 		
 		if (device_id != 0x7F && (device_id < 0x10 || device_id > 0x1F))

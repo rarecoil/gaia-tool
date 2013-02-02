@@ -17,7 +17,6 @@ package nl.grauw.gaia.tool;
 
 import java.util.Properties;
 
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -110,11 +109,7 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	
 	public void enableTxEditData() {
 		if (system == null) {
-			try {
-				send(new DataSet1(new Address(0x01, 0x00, 0x00, 0x19), new byte[] { 1 } ));
-			} catch (InvalidMidiDataException e) {
-				throw new RuntimeException(e);
-			}
+			send(new DataSet1(new Address(0x01, 0x00, 0x00, 0x19), new byte[] { 1 } ));
 		} else {
 			system.setTxEditData(true);
 		}
@@ -439,51 +434,39 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	 * Plays a C-4 note for one second.
 	 */
 	public void playTestNote() {
+		send(new ProgramChangeMessage(synth_channel, 0));
+		send(new NoteOnMessage(synth_channel, C_4, 127));
+		
 		try {
-			send(new ProgramChangeMessage(synth_channel, 0));
-			send(new NoteOnMessage(synth_channel, C_4, 127));
-			
-			try {
-				Thread.sleep(1000);
-			} catch(InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			send(new NoteOffMessage(synth_channel, C_4, 127));
-		} catch (InvalidMidiDataException e) {
+			Thread.sleep(1000);
+		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		send(new NoteOffMessage(synth_channel, C_4, 127));
 	}
 	
 	/**
 	 * Plays a C-4 note for one second on the GM channel.
 	 */
 	public void playGMTestNote() {
+		send(new ProgramChangeMessage(gm_channel, 0));
+		send(new NoteOnMessage(gm_channel, C_4, 127));
+		
 		try {
-			send(new ProgramChangeMessage(gm_channel, 0));
-			send(new NoteOnMessage(gm_channel, C_4, 127));
-			
-			try {
-				Thread.sleep(1000);
-			} catch(InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			send(new NoteOffMessage(gm_channel, C_4, 127));
-		} catch (InvalidMidiDataException e) {
+			Thread.sleep(1000);
+		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		send(new NoteOffMessage(gm_channel, C_4, 127));
 	}
 	
 	/**
 	 * Requests the device identity.
 	 */
 	public void requestIdentity() {
-		try {
-			send(new IdentityRequest());
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
+		send(new IdentityRequest());
 	}
 	
 	/**
@@ -518,12 +501,8 @@ public class Gaia extends Observable implements ParameterChangeListener {
 			}
 		});
 		
-		try {
-			send(new ControlChangeMessage(synth_channel, Controller.TONE_1_OSC_PITCH, i));
-			send(new DataRequest1(new Address(0x10, 0x00, 0x01, 0x03), 1));
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
+		send(new ControlChangeMessage(synth_channel, Controller.TONE_1_OSC_PITCH, i));
+		send(new DataRequest1(new Address(0x10, 0x00, 0x01, 0x03), 1));
 	}
 	
 	/**
@@ -532,11 +511,7 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	 * @param length The length of the desired data.
 	 */
 	public void sendDataRequest(Address address, int length) {
-		try {
-			send(new DataRequest1(address, length));
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
+		send(new DataRequest1(address, length));
 	}
 	
 	/**
@@ -558,11 +533,11 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	public void sendDataTransmission(Parameters parameters, int offset, int length) {
 		Address address = parameters.getAddress().add(offset);
 		byte[] data = parameters.getData(offset, length);
+		
+		send(new DataSet1(address, data));
+		
 		try {
-			send(new DataSet1(address, data));
 			parameters.updateOriginalParameters(address, data);
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
 		} catch (AddressException e) {
 			throw new RuntimeException("AddressException is not supposed to occur.", e);
 		}

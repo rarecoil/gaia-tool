@@ -15,15 +15,13 @@
  */
 package nl.grauw.gaia.tool.messages;
 
-import javax.sound.midi.InvalidMidiDataException;
-
 public class ProgramChangeMessage extends ChannelMessage {
 	
 	public ProgramChangeMessage(byte[] message) {
 		super(message);
 	}
 	
-	public ProgramChangeMessage(int channel, int program) throws InvalidMidiDataException {
+	public ProgramChangeMessage(int channel, int program) {
 		super(PROGRAM_CHANGE, channel, program);
 	}
 	
