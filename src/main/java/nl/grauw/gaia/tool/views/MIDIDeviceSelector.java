@@ -26,17 +26,17 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import javax.swing.JOptionPane;
 
-import nl.grauw.gaia.tool.Gaia;
-import nl.grauw.gaia.tool.Gaia.GaiaNotFoundException;
+import nl.grauw.gaia.tool.midi.MidiConnection.GaiaNotFoundException;
+import nl.grauw.gaia.tool.GaiaTool;
 
 public class MIDIDeviceSelector {
 	
-	Gaia gaia;
+	GaiaTool gaiaTool;
 	Component parent;
 	static final String AUTODETECT = "Auto-detect";
 	
-	public MIDIDeviceSelector(Gaia gaia, Component parent) {
-		this.gaia = gaia;
+	public MIDIDeviceSelector(GaiaTool gaia, Component parent) {
+		this.gaiaTool = gaia;
 		this.parent = parent;
 	}
 	
@@ -44,11 +44,10 @@ public class MIDIDeviceSelector {
 		selectMIDIInputDevice();
 		selectMIDIOutputDevice();
 		
-		if (gaia.isOpened())
-			gaia.close();
+		gaiaTool.closeGaia();
 		
 		try {
-			gaia.open();
+			gaiaTool.openGaia();
 		} catch (GaiaNotFoundException e) {
 			// that’s fine
 		} catch (MidiUnavailableException e) {
@@ -68,16 +67,16 @@ public class MIDIDeviceSelector {
 			}
 		}
 		
-		MidiDevice currentDevice = gaia.getMidiInput();
+		MidiDevice currentDevice = gaiaTool.getMidiConnection().getMidiInput();
 		
 		Object selection = JOptionPane.showInputDialog(parent, "Please select a MIDI input device",
 				"Select MIDI input device", JOptionPane.QUESTION_MESSAGE, null, inputDevices.toArray(),
 				currentDevice != null ? currentDevice.getDeviceInfo() : null);
 		
 		if (selection instanceof MidiDevice.Info) {
-			gaia.setDefaultMidiInput(((MidiDevice.Info) selection).getName());
+			gaiaTool.getMidiConnection().setDefaultMidiInput(((MidiDevice.Info) selection).getName());
 		} else if (selection == AUTODETECT) {
-			gaia.setDefaultMidiInput(null);
+			gaiaTool.getMidiConnection().setDefaultMidiInput(null);
 		}
 	}
 	
@@ -93,16 +92,16 @@ public class MIDIDeviceSelector {
 			}
 		}
 		
-		MidiDevice currentDevice = gaia.getMidiOutput();
+		MidiDevice currentDevice = gaiaTool.getMidiConnection().getMidiOutput();
 		
 		Object selection = JOptionPane.showInputDialog(parent, "Please select a MIDI output device",
 				"Select MIDI output device", JOptionPane.QUESTION_MESSAGE, null, outputDevices.toArray(),
 				currentDevice != null ? currentDevice.getDeviceInfo() : null);
 		
 		if (selection instanceof MidiDevice.Info) {
-			gaia.setDefaultMidiOutput(((MidiDevice.Info) selection).getName());
+			gaiaTool.getMidiConnection().setDefaultMidiOutput(((MidiDevice.Info) selection).getName());
 		} else if (selection == AUTODETECT) {
-			gaia.setDefaultMidiOutput(null);
+			gaiaTool.getMidiConnection().setDefaultMidiOutput(null);
 		}
 	}
 	

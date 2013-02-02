@@ -27,14 +27,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import nl.grauw.gaia.tool.Gaia;
-import nl.grauw.gaia.tool.Gaia.GaiaNotFoundException;
+import nl.grauw.gaia.tool.midi.MidiConnection.GaiaNotFoundException;
+import nl.grauw.gaia.tool.GaiaTool;
 
 public class NotConnectedPanel extends JPanel implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Gaia gaia;
+	private GaiaTool gaiaTool;
 	
 	private JLabel title;
 	private JLabel problem;
@@ -43,8 +43,8 @@ public class NotConnectedPanel extends JPanel implements ActionListener {
 	private JButton connect;
 	private JButton configure;
 	
-	public NotConnectedPanel(Gaia gaia) {
-		this.gaia = gaia;
+	public NotConnectedPanel(GaiaTool gaia) {
+		this.gaiaTool = gaia;
 		initComponents();
 	}
 	
@@ -91,14 +91,14 @@ public class NotConnectedPanel extends JPanel implements ActionListener {
 		if (e.getSource() == connect) {
 			reconnectGaia();
 		} else if (e.getSource() == configure) {
-			new MIDIDeviceSelector(gaia, this).show();
+			new MIDIDeviceSelector(gaiaTool, this).show();
 		}
 	}
 	
 	private void reconnectGaia() {
 		try {
-			gaia.close();
-			gaia.open();
+			gaiaTool.closeGaia();
+			gaiaTool.openGaia();
 		} catch (GaiaNotFoundException e) {
 			JOptionPane.showMessageDialog(this, "The GAIA MIDI ports could not be found. Is your GAIA turned on?",
 					"Problem connecting to Roland GAIA", JOptionPane.ERROR_MESSAGE);

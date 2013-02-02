@@ -15,24 +15,11 @@
  */
 package nl.grauw.gaia.tool;
 
-import java.util.Properties;
-
-import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
-import javax.sound.midi.Sequencer;
-import javax.sound.midi.ShortMessage;
-import javax.sound.midi.Synthesizer;
-import javax.sound.midi.SysexMessage;
-import javax.sound.midi.Transmitter;
-
 import nl.grauw.gaia.tool.Address.AddressException;
 import nl.grauw.gaia.tool.Note.NoteName;
 import nl.grauw.gaia.tool.Parameters.ParameterChange;
 import nl.grauw.gaia.tool.Parameters.ParameterChangeListener;
 import nl.grauw.gaia.tool.Patch.PatchChangeListener;
-import nl.grauw.gaia.tool.messages.ActiveSensingMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage;
 import nl.grauw.gaia.tool.messages.DataRequest1;
 import nl.grauw.gaia.tool.messages.DataSet1;
@@ -43,7 +30,8 @@ import nl.grauw.gaia.tool.messages.NoteOffMessage;
 import nl.grauw.gaia.tool.messages.NoteOnMessage;
 import nl.grauw.gaia.tool.messages.ProgramChangeMessage;
 import nl.grauw.gaia.tool.messages.ControlChangeMessage.Controller;
-import nl.grauw.gaia.tool.messages.Sysex;
+import nl.grauw.gaia.tool.midi.MidiReceiver;
+import nl.grauw.gaia.tool.midi.MidiTransmitter;
 import nl.grauw.gaia.tool.mvc.Observable;
 import nl.grauw.gaia.tool.parameters.System;
 import nl.grauw.gaia.tool.parameters.Tone;
@@ -63,22 +51,12 @@ import nl.grauw.gaia.tool.parameters.Tone;
  * RX/TX channel setting so this value can be changed, and then the
  * GM synth will occupy the rest.
  */
-public class Gaia extends Observable implements ParameterChangeListener {
+public class Gaia extends Observable implements ParameterChangeListener, MidiReceiver {
 	
-	public static class GaiaNotFoundException extends Exception {
-		private static final long serialVersionUID = 1L;
-		
-		public GaiaNotFoundException() {
-			super("Gaia MIDI device(s) not found.");
-		}
-	}
-
 	private boolean opened = false;
 	private boolean identityConfirmed = false;
 	
-	private Receiver receiver;
-	private Transmitter transmitter;
-	private ResponseReceiver responseReceiver;
+	private MidiTransmitter transmitter;
 	
 	private int device_id = 0;
 	
@@ -88,15 +66,14 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	final static Note C_4 = new Note(NoteName.C, 4);
 	
 	private Log log;
-	private Properties settings;
 	
 	private System system;
 	private TemporaryPatch temporaryPatch;
 	private UserPatch[][] userPatches = new UserPatch[8][8];
 	
-	public Gaia(Log log, Properties settings) {
+	public Gaia(Log log, MidiTransmitter transmitter) {
 		this.log = log;
-		this.settings = settings;
+		this.transmitter = transmitter;
 		
 		temporaryPatch = new TemporaryPatch(this);
 		for (int bank = 0; bank < 8; bank++) {
@@ -104,7 +81,6 @@ public class Gaia extends Observable implements ParameterChangeListener {
 				userPatches[bank][patch] = new UserPatch(this, bank, patch);
 			}
 		}
-		responseReceiver = new ResponseReceiver(this);
 	}
 	
 	public void enableTxEditData() {
@@ -160,25 +136,9 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	 * Initialises the system.
 	 * @throws GaiaNotFoundException 
 	 */
-	public void open() throws MidiUnavailableException, GaiaNotFoundException {
+	public void open() {
 		if (opened)
 			throw new RuntimeException("GAIA is already opened.");
-		
-		MidiDevice input = getMidiInput();
-		MidiDevice output = getMidiOutput();
-		
-		if (input == null || output == null)
-			throw new GaiaNotFoundException();
-		
-		log.log("Midi IN: " + input.getDeviceInfo());
-		log.log("Midi OUT: " + output.getDeviceInfo());
-		log.log("");
-		
-		input.open();
-		output.open();
-		transmitter = input.getTransmitter();
-		transmitter.setReceiver(responseReceiver);
-		receiver = output.getReceiver();
 		
 		opened = true;
 		notifyObservers("opened");
@@ -193,125 +153,13 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	 * Cleans up the system.
 	 */
 	public void close() {
-		MidiDevice input = getMidiInput();
-		MidiDevice output = getMidiOutput();
-		if (input != null)
-			input.close();
-		if (output != null)
-			output.close();
-		if (receiver != null)
-			receiver.close();
-		if (transmitter != null)
-			transmitter.close();
-		if (responseReceiver != null)
-			responseReceiver.close();
-		
 		opened = false;
 		identityConfirmed = false;
 		device_id = 0;
+		
 		notifyObservers("opened");
 		notifyObservers("identityConfirmed");
 		notifyObservers("device_id");
-	}
-	
-	public String getDefaultMidiInput() {
-		return settings.getProperty("midi.input");
-	}
-	
-	public void setDefaultMidiInput(String inputName) {
-		if (inputName != null) {
-			settings.setProperty("midi.input", inputName);
-		} else {
-			settings.remove("midi.input");
-		}
-	}
-	
-	public String getDefaultMidiOutput() {
-		return settings.getProperty("midi.output");
-	}
-	
-	public void setDefaultMidiOutput(String outputName) {
-		if (outputName != null) {
-			settings.setProperty("midi.output", outputName);
-		} else {
-			settings.remove("midi.output");
-		}
-	}
-	
-	/**
-	 * Get the MIDI input port that receives messages from the GAIA.
-	 * @return A MIDI input device, or null.
-	 */
-	public MidiDevice getMidiInput() {
-		String name = settings.getProperty("midi.input");
-		if (name == null) {
-			return autoDetectMidiInput();
-		}
-		
-		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
-			if (mdi.getName().contains(name)) {
-				try {
-					MidiDevice md = MidiSystem.getMidiDevice(mdi);
-					if (md.getMaxTransmitters() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer))
-						return md;
-				} catch (MidiUnavailableException e) {
-				}
-			}
-		}
-		return null;
-	}
-	
-	private MidiDevice autoDetectMidiInput() {
-		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
-			if (mdi.getName().contains("SH-01")) {
-				try {
-					MidiDevice md = MidiSystem.getMidiDevice(mdi);
-					if (md.getMaxTransmitters() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer))
-						return md;
-				} catch (MidiUnavailableException e) {
-				}
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Get the MIDI output port that sends messages to the GAIA.
-	 * @return A MIDI output device, or null.
-	 */
-	public MidiDevice getMidiOutput() {
-		String name = settings.getProperty("midi.output");
-		if (name == null) {
-			return autoDetectMidiOutput();
-		}
-		
-		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
-			if (mdi.getName().contains(name)) {
-				try {
-					MidiDevice md = MidiSystem.getMidiDevice(mdi);
-					if (md.getMaxReceivers() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer)) {
-						return md;
-					}
-				} catch (MidiUnavailableException e) {
-				}
-			}
-		}
-		return null;
-	}
-	
-	public MidiDevice autoDetectMidiOutput() {
-		for (MidiDevice.Info mdi : MidiSystem.getMidiDeviceInfo()) {
-			if (mdi.getName().contains("SH-01")) {
-				try {
-					MidiDevice md = MidiSystem.getMidiDevice(mdi);
-					if (md.getMaxReceivers() != 0 && !(md instanceof Sequencer) && !(md instanceof Synthesizer)) {
-						return md;
-					}
-				} catch (MidiUnavailableException e) {
-				}
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -322,25 +170,7 @@ public class Gaia extends Observable implements ParameterChangeListener {
 		if (!opened)
 			throw new RuntimeException("MIDI connection not open.");
 		
-		if (message instanceof Sysex) {
-			receiver.send(new SysexMessageWrapper(message.getMessage()), -1);
-		} else {
-			receiver.send(new ShortMessageWrapper(message.getMessage()), -1);
-		}
-		
-		log.log("Sent: " + message);
-	}
-	
-	private static class SysexMessageWrapper extends SysexMessage {
-		public SysexMessageWrapper(byte[] message) {
-			super(message);
-		}
-	}
-	
-	private static class ShortMessageWrapper extends ShortMessage {
-		public ShortMessageWrapper(byte[] message) {
-			super(message);
-		}
+		transmitter.send(message);
 	}
 	
 	/**
@@ -348,10 +178,6 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	 * @param message
 	 */
 	public void receive(Message message) {
-		if (!(message instanceof ActiveSensingMessage)) {
-			log.log("Received: " + message);
-		}
-		
 		if (message instanceof IdentityReply) {
 			confirmIdentity((IdentityReply) message);
 		} else if (message instanceof DataSet1) {

@@ -22,12 +22,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JFileChooser;
 
 import nl.grauw.gaia.tool.PatchDataRequester.PatchCompleteListener;
+import nl.grauw.gaia.tool.midi.MidiConnection;
+import nl.grauw.gaia.tool.midi.MidiConnection.GaiaNotFoundException;
 
 public class GaiaTool {
 	
+	private MidiConnection midiConnection;
 	private Gaia gaia;
 	private Log log;
 	private Library library;
@@ -39,10 +43,16 @@ public class GaiaTool {
 	
 	public GaiaTool() {
 		log = new Log();
-		gaia = new Gaia(log, settings);
+		midiConnection = new MidiConnection(log, settings);
+		gaia = new Gaia(log, midiConnection.getMidiTransmitter());
+		midiConnection.addMidiReceiver(gaia);
 		library = new Library(getLibraryPath());
 		
 		loadSettings();
+	}
+	
+	public MidiConnection getMidiConnection() {
+		return midiConnection;
 	}
 	
 	public Log getLog() {
@@ -57,8 +67,20 @@ public class GaiaTool {
 		return library;
 	}
 	
+	public void openGaia() throws MidiUnavailableException, GaiaNotFoundException {
+		midiConnection.open();
+		gaia.open();
+	}
+	
+	public void closeGaia() {
+		if (gaia.isOpened())
+			gaia.close();
+		if (midiConnection.isOpened())
+			midiConnection.close();
+	}
+	
 	public void exit() {
-		gaia.close();
+		closeGaia();
 		saveSettings();
 		java.lang.System.exit(0);
 	}

@@ -28,7 +28,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import nl.grauw.gaia.tool.Gaia.GaiaNotFoundException;
+import nl.grauw.gaia.tool.midi.MidiConnection.GaiaNotFoundException;
 import nl.grauw.gaia.tool.views.GaiaToolView;
 
 public class App {
@@ -91,7 +91,7 @@ public class App {
 	public void initialiseModel() {
 		gaiaTool = new GaiaTool();
 		try {
-			gaiaTool.getGaia().open();
+			gaiaTool.openGaia();
 		} catch (GaiaNotFoundException e) {
 			// that’s fine
 		} catch(MidiUnavailableException e) {

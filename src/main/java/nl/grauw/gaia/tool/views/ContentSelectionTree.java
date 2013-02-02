@@ -297,7 +297,7 @@ public class ContentSelectionTree extends JTree {
 		@Override
 		public JComponent getContentView() {
 			if (!gaiaTool.getGaia().isConnected())
-				return new NotConnectedPanel(gaiaTool.getGaia());
+				return new NotConnectedPanel(gaiaTool);
 			
 			return new SystemView(gaiaTool.getGaia());
 		}
@@ -332,7 +332,7 @@ public class ContentSelectionTree extends JTree {
 		@Override
 		public JComponent getContentView() {
 			if (patch instanceof GaiaPatch && !gaiaTool.getGaia().isConnected())
-				return new NotConnectedPanel(gaiaTool.getGaia());
+				return new NotConnectedPanel(gaiaTool);
 			
 			return new PatchView(patch);
 		}

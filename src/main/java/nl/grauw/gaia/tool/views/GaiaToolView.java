@@ -48,7 +48,7 @@ import nl.grauw.gaia.tool.GaiaTool;
 import nl.grauw.gaia.tool.Patch;
 import nl.grauw.gaia.tool.TemporaryPatch;
 import nl.grauw.gaia.tool.UserPatch;
-import nl.grauw.gaia.tool.Gaia.GaiaNotFoundException;
+import nl.grauw.gaia.tool.midi.MidiConnection.GaiaNotFoundException;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
 
@@ -198,8 +198,8 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 	
 	private void reconnect() {
 		try {
-			gaia.close();
-			gaia.open();
+			gaiaTool.closeGaia();
+			gaiaTool.openGaia();
 		} catch (GaiaNotFoundException e) {
 			JOptionPane.showMessageDialog(this, "The GAIA MIDI ports could not be found. Is your GAIA turned on?",
 					"Problem connecting to Roland GAIA", JOptionPane.ERROR_MESSAGE);
@@ -392,7 +392,7 @@ public class GaiaToolView extends JFrame implements TreeSelectionListener, AWTOb
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					new MIDIDeviceSelector(gaia, this).show();
+					new MIDIDeviceSelector(gaiaTool, this).show();
 				}
 			}
 		}
