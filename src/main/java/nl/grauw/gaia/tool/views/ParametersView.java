@@ -27,7 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import nl.grauw.gaia.tool.Gaia;
+import nl.grauw.gaia.Gaia;
 
 public abstract class ParametersView extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 123L;

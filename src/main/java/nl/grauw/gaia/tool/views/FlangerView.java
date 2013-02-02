@@ -15,10 +15,10 @@
  */
 package nl.grauw.gaia.tool.views;
 
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.Patch;
-import nl.grauw.gaia.tool.parameters.Flanger;
-import nl.grauw.gaia.tool.parameters.Flanger.FlangerType;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.parameters.Flanger;
+import nl.grauw.gaia.parameters.Flanger.FlangerType;
 
 public class FlangerView extends SingleParametersPanel {
 

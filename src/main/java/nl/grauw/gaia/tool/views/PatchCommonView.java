@@ -19,10 +19,10 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import nl.grauw.gaia.tool.Patch;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.parameters.PatchCommon;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
-import nl.grauw.gaia.tool.parameters.PatchCommon;
 
 public class PatchCommonView extends JPanel implements AWTObserver{
 	private static final long serialVersionUID = 1L;

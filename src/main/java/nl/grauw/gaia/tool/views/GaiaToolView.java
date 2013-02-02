@@ -42,13 +42,13 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import nl.grauw.gaia.tool.FilePatch;
-import nl.grauw.gaia.tool.Gaia;
+import nl.grauw.gaia.FilePatch;
+import nl.grauw.gaia.Gaia;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.TemporaryPatch;
+import nl.grauw.gaia.UserPatch;
+import nl.grauw.gaia.midi.JavaMidiConnection.GaiaNotFoundException;
 import nl.grauw.gaia.tool.GaiaTool;
-import nl.grauw.gaia.tool.Patch;
-import nl.grauw.gaia.tool.TemporaryPatch;
-import nl.grauw.gaia.tool.UserPatch;
-import nl.grauw.gaia.tool.midi.JavaMidiConnection.GaiaNotFoundException;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
 

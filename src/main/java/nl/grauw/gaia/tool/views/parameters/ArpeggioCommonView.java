@@ -18,9 +18,9 @@ package nl.grauw.gaia.tool.views.parameters;
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 
+import nl.grauw.gaia.parameters.ArpeggioCommon;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
-import nl.grauw.gaia.tool.parameters.ArpeggioCommon;
 import nl.grauw.gaia.tool.views.EnumComboBox;
 import nl.grauw.gaia.tool.views.ValueSpinner;
 

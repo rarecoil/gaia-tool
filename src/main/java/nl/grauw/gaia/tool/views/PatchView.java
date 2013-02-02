@@ -25,13 +25,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import nl.grauw.gaia.tool.FilePatch;
-import nl.grauw.gaia.tool.Gaia;
-import nl.grauw.gaia.tool.GaiaPatch;
-import nl.grauw.gaia.tool.Patch;
-import nl.grauw.gaia.tool.SVDPatch;
-import nl.grauw.gaia.tool.TemporaryPatch;
-import nl.grauw.gaia.tool.UserPatch;
+import nl.grauw.gaia.FilePatch;
+import nl.grauw.gaia.Gaia;
+import nl.grauw.gaia.GaiaPatch;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.SVDPatch;
+import nl.grauw.gaia.TemporaryPatch;
+import nl.grauw.gaia.UserPatch;
 
 public class PatchView extends ParametersView implements ChangeListener {
 

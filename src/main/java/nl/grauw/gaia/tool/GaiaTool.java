@@ -25,9 +25,18 @@ import java.util.Properties;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JFileChooser;
 
-import nl.grauw.gaia.tool.PatchDataRequester.PatchCompleteListener;
-import nl.grauw.gaia.tool.midi.JavaMidiConnection;
-import nl.grauw.gaia.tool.midi.JavaMidiConnection.GaiaNotFoundException;
+import nl.grauw.gaia.Gaia;
+import nl.grauw.gaia.GaiaPatch;
+import nl.grauw.gaia.Library;
+import nl.grauw.gaia.Log;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.PatchDataRequester;
+import nl.grauw.gaia.PatchLoader;
+import nl.grauw.gaia.PatchSaver;
+import nl.grauw.gaia.PatchDataRequester.PatchCompleteListener;
+import nl.grauw.gaia.midi.JavaMidiConnection;
+import nl.grauw.gaia.midi.JavaMidiConnection.GaiaNotFoundException;
 
 public class GaiaTool {
 	

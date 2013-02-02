@@ -17,9 +17,9 @@ package nl.grauw.gaia.tool;
 
 import static org.junit.Assert.*;
 
-import nl.grauw.gaia.tool.Gaia;
+import nl.grauw.gaia.Gaia;
+import nl.grauw.gaia.Log;
 import nl.grauw.gaia.tool.GaiaTool;
-import nl.grauw.gaia.tool.Log;
 
 import org.junit.Test;
 

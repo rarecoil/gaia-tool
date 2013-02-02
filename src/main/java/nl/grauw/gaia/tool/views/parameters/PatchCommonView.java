@@ -31,10 +31,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.PlainDocument;
 
-import nl.grauw.gaia.tool.Parameters.ParameterChange;
+import nl.grauw.gaia.Parameters.ParameterChange;
+import nl.grauw.gaia.parameters.PatchCommon;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
-import nl.grauw.gaia.tool.parameters.PatchCommon;
 import nl.grauw.gaia.tool.views.ValueSpinner;
 
 public class PatchCommonView extends JPanel implements AWTObserver {

@@ -15,9 +15,9 @@
  */
 package nl.grauw.gaia.tool.views;
 
-import nl.grauw.gaia.tool.Gaia;
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.parameters.System;
+import nl.grauw.gaia.Gaia;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.parameters.System;
 
 public class SystemView extends SingleParametersView {
 

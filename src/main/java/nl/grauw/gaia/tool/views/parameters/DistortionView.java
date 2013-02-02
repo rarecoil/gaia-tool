@@ -20,12 +20,12 @@ import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.JPanel;
 
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.Parameters.ParameterChange;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Parameters.ParameterChange;
+import nl.grauw.gaia.parameters.Distortion;
+import nl.grauw.gaia.parameters.Distortion.DistortionType;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
-import nl.grauw.gaia.tool.parameters.Distortion;
-import nl.grauw.gaia.tool.parameters.Distortion.DistortionType;
 import nl.grauw.gaia.tool.views.EnumComboBox;
 import nl.grauw.gaia.tool.views.ValueSpinner;
 

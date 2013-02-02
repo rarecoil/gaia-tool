@@ -15,9 +15,9 @@
  */
 package nl.grauw.gaia.tool.views;
 
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.Patch;
-import nl.grauw.gaia.tool.parameters.Tone;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.parameters.Tone;
 
 public class ToneView extends SingleParametersPanel {
 	

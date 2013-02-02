@@ -15,10 +15,10 @@
  */
 package nl.grauw.gaia.tool.views;
 
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.Patch;
-import nl.grauw.gaia.tool.parameters.Delay;
-import nl.grauw.gaia.tool.parameters.Delay.DelayType;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.parameters.Delay;
+import nl.grauw.gaia.parameters.Delay.DelayType;
 
 public class DelayView extends SingleParametersPanel {
 

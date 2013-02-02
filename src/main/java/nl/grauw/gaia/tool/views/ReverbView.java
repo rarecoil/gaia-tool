@@ -15,10 +15,10 @@
  */
 package nl.grauw.gaia.tool.views;
 
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.Patch;
-import nl.grauw.gaia.tool.parameters.Reverb;
-import nl.grauw.gaia.tool.parameters.Reverb.ReverbType;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.parameters.Reverb;
+import nl.grauw.gaia.parameters.Reverb.ReverbType;
 
 public class ReverbView extends SingleParametersPanel {
 

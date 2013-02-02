@@ -22,9 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import nl.grauw.gaia.tool.IntValue;
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.Parameters.ParameterChange;
+import nl.grauw.gaia.IntValue;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Parameters.ParameterChange;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
 

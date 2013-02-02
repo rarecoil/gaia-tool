@@ -20,8 +20,8 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import nl.grauw.gaia.tool.Gaia;
-import nl.grauw.gaia.tool.GaiaPatch;
+import nl.grauw.gaia.Gaia;
+import nl.grauw.gaia.GaiaPatch;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
 import nl.grauw.gaia.tool.views.parameters.DistortionView;

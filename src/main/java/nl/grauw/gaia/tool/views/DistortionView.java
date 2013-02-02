@@ -15,10 +15,10 @@
  */
 package nl.grauw.gaia.tool.views;
 
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.Patch;
-import nl.grauw.gaia.tool.parameters.Distortion;
-import nl.grauw.gaia.tool.parameters.Distortion.DistortionType;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.parameters.Distortion;
+import nl.grauw.gaia.parameters.Distortion.DistortionType;
 
 public class DistortionView extends SingleParametersPanel {
 

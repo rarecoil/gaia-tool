@@ -21,9 +21,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import nl.grauw.gaia.tool.EnumValue;
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.Parameters.ParameterChange;
+import nl.grauw.gaia.EnumValue;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Parameters.ParameterChange;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
 

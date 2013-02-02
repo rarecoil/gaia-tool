@@ -26,7 +26,7 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import javax.swing.JOptionPane;
 
-import nl.grauw.gaia.tool.midi.JavaMidiConnection.GaiaNotFoundException;
+import nl.grauw.gaia.midi.JavaMidiConnection.GaiaNotFoundException;
 import nl.grauw.gaia.tool.GaiaTool;
 
 public class MIDIDeviceSelector {

@@ -30,15 +30,15 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.table.AbstractTableModel;
 
-import nl.grauw.gaia.tool.IntValue;
-import nl.grauw.gaia.tool.Note;
-import nl.grauw.gaia.tool.NoteValue;
-import nl.grauw.gaia.tool.Parameters;
-import nl.grauw.gaia.tool.Patch;
+import nl.grauw.gaia.IntValue;
+import nl.grauw.gaia.Note;
+import nl.grauw.gaia.NoteValue;
+import nl.grauw.gaia.Parameters;
+import nl.grauw.gaia.Patch;
+import nl.grauw.gaia.parameters.ArpeggioCommon;
+import nl.grauw.gaia.parameters.ArpeggioPattern;
 import nl.grauw.gaia.tool.mvc.AWTObserver;
 import nl.grauw.gaia.tool.mvc.Observable;
-import nl.grauw.gaia.tool.parameters.ArpeggioCommon;
-import nl.grauw.gaia.tool.parameters.ArpeggioPattern;
 import nl.grauw.gaia.tool.views.parameters.ArpeggioCommonView;
 
 public class ArpeggioView extends JPanel implements AWTObserver {
