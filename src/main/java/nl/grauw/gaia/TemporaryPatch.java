@@ -39,7 +39,7 @@ public class TemporaryPatch extends GaiaPatch implements ParameterChangeListener
 	}
 	
 	@Override
-	public void parameterChange(Parameters source, ParameterChange change) {
+	public void onParameterChange(Parameters source, ParameterChange change) {
 		if (source.hasChanged(change)) {
 			getGaia().sendDataTransmission(source, change.getOffset(), change.getLength());
 			

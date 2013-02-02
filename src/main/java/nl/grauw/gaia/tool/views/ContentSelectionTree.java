@@ -398,7 +398,7 @@ public class ContentSelectionTree extends JTree {
 				} catch (IncompletePatchException e) {
 					if (patch instanceof GaiaPatch) {
 						new PatchDataRequester((GaiaPatch) patch, new PatchCompleteListener() {
-							public void patchComplete(GaiaPatch patch) {
+							public void onPatchComplete(GaiaPatch patch) {
 								copyToTemporaryPatch(); // try again
 							}
 						}).requestMissingParameters();

@@ -104,7 +104,7 @@ public class PatchTest {
 		public int callCount = 0;
 		public Patch lastSource = null;
 		public String lastDetail = null;
-		public void patchChange(Patch source, String detail) {
+		public void onPatchChange(Patch source, String detail) {
 			callCount++;
 			lastSource = source;
 			lastDetail = detail;

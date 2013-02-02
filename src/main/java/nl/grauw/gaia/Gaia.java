@@ -94,7 +94,7 @@ public class Gaia extends Observable implements ParameterChangeListener, MidiRec
 	}
 	
 	@Override
-	public void parameterChange(Parameters source, ParameterChange change) {
+	public void onParameterChange(Parameters source, ParameterChange change) {
 		if (source.hasChanged(change)) {
 			sendDataTransmission(source, change.getOffset(), change.getLength());
 		}
@@ -305,7 +305,7 @@ public class Gaia extends Observable implements ParameterChangeListener, MidiRec
 		if (temporaryPatch.getTone(1) == null) {
 			temporaryPatch.loadTone(1);
 			temporaryPatch.addPatchChangeListener(new PatchChangeListener() {
-				public void patchChange(Patch patch, String detail) {
+				public void onPatchChange(Patch patch, String detail) {
 					if ("tones".equals(detail))
 						testControlChange();
 				}
@@ -317,7 +317,7 @@ public class Gaia extends Observable implements ParameterChangeListener, MidiRec
 	
 	private void testControlChange(final int i) {
 		temporaryPatch.getTone(1).addParameterChangeListener(new ParameterChangeListener() {
-			public void parameterChange(Parameters source, ParameterChange change) {
+			public void onParameterChange(Parameters source, ParameterChange change) {
 				if (change.getOffset() == 0x03) {
 					source.removeParameterChangeListener(this);
 					

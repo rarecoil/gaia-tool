@@ -126,7 +126,7 @@ public class GaiaTool {
 		if (patch instanceof GaiaPatch) {
 			new PatchDataRequester((GaiaPatch) patch, new PatchCompleteListener() {
 				@Override
-				public void patchComplete(GaiaPatch patch) {
+				public void onPatchComplete(GaiaPatch patch) {
 					savePatchContinue(patchFile, patch);
 				}
 			}).requestMissingParameters();

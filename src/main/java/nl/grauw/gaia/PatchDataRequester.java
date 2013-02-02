@@ -28,7 +28,7 @@ public class PatchDataRequester implements PatchChangeListener {
 		 * Invoked when the patch has loaded completely.
 		 * @param patch The patch that has loaded.
 		 */
-		public void patchComplete(GaiaPatch patch);
+		public void onPatchComplete(GaiaPatch patch);
 		
 	}
 	
@@ -75,12 +75,12 @@ public class PatchDataRequester implements PatchChangeListener {
 			}
 			// done
 			patch.removePatchChangeListener(this);
-			listener.patchComplete(patch);
+			listener.onPatchComplete(patch);
 		}
 	}
 	
 	@Override
-	public void patchChange(Patch source, String detail) {
+	public void onPatchChange(Patch source, String detail) {
 		if (source == patch && ("common".equals(detail) || "tones".equals(detail) || "distortion".equals(detail) ||
 				"flanger".equals(detail) || "delay".equals(detail) || "reverb".equals(detail) ||
 				"arpeggioCommon".equals(detail) || "arpeggioPatterns".equals(detail))) {

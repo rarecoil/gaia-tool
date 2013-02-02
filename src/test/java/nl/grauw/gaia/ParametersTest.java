@@ -129,7 +129,7 @@ public class ParametersTest {
 		public int callCount = 0;
 		public Parameters lastSource = null;
 		public ParameterChange lastChange = null;
-		public void parameterChange(Parameters source, ParameterChange change) {
+		public void onParameterChange(Parameters source, ParameterChange change) {
 			callCount++;
 			lastSource = source;
 			lastChange = change;

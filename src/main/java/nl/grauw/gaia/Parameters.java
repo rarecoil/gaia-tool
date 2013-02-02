@@ -343,12 +343,12 @@ public class Parameters extends Observable {
 	
 	private void fireParameterChange(ParameterChange change) {
 		for (ParameterChangeListener listener : new ArrayList<ParameterChangeListener>(changeListeners))
-			listener.parameterChange(this, change);
+			listener.onParameterChange(this, change);
 		notifyObservers(change);
 	}
 	
 	public interface ParameterChangeListener {
-		public void parameterChange(Parameters source, ParameterChange change);
+		public void onParameterChange(Parameters source, ParameterChange change);
 	}
 	
 	/**

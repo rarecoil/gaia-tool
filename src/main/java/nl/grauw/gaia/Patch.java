@@ -354,12 +354,12 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	
 	private void firePatchChange(String parametersName) {
 		for (PatchChangeListener listener : new ArrayList<PatchChangeListener>(changeListeners))
-			listener.patchChange(this, parametersName);
+			listener.onPatchChange(this, parametersName);
 		notifyObservers(parametersName);
 	}
 	
 	public interface PatchChangeListener {
-		public void patchChange(Patch patch, String parametersName);
+		public void onPatchChange(Patch patch, String parametersName);
 	}
 	
 	public static class IncompletePatchException extends Exception {
