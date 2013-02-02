@@ -108,39 +108,22 @@ public class Gaia extends Observable implements ParameterChangeListener {
 		responseReceiver = new ResponseReceiver(this);
 	}
 	
-	public boolean getSynchronize() {
-		if (system != null)
-			return system.getTxEditData();
-		return false;
-	}
-	
-	public void setSynchronize(boolean sync) {
+	public void enableTxEditData() {
 		if (system == null) {
-			throw new RuntimeException("Can’t set synchronization mode before system data is loaded.");
-		}
-		system.setTxEditData(sync);
-		if (sync == false) {
-			// manually send sync parameter
-			sendDataTransmission(system, 0x19, 1);
-		}
-		notifyObservers("synchronize");
-	}
-	
-	public void autoEnableSynchronize() {
-		if (!getSynchronize())
-		{
-			setSynchronize(true);
-			log.log("Automatically enabled TX Edit Data parameter.");
+			try {
+				send(new DataSet1(new Address(0x01, 0x00, 0x00, 0x19), new byte[] { 1 } ));
+			} catch (InvalidMidiDataException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			system.setTxEditData(true);
 		}
 	}
 	
 	@Override
 	public void parameterChange(Parameters source, ParameterChange change) {
-		if (getSynchronize() && source.hasChanged(change)) {
+		if (source.hasChanged(change)) {
 			sendDataTransmission(source, change.getOffset(), change.getLength());
-		}
-		if (source == system && change.includes(0x19)) {	// Tx edit data
-			notifyObservers("synchronize");
 		}
 	}
 	
@@ -206,6 +189,8 @@ public class Gaia extends Observable implements ParameterChangeListener {
 		notifyObservers("opened");
 		
 		requestIdentity();
+		enableTxEditData();
+		log.log("Automatically enabled TX Edit Data parameter.");
 		loadSystem();
 	}
 	
@@ -379,9 +364,7 @@ public class Gaia extends Observable implements ParameterChangeListener {
 		} else if (message instanceof ControlChangeMessage) {
 			updateParameters((ControlChangeMessage) message);
 		} else if (message instanceof ProgramChangeMessage) {
-			if (getSynchronize()) {
-				temporaryPatch.clearParameters();
-			}
+			temporaryPatch.clearParameters();
 		}
 	}
 	
@@ -407,9 +390,7 @@ public class Gaia extends Observable implements ParameterChangeListener {
 	}
 	
 	private void updateParameters(ControlChangeMessage message) {
-		if (getSynchronize()) {
-			temporaryPatch.updateParameters(message);
-		}
+		temporaryPatch.updateParameters(message);
 	}
 	
 	public void updateParameters(Address address, byte[] data) throws AddressException {
@@ -422,8 +403,6 @@ public class Gaia extends Observable implements ParameterChangeListener {
 			} else if (system != null) {
 				system.updateParameters(address, data);
 			}
-			
-			autoEnableSynchronize();
 		} else if (byte1 == 0x0F) {
 			if (address.equals(Address.INIT_PATCH) || address.equals(Address.MANUAL) || address.equals(Address.TONE_COPY))
 				temporaryPatch.clearParameters();

@@ -41,9 +41,8 @@ public class TemporaryPatch extends GaiaPatch implements ParameterChangeListener
 	@Override
 	public void parameterChange(Parameters source, ParameterChange change) {
 		if (source.hasChanged(change)) {
-			if (getGaia().getSynchronize()) {
-				getGaia().sendDataTransmission(source, change.getOffset(), change.getLength());
-			}
+			getGaia().sendDataTransmission(source, change.getOffset(), change.getLength());
+			
 			// reload effect parameters when effect type changes
 			if (source == getDistortion() && change.getOffset() == 0x00 && change.getLength() < 0x11) {
 				loadData(getDistortion().getAddress().add(0x01), 0x10);
