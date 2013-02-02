@@ -23,12 +23,12 @@ public class Message {
 		this.message = message;
 		
 		if (message.length < 1)
-			throw new RuntimeException("Message too short.");
+			throw new IllegalArgumentException("Message too short.");
 		if ((message[0] & 0x80) == 0)
-			throw new RuntimeException("Invalid status value.");
+			throw new IllegalArgumentException("Invalid status value.");
 		for (int i = 1; i < message.length; i++)
 			if ((message[i] & 0x80) != 0 && !((message[i] & 0xFF) == Sysex.END_OF_EXCLUSIVE && (message[0] & 0xFF) == Sysex.SYSTEM_EXCLUSIVE && i == message.length - 1))
-				throw new RuntimeException("Data byte out of range.");
+				throw new IllegalArgumentException("Data byte out of range.");
 	}
 	
 	public byte[] getMessage() {
@@ -55,7 +55,7 @@ public class Message {
 	
 	public int getData(int i) {
 		if (i < 0 || i >= (message.length - 1))
-			throw new RuntimeException("Data position out of range.");
+			throw new IllegalArgumentException("Data position out of range.");
 		return message[i + 1] & 0xFF;
 	}
 	

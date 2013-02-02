@@ -18,18 +18,18 @@ public class ChannelMessage extends Message {
 		super(new byte[] { (byte)(status | channel), (byte)data1 });
 		
 		if (channel < 0 || channel > 15)
-			throw new RuntimeException("Channel out of range.");
+			throw new IllegalArgumentException("Channel out of range.");
 		if (status != PROGRAM_CHANGE && status != CHANNEL_PRESSURE)
-			throw new RuntimeException("Invalid status.");
+			throw new IllegalArgumentException("Invalid status.");
 	}
 	
 	protected ChannelMessage(int status, int channel, int data1, int data2) {
 		super(new byte[] { (byte)(status | channel), (byte)data1, (byte)data2 });
 		
 		if (channel < 0 || channel > 15)
-			throw new RuntimeException("Channel out of range.");
+			throw new IllegalArgumentException("Channel out of range.");
 		if (status != NOTE_OFF && status != NOTE_ON && status != POLY_PRESSURE && status != CONTROL_CHANGE && status != PITCH_BEND)
-			throw new RuntimeException("Invalid status.");
+			throw new IllegalArgumentException("Invalid status.");
 	}
 	
 	@Override

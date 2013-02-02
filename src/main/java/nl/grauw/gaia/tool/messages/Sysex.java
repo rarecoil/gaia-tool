@@ -14,7 +14,7 @@ public class Sysex extends Message {
 		super(createMessage(status, data));
 		
 		if (status != SYSTEM_EXCLUSIVE && status != SPECIAL_SYSTEM_EXCLUSIVE)
-			throw new RuntimeException("Invalid status code.");
+			throw new IllegalArgumentException("Invalid status code.");
 	}
 	
 	private static byte[] createMessage(int status, byte[] data) {
