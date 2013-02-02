@@ -16,9 +16,8 @@
 package nl.grauw.gaia;
 
 import nl.grauw.gaia.Parameters.ParameterChange;
-import nl.grauw.gaia.tool.mvc.Observable;
 
-public class Value extends Observable {
+public class Value {
 	
 	protected Parameters parameters;
 	protected int offset;
