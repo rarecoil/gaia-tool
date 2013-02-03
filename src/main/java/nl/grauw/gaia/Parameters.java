@@ -16,6 +16,7 @@
 package nl.grauw.gaia;
 
 import java.util.Arrays;
+import java.util.EventListener;
 
 import nl.grauw.gaia.Address.AddressException;
 import nl.grauw.gaia.tool.mvc.Observable;
@@ -345,7 +346,7 @@ public class Parameters extends Observable {
 		notifyObservers(change);
 	}
 	
-	public interface ParameterChangeListener {
+	public interface ParameterChangeListener extends EventListener {
 		public void onParameterChange(Parameters source, ParameterChange change);
 	}
 	

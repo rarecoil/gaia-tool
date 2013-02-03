@@ -15,6 +15,8 @@
  */
 package nl.grauw.gaia;
 
+import java.util.EventListener;
+
 import nl.grauw.gaia.util.ListenerList;
 
 public class Log {
@@ -51,7 +53,7 @@ public class Log {
 			listener.onLogUpdate(this);
 	}
 	
-	public interface LogUpdateListener {
+	public interface LogUpdateListener extends EventListener {
 		public void onLogUpdate(Log source);
 	}
 	

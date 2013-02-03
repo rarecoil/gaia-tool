@@ -15,6 +15,7 @@
  */
 package nl.grauw.gaia;
 
+import java.util.EventListener;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -356,7 +357,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 		notifyObservers(parametersName);
 	}
 	
-	public interface PatchChangeListener {
+	public interface PatchChangeListener extends EventListener {
 		public void onPatchChange(Patch patch, String parametersName);
 	}
 	

@@ -1,5 +1,6 @@
 package nl.grauw.gaia.util;
 
+import java.util.EventListener;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -10,19 +11,19 @@ import java.util.NoSuchElementException;
  * Modifications are a bit slower, they are synchronized and do array copies.
  * Inspired by EventListenerList, but iterable and without the weird Class stuff.
  */
-public class ListenerList<T> implements Iterable<T> {
+public class ListenerList<T extends EventListener> implements Iterable<T> {
 	
-	private static final Object[] NULL_ARRAY = new Object[0];
-	private Object[] listeners = NULL_ARRAY;
+	private static final EventListener[] NULL_ARRAY = new EventListener[0];
+	private EventListener[] listeners = NULL_ARRAY;
 	
 	public synchronized void add(T listener) {
 		if (listener == null)
 			throw new IllegalArgumentException("Non-null argument expected.");
 		if (listeners == NULL_ARRAY) {
-			listeners = new Object[] { listener };
+			listeners = new EventListener[] { listener };
 		} else {
 			int i = listeners.length;
-			Object[] temp = new Object[i + 1];
+			EventListener[] temp = new EventListener[i + 1];
 			System.arraycopy(listeners, 0, temp, 0, i);
 			temp[i] = listener;
 			listeners = temp;
@@ -35,7 +36,7 @@ public class ListenerList<T> implements Iterable<T> {
 				if (listeners.length == 1) {
 					listeners = NULL_ARRAY;
 				} else {
-					Object[] temp = new Object[listeners.length - 1];
+					EventListener[] temp = new EventListener[listeners.length - 1];
 					if (i > 0)
 						System.arraycopy(listeners, 0, temp, 0, i);
 					if (i < temp.length)
@@ -49,7 +50,7 @@ public class ListenerList<T> implements Iterable<T> {
 	}
 	
 	public boolean contains(T listener) {
-		Object[] listeners = this.listeners;
+		EventListener[] listeners = this.listeners;
 		for (int i = 0; i < listeners.length; i++)
 			if (listeners[i] == listener)
 				return true;
