@@ -118,7 +118,7 @@ public class ListenerListTest {
 		listeners.add(B);
 		listeners.add(C);
 		
-		assertEquals(true, listeners.contains(A));
+		assertEquals(false, listeners.contains(A));
 	}
 	
 }
