@@ -15,10 +15,7 @@
  */
 package nl.grauw.gaia;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import nl.grauw.gaia.Address.AddressException;
@@ -32,6 +29,7 @@ import nl.grauw.gaia.parameters.Reverb;
 import nl.grauw.gaia.parameters.Tone;
 import nl.grauw.gaia.tool.mvc.Observable;
 import nl.grauw.gaia.util.ArrayIterable;
+import nl.grauw.gaia.util.ListenerList;
 
 public class Patch extends Observable implements Iterable<Parameters> {
 
@@ -44,7 +42,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	private ArpeggioCommon arpeggioCommon;
 	private ArpeggioPattern[] arpeggioPatterns = new ArpeggioPattern[16];
 	
-	private List<PatchChangeListener> changeListeners = Collections.synchronizedList(new ArrayList<PatchChangeListener>());
+	private ListenerList<PatchChangeListener> changeListeners = new ListenerList<PatchChangeListener>();
 	
 	public Patch() {
 		super();
@@ -353,7 +351,7 @@ public class Patch extends Observable implements Iterable<Parameters> {
 	}
 	
 	private void firePatchChange(String parametersName) {
-		for (PatchChangeListener listener : new ArrayList<PatchChangeListener>(changeListeners))
+		for (PatchChangeListener listener : changeListeners)
 			listener.onPatchChange(this, parametersName);
 		notifyObservers(parametersName);
 	}

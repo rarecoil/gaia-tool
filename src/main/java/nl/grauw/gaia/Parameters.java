@@ -15,13 +15,11 @@
  */
 package nl.grauw.gaia;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import nl.grauw.gaia.Address.AddressException;
 import nl.grauw.gaia.tool.mvc.Observable;
+import nl.grauw.gaia.util.ListenerList;
 
 /**
  * Parameters encodes a set of parameters at a certain address.
@@ -33,7 +31,7 @@ public class Parameters extends Observable {
 	private byte[] originalData;
 	private byte[] data;
 	
-	private List<ParameterChangeListener> changeListeners = Collections.synchronizedList(new ArrayList<ParameterChangeListener>());
+	private ListenerList<ParameterChangeListener> changeListeners = new ListenerList<ParameterChangeListener>();
 	
 	/**
 	 * Constructs a new Parameters object.
@@ -342,7 +340,7 @@ public class Parameters extends Observable {
 	}
 	
 	private void fireParameterChange(ParameterChange change) {
-		for (ParameterChangeListener listener : new ArrayList<ParameterChangeListener>(changeListeners))
+		for (ParameterChangeListener listener : changeListeners)
 			listener.onParameterChange(this, change);
 		notifyObservers(change);
 	}

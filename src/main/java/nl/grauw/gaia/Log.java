@@ -15,15 +15,13 @@
  */
 package nl.grauw.gaia;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import nl.grauw.gaia.util.ListenerList;
 
 public class Log {
 	
 	private StringBuffer log;
 	
-	private List<LogUpdateListener> updateListeners = Collections.synchronizedList(new ArrayList<LogUpdateListener>());
+	private ListenerList<LogUpdateListener> updateListeners = new ListenerList<LogUpdateListener>();
 	
 	public Log() {
 		log = new StringBuffer();
@@ -49,7 +47,7 @@ public class Log {
 	}
 	
 	private void fireLogUpdate() {
-		for (LogUpdateListener listener : new ArrayList<LogUpdateListener>(updateListeners))
+		for (LogUpdateListener listener : updateListeners)
 			listener.onLogUpdate(this);
 	}
 	
