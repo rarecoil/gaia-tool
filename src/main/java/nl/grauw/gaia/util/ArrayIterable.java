@@ -65,7 +65,7 @@ public class ArrayIterable<T> implements Iterable<T> {
 	 */
 	private class ArrayIterator implements Iterator<T> {
 		
-		int position = start;
+		private int position = start;
 		
 		@Override
 		public boolean hasNext() {
