@@ -60,7 +60,8 @@ public class App {
 	 */
 	public static void fixLinuxDoubleClick() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		if ((Integer)(toolkit.getDesktopProperty("awt.multiClickInterval")) == 200) {
+		Object interval = toolkit.getDesktopProperty("awt.multiClickInterval");
+		if (interval != null && (Integer)interval == 200) {
 			try {
 				Field field = toolkit.getClass().getDeclaredField("awt_multiclick_time");
 				field.setAccessible(true);
