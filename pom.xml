@@ -201,7 +201,7 @@
 						<!-- See: http://mojo.codehaus.org/osxappbundle-maven-plugin/ -->
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>osxappbundle-maven-plugin</artifactId>
-						<version>1.0-alpha-1</version>
+						<version>1.0-alpha-3</version>
 						<executions>
 							<execution>
 								<phase>package</phase>
@@ -212,7 +212,7 @@
 									<bundleName>${project.name}</bundleName>
 									<mainClass>${mainClass}</mainClass>
 									<jvmVersion>1.6+</jvmVersion>
-									<dictionaryFile>src/main/app-resources/Info.plist</dictionaryFile>
+									<dictionaryFile>${basedir}/src/main/app-resources/Info.plist</dictionaryFile>
 								</configuration>
 							</execution>
 						</executions>
@@ -238,7 +238,7 @@
 						<!-- See: http://mojo.codehaus.org/osxappbundle-maven-plugin/ -->
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>osxappbundle-maven-plugin</artifactId>
-						<version>1.0-alpha-1</version>
+						<version>1.0-alpha-3</version>
 						<executions>
 							<execution>
 								<phase>package</phase>
@@ -249,7 +249,7 @@
 									<bundleName>${project.name}</bundleName>
 									<mainClass>${mainClass}</mainClass>
 									<jvmVersion>1.6+</jvmVersion>
-									<dictionaryFile>src/main/app-resources/Info.plist</dictionaryFile>
+									<dictionaryFile>${basedir}/src/main/app-resources/Info.plist</dictionaryFile>
 									<javaApplicationStub>src/main/app-resources/JavaApplicationStub</javaApplicationStub>
 								</configuration>
 							</execution>
@@ -269,4 +269,21 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven-central</id>
+			<name>Maven Central</name>
+			<url>http://repo.maven.apache.org/maven2/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>grauw.nl</id>
+			<name>Grauw.nl repository</name>
+			<url>http://www.grauw.nl/m2repository</url>
+			<releases>
+				<checksumPolicy>fail</checksumPolicy>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+
 </project>
