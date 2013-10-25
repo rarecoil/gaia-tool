@@ -186,6 +186,11 @@ The build creates both a general-purpose jar, as well as a .exe-version for
 Windows and a -app.zip version for Mac OS X. Some other jars are also generated
 but these are intermediate files and you can ignore them.
 
+To build on Mac OS X with more recent versions of Xcode (4.3 and up), you need
+to symlink the Developer path into the root.
+
+    sudo ln -s /Applications/Xcode.app/Contents/Developer /Developer
+
 To make Mac OS X builds on Windows or Linux machines, you need to get a copy of
 the `JavaApplicationStub` file from a Mac and put it in the
 `src/main/app-resources` directory. The next time you build, a Mac binary will
