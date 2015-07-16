@@ -192,7 +192,7 @@
 					<name>Mac OS X</name>
 				</os>
 				<file>
-					<exists>/Developer/Tools/SetFile</exists>
+					<exists>/Applications/Xcode.app/Contents/Developer/Tools/SetFile</exists>
 				</file>
 			</activation>
 			<build>
