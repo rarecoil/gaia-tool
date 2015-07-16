@@ -72,6 +72,7 @@ public class App {
 	}
 	
 	public static void installLookAndFeel() {
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		try {
 			String preferredPLAF = "Mac OS X".equals(System.getProperty("os.name")) ? "Aqua" : "Nimbus";
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
