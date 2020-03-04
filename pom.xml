@@ -27,9 +27,9 @@
 	</organization>
 	
 	<scm>
-		<connection>scm:hg:http://hg.grauw.nl/gaia-tool/</connection>
-		<developerConnection>scm:hg:http://hg.grauw.nl/gaia-tool/</developerConnection>
-		<url>http://hg.grauw.nl/gaia-tool/</url>
+		<connection>scm:hg:https://hg.sr.ht/~grauw/gaia-tool</connection>
+		<developerConnection>scm:hg:https://hg.sr.ht/~grauw/gaia-tool</developerConnection>
+		<url>https://hg.sr.ht/~grauw/gaia-tool</url>
 	</scm>
 	
 	<properties>

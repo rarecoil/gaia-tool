@@ -17,12 +17,10 @@ Table of Contents
 Project information
 -------------------
 
-Name: GAIA tool  
-Site: <http://www.grauw.nl/projects/gaia-tool/>  
-Source: <https://bitbucket.org/grauw/gaia-tool>  
-Author: Laurens Holst  
-Contact: <laurens.nospam@grauw.nl>  
-License: Apache License, Version 2.0
+  * Author: Laurens Holst <laurens@grauw.nl>
+  * Site: <http://www.grauw.nl/projects/gaia-tool/>
+  * Source: <https://hg.sr.ht/~grauw/gaia-tool>
+  * License: Apache License, Version 2.0
 
 The Gaia Tool is a free tool to view and edit the settings of a Roland GAIA
 SH-01 synthesizer connected to your PC or Mac.
@@ -53,8 +51,8 @@ contributing:
   * Share your work in progress.
     
     Once you have code to share, send me a link to your Mercurial repository so
-    I can see your changes. If you need a place to put it, bitbucket.com offers
-    free hosting. I can then provide code review comments and catch problems
+    I can see your changes. If you need a place to put it, sourcehut.org offers
+    hosting. I can then provide code review comments and catch problems
     early, saving you time.
 
   * Adhere to the coding style.
@@ -145,7 +143,7 @@ Getting the source code
 The source is managed using the Mercurial SCM, you can retrieve it with the
 following command:
 
-    hg clone https://bitbucket.org/grauw/gaia-tool gaia-tool
+    hg clone https://hg.sr.ht/~grauw/gaia-tool
 
 This will download the project source code into the gaia-tool directory.
 
