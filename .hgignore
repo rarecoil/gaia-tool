@@ -1,5 +1,0 @@
-relre:^.settings$
-relre:^target$
-relre:^.project$
-relre:^.classpath$
-relre:^src/main/app-resources/JavaApplicationStub$

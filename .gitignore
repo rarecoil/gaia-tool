@@ -1,0 +1,7 @@
+.settings
+target/
+.project
+.classpath
+src/main/app-resources/JavaApplicationStub
+.metadata
+TODO
