@@ -72,7 +72,10 @@ public class App {
 	}
 	
 	public static void installLookAndFeel() {
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		// FIXME: Comment this out to avoid Homebrew OpenJDK failures
+		// on macOS Sonoma for now
+		// https://github.com/rarecoil/gaia-tool/issues/1#issuecomment-1790993483
+		// System.setProperty("apple.laf.useScreenMenuBar", "true");
 		try {
 			String preferredPLAF = "Mac OS X".equals(System.getProperty("os.name")) ? "Aqua" : "Nimbus";
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
